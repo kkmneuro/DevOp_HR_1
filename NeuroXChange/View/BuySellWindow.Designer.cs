@@ -66,6 +66,7 @@
             this.Name = "BuySellWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BuySellWindow";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuySellWindow_FormClosing);
             this.ResumeLayout(false);
 
