@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace NeuroXChange.Model
 {
-    class MainNeuroXModelEvent
+    public enum MainNeuroXModelEvent
     {
+        StepReadyToTrade,
+        StepPreactivation,
+        StepDirectionConfirmed,
+        StepExecuteOrder,
+        StepConfirmationFilled
     }
 }

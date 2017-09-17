@@ -25,7 +25,7 @@ namespace NeuroXChange.Model.BioData
         {
             var cmd = new OleDbCommand(
                 @"select * from Sub_Component_Protocol_Psychophysiological_Session_Data_TPS
-                WHERE psychophysiological_Session_Data_ID > 391000 AND psychophysiological_Session_Data_ID < 392000
+                WHERE psychophysiological_Session_Data_ID > 391000 AND psychophysiological_Session_Data_ID < 391700
                 ORDER BY Psychophysiological_Session_Data_ID"
 , conn);
 

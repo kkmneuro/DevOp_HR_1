@@ -92,6 +92,13 @@
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
+    <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="View\BuySellWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BuySellWindow.Designer.cs">
+      <DependentUpon>BuySellWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +116,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_Neuro_Xchange_Psychophysiology1DataSet.xsd</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\BuySellWindow.resx">
+      <DependentUpon>BuySellWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

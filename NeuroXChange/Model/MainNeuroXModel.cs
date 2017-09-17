@@ -35,7 +35,7 @@ namespace NeuroXChange.Model
         {
             // check ready to trade condition
             if (data.temperature > 30 && data.hartRate > 120)
-                NotifyObservers();
+                NotifyObservers(MainNeuroXModelEvent.StepReadyToTrade, null);
         }
 
         // ---- Observable pattern implementation
@@ -51,10 +51,10 @@ namespace NeuroXChange.Model
                 observers.Remove(observer);
         }
 
-        private void NotifyObservers()
+        private void NotifyObservers(MainNeuroXModelEvent modelEvent, object data)
         {
             foreach (var observer in observers)
-                observer.OnNext();
+                observer.OnNext(modelEvent, data);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace NeuroXChange.View
         private MainNeuroXModel model;
         private MainNeuroXController controller;
         private MainForm mainForm;
+        private BuySellWindow buySellWindow;
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -22,7 +23,11 @@ namespace NeuroXChange.View
             this.controller = controller;
 
             mainForm = new MainForm();
+            buySellWindow = new BuySellWindow();
+            buySellWindow.Show();
+            buySellWindow.Hide();
 
+            model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
         }
 
@@ -31,9 +36,14 @@ namespace NeuroXChange.View
             Application.Run(mainForm);
         }
 
-        public void OnNext()
+        public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
-            throw new NotImplementedException();
+            if (modelEvent == MainNeuroXModelEvent.StepReadyToTrade)
+            {
+                // ShowDialog logic
+                //buySellWindow.BeginInvoke((Action) (() => { if (!buySellWindow.Visible) buySellWindow.ShowDialog(); } ));
+                buySellWindow.BeginInvoke((Action) (() => buySellWindow.Show() ));
+            }
         }
 
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
@@ -53,7 +63,8 @@ namespace NeuroXChange.View
             builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
             builder.Append("Data: " + data.data + "\r\n");
-            mainForm.bioDataRTB.Text = builder.ToString();
+            mainForm.BeginInvoke((Action)(() => mainForm.bioDataRTB.Text = builder.ToString()));
+            //mainForm.bioDataRTB.Text = builder.ToString();
         }
     }
 }

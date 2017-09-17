@@ -8,6 +8,6 @@ namespace NeuroXChange.Model
 {
     public interface IMainNeuroXModelObserver
     {
-        void OnNext();
+        void OnNext(MainNeuroXModelEvent modelEvent, object data);
     }
 }
