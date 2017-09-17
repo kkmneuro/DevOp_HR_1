@@ -15,13 +15,13 @@ namespace NeuroXChange.Model.BioData
 
         public MSAccessBioDataProvider(string fileName)
         {
-            thread = new Thread(new ThreadStart(SendNewData));
+            thread = new Thread(new ThreadStart(GenerateNewData));
             conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName);
             conn.Open();
             thread.Start();
         }
 
-        private void SendNewData()
+        private void GenerateNewData()
         {
             var cmd = new OleDbCommand(
                 @"select * from Sub_Component_Protocol_Psychophysiological_Session_Data_TPS

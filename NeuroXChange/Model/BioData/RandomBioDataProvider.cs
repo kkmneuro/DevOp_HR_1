@@ -14,12 +14,12 @@ namespace NeuroXChange.Model.BioData
 
         public RandomBioDataProvider()
         {
-            thread = new Thread(new ThreadStart(SendNewData));
+            thread = new Thread(new ThreadStart(GenerateNewData));
             random = new Random();
             thread.Start();
         }
 
-        private void SendNewData()
+        private void GenerateNewData()
         {
             while (true)
             {

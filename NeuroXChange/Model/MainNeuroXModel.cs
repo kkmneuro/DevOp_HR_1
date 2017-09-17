@@ -15,8 +15,9 @@ namespace NeuroXChange.Model
 
         public MainNeuroXModel()
         {
-            bioDataProvider = new MSAccessBioDataProvider(@"C:\tmp\neurotrader\Neuro-Xchange_Psychophysiology1.mdb");
+            //bioDataProvider = new MSAccessBioDataProvider(@"C:\tmp\neurotrader\Neuro-Xchange_Psychophysiology1.mdb");
             //bioDataProvider = new RandomBioDataProvider();
+            bioDataProvider = new UdpBioDataProvider(14321);
             bioDataProvider.RegisterObserver(this);
             Application.ApplicationExit += new EventHandler(this.StopProcessing);
         }
