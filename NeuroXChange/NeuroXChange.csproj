@@ -86,6 +86,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IniFileReader.cs" />
+    <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\MSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
@@ -99,6 +101,12 @@
     </Compile>
     <Compile Include="View\BuySellWindow.Designer.cs">
       <DependentUpon>BuySellWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\CustomDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CustomDialog.Designer.cs">
+      <DependentUpon>CustomDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
@@ -119,6 +127,9 @@
     </Compile>
     <EmbeddedResource Include="View\BuySellWindow.resx">
       <DependentUpon>BuySellWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\CustomDialog.resx">
+      <DependentUpon>CustomDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

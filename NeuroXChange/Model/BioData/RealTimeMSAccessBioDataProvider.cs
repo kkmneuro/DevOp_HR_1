@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace NeuroXChange.Model.BioData
 {
-    public class MSAccessBioDataProvider : AbstractBioDataProvider
+    public class RealTimeMSAccessBioDataProvider : AbstractBioDataProvider
     {
         private OleDbConnection conn;
         Thread thread;
 
-        public MSAccessBioDataProvider(string fileName)
+        public RealTimeMSAccessBioDataProvider(string fileName)
         {
             thread = new Thread(new ThreadStart(GenerateNewData));
             conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName);
@@ -23,16 +23,25 @@ namespace NeuroXChange.Model.BioData
 
         private void GenerateNewData()
         {
-            var cmd = new OleDbCommand(
-                @"select * from Sub_Component_Protocol_Psychophysiological_Session_Data_TPS
-                WHERE psychophysiological_Session_Data_ID > 391000 AND psychophysiological_Session_Data_ID < 391700
-                ORDER BY Psychophysiological_Session_Data_ID"
-, conn);
+            int lastInd = 0;
 
-            var reader = cmd.ExecuteReader();
-            Thread.Sleep(20);
-            while (reader.Read())
+            var cmd = new OleDbCommand(
+                @"select TOP 1 * from Sub_Component_Protocol_Psychophysiological_Session_Data_TPS
+                ORDER BY Psychophysiological_Session_Data_ID DESC", conn);
+
+            while (true)
             {
+                var reader = cmd.ExecuteReader();
+                reader.Read();
+
+                int indNow = Int32.Parse(reader["psychophysiological_Session_Data_ID"].ToString());
+                if (lastInd == indNow)
+                {
+                    reader.Close();
+                    continue;
+                }
+                lastInd = indNow;
+
                 var data = new Sub_Component_Protocol_Psychophysiological_Session_Data_TPS();
                 data.psychophysiological_Session_Data_ID = Int32.Parse(reader["psychophysiological_Session_Data_ID"].ToString());
                 data.time = DateTime.Parse(reader["Time"].ToString());
@@ -49,6 +58,7 @@ namespace NeuroXChange.Model.BioData
                 data.participant_ID = Int32.Parse(reader["Participant_ID"].ToString());
                 data.data = reader["Data"].ToString();
                 NotifyObservers(data);
+                reader.Close();
                 Thread.Sleep(250);
             }
             conn.Close();

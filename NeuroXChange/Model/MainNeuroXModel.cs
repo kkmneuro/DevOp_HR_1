@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NeuroXChange.Model.BioData;
 using System.Windows.Forms;
+using NeuroXChange.Common;
 
 namespace NeuroXChange.Model
 {
@@ -12,12 +13,17 @@ namespace NeuroXChange.Model
     {
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
         public AbstractBioDataProvider bioDataProvider { get; private set; }
+        public IniFileReader iniFileReader { get; private set; }
 
         public MainNeuroXModel()
         {
-            //bioDataProvider = new MSAccessBioDataProvider(@"C:\tmp\neurotrader\Neuro-Xchange_Psychophysiology1.mdb");
+            iniFileReader = new IniFileReader("NeuroConfig.ini");
+            var databaseLocation = iniFileReader.Read("Location", "Database");
+
+            bioDataProvider = new RealTimeMSAccessBioDataProvider(databaseLocation);
+            //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
             //bioDataProvider = new RandomBioDataProvider();
-            bioDataProvider = new UdpBioDataProvider(14321);
+            //bioDataProvider = new UdpBioDataProvider(14321);
             bioDataProvider.RegisterObserver(this);
             Application.ApplicationExit += new EventHandler(this.StopProcessing);
         }
@@ -31,12 +37,57 @@ namespace NeuroXChange.Model
                 bioDataProvider.StopProcessing();
         }
 
+        // TEMP. TODO: update logic
+        private MainNeuroXModelEvent lastEvent = MainNeuroXModelEvent.StepInitialState;
+        private bool returnedBack = false;
+
         // ---- IBioDataObserver implementation
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
         {
             // check ready to trade condition
-            if (data.temperature > 30 && data.hartRate > 120)
-                NotifyObservers(MainNeuroXModelEvent.StepReadyToTrade, null);
+            //if (data.temperature > 30 && data.hartRate > 120)
+            if (data.accY > -10)
+            {
+                returnedBack = true;
+            }
+
+            if (data.accY < -70 && returnedBack)
+            {
+                returnedBack = false;
+                switch (lastEvent) {
+                    case MainNeuroXModelEvent.StepInitialState:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepReadyToTrade, null);
+                            break;
+                        }
+                    case MainNeuroXModelEvent.StepReadyToTrade:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepPreactivation, null);
+                            break;
+                        }
+                    case MainNeuroXModelEvent.StepPreactivation:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, null);
+                            break;
+                        }
+                    case MainNeuroXModelEvent.StepDirectionConfirmed:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, null);
+                            break;
+                        }
+                    case MainNeuroXModelEvent.StepExecuteOrder:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, null);
+                            break;
+                        }
+                    case MainNeuroXModelEvent.StepConfirmationFilled:
+                        {
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepInitialState, null);
+                            break;
+                        }
+                }
+
+            }
         }
 
         // ---- Observable pattern implementation

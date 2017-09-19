@@ -16,6 +16,7 @@ namespace NeuroXChange.View
         private MainNeuroXController controller;
         private MainForm mainForm;
         private BuySellWindow buySellWindow;
+        private CustomDialog customDialog;
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -26,6 +27,10 @@ namespace NeuroXChange.View
             buySellWindow = new BuySellWindow();
             buySellWindow.Show();
             buySellWindow.Hide();
+
+            customDialog = new CustomDialog();
+            customDialog.Show();
+            customDialog.Hide();
 
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
@@ -38,11 +43,80 @@ namespace NeuroXChange.View
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
-            if (modelEvent == MainNeuroXModelEvent.StepReadyToTrade)
+            switch(modelEvent)
             {
-                // ShowDialog logic
-                //buySellWindow.BeginInvoke((Action) (() => { if (!buySellWindow.Visible) buySellWindow.ShowDialog(); } ));
-                buySellWindow.BeginInvoke((Action) (() => buySellWindow.Show() ));
+                case MainNeuroXModelEvent.StepInitialState:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () => {
+                                buySellWindow.Hide();
+                                customDialog.Hide();
+                            }
+                        ));
+                        break;
+                    }
+                case MainNeuroXModelEvent.StepReadyToTrade:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () => {
+                                buySellWindow.Show();
+                                customDialog.Hide();
+                                buySellWindow.Text = "Ready To Trade";
+                                buySellWindow.btnBuy.Enabled = false;
+                                buySellWindow.btnSell.Enabled = false;
+                            }
+                        ));
+                        break;
+                    }
+                case MainNeuroXModelEvent.StepPreactivation:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () => {
+                                buySellWindow.Show();
+                                buySellWindow.Text = "Preactivation";
+                                buySellWindow.btnBuy.Enabled = true;
+                                buySellWindow.btnSell.Enabled = true;
+                            }
+                        ));
+                        break;
+                    }
+                case MainNeuroXModelEvent.StepDirectionConfirmed:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () => {
+                                buySellWindow.Show();
+                                buySellWindow.Text = "Direction confirmed (buy)";
+                                buySellWindow.btnBuy.Enabled = true;
+                                buySellWindow.btnSell.Enabled = false;
+                            }
+                        ));
+                        break;
+                    }
+                case MainNeuroXModelEvent.StepExecuteOrder:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () =>
+                            {
+                                buySellWindow.Hide();
+                                customDialog.Show();
+                                customDialog.Text = "Execute order";
+                                customDialog.labInformation.Text = "Order Executed\r\nDirection: Buy\r\nContract size: 1";
+                            }
+                        ));
+                        break;
+                    }
+                case MainNeuroXModelEvent.StepConfirmationFilled:
+                    {
+                        buySellWindow.BeginInvoke((Action)(
+                            () =>
+                            {
+                                customDialog.Show();
+                                customDialog.Text = "Order filled";
+                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: Unknown";
+                            }
+                        ));
+                        break;
+                    }
             }
         }
 

@@ -14,9 +14,17 @@ namespace NeuroXChange
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            new NeuroXApplication();
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                new NeuroXApplication();
+            }catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "My Application",
+MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+                
+            }
         }
     }
 }

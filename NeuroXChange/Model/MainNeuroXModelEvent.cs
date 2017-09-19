@@ -8,6 +8,7 @@ namespace NeuroXChange.Model
 {
     public enum MainNeuroXModelEvent
     {
+        StepInitialState,
         StepReadyToTrade,
         StepPreactivation,
         StepDirectionConfirmed,

@@ -63,6 +63,7 @@
             this.Controls.Add(this.btnBuy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BuySellWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BuySellWindow";
@@ -74,7 +75,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnBuy;
-        private System.Windows.Forms.Button btnSell;
+        public System.Windows.Forms.Button btnBuy;
+        public System.Windows.Forms.Button btnSell;
     }
 }
