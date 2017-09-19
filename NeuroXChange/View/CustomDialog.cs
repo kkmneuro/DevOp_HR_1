@@ -16,5 +16,16 @@ namespace NeuroXChange.View
         {
             InitializeComponent();
         }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void CustomDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
+        }
     }
 }

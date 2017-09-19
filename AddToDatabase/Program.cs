@@ -22,7 +22,7 @@ namespace AddToDatabase
                 Thread.Sleep(2000);
                 Console.WriteLine("Send data, inner counter " + i.ToString());
                 OleDbCommand cmd = new OleDbCommand(@"
-insert into Sub_Component_Protocol_Psychophysiological_Session_Data_TPS(
+insert into Sub_Component_Protocol_Psychophysiological_Session_Data_TPS_1(
 psychophysiological_Session_Data_ID, [Time], Temperature, HartRate, AccY, Session_Component_ID, Sub_Component_ID, Sub_Component_Protocol_ID, Participant_ID, [Data])
  values(" + i.ToString()+ @",'10/05/2017 06:30:57', 33.6967766284943, 120.805366516113, " + (i%2==0?"-75":"-5") + ", 2, 4, 71, 58, 'aaa')", conn);
                 cmd.ExecuteNonQuery();

@@ -11,10 +11,14 @@ namespace NeuroXChange.Model.BioData
     public class RealTimeMSAccessBioDataProvider : AbstractBioDataProvider
     {
         private OleDbConnection conn;
-        Thread thread;
+        private Thread thread;
+        private string fileName;
+        private string tableName;
 
-        public RealTimeMSAccessBioDataProvider(string fileName)
+        public RealTimeMSAccessBioDataProvider(string fileName, string tableName)
         {
+            this.fileName = fileName;
+            this.tableName = tableName;
             thread = new Thread(new ThreadStart(GenerateNewData));
             conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName);
             conn.Open();
@@ -26,11 +30,13 @@ namespace NeuroXChange.Model.BioData
             int lastInd = 0;
 
             var cmd = new OleDbCommand(
-                @"select TOP 1 * from Sub_Component_Protocol_Psychophysiological_Session_Data_TPS
+                @"SELECT TOP 1 * FROM " + this.tableName + @" 
                 ORDER BY Psychophysiological_Session_Data_ID DESC", conn);
 
             while (true)
             {
+                Thread.Sleep(100);
+
                 var reader = cmd.ExecuteReader();
                 reader.Read();
 
@@ -59,7 +65,6 @@ namespace NeuroXChange.Model.BioData
                 data.data = reader["Data"].ToString();
                 NotifyObservers(data);
                 reader.Close();
-                Thread.Sleep(250);
             }
             conn.Close();
         }

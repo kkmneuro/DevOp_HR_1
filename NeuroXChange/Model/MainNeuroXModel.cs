@@ -19,8 +19,9 @@ namespace NeuroXChange.Model
         {
             iniFileReader = new IniFileReader("NeuroConfig.ini");
             var databaseLocation = iniFileReader.Read("Location", "Database");
+            var tableName = iniFileReader.Read("Table", "Database");
 
-            bioDataProvider = new RealTimeMSAccessBioDataProvider(databaseLocation);
+            bioDataProvider = new RealTimeMSAccessBioDataProvider(databaseLocation, tableName);
             //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
             //bioDataProvider = new RandomBioDataProvider();
             //bioDataProvider = new UdpBioDataProvider(14321);
