@@ -16,6 +16,10 @@ namespace NeuroXChange.Model
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public IniFileReader iniFileReader { get; private set; }
 
+        // step conditions
+        int StepChangeStart = -60;
+        int StepChangeEnd = -20;
+
         public MainNeuroXModel()
         {
             if (!File.Exists("NeuroConfig.ini"))
@@ -31,6 +35,10 @@ namespace NeuroXChange.Model
             //bioDataProvider = new UdpBioDataProvider(14321);
             bioDataProvider.RegisterObserver(this);
             Application.ApplicationExit += new EventHandler(this.StopProcessing);
+
+            // load step change conditions
+            StepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
+            StepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
         }
 
         /// <summary>
@@ -51,12 +59,12 @@ namespace NeuroXChange.Model
         {
             // check ready to trade condition
             //if (data.temperature > 30 && data.hartRate > 120)
-            if (data.accY > -10)
+            if (data.accY > StepChangeEnd)
             {
                 returnedBack = true;
             }
 
-            if (data.accY < -70 && returnedBack)
+            if (data.accY < StepChangeStart && returnedBack)
             {
                 returnedBack = false;
                 switch (lastEvent) {

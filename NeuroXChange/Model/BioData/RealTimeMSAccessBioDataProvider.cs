@@ -74,7 +74,6 @@ namespace NeuroXChange.Model.BioData
                 NotifyObservers(data);
                 reader.Close();
             }
-            conn.Close();
         }
 
         public override void StopProcessing()
