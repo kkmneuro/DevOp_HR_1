@@ -21,9 +21,7 @@ namespace NeuroXChange
                 new NeuroXApplication();
             }catch (Exception e)
             {
-                MessageBox.Show(e.Message, "My Application",
-MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-                
+                MessageBox.Show(e.Message, "My Application", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

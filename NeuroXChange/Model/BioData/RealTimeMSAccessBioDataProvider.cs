@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NeuroXChange.Common;
+using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,15 +14,21 @@ namespace NeuroXChange.Model.BioData
     {
         private OleDbConnection conn;
         private Thread thread;
-        private string fileName;
+        private string databaseLocation;
         private string tableName;
 
-        public RealTimeMSAccessBioDataProvider(string fileName, string tableName)
+        public RealTimeMSAccessBioDataProvider(IniFileReader iniFileReader)
         {
-            this.fileName = fileName;
-            this.tableName = tableName;
+            this.databaseLocation = iniFileReader.Read("Location", "Database");
+            this.tableName = iniFileReader.Read("Table", "Database");
+
+            if (!File.Exists(this.databaseLocation))
+            {
+                throw new Exception("Can't find database \"" + this.databaseLocation + "\"");
+            }
+
             thread = new Thread(new ThreadStart(GenerateNewData));
-            conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName);
+            conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
             conn.Open();
             thread.Start();
         }

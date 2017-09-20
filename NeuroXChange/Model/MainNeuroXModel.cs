@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NeuroXChange.Model.BioData;
 using System.Windows.Forms;
 using NeuroXChange.Common;
+using System.IO;
 
 namespace NeuroXChange.Model
 {
@@ -17,11 +18,14 @@ namespace NeuroXChange.Model
 
         public MainNeuroXModel()
         {
-            iniFileReader = new IniFileReader("NeuroConfig.ini");
-            var databaseLocation = iniFileReader.Read("Location", "Database");
-            var tableName = iniFileReader.Read("Table", "Database");
+            if (!File.Exists("NeuroConfig.ini"))
+            {
+                throw new Exception("No configuration file \"NeuroConfig.ini\" found!\nHint: place \"NeuroConfig.ini\" in the same folder as this exe file");
+            }
 
-            bioDataProvider = new RealTimeMSAccessBioDataProvider(databaseLocation, tableName);
+            iniFileReader = new IniFileReader("NeuroConfig.ini");
+
+            bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
             //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
             //bioDataProvider = new RandomBioDataProvider();
             //bioDataProvider = new UdpBioDataProvider(14321);
