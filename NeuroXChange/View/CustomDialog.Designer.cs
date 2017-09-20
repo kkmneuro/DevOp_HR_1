@@ -65,7 +65,7 @@
             this.MinimizeBox = false;
             this.Name = "CustomDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Order confirmation";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CustomDialog_FormClosing);
             this.ResumeLayout(false);

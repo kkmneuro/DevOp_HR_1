@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Controller;
+using System.Drawing;
 
 namespace NeuroXChange.View
 {
@@ -43,81 +44,61 @@ namespace NeuroXChange.View
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
-            switch(modelEvent)
-            {
-                case MainNeuroXModelEvent.StepInitialState:
+            buySellWindow.BeginInvoke(
+                (Action)( () => {
+                    switch (modelEvent)
                     {
-                        buySellWindow.BeginInvoke((Action)(
-                            () => {
+                        case MainNeuroXModelEvent.StepInitialState:
+                            {
                                 buySellWindow.Hide();
                                 customDialog.Hide();
+                                break;
                             }
-                        ));
-                        break;
-                    }
-                case MainNeuroXModelEvent.StepReadyToTrade:
-                    {
-                        buySellWindow.BeginInvoke((Action)(
-                            () => {
+                        case MainNeuroXModelEvent.StepReadyToTrade:
+                            {
                                 buySellWindow.Show();
                                 customDialog.Hide();
-                                buySellWindow.Text = "Ready To Trade";
+                                buySellWindow.labStepName.Text = "Ready To Trade";
                                 buySellWindow.btnBuy.Enabled = false;
                                 buySellWindow.btnSell.Enabled = false;
+                                buySellWindow.btnBuy.BackColor = SystemColors.Control;
+                                buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                break;
                             }
-                        ));
-                        break;
-                    }
-                case MainNeuroXModelEvent.StepPreactivation:
-                    {
-                        buySellWindow.BeginInvoke((Action)(
-                            () => {
+                        case MainNeuroXModelEvent.StepPreactivation:
+                            {
                                 buySellWindow.Show();
-                                buySellWindow.Text = "Preactivation";
+                                buySellWindow.labStepName.Text = "Preactivation";
                                 buySellWindow.btnBuy.Enabled = true;
                                 buySellWindow.btnSell.Enabled = true;
+                                buySellWindow.btnBuy.BackColor = Color.Red;
+                                buySellWindow.btnSell.BackColor = Color.RoyalBlue;
+                                break;
                             }
-                        ));
-                        break;
-                    }
-                case MainNeuroXModelEvent.StepDirectionConfirmed:
-                    {
-                        buySellWindow.BeginInvoke((Action)(
-                            () => {
+                        case MainNeuroXModelEvent.StepDirectionConfirmed:
+                            {
                                 buySellWindow.Show();
-                                buySellWindow.Text = "Direction confirmed (buy)";
+                                buySellWindow.labStepName.Text = "Direction confirmed (buy)";
                                 buySellWindow.btnBuy.Enabled = true;
                                 buySellWindow.btnSell.Enabled = false;
+                                buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                break;
                             }
-                        ));
-                        break;
-                    }
-                case MainNeuroXModelEvent.StepExecuteOrder:
-                    {
-                        buySellWindow.BeginInvoke((Action)(
-                            () =>
+                        case MainNeuroXModelEvent.StepExecuteOrder:
                             {
                                 buySellWindow.Hide();
                                 customDialog.Show();
-                                customDialog.Text = "Execute order";
                                 customDialog.labInformation.Text = "Order Executed\r\nDirection: Buy\r\nContract size: 1";
+                                break;
                             }
-                        ));
-                        break;
-                    }
-                case MainNeuroXModelEvent.StepConfirmationFilled:
-                    {
-                        buySellWindow.BeginInvoke((Action)(
-                            () =>
+                        case MainNeuroXModelEvent.StepConfirmationFilled:
                             {
                                 customDialog.Show();
-                                customDialog.Text = "Order filled";
-                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: Unknown";
+                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: 1.23435";
+                                break;
                             }
-                        ));
-                        break;
                     }
-            }
+                } ));
         }
 
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
