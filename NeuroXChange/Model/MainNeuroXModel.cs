@@ -7,6 +7,7 @@ using NeuroXChange.Model.BioData;
 using System.Windows.Forms;
 using NeuroXChange.Common;
 using System.IO;
+using NeuroXChange.Model.FixApi;
 
 namespace NeuroXChange.Model
 {
@@ -14,6 +15,7 @@ namespace NeuroXChange.Model
     {
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
         public AbstractBioDataProvider bioDataProvider { get; private set; }
+        public FixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
 
         // step conditions
@@ -39,6 +41,8 @@ namespace NeuroXChange.Model
             // load step change conditions
             StepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
             StepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+
+            fixApiModel = new FixApiModel(iniFileReader);
         }
 
         /// <summary>
@@ -48,6 +52,8 @@ namespace NeuroXChange.Model
         {
             if (bioDataProvider != null)
                 bioDataProvider.StopProcessing();
+            if (fixApiModel != null)
+                fixApiModel.StopProcessing();
         }
 
         // TEMP. TODO: update logic

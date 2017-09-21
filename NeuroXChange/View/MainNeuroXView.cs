@@ -8,16 +8,18 @@ using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Controller;
 using System.Drawing;
+using NeuroXChange.Model.FixApi;
 
 namespace NeuroXChange.View
 {
-    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver
+    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver
     {
         private MainNeuroXModel model;
         private MainNeuroXController controller;
         private MainForm mainForm;
         private BuySellWindow buySellWindow;
         private CustomDialog customDialog;
+        private string lastPriceBuy;
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -35,6 +37,7 @@ namespace NeuroXChange.View
 
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
+            model.fixApiModel.RegisterObserver(this);
         }
 
         public void RunApplication()
@@ -88,13 +91,13 @@ namespace NeuroXChange.View
                             {
                                 buySellWindow.Hide();
                                 customDialog.Show();
-                                customDialog.labInformation.Text = "Order Executed\r\nDirection: Buy\r\nContract size: 1";
+                                customDialog.labInformation.Text = "Order Executed\r\nDirection: Buy\r\nContract size: 1\r\nPrice: " + lastPriceBuy;
                                 break;
                             }
                         case MainNeuroXModelEvent.StepConfirmationFilled:
                             {
                                 customDialog.Show();
-                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: 1.23435";
+                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: " + lastPriceBuy;
                                 break;
                             }
                     }
@@ -120,6 +123,28 @@ namespace NeuroXChange.View
             builder.Append("Data: " + data.data + "\r\n");
             mainForm.BeginInvoke((Action)(() => mainForm.bioDataRTB.Text = builder.ToString()));
             //mainForm.bioDataRTB.Text = builder.ToString();
+        }
+
+        public void OnNext(FixApiModelEvent modelEvent, object data)
+        {
+            mainForm.BeginInvoke(
+                                (Action)(() =>
+                               {
+                                   //if (modelEvent == FixApiModelEvent.RawMessageReceived)
+                                   //{
+                                   //    if (mainForm.listBoxRawData.Items.Count > 0)
+                                   //        mainForm.listBoxRawData.Items.Insert(0, data);
+                                   //    else
+                                   //        mainForm.listBoxRawData.Items.Add(data);
+                                   //}
+                                   if(modelEvent == FixApiModelEvent.PriceChanged)
+                                   {
+                                       var prices = (List<string>)data;
+                                       buySellWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
+                                       buySellWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
+                                       lastPriceBuy = prices[0];
+                                   }
+                               }));
         }
     }
 }
