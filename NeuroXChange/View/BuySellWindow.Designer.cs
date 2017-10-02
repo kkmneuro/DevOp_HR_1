@@ -38,7 +38,7 @@
             // 
             // btnBuy
             // 
-            this.btnBuy.BackColor = System.Drawing.Color.Red;
+            this.btnBuy.BackColor = System.Drawing.Color.RoyalBlue;
             this.btnBuy.Enabled = false;
             this.btnBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBuy.ForeColor = System.Drawing.Color.White;
@@ -52,7 +52,7 @@
             // 
             // btnSell
             // 
-            this.btnSell.BackColor = System.Drawing.Color.RoyalBlue;
+            this.btnSell.BackColor = System.Drawing.Color.Red;
             this.btnSell.Enabled = false;
             this.btnSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSell.ForeColor = System.Drawing.Color.White;

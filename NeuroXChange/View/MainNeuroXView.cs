@@ -74,8 +74,8 @@ namespace NeuroXChange.View
                                 buySellWindow.labStepName.Text = "Preactivation";
                                 buySellWindow.btnBuy.Enabled = true;
                                 buySellWindow.btnSell.Enabled = true;
-                                buySellWindow.btnBuy.BackColor = Color.Red;
-                                buySellWindow.btnSell.BackColor = Color.RoyalBlue;
+                                buySellWindow.btnBuy.BackColor = Color.RoyalBlue;
+                                buySellWindow.btnSell.BackColor = Color.Red;
                                 break;
                             }
                         case MainNeuroXModelEvent.StepDirectionConfirmed:
