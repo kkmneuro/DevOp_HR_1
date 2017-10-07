@@ -35,45 +35,82 @@ namespace NeuroXChange.Model.BioData
 
         private void GenerateNewData()
         {
-            int lastInd = 0;
-
-            var cmd = new OleDbCommand(
-                @"SELECT TOP 1 * FROM " + this.tableName + @" 
-                ORDER BY Psychophysiological_Session_Data_ID DESC", conn);
-
-            while (true)
+            try
             {
-                Thread.Sleep(100);
+                int lastID = -1;
 
+                // calculate lastInd from existing top row
+                var commandStr =
+                    string.Format(@"SELECT TOP 1 * 
+                                FROM {0}
+                                ORDER BY Psychophysiological_Session_Data_ID DESC",
+                    this.tableName);
+                var cmd = new OleDbCommand(commandStr, conn);
                 var reader = cmd.ExecuteReader();
-                reader.Read();
-
-                int indNow = Int32.Parse(reader["psychophysiological_Session_Data_ID"].ToString());
-                if (lastInd == indNow)
+                if (reader.Read())
                 {
-                    reader.Close();
-                    continue;
+                    var data = ParseReader(reader);
+                    lastID = data.psychophysiological_Session_Data_ID;
+                    NotifyObservers(data);
                 }
-                lastInd = indNow;
-
-                var data = new Sub_Component_Protocol_Psychophysiological_Session_Data_TPS();
-                data.psychophysiological_Session_Data_ID = Int32.Parse(reader["psychophysiological_Session_Data_ID"].ToString());
-                data.time = DateTime.Parse(reader["Time"].ToString());
-                data.temperature = Double.Parse(reader["Temperature"].ToString());
-                data.hartRate = Double.Parse(reader["HartRate"].ToString());
-                data.skinConductance = Double.Parse(reader["SkinConductance"].ToString());
-                data.accX = Double.Parse(reader["AccX"].ToString());
-                data.accY = Double.Parse(reader["AccY"].ToString());
-                data.accZ = Double.Parse(reader["AccZ"].ToString());
-                data.session_Component_ID = Int32.Parse(reader["Session_Component_ID"].ToString());
-                data.sub_Component_ID = Int32.Parse(reader["Sub_Component_ID"].ToString());
-                data.sub_Component_Protocol_ID = Int32.Parse(reader["Sub_Component_Protocol_ID"].ToString());
-                data.sub_Protocol_ID = Int32.Parse(reader["Sub_Protocol_ID"].ToString());
-                data.participant_ID = Int32.Parse(reader["Participant_ID"].ToString());
-                data.data = reader["Data"].ToString();
-                NotifyObservers(data);
                 reader.Close();
+                cmd.Dispose();
+
+                // main loop
+                while (true)
+                {
+                    Thread.Sleep(200);
+
+                    commandStr =
+                        string.Format(@"SELECT TOP 20 * 
+                                FROM {0}
+                                WHERE Psychophysiological_Session_Data_ID > {1}
+                                ORDER BY Psychophysiological_Session_Data_ID ASC",
+                        this.tableName, lastID);
+
+                    cmd = new OleDbCommand(commandStr, conn);
+                    reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        int currID = Int32.Parse(reader["Psychophysiological_Session_Data_ID"].ToString());
+
+                        if (lastID >= currID)
+                        {
+                            continue;
+                        }
+                        lastID = currID;
+
+                        var data = ParseReader(reader);
+                        NotifyObservers(data);
+                    }
+                    reader.Close();
+                    cmd.Dispose();
+                }
+            } catch (Exception e)
+            {
+                Console.Out.WriteLine(e);
             }
+        }
+
+        private Sub_Component_Protocol_Psychophysiological_Session_Data_TPS ParseReader(OleDbDataReader reader)
+        {
+            var data = new Sub_Component_Protocol_Psychophysiological_Session_Data_TPS();
+            data.psychophysiological_Session_Data_ID = Int32.Parse(reader["Psychophysiological_Session_Data_ID"].ToString());
+            data.time = DateTime.Parse(reader["Time"].ToString());
+            data.temperature = Double.Parse(reader["Temperature"].ToString());
+            data.hartRate = Double.Parse(reader["HartRate"].ToString());
+            data.skinConductance = Double.Parse(reader["SkinConductance"].ToString());
+            data.accX = Double.Parse(reader["AccX"].ToString());
+            data.accY = Double.Parse(reader["AccY"].ToString());
+            data.accZ = Double.Parse(reader["AccZ"].ToString());
+            data.session_Component_ID = Int32.Parse(reader["Session_Component_ID"].ToString());
+            data.sub_Component_ID = Int32.Parse(reader["Sub_Component_ID"].ToString());
+            data.sub_Component_Protocol_ID = Int32.Parse(reader["Sub_Component_Protocol_ID"].ToString());
+            data.sub_Protocol_ID = Int32.Parse(reader["Sub_Protocol_ID"].ToString());
+            data.participant_ID = Int32.Parse(reader["Participant_ID"].ToString());
+            data.data = reader["Data"].ToString();
+            return data;
         }
 
         public override void StopProcessing()
