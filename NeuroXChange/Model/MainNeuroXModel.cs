@@ -13,6 +13,8 @@ namespace NeuroXChange.Model
 {
     public class MainNeuroXModel : IBioDataObserver
     {
+        private string settingsFileName = "NeuroXChangeSettings.ini";
+
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public FixApiModel fixApiModel;
@@ -24,12 +26,14 @@ namespace NeuroXChange.Model
 
         public MainNeuroXModel()
         {
-            if (!File.Exists("NeuroConfig.ini"))
+            if (!File.Exists(settingsFileName))
             {
-                throw new Exception("No configuration file \"NeuroConfig.ini\" found!\nHint: place \"NeuroConfig.ini\" in the same folder as this exe file");
+                throw new Exception(
+                    string.Format("No configuration file \"{0}\" found!\nHint: place \"{0}\" in the same folder as this exe file", settingsFileName)
+                    );
             }
 
-            iniFileReader = new IniFileReader("NeuroConfig.ini");
+            iniFileReader = new IniFileReader(settingsFileName);
 
             bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
             //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
