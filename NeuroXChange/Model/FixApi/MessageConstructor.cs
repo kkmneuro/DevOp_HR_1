@@ -276,7 +276,6 @@ namespace NeuroXChange.Model.FixApi
             var trailer = ConstructTrailer(headerAndBody);
             var headerAndMessageAndTrailer = header + body + trailer;
             return headerAndMessageAndTrailer.Replace("|", "\u0001");
-            return headerAndMessageAndTrailer;
         }
 
         /// <summary>
@@ -702,31 +701,24 @@ namespace NeuroXChange.Model.FixApi
             {
                 case SessionMessageType.Heartbeat:
                     return "0";
-                    break;
 
                 case SessionMessageType.Logon:
                     return "A";
-                    break;
 
                 case SessionMessageType.Logout:
                     return "5";
-                    break;
 
                 case SessionMessageType.Reject:
                     return "3";
-                    break;
 
                 case SessionMessageType.Resend:
                     return "2";
-                    break;
 
                 case SessionMessageType.SequenceReset:
                     return "4";
-                    break;
 
                 case SessionMessageType.TestRequest:
                     return "1";
-                    break;
 
                 default:
                     return "0";
@@ -744,35 +736,27 @@ namespace NeuroXChange.Model.FixApi
             {
                 case ApplicationMessageType.MarketDataRequest:
                     return "V";
-                    break;
 
                 case ApplicationMessageType.MarketDataIncrementalRefresh:
                     return "X";
-                    break;
 
                 case ApplicationMessageType.NewOrderSingle:
                     return "D";
-                    break;
 
                 case ApplicationMessageType.OrderStatusRequest:
                     return "H";
-                    break;
 
                 case ApplicationMessageType.ExecutionReport:
                     return "8";
-                    break;
 
                 case ApplicationMessageType.BusinessMessageReject:
                     return "j";
-                    break;
 
                 case ApplicationMessageType.RequestForPosition:
                     return "AN";
-                    break;
 
                 case ApplicationMessageType.PositionReport:
                     return "AP";
-                    break;
 
                 default:
                     return "0";
