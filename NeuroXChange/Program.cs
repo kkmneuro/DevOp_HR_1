@@ -21,7 +21,7 @@ namespace NeuroXChange
                 new NeuroXApplication();
             }catch (Exception e)
             {
-                MessageBox.Show(e.Message, "My Application", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

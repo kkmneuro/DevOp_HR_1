@@ -20,9 +20,12 @@ namespace NeuroXChange.Model
         public FixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
 
-        // step conditions
-        int StepChangeStart = -60;
-        int StepChangeEnd = -20;
+        // step constants
+        int stepChangeStart = -60;
+        int stepChangeEnd = -20;
+
+        // Logic Query 1 (direction)
+        int logicQueryDirectionHeartRate = 60;
 
         public MainNeuroXModel()
         {
@@ -42,12 +45,14 @@ namespace NeuroXChange.Model
             bioDataProvider.RegisterObserver(this);
             Application.ApplicationExit += new EventHandler(this.StopProcessing);
 
-            // load step change conditions
-            StepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
-            StepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+            // load logic conditions constants
+            stepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
+            stepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+            logicQueryDirectionHeartRate = Int32.Parse(iniFileReader.Read("LogicQueryDirectionHeartRate", "LogicConditions"));
 
             fixApiModel = new FixApiModel(iniFileReader);
         }
+
 
         /// <summary>
         /// Stop any processing. Called before application closing
@@ -60,21 +65,28 @@ namespace NeuroXChange.Model
                 fixApiModel.StopProcessing();
         }
 
+
         // TEMP. TODO: update logic
+        // application steps main loop variables
         private MainNeuroXModelEvent lastEvent = MainNeuroXModelEvent.StepInitialState;
         private bool returnedBack = false;
+
+        // Logic query 1 (Direction) variables
+        private int logicQueryDirectionSubProtocolID = -1;
+        private bool logicQueryDirectionFired = false;
 
         // ---- IBioDataObserver implementation
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
         {
+            // ----- application steps main loop ------
+
             // check ready to trade condition
-            //if (data.temperature > 30 && data.hartRate > 120)
-            if (data.accY > StepChangeEnd)
+            if (data.accY > stepChangeEnd)
             {
                 returnedBack = true;
             }
 
-            if (data.accY < StepChangeStart && returnedBack)
+            if (data.accY < stepChangeStart && returnedBack)
             {
                 returnedBack = false;
                 switch (lastEvent) {
@@ -109,7 +121,18 @@ namespace NeuroXChange.Model
                             break;
                         }
                 }
+            }
 
+            // ----- LOGIC QUERY 1 (Direction) ------
+            if (data.sub_Protocol_ID != 74 && data.hartRate < logicQueryDirectionHeartRate)
+            {
+                logicQueryDirectionSubProtocolID = data.sub_Protocol_ID;
+            }
+
+            if (data.sub_Protocol_ID == 74 && !logicQueryDirectionFired && logicQueryDirectionSubProtocolID > -1)
+            {
+                logicQueryDirectionFired = true;
+                NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
             }
         }
 
