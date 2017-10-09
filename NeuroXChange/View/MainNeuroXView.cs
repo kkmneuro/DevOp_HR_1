@@ -116,61 +116,9 @@ namespace NeuroXChange.View
                             }
                         case MainNeuroXModelEvent.LogicQueryDirection:
                             {
-                                string message;
                                 int sub_Protocol_ID = (int)data;
-                                switch (sub_Protocol_ID)
-                                {
-                                    case 65:
-                                        {
-                                            message = "Direction";
-                                            break;
-                                        }
-                                    case 66:
-                                        {
-                                            message = "LONG";
-                                            break;
-                                        }
-                                    case 67:
-                                        {
-                                            message = "SHORT";
-                                            break;
-                                        }
-                                    case 68:
-                                        {
-                                            message = "M_L_S_1";
-                                            break;
-                                        }
-                                    case 69:
-                                        {
-                                            message = "M_L_S_2";
-                                            break;
-                                        }
-                                    case 70:
-                                        {
-                                            message = "M_S_L_1";
-                                            break;
-                                        }
-                                    case 71:
-                                        {
-                                            message = "M_S_L_2";
-                                            break;
-                                        }
-                                    case 72:
-                                        {
-                                            message = "Singular LONG";
-                                            break;
-                                        }
-                                    case 73:
-                                        {
-                                            message = "Singular SHORT";
-                                            break;
-                                        }
-                                    default:
-                                        {
-                                            message = "Empty message!";
-                                            break;
-                                        }
-                                }
+                                string[] messages = { "Direction", "LONG" , "SHORT" , "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2" , "Singular LONG" , "Singular SHORT" };
+                                string message = 65 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 65] : "Empty message!";
                                 MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 break;
                             }
