@@ -1,0 +1,26 @@
+
+
+TRIGGERING “BUY“ OR
+“SELL“ BUTTONS
+
+When Logic Query 1 (Direction) is completed and result
+displayed in unique popup window (the one you developed last night- v0.0.0.0.6)
+THEN
+
+IF condition is met in:
+Sub_protocol_ID                 66 activate “BUY” button
+
+                                67 activate “SELL” button
+
+                                68 activate “BUY” button
+
+                                69 activate “SELL” button”
+
+                                70 activate “SELL” button
+
+                                71 activate “BUY” button
+
+                                72 activate “BUY” button
+
+                                73 activate “SELL” button
+
