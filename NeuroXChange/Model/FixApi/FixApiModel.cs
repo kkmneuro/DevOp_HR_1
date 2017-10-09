@@ -110,7 +110,7 @@ namespace NeuroXChange.Model.FixApi
             }
             if (prices.Count == 2)
             {
-                NotifyObservers(FixApiModelEvent.PriceChanged, prices);
+                NotifyObservers(FixApiModelEvent.PriceChanged, new string[2] {prices[0], prices[1] });
             }
         }
 

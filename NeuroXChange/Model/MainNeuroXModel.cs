@@ -74,6 +74,7 @@ namespace NeuroXChange.Model
         // Logic query 1 (Direction) variables
         private int logicQueryDirectionSubProtocolID = -1;
         private bool logicQueryDirectionFired = false;
+        private int logicQueryDirection = 0;  // 0 - buy, 1 - sell
 
         // ---- IBioDataObserver implementation
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
@@ -102,17 +103,17 @@ namespace NeuroXChange.Model
                         }
                     case MainNeuroXModelEvent.StepPreactivation:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, null);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, logicQueryDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepDirectionConfirmed:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, null);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, logicQueryDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepExecuteOrder:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, null);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, logicQueryDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepConfirmationFilled:
@@ -132,6 +133,21 @@ namespace NeuroXChange.Model
             if (data.sub_Protocol_ID == 74 && !logicQueryDirectionFired && logicQueryDirectionSubProtocolID > -1)
             {
                 logicQueryDirectionFired = true;
+
+                // change application state
+                int[] buyIDs = { 66, 68, 71, 72 };
+                int[] sellIDs = { 67, 69, 70, 73 };
+                if (buyIDs.Contains(logicQueryDirectionSubProtocolID))
+                {
+                    logicQueryDirection = 0;
+                }
+                else if (sellIDs.Contains(logicQueryDirectionSubProtocolID))
+                {
+                    logicQueryDirection = 1;
+                }
+                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, logicQueryDirection);
+
+                // inform about logic query direction sub protocol ID
                 NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
             }
         }

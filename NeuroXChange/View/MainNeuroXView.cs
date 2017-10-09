@@ -19,7 +19,9 @@ namespace NeuroXChange.View
         private MainForm mainForm;
         private BuySellWindow buySellWindow;
         private CustomDialog customDialog;
-        private string lastPriceBuy;
+
+        private string[] lastPrice = { "0.0", "0.0" };     // array of 2 strings [buy price, sell price]
+        private string[] directionName = { "Buy", "Sell" };
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -80,24 +82,36 @@ namespace NeuroXChange.View
                             }
                         case MainNeuroXModelEvent.StepDirectionConfirmed:
                             {
+                                int direction = (int)data;
                                 buySellWindow.Show();
-                                buySellWindow.labStepName.Text = "Direction confirmed (buy)";
-                                buySellWindow.btnBuy.Enabled = true;
-                                buySellWindow.btnSell.Enabled = false;
-                                buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                buySellWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
+                                buySellWindow.btnBuy.Enabled = direction == 0;
+                                buySellWindow.btnSell.Enabled = direction == 1;
+                                if (direction == 0)
+                                {
+                                    buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                }
+                                else
+                                {
+                                    buySellWindow.btnBuy.BackColor = SystemColors.Control;
+                                }
                                 break;
                             }
                         case MainNeuroXModelEvent.StepExecuteOrder:
                             {
+                                int direction = (int)data;
                                 buySellWindow.Hide();
                                 customDialog.Show();
-                                customDialog.labInformation.Text = "Order Executed\r\nDirection: Buy\r\nContract size: 1\r\nPrice: " + lastPriceBuy;
+                                customDialog.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                                    directionName[direction], lastPrice[direction]);
                                 break;
                             }
                         case MainNeuroXModelEvent.StepConfirmationFilled:
                             {
+                                int direction = (int)data;
                                 customDialog.Show();
-                                customDialog.labInformation.Text = "Order filled\r\nDirection: Buy\r\nContract size: 1\r\nPrice: " + lastPriceBuy;
+                                customDialog.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                                    directionName[direction], lastPrice[direction]);
                                 break;
                             }
                         case MainNeuroXModelEvent.LogicQueryDirection:
@@ -199,10 +213,10 @@ namespace NeuroXChange.View
                                    //}
                                    if(modelEvent == FixApiModelEvent.PriceChanged)
                                    {
-                                       var prices = (List<string>)data;
+                                       var prices = (string[])data;
                                        buySellWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
                                        buySellWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
-                                       lastPriceBuy = prices[0];
+                                       lastPrice = prices;
                                    }
                                }));
         }
