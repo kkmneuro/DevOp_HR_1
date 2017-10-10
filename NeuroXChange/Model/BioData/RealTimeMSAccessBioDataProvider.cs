@@ -12,6 +12,7 @@ namespace NeuroXChange.Model.BioData
 {
     public class RealTimeMSAccessBioDataProvider : AbstractBioDataProvider
     {
+        private volatile bool NeedStop = false;
         private OleDbConnection conn;
         private Thread thread;
         private string databaseLocation;
@@ -28,8 +29,6 @@ namespace NeuroXChange.Model.BioData
             }
 
             thread = new Thread(new ThreadStart(GenerateNewData));
-            conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
-            conn.Open();
             thread.Start();
         }
 
@@ -37,6 +36,9 @@ namespace NeuroXChange.Model.BioData
         {
             try
             {
+                conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
+                conn.Open();
+
                 int lastID = -1;
 
                 // calculate lastInd from existing top row
@@ -57,9 +59,13 @@ namespace NeuroXChange.Model.BioData
                 cmd.Dispose();
 
                 // main loop
-                while (true)
+                while (!NeedStop)
                 {
                     Thread.Sleep(200);
+                    if (NeedStop)
+                    {
+                        break;
+                    }
 
                     commandStr =
                         string.Format(@"SELECT TOP 20 * 
@@ -87,6 +93,9 @@ namespace NeuroXChange.Model.BioData
                     reader.Close();
                     cmd.Dispose();
                 }
+
+                conn.Close();
+
             } catch (Exception e)
             {
                 Console.Out.WriteLine(e);
@@ -115,8 +124,7 @@ namespace NeuroXChange.Model.BioData
 
         public override void StopProcessing()
         {
-            thread.Abort();
-            conn.Close();
+            NeedStop = true;
         }
     }
 }

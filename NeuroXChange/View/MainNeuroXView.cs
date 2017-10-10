@@ -144,29 +144,21 @@ namespace NeuroXChange.View
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
             builder.Append("Data: " + data.data + "\r\n");
             mainForm.BeginInvoke((Action)(() => mainForm.bioDataRTB.Text = builder.ToString()));
-            //mainForm.bioDataRTB.Text = builder.ToString();
         }
 
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {
-            mainForm.BeginInvoke(
+            if (modelEvent == FixApiModelEvent.PriceChanged)
+            {
+                mainForm.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   //if (modelEvent == FixApiModelEvent.RawMessageReceived)
-                                   //{
-                                   //    if (mainForm.listBoxRawData.Items.Count > 0)
-                                   //        mainForm.listBoxRawData.Items.Insert(0, data);
-                                   //    else
-                                   //        mainForm.listBoxRawData.Items.Add(data);
-                                   //}
-                                   if(modelEvent == FixApiModelEvent.PriceChanged)
-                                   {
-                                       var prices = (string[])data;
-                                       buySellWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
-                                       buySellWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
-                                       lastPrice = prices;
-                                   }
+                                   var prices = (string[])data;
+                                   buySellWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
+                                   buySellWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
+                                   lastPrice = prices;
                                }));
+            }
         }
     }
 }

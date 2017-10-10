@@ -73,7 +73,6 @@ namespace NeuroXChange.Model.FixApi
             priceStreamSSL.ReadTimeout = 1000;
             while (!NeedStop)
             {
-                //var res = priceStreamSSL.Read(buffer, 0, 2048);
                 if (priceStreamSSL.CanRead)
                 {
                     try
@@ -121,7 +120,6 @@ namespace NeuroXChange.Model.FixApi
             SendMessage(message);
 
             Thread.Sleep(200);
-            //message = messageConstructor.MarketDataRequestMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, "EURUSD:WDqsoT", 1, 0, 0, 1, 1);
             message = messageConstructor.MarketDataRequestMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, "EURUSD:WDqsoT", 1, 1, 0, 1, 1);
             SendMessage(message);
 
