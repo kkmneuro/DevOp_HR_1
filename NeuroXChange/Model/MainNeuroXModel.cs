@@ -20,6 +20,9 @@ namespace NeuroXChange.Model
         public FixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
 
+        // are we buying or selling
+        private int orderDirection = 0;  // 0 - buy, 1 - sell
+
         // step constants
         int stepChangeStart = -60;
         int stepChangeEnd = -20;
@@ -74,19 +77,21 @@ namespace NeuroXChange.Model
         // Logic query 1 (Direction) variables
         private int logicQueryDirectionSubProtocolID = -1;
         private bool logicQueryDirectionFired = false;
-        private int logicQueryDirection = 0;  // 0 - buy, 1 - sell
+
+        // Logic query 2 (Entry trigger) variables
+        private Queue<Sub_Component_Protocol_Psychophysiological_Session_Data_TPS> last60secData = 
+            new Queue<Sub_Component_Protocol_Psychophysiological_Session_Data_TPS>();
 
         // ---- IBioDataObserver implementation
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
         {
             // ----- application steps main loop ------
 
-            // check ready to trade condition
+            // ----- AccY event ------
             if (data.accY > stepChangeEnd)
             {
                 returnedBack = true;
             }
-
             if (data.accY < stepChangeStart && returnedBack)
             {
                 returnedBack = false;
@@ -103,17 +108,17 @@ namespace NeuroXChange.Model
                         }
                     case MainNeuroXModelEvent.StepPreactivation:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, logicQueryDirection);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepDirectionConfirmed:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, logicQueryDirection);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepExecuteOrder:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, logicQueryDirection);
+                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, orderDirection);
                             break;
                         }
                     case MainNeuroXModelEvent.StepConfirmationFilled:
@@ -124,7 +129,8 @@ namespace NeuroXChange.Model
                 }
             }
 
-            // ----- LOGIC QUERY 1 (Direction) ------
+
+            // ----- LOGIC QUERY 1 (Direction) event ------
             if (data.sub_Protocol_ID != 74 && data.hartRate < logicQueryDirectionHeartRate)
             {
                 logicQueryDirectionSubProtocolID = data.sub_Protocol_ID;
@@ -139,16 +145,53 @@ namespace NeuroXChange.Model
                 int[] sellIDs = { 67, 69, 70, 73 };
                 if (buyIDs.Contains(logicQueryDirectionSubProtocolID))
                 {
-                    logicQueryDirection = 0;
+                    orderDirection = 0;
                 }
                 else if (sellIDs.Contains(logicQueryDirectionSubProtocolID))
                 {
-                    logicQueryDirection = 1;
+                    orderDirection = 1;
                 }
-                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, logicQueryDirection);
+                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
 
                 // inform about logic query direction sub protocol ID
                 NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
+            }
+
+
+            // ----- LOGIC QUERY 2 (Entry trigger) event ------
+            last60secData.Enqueue(data);
+            Sub_Component_Protocol_Psychophysiological_Session_Data_TPS? prev60secData = null;
+            while (last60secData.Count > 0)
+            {
+                var peekData = last60secData.Peek();
+                System.TimeSpan span = data.time - peekData.time;
+                if (span > TimeSpan.FromMinutes(1))
+                {
+                    prev60secData = peekData;
+                    last60secData.Dequeue();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (prev60secData.HasValue && (data.time - prev60secData.Value.time < TimeSpan.FromSeconds(100)))
+            {
+                bool conditionsMet = false;
+                if (data.hartRate > 100 && prev60secData.Value.hartRate < 60)
+                {
+                    conditionsMet = true;
+                    orderDirection = 0;
+                }
+                if (data.hartRate < 60 && prev60secData.Value.hartRate > 100)
+                {
+                    conditionsMet = true;
+                    orderDirection = 1;
+                }
+                if (conditionsMet)
+                {
+                    NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
+                }
             }
         }
 
