@@ -1,6 +1,8 @@
 ﻿using NeuroXChange.Common;
 using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -34,6 +36,13 @@ namespace NeuroXChange.Model.FixApi
         private Thread threadReader;
         private Thread threadWriter;
 
+        // database
+        private bool savePriceStream = false;
+        private string databaseLocation;
+        private string tickPriceTableName;
+        private string instrumentTableName;
+        private OleDbConnection conn = null;
+
         public FixApiModel(IniFileReader iniFileReader)
         {
             pricePort = Int32.Parse(iniFileReader.Read("pricePort", "FixApi"));
@@ -52,6 +61,50 @@ namespace NeuroXChange.Model.FixApi
             priceStreamSSL = new SslStream(priceClient.GetStream(), false,
                         new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
             priceStreamSSL.AuthenticateAsClient(host);
+
+            savePriceStream = Boolean.Parse(iniFileReader.Read("SaveTickPrice", "Database"));
+            if (savePriceStream)
+            {
+                databaseLocation = iniFileReader.Read("Location", "Database");
+                tickPriceTableName = iniFileReader.Read("TickPriceTable", "Database");
+                instrumentTableName = iniFileReader.Read("InstrumentTable", "Database");
+
+                if (File.Exists(databaseLocation))
+                {
+                    // try to create tables, skip if tables exists
+                    conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
+                    conn.Open();
+                    try
+                    {
+                        var commandStr = string.Format(
+                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Title] VARCHAR(40) NOT NULL);",
+                        instrumentTableName);
+                        var cmd = new OleDbCommand(commandStr, conn);
+                        cmd.ExecuteNonQuery();
+
+                        commandStr = string.Format(
+                            "INSERT INTO {0} ([ID], [Title]) values(1, 'EURUSD');",
+                            instrumentTableName);
+                        cmd = new OleDbCommand(commandStr, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch { }
+                    try
+                    {
+                        var commandStr = string.Format(
+                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Instrument_ID] NUMBER NOT NULL, [Time] DATETIME NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
+                        tickPriceTableName);
+                        var cmd = new OleDbCommand(commandStr, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch { }
+                }
+                else
+                {
+                    savePriceStream = false;
+                }
+            }
+
 
             threadReader = new Thread(GenerateNewData);
             threadReader.Start();
@@ -110,6 +163,14 @@ namespace NeuroXChange.Model.FixApi
             if (prices.Count == 2)
             {
                 NotifyObservers(FixApiModelEvent.PriceChanged, new string[2] {prices[0], prices[1] });
+                if (savePriceStream)
+                {
+                    var commandStr = string.Format(
+"INSERT INTO {0} ([Instrument_ID], [Time], [SellPrice], [BuyPrice]) values({1}, '{2}', {3}, {4});",
+tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
+                    var cmd = new OleDbCommand(commandStr, conn);
+                    cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -142,6 +203,10 @@ namespace NeuroXChange.Model.FixApi
         public void StopProcessing()
         {
             NeedStop = true;
+            if (conn != null)
+            {
+                conn.Close();
+            }
         }
 
         // ---- Observable pattern implementation
