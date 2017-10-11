@@ -79,8 +79,8 @@ namespace NeuroXChange.Model
         private bool logicQueryDirectionFired = false;
 
         // Logic query 2 (Entry trigger) variables
-        private Queue<Sub_Component_Protocol_Psychophysiological_Session_Data_TPS> last60secData = 
-            new Queue<Sub_Component_Protocol_Psychophysiological_Session_Data_TPS>();
+        DateTime? lq2LastHartRateBigger100 = null;
+        DateTime? lq2LastHartRateSmaller60 = null;
 
         // ---- IBioDataObserver implementation
         public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
@@ -159,39 +159,39 @@ namespace NeuroXChange.Model
 
 
             // ----- LOGIC QUERY 2 (Entry trigger) event ------
-            last60secData.Enqueue(data);
-            Sub_Component_Protocol_Psychophysiological_Session_Data_TPS? prev60secData = null;
-            while (last60secData.Count > 0)
+            if (lq2LastHartRateBigger100.HasValue && (data.time - lq2LastHartRateBigger100.Value) > TimeSpan.FromMinutes(1))
             {
-                var peekData = last60secData.Peek();
-                System.TimeSpan span = data.time - peekData.time;
-                if (span > TimeSpan.FromMinutes(1))
-                {
-                    prev60secData = peekData;
-                    last60secData.Dequeue();
-                }
-                else
-                {
-                    break;
-                }
+                lq2LastHartRateBigger100 = null;
             }
-            if (prev60secData.HasValue && (data.time - prev60secData.Value.time < TimeSpan.FromSeconds(100)))
+            if (lq2LastHartRateSmaller60.HasValue && (data.time - lq2LastHartRateSmaller60.Value) > TimeSpan.FromMinutes(1))
             {
-                bool conditionsMet = false;
-                if (data.hartRate > 100 && prev60secData.Value.hartRate < 60)
-                {
-                    conditionsMet = true;
-                    orderDirection = 0;
-                }
-                if (data.hartRate < 60 && prev60secData.Value.hartRate > 100)
-                {
-                    conditionsMet = true;
-                    orderDirection = 1;
-                }
-                if (conditionsMet)
-                {
-                    NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
-                }
+                lq2LastHartRateSmaller60 = null;
+            }
+
+            bool lq2ConditionsMet = false;
+            if (lq2LastHartRateBigger100.HasValue && data.hartRate < 60)
+            {
+                lq2LastHartRateBigger100 = null;
+                lq2ConditionsMet = true;
+                orderDirection = 0;
+            }
+            if (lq2LastHartRateSmaller60.HasValue && data.hartRate > 100)
+            {
+                lq2LastHartRateSmaller60 = null;
+                lq2ConditionsMet = true;
+                orderDirection = 1;
+            }
+            if (lq2ConditionsMet)
+            {
+                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
+            }
+            if (data.hartRate < 60)
+            {
+                lq2LastHartRateSmaller60 = data.time;
+            }
+            if (data.hartRate > 100)
+            {
+                lq2LastHartRateBigger100 = data.time;
             }
         }
 
