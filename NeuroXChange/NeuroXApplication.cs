@@ -18,11 +18,28 @@ namespace NeuroXChange
 
         public NeuroXApplication()
         {
-            model = new MainNeuroXModel();
-            controller = new MainNeuroXController(model);
-            view = new MainNeuroXView(model, controller);
+            try
+            {
+                model = new MainNeuroXModel();
+                if (!model.isStateGood)
+                {
+                    return;
+                }
 
-            view.RunApplication();
+                controller = new MainNeuroXController(model);
+                view = new MainNeuroXView(model, controller);
+
+                view.RunApplication();
+            } catch (Exception e)
+            {
+                StopProcessing();
+                MessageBox.Show(e.Message, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void StopProcessing()
+        {
+            model.StopProcessing(null, null);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace NeuroXChange.Model
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
+        public bool isStateGood { get; private set; }
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public FixApiModel fixApiModel;
@@ -32,28 +33,40 @@ namespace NeuroXChange.Model
 
         public MainNeuroXModel()
         {
-            if (!File.Exists(settingsFileName))
+            try
             {
-                throw new Exception(
-                    string.Format("No configuration file \"{0}\" found!\nHint: place \"{0}\" in the same folder as this exe file", settingsFileName)
-                    );
+                isStateGood = true;
+
+                if (!File.Exists(settingsFileName))
+                {
+                    throw new Exception(
+                        string.Format("No configuration file \"{0}\" found!\nHint: place \"{0}\" in the same folder as this exe file", settingsFileName)
+                        );
+                }
+
+                iniFileReader = new IniFileReader(settingsFileName);
+
+                bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
+                //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
+                //bioDataProvider = new RandomBioDataProvider();
+                //bioDataProvider = new UdpBioDataProvider(14321);
+                bioDataProvider.RegisterObserver(this);
+                Application.ApplicationExit += new EventHandler(this.StopProcessing);
+
+                // load logic conditions constants
+                stepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
+                stepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+                logicQueryDirectionHeartRate = Int32.Parse(iniFileReader.Read("LogicQueryDirectionHeartRate", "LogicConditions"));
+
+                fixApiModel = new FixApiModel(iniFileReader);
+                bioDataProvider.RegisterObserver(fixApiModel);
             }
-
-            iniFileReader = new IniFileReader(settingsFileName);
-
-            bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
-            //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
-            //bioDataProvider = new RandomBioDataProvider();
-            //bioDataProvider = new UdpBioDataProvider(14321);
-            bioDataProvider.RegisterObserver(this);
-            Application.ApplicationExit += new EventHandler(this.StopProcessing);
-
-            // load logic conditions constants
-            stepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
-            stepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
-            logicQueryDirectionHeartRate = Int32.Parse(iniFileReader.Read("LogicQueryDirectionHeartRate", "LogicConditions"));
-
-            fixApiModel = new FixApiModel(iniFileReader);
+            catch (Exception e)
+            {
+                isStateGood = false;
+                StopProcessing(null, null);
+                MessageBox.Show(e.Message, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
