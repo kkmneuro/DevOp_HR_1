@@ -18,7 +18,7 @@ namespace AddToDatabase
             conn.Open();
             Thread.Sleep(3000);
 
-            int testCase = 2;
+            int testCase = 3;
 
             // emulate program stage change
             if (testCase == 0)
@@ -74,6 +74,22 @@ ind, dtStr, heartRate);
                 }
             }
 
+            if (testCase == 3)
+            {
+                for (int ind = 0; ind < 100; ind++)
+                {
+                    Thread.Sleep(150);
+                    var dt = DateTime.Now;
+                    var dtStr = dt.ToString("dd/MM/yyyy HH:mm:ss");
+                    Console.WriteLine("Send data, inner counter " + ind.ToString());
+                    var commandStr = string.Format(@"
+INSERT INTO Sub_Component_Protocol_Psychophysiological_Session_Data_TPS_1(
+[Time], Temperature, HartRate, AccY, Session_Component_ID, Sub_Component_ID, Sub_Component_Protocol_ID, Participant_ID, [Data])
+ VALUES('{0}', 33.6967766284943, 120.805366516113, -75, 2, 4, 71, 58, 'aaa')", dtStr);
+                    OleDbCommand cmd = new OleDbCommand(commandStr, conn);
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
             conn.Close();
         }
