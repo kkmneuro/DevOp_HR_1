@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NeuroXChange.Model.BioData;
 using System.Windows.Forms;
 using NeuroXChange.Common;
 using System.IO;
 using NeuroXChange.Model.FixApi;
+using NeuroXChange.Model.BioDataProcessors;
 
 namespace NeuroXChange.Model
 {
@@ -20,6 +19,9 @@ namespace NeuroXChange.Model
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public FixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
+
+        // bio data processors
+        private HartRateProcessor hartRateProcessor = null;
 
         // are we buying or selling
         private int orderDirection = 0;  // 0 - buy, 1 - sell
@@ -60,6 +62,10 @@ namespace NeuroXChange.Model
 
                 fixApiModel = new FixApiModel(iniFileReader);
                 bioDataProvider.RegisterObserver(fixApiModel);
+
+                // bio data processors
+                hartRateProcessor = new HartRateProcessor(this);
+                bioDataProvider.RegisterObserver(hartRateProcessor);
             }
             catch (Exception e)
             {
@@ -206,6 +212,11 @@ namespace NeuroXChange.Model
             {
                 lq2LastHartRateBigger100 = data.time;
             }
+        }
+
+        public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
+        {
+
         }
 
         // ---- Observable pattern implementation
