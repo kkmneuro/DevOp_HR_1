@@ -14,10 +14,8 @@ using System.Threading.Tasks;
 
 namespace NeuroXChange.Model.FixApi
 {
-    public class FixApiModel: IBioDataObserver
+    public class FixApiModel: AbstractFixApiModel
     {
-        private List<IFixApiObserver> observers = new List<IFixApiObserver>();
-
         private int pricePort;
         private int tradePort;
         private string host;
@@ -238,7 +236,7 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
             return "";
         }
 
-        public void StopProcessing()
+        public override void StopProcessing()
         {
             NeedStop = true;
             if (conn != null)
@@ -247,26 +245,7 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
             }
         }
 
-        // ---- Observable pattern implementation
-        public void RegisterObserver(IFixApiObserver observer)
-        {
-            if (!observers.Contains(observer))
-                observers.Add(observer);
-        }
-
-        public void RemoveObserver(IFixApiObserver observer)
-        {
-            if (observers.Contains(observer))
-                observers.Remove(observer);
-        }
-
-        private void NotifyObservers(FixApiModelEvent modelEvent, object data)
-        {
-            foreach (var observer in observers)
-                observer.OnNext(modelEvent, data);
-        }
-
-        public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
+        public override void OnNext(BioData.BioData data)
         {
             if (!savePriceAtBioDataTick)
             {
