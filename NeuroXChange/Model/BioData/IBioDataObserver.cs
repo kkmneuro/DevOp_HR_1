@@ -8,6 +8,6 @@ namespace NeuroXChange.Model.BioData
 {
     public interface IBioDataObserver
     {
-        void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data);
+        void OnNext(BioData data);
     }
 }

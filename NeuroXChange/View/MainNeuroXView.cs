@@ -126,7 +126,7 @@ namespace NeuroXChange.View
                 } ));
         }
 
-        public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
+        public void OnNext(BioData data)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");

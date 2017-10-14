@@ -41,7 +41,7 @@ namespace NeuroXChange.Model.BioData
                 {
                     recv = winSocket.ReceiveFrom(data, data.Length, SocketFlags.None, ref Remote);
                     string message = Encoding.ASCII.GetString(data, 0, recv);
-                    var data_tps = new Sub_Component_Protocol_Psychophysiological_Session_Data_TPS();
+                    var data_tps = new BioData();
                     var args = message.Split(sepChar);
                     if (args.Length > 0)
                         data_tps.psychophysiological_Session_Data_ID = Int32.Parse(args[0]);

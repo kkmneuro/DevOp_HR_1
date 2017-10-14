@@ -23,7 +23,7 @@ namespace NeuroXChange.Model.BioData
                 observers.Remove(observer);
         }
 
-        protected void NotifyObservers(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
+        protected void NotifyObservers(BioData data)
         {
             foreach (var observer in observers)
                 observer.OnNext(data);

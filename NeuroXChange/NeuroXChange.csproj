@@ -91,12 +91,13 @@
   <ItemGroup>
     <Compile Include="Common\IniFileReader.cs" />
     <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
-    <Compile Include="Model\BioData\MSAccessBioDataProvider.cs" />
+    <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
     <Compile Include="Model\BioData\UdpBioDataProvider.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
+    <Compile Include="Model\FixApi\AbstractFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
     <Compile Include="Model\FixApi\IFixApiObserver.cs" />
     <Compile Include="Model\FixApi\MessageConstructor.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="NeuroXApplication.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\BioData\Sub_Component_Protocol_Psychophysiological_Session_Data_TPS.cs" />
+    <Compile Include="Model\BioData\BioData.cs" />
     <Compile Include="_Neuro_Xchange_Psychophysiology1DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

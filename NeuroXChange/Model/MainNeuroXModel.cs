@@ -15,10 +15,12 @@ namespace NeuroXChange.Model
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
+        public bool emulationOnHistory { get; private set; }
         public bool isStateGood { get; private set; }
+
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
         public AbstractBioDataProvider bioDataProvider { get; private set; }
-        public FixApiModel fixApiModel;
+        public AbstractFixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
 
         // are we buying or selling
@@ -46,11 +48,20 @@ namespace NeuroXChange.Model
 
                 iniFileReader = new IniFileReader(settingsFileName);
 
-                bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
-                //bioDataProvider = new MSAccessBioDataProvider(databaseLocation);
-                //bioDataProvider = new RandomBioDataProvider();
-                //bioDataProvider = new UdpBioDataProvider(14321);
+                emulationOnHistory = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory"));
+
+                if (!emulationOnHistory)
+                {
+                    bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
+                    //bioDataProvider = new RandomBioDataProvider();
+                    //bioDataProvider = new UdpBioDataProvider(14321);
+                }
+                else
+                {
+                    bioDataProvider = new EmulationOnHistoryBioDataProvider(iniFileReader);
+                }
                 bioDataProvider.RegisterObserver(this);
+
                 Application.ApplicationExit += new EventHandler(this.StopProcessing);
 
                 // load logic conditions constants
@@ -96,7 +107,7 @@ namespace NeuroXChange.Model
         DateTime? lq2LastHartRateSmaller60 = null;
 
         // ---- IBioDataObserver implementation
-        public void OnNext(Sub_Component_Protocol_Psychophysiological_Session_Data_TPS data)
+        public void OnNext(BioData.BioData data)
         {
             // ----- application steps main loop ------
 

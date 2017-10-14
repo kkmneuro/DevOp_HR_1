@@ -24,7 +24,7 @@ namespace NeuroXChange.Model.BioData
             while (true)
             {
                 Thread.Sleep(250);
-                var data = new Sub_Component_Protocol_Psychophysiological_Session_Data_TPS();
+                var data = new BioData();
                 data.psychophysiological_Session_Data_ID = random.Next();
                 data.time = DateTime.Now;
                 data.temperature = 20 + random.NextDouble() * 20;
