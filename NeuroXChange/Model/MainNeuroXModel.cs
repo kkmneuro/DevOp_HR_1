@@ -10,7 +10,7 @@ using NeuroXChange.Model.BioDataProcessors;
 
 namespace NeuroXChange.Model
 {
-    public class MainNeuroXModel : IBioDataObserver
+    public class MainNeuroXModel : IBioDataObserver, IBioDataProcessorEventObserver
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
@@ -23,7 +23,7 @@ namespace NeuroXChange.Model
         public IniFileReader iniFileReader { get; private set; }
 
         // bio data processors
-        private HartRateProcessor hartRateProcessor = null;
+        public HeartRateProcessor heartRateProcessor = null;
 
         // are we buying or selling
         private int orderDirection = 0;  // 0 - buy, 1 - sell
@@ -75,8 +75,9 @@ namespace NeuroXChange.Model
                 bioDataProvider.RegisterObserver(fixApiModel);
 
                 // bio data processors
-                hartRateProcessor = new HartRateProcessor(this);
-                bioDataProvider.RegisterObserver(hartRateProcessor);
+                heartRateProcessor = new HeartRateProcessor();
+                bioDataProvider.RegisterObserver(heartRateProcessor);
+                heartRateProcessor.RegisterObserver(this);
             }
             catch (Exception e)
             {
@@ -225,9 +226,9 @@ namespace NeuroXChange.Model
             }
         }
 
+        // IBioDataProcessorEventObserver implementation
         public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
         {
-
         }
 
         // ---- Observable pattern implementation

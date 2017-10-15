@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using NeuroXChange.Controller;
 using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
-using NeuroXChange.Controller;
-using System.Drawing;
+using NeuroXChange.Model.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
 
 namespace NeuroXChange.View
 {
-    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver
+    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver, IBioDataProcessorEventObserver
     {
         private MainNeuroXModel model;
         private MainNeuroXController controller;
@@ -40,6 +38,7 @@ namespace NeuroXChange.View
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
+            model.heartRateProcessor.RegisterObserver(this);
         }
 
         public void RunApplication()
@@ -142,7 +141,7 @@ namespace NeuroXChange.View
             builder.Append("Sub_Component_Protocol_ID: " + data.sub_Component_Protocol_ID + "\r\n");
             builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
-            builder.Append("Data: " + data.data + "\r\n");
+            builder.Append("Data: " + data.data);
             mainForm.BeginInvoke((Action)(() => mainForm.bioDataRTB.Text = builder.ToString()));
         }
 
@@ -159,6 +158,28 @@ namespace NeuroXChange.View
                                    lastPrice = prices;
                                }));
             }
+        }
+
+        public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
+        {
+            mainForm.BeginInvoke(
+                            (Action)(() =>
+                            {
+                                HeartRateInfo hrInfo = (HeartRateInfo)data;
+                                switch (bioDataProcessorEvent)
+                                {
+                                    case BioDataProcessorEvent.HeartRateRawStatistics:
+                                        {
+                                            StringBuilder builder = new StringBuilder();
+                                            builder.Append(string.Format("Heart rate 2 min average: {0:0.##}\r\n", hrInfo.heartRate2minAverage));
+                                            builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
+                                            builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
+                                            builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
+                                            mainForm.heartRateRTB.Text = builder.ToString();
+                                            break;
+                                        }
+                                }
+                            }));
         }
     }
 }

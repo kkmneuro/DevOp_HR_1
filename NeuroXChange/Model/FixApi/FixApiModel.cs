@@ -133,7 +133,6 @@ namespace NeuroXChange.Model.FixApi
                 priceData = new Queue<PriceEntry>();
             }
 
-
             threadReader = new Thread(GenerateNewData);
             threadReader.Start();
 
