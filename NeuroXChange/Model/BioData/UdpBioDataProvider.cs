@@ -11,9 +11,10 @@ namespace NeuroXChange.Model.BioData
 {
     public class UdpBioDataProvider : AbstractBioDataProvider
     {
+        private volatile bool NeedStop = false;
         private int port;
         private Socket winSocket;
-        Thread thread;
+        private Thread thread;
 
         public UdpBioDataProvider(int port)
         {
@@ -23,7 +24,6 @@ namespace NeuroXChange.Model.BioData
             winSocket.Bind(serverEndPoint);
 
             thread = new Thread(new ThreadStart(GenerateNewData));
-            thread.Start();
         }
 
         private void GenerateNewData()
@@ -34,7 +34,7 @@ namespace NeuroXChange.Model.BioData
             winSocket.ReceiveTimeout = 1000;
             char[] sepChar = {'|'};
 
-            while (true)
+            while (!NeedStop)
             {
                 int recv = 0;
                 try
@@ -78,10 +78,15 @@ namespace NeuroXChange.Model.BioData
             }
         }
 
+        public override void StartProcessing()
+        {
+            thread.Start();
+        }
+
         public override void StopProcessing()
         {
             winSocket.Shutdown(SocketShutdown.Both);
-            thread.Abort();
+            NeedStop = true;
         }
     }
 }

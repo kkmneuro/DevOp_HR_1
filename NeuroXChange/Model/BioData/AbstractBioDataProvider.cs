@@ -30,6 +30,7 @@ namespace NeuroXChange.Model.BioData
         }
 
         // ---- other methods that need to be implemented
+        abstract public void StartProcessing();
         abstract public void StopProcessing();
     }
 }

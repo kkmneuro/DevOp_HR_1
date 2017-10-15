@@ -37,7 +37,6 @@ namespace NeuroXChange.Model.BioData
             }
 
             thread = new Thread(new ThreadStart(GenerateNewData));
-            thread.Start();
         }
 
         private void GenerateNewData()
@@ -70,6 +69,11 @@ namespace NeuroXChange.Model.BioData
             {
                 Console.Out.WriteLine(e);
             }
+        }
+
+        public override void StartProcessing()
+        {
+            thread.Start();
         }
 
         public override void StopProcessing()

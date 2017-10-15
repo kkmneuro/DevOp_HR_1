@@ -29,6 +29,8 @@ namespace NeuroXChange
                 controller = new MainNeuroXController(model);
                 view = new MainNeuroXView(model, controller);
 
+                model.StartProcessing();
+
                 view.RunApplication();
             } catch (Exception e)
             {

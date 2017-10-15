@@ -87,6 +87,11 @@ namespace NeuroXChange.Model
             }
         }
 
+        public void StartProcessing()
+        {
+            bioDataProvider.StartProcessing();
+            fixApiModel.StartProcessing();
+        }
 
         /// <summary>
         /// Stop any processing. Called before application closing

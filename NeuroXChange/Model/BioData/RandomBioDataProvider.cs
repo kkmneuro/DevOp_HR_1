@@ -9,19 +9,19 @@ namespace NeuroXChange.Model.BioData
 {
     public class RandomBioDataProvider : AbstractBioDataProvider
     {
-        Thread thread;
-        Random random;
+        private volatile bool NeedStop = false;
+        private Thread thread;
+        private Random random;
 
         public RandomBioDataProvider()
         {
             thread = new Thread(new ThreadStart(GenerateNewData));
             random = new Random();
-            thread.Start();
         }
 
         private void GenerateNewData()
         {
-            while (true)
+            while (!NeedStop)
             {
                 Thread.Sleep(250);
                 var data = new BioData();
@@ -42,9 +42,14 @@ namespace NeuroXChange.Model.BioData
             }
         }
 
+        public override void StartProcessing()
+        {
+            thread.Start();
+        }
+
         public override void StopProcessing()
         {
-            thread.Abort();
+            NeedStop = true;
         }
     }
 }

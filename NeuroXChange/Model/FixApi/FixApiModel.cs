@@ -134,10 +134,7 @@ namespace NeuroXChange.Model.FixApi
             }
 
             threadReader = new Thread(GenerateNewData);
-            threadReader.Start();
-
             threadWriter = new Thread(SendRequests);
-            threadWriter.Start();
         }
 
         private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -233,6 +230,12 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
             priceStreamSSL.Write(byteArray, 0, byteArray.Length);
             messageSequenceNumber++;
             return "";
+        }
+
+        public override void StartProcessing()
+        {
+            threadReader.Start();
+            threadWriter.Start();
         }
 
         public override void StopProcessing()

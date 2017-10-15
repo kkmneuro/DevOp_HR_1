@@ -9,6 +9,7 @@ namespace NeuroXChange.Model.FixApi
 
         public abstract void OnNext(BioData.BioData data);
 
+        public abstract void StartProcessing();
         public abstract void StopProcessing();
 
         // ---- Observable pattern implementation
