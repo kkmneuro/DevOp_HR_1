@@ -128,6 +128,7 @@ namespace NeuroXChange.Model.BioDataProcessors
             lastHRState = newHRState;
 
             // send HeartRateRawStatistics event
+            heartRateInfo.time = data.time;
             heartRateInfo.heartRate2minAverage = HRAverage;
             heartRateInfo.heartRateInnerState = lastHRState.ToString();
             NotifyObservers(BioDataProcessorEvent.HeartRateRawStatistics, heartRateInfo);

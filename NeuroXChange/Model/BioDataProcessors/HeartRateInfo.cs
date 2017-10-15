@@ -8,6 +8,7 @@ namespace NeuroXChange.Model.BioDataProcessors
 {
     public struct HeartRateInfo
     {
+        public DateTime time;
         public double heartRate2minAverage;
         public string heartRateInnerState;
         public double oscillations3minAverage;

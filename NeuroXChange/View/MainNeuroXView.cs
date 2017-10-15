@@ -142,7 +142,24 @@ namespace NeuroXChange.View
             builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
             builder.Append("Data: " + data.data);
-            mainForm.BeginInvoke((Action)(() => mainForm.bioDataRTB.Text = builder.ToString()));
+            mainForm.BeginInvoke(
+                (Action)(() =>
+                {
+                    mainForm.bioDataRTB.Text = builder.ToString();
+                    mainForm.heartRateChart.Series.SuspendUpdates();
+                    var temperaturePoints = mainForm.heartRateChart.Series["Temperature"].Points;
+                    var hrPoints = mainForm.heartRateChart.Series["Heart Rate"].Points;
+                    temperaturePoints.AddXY(data.time, data.temperature);
+                    hrPoints.AddXY(data.time, data.hartRate);
+                    if (hrPoints.Count > 3000)
+                    {
+                        temperaturePoints.RemoveAt(0);
+                        hrPoints.RemoveAt(0);
+                        mainForm.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                        mainForm.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                    }
+                    mainForm.heartRateChart.Series.ResumeUpdates();
+                }));
         }
 
         public void OnNext(FixApiModelEvent modelEvent, object data)
@@ -176,6 +193,20 @@ namespace NeuroXChange.View
                                             builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
                                             builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
                                             mainForm.heartRateRTB.Text = builder.ToString();
+
+                                            if (hrInfo.heartRate2minAverage > 0)
+                                            {
+                                                mainForm.heartRateChart.Series.SuspendUpdates();
+                                                var hrPoints = mainForm.heartRateChart.Series["AVG Heart Rate"].Points;
+                                                hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
+                                                if (hrPoints.Count > 3000)
+                                                {
+                                                    hrPoints.RemoveAt(0);
+                                                    mainForm.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                                                }
+                                                mainForm.heartRateChart.Series.ResumeUpdates();
+                                            }
+
                                             break;
                                         }
                                 }
