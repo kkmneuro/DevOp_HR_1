@@ -116,11 +116,23 @@
     <Compile Include="View\BuySellWindow.Designer.cs">
       <DependentUpon>BuySellWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\ChartsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ChartsWindow.Designer.cs">
+      <DependentUpon>ChartsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\CustomDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\CustomDialog.Designer.cs">
       <DependentUpon>CustomDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\LogoWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\LogoWindow.Designer.cs">
+      <DependentUpon>LogoWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
@@ -137,8 +149,14 @@
     <EmbeddedResource Include="View\BuySellWindow.resx">
       <DependentUpon>BuySellWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\ChartsWindow.resx">
+      <DependentUpon>ChartsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\CustomDialog.resx">
       <DependentUpon>CustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\LogoWindow.resx">
+      <DependentUpon>LogoWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -151,6 +169,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="NeuroXChangeSettings.ini" />
     <None Include="Properties\Settings.settings">
@@ -165,6 +184,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NeuroXLogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Neuro-Xchange_logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

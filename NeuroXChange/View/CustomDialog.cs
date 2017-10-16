@@ -24,8 +24,11 @@ namespace NeuroXChange.View
 
         private void CustomDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Hide();
-            e.Cancel = true;
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Hide();
+                e.Cancel = true;
+            }
         }
     }
 }

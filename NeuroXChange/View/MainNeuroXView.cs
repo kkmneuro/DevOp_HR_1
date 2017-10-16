@@ -14,9 +14,11 @@ namespace NeuroXChange.View
     {
         private MainNeuroXModel model;
         private MainNeuroXController controller;
-        private MainForm mainForm;
-        private BuySellWindow buySellWindow;
-        private CustomDialog customDialog;
+        public MainForm mainForm { get; private set; }
+        public BuySellWindow buySellWindow { get; private set; }
+        public CustomDialog customDialog { get; private set; }
+        public ChartsWindow chartsWindow { get; private set; }
+        public LogoWindow logoWindow { get; private set; }
 
         private string[] lastPrice = { "0.0", "0.0" };     // array of 2 strings [buy price, sell price]
         private string[] directionName = { "Buy", "Sell" };
@@ -26,7 +28,13 @@ namespace NeuroXChange.View
             this.model = model;
             this.controller = controller;
 
-            mainForm = new MainForm();
+            mainForm = new MainForm(this);
+            //mainForm.Show();
+            //mainForm.Hide();
+
+            logoWindow = new LogoWindow();
+            logoWindow.ShowDialog(mainForm);
+
             buySellWindow = new BuySellWindow();
             buySellWindow.Show();
             buySellWindow.Hide();
@@ -34,6 +42,10 @@ namespace NeuroXChange.View
             customDialog = new CustomDialog();
             customDialog.Show();
             customDialog.Hide();
+
+            chartsWindow = new ChartsWindow();
+            //chartsWindow.Show();
+            //chartsWindow.Hide();
 
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
@@ -146,19 +158,24 @@ namespace NeuroXChange.View
                 (Action)(() =>
                 {
                     mainForm.bioDataRTB.Text = builder.ToString();
-                    mainForm.heartRateChart.Series.SuspendUpdates();
-                    var temperaturePoints = mainForm.heartRateChart.Series["Temperature"].Points;
-                    var hrPoints = mainForm.heartRateChart.Series["Heart Rate"].Points;
+                    var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
+                    var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
+                    var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
                     temperaturePoints.AddXY(data.time, data.temperature);
                     hrPoints.AddXY(data.time, data.hartRate);
+                    skinCondPoints.AddXY(data.time, data.skinConductance);
                     if (hrPoints.Count > 3000)
                     {
                         temperaturePoints.RemoveAt(0);
                         hrPoints.RemoveAt(0);
-                        mainForm.heartRateChart.ChartAreas[0].RecalculateAxesScale();
-                        mainForm.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                        skinCondPoints.RemoveAt(0);
+                        if (chartsWindow.Visible)
+                        {
+                            chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                            chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                            chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
+                        }
                     }
-                    mainForm.heartRateChart.Series.ResumeUpdates();
                 }));
         }
 
@@ -196,15 +213,16 @@ namespace NeuroXChange.View
 
                                             if (hrInfo.heartRate2minAverage > 0)
                                             {
-                                                mainForm.heartRateChart.Series.SuspendUpdates();
-                                                var hrPoints = mainForm.heartRateChart.Series["AVG Heart Rate"].Points;
+                                                var hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
                                                 hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
                                                 if (hrPoints.Count > 3000)
                                                 {
                                                     hrPoints.RemoveAt(0);
-                                                    mainForm.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                                                    if (chartsWindow.Visible)
+                                                    {
+                                                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                                                    }
                                                 }
-                                                mainForm.heartRateChart.Series.ResumeUpdates();
                                             }
 
                                             break;

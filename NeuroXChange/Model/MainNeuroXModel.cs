@@ -64,8 +64,6 @@ namespace NeuroXChange.Model
                 }
                 bioDataProvider.RegisterObserver(this);
 
-                Application.ApplicationExit += new EventHandler(this.StopProcessing);
-
                 // load logic conditions constants
                 stepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
                 stepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));

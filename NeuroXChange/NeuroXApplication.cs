@@ -25,6 +25,7 @@ namespace NeuroXChange
                 {
                     return;
                 }
+                Application.ApplicationExit += new EventHandler(model.StopProcessing);
 
                 controller = new MainNeuroXController(model);
                 view = new MainNeuroXView(model, controller);

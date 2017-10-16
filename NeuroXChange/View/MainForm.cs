@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuroXChange.View;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,29 +14,27 @@ namespace NeuroXChange
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private MainNeuroXView mainNeuroXView = null;
+
+        public MainForm(MainNeuroXView mainNeuroXView)
         {
+            this.mainNeuroXView = mainNeuroXView;
             InitializeComponent();
         }
 
-        private void heartRateChart_MouseMove(object sender, MouseEventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var pos = e.Location;
-            var result = heartRateChart.HitTest(pos.X, pos.Y);
-            if (result.ChartArea != null)
-            {
-                var xVal = result.ChartArea.AxisX.PixelPositionToValue(pos.X);
-                var yVal = result.ChartArea.AxisY.PixelPositionToValue(pos.Y);
-
-                DateTime dt = DateTime.FromOADate(xVal);
-
-                toolStripStatusLabel.Text = string.Format("Time: {0:HH:mm:ss}, Value: {1:0.##}", dt, yVal);
-            }
+            Application.Exit();
         }
 
-        private void heartRateChart_MouseLeave(object sender, EventArgs e)
+        private void chartsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripStatusLabel.Text = string.Empty;
+            mainNeuroXView.chartsWindow.Show();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainNeuroXView.logoWindow.Show();
         }
     }
 }
