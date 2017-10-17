@@ -14,10 +14,17 @@ namespace NeuroXChange.View
     {
         private MainNeuroXModel model;
         private MainNeuroXController controller;
-        public MainForm mainForm { get; private set; }
+
+        // main application window
+        public MainWindow mainWindow { get; private set; }
+
+        // working application windows
+        public RawInformationWindow rawInformationWindow { get; private set; }
         public BuySellWindow buySellWindow { get; private set; }
-        public CustomDialog customDialog { get; private set; }
         public ChartsWindow chartsWindow { get; private set; }
+
+        // other windows
+        public CustomDialogWindow customDialogWindow { get; private set; }
         public LogoWindow logoWindow { get; private set; }
 
         private string[] lastPrice = { "0.0", "0.0" };     // array of 2 strings [buy price, sell price]
@@ -28,24 +35,22 @@ namespace NeuroXChange.View
             this.model = model;
             this.controller = controller;
 
-            mainForm = new MainForm(this);
-            //mainForm.Show();
-            //mainForm.Hide();
+            mainWindow = new MainWindow(this);
 
-            logoWindow = new LogoWindow();
-            logoWindow.ShowDialog(mainForm);
+            rawInformationWindow = new RawInformationWindow();
 
             buySellWindow = new BuySellWindow();
             buySellWindow.Show();
             buySellWindow.Hide();
 
-            customDialog = new CustomDialog();
-            customDialog.Show();
-            customDialog.Hide();
-
             chartsWindow = new ChartsWindow();
-            //chartsWindow.Show();
-            //chartsWindow.Hide();
+
+            logoWindow = new LogoWindow();
+            logoWindow.ShowDialog(mainWindow);
+
+            customDialogWindow = new CustomDialogWindow();
+            customDialogWindow.Show();
+            customDialogWindow.Hide();
 
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
@@ -55,7 +60,7 @@ namespace NeuroXChange.View
 
         public void RunApplication()
         {
-            Application.Run(mainForm);
+            Application.Run(mainWindow);
         }
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
@@ -67,13 +72,13 @@ namespace NeuroXChange.View
                         case MainNeuroXModelEvent.StepInitialState:
                             {
                                 buySellWindow.Hide();
-                                customDialog.Hide();
+                                customDialogWindow.Hide();
                                 break;
                             }
                         case MainNeuroXModelEvent.StepReadyToTrade:
                             {
                                 buySellWindow.Show();
-                                customDialog.Hide();
+                                customDialogWindow.Hide();
                                 buySellWindow.labStepName.Text = "Ready To Trade";
                                 buySellWindow.btnBuy.Enabled = false;
                                 buySellWindow.btnSell.Enabled = false;
@@ -112,16 +117,16 @@ namespace NeuroXChange.View
                             {
                                 int direction = (int)data;
                                 buySellWindow.Hide();
-                                customDialog.Show();
-                                customDialog.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                                customDialogWindow.Show();
+                                customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                                     directionName[direction], lastPrice[direction]);
                                 break;
                             }
                         case MainNeuroXModelEvent.StepConfirmationFilled:
                             {
                                 int direction = (int)data;
-                                customDialog.Show();
-                                customDialog.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                                customDialogWindow.Show();
+                                customDialogWindow.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                                     directionName[direction], lastPrice[direction]);
                                 break;
                             }
@@ -154,10 +159,10 @@ namespace NeuroXChange.View
             builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
             builder.Append("Data: " + data.data);
-            mainForm.BeginInvoke(
+            mainWindow.BeginInvoke(
                 (Action)(() =>
                 {
-                    mainForm.bioDataRTB.Text = builder.ToString();
+                    rawInformationWindow.bioDataRTB.Text = builder.ToString();
                     var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
                     var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
                     var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
@@ -183,7 +188,7 @@ namespace NeuroXChange.View
         {
             if (modelEvent == FixApiModelEvent.PriceChanged)
             {
-                mainForm.BeginInvoke(
+                mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
                                    var prices = (string[])data;
@@ -196,7 +201,7 @@ namespace NeuroXChange.View
 
         public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
         {
-            mainForm.BeginInvoke(
+            mainWindow.BeginInvoke(
                             (Action)(() =>
                             {
                                 HeartRateInfo hrInfo = (HeartRateInfo)data;
@@ -209,7 +214,7 @@ namespace NeuroXChange.View
                                             builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
                                             builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
                                             builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
-                                            mainForm.heartRateRTB.Text = builder.ToString();
+                                            rawInformationWindow.heartRateRTB.Text = builder.ToString();
 
                                             if (hrInfo.heartRate2minAverage > 0)
                                             {

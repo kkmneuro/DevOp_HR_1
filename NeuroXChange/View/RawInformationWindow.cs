@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace NeuroXChange.View
 {
-    public partial class CustomDialog : Form
+    public partial class RawInformationWindow : Form
     {
-        public CustomDialog()
+        public RawInformationWindow()
         {
             InitializeComponent();
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-        }
-
-        private void CustomDialog_FormClosing(object sender, FormClosingEventArgs e)
+        private void RawInformationWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {

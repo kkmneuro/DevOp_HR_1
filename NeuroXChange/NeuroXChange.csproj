@@ -122,11 +122,11 @@
     <Compile Include="View\ChartsWindow.Designer.cs">
       <DependentUpon>ChartsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\CustomDialog.cs">
+    <Compile Include="View\CustomDialogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\CustomDialog.Designer.cs">
-      <DependentUpon>CustomDialog.cs</DependentUpon>
+    <Compile Include="View\CustomDialogWindow.Designer.cs">
+      <DependentUpon>CustomDialogWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\LogoWindow.cs">
       <SubType>Form</SubType>
@@ -134,11 +134,11 @@
     <Compile Include="View\LogoWindow.Designer.cs">
       <DependentUpon>LogoWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\MainForm.cs">
+    <Compile Include="View\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="View\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\MainNeuroXModel.cs" />
     <Compile Include="View\MainNeuroXView.cs" />
@@ -146,20 +146,26 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\BioData\BioData.cs" />
+    <Compile Include="View\RawInformationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\RawInformationWindow.Designer.cs">
+      <DependentUpon>RawInformationWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\BuySellWindow.resx">
       <DependentUpon>BuySellWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ChartsWindow.resx">
       <DependentUpon>ChartsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\CustomDialog.resx">
-      <DependentUpon>CustomDialog.cs</DependentUpon>
+    <EmbeddedResource Include="View\CustomDialogWindow.resx">
+      <DependentUpon>CustomDialogWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\LogoWindow.resx">
       <DependentUpon>LogoWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="View\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -171,6 +177,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\RawInformationWindow.resx">
+      <DependentUpon>RawInformationWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="NeuroXChangeSettings.ini" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -1,6 +1,6 @@
 ﻿namespace NeuroXChange.View
 {
-    partial class CustomDialog
+    partial class CustomDialogWindow
     {
         /// <summary>
         /// Required designer variable.

@@ -12,11 +12,11 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace NeuroXChange
 {
-    public partial class MainForm : Form
+    public partial class MainWindow : Form
     {
         private MainNeuroXView mainNeuroXView = null;
 
-        public MainForm(MainNeuroXView mainNeuroXView)
+        public MainWindow(MainNeuroXView mainNeuroXView)
         {
             this.mainNeuroXView = mainNeuroXView;
             InitializeComponent();
@@ -25,6 +25,11 @@ namespace NeuroXChange
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainNeuroXView.rawInformationWindow.Show();
         }
 
         private void chartsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -36,5 +41,6 @@ namespace NeuroXChange
         {
             mainNeuroXView.logoWindow.Show();
         }
+
     }
 }
