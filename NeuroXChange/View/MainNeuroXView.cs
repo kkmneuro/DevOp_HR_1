@@ -20,7 +20,7 @@ namespace NeuroXChange.View
 
         // working application windows
         public RawInformationWindow rawInformationWindow { get; private set; }
-        public BuySellWindow buySellWindow { get; private set; }
+        public NewOrderWindow newOrderWindow { get; private set; }
         public ChartsWindow chartsWindow { get; private set; }
 
         // other windows
@@ -36,14 +36,16 @@ namespace NeuroXChange.View
             this.controller = controller;
 
             mainWindow = new MainWindow(this);
+            mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistory ? "emulation on history" : "real-time");
 
             rawInformationWindow = new RawInformationWindow();
+            rawInformationWindow.Owner = mainWindow;
 
-            buySellWindow = new BuySellWindow();
-            buySellWindow.Show();
-            buySellWindow.Hide();
+            newOrderWindow = new NewOrderWindow();
+            newOrderWindow.Owner = mainWindow;
 
             chartsWindow = new ChartsWindow();
+            newOrderWindow.Owner = chartsWindow;
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
@@ -65,58 +67,58 @@ namespace NeuroXChange.View
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
-            buySellWindow.BeginInvoke(
+            newOrderWindow.BeginInvoke(
                 (Action)( () => {
                     switch (modelEvent)
                     {
                         case MainNeuroXModelEvent.StepInitialState:
                             {
-                                buySellWindow.Hide();
+                                newOrderWindow.Hide();
                                 customDialogWindow.Hide();
                                 break;
                             }
                         case MainNeuroXModelEvent.StepReadyToTrade:
                             {
-                                buySellWindow.Show();
+                                newOrderWindow.Show();
                                 customDialogWindow.Hide();
-                                buySellWindow.labStepName.Text = "Ready To Trade";
-                                buySellWindow.btnBuy.Enabled = false;
-                                buySellWindow.btnSell.Enabled = false;
-                                buySellWindow.btnBuy.BackColor = SystemColors.Control;
-                                buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                newOrderWindow.labStepName.Text = "Ready To Trade";
+                                newOrderWindow.btnBuy.Enabled = false;
+                                newOrderWindow.btnSell.Enabled = false;
+                                newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                                newOrderWindow.btnSell.BackColor = SystemColors.Control;
                                 break;
                             }
                         case MainNeuroXModelEvent.StepPreactivation:
                             {
-                                buySellWindow.Show();
-                                buySellWindow.labStepName.Text = "Preactivation";
-                                buySellWindow.btnBuy.Enabled = true;
-                                buySellWindow.btnSell.Enabled = true;
-                                buySellWindow.btnBuy.BackColor = Color.RoyalBlue;
-                                buySellWindow.btnSell.BackColor = Color.Red;
+                                newOrderWindow.Show();
+                                newOrderWindow.labStepName.Text = "Preactivation";
+                                newOrderWindow.btnBuy.Enabled = true;
+                                newOrderWindow.btnSell.Enabled = true;
+                                newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
+                                newOrderWindow.btnSell.BackColor = Color.Red;
                                 break;
                             }
                         case MainNeuroXModelEvent.StepDirectionConfirmed:
                             {
                                 int direction = (int)data;
-                                buySellWindow.Show();
-                                buySellWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
-                                buySellWindow.btnBuy.Enabled = direction == 0;
-                                buySellWindow.btnSell.Enabled = direction == 1;
+                                newOrderWindow.Show();
+                                newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
+                                newOrderWindow.btnBuy.Enabled = direction == 0;
+                                newOrderWindow.btnSell.Enabled = direction == 1;
                                 if (direction == 0)
                                 {
-                                    buySellWindow.btnSell.BackColor = SystemColors.Control;
+                                    newOrderWindow.btnSell.BackColor = SystemColors.Control;
                                 }
                                 else
                                 {
-                                    buySellWindow.btnBuy.BackColor = SystemColors.Control;
+                                    newOrderWindow.btnBuy.BackColor = SystemColors.Control;
                                 }
                                 break;
                             }
                         case MainNeuroXModelEvent.StepExecuteOrder:
                             {
                                 int direction = (int)data;
-                                buySellWindow.Hide();
+                                newOrderWindow.Hide();
                                 customDialogWindow.Show();
                                 customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                                     directionName[direction], lastPrice[direction]);
@@ -192,8 +194,8 @@ namespace NeuroXChange.View
                                 (Action)(() =>
                                {
                                    var prices = (string[])data;
-                                   buySellWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
-                                   buySellWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
+                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
+                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
                                    lastPrice = prices;
                                }));
             }

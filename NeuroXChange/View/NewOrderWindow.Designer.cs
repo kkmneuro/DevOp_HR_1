@@ -1,6 +1,6 @@
 ﻿namespace NeuroXChange.View
 {
-    partial class BuySellWindow
+    partial class NewOrderWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuySellWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewOrderWindow));
             this.btnBuy = new System.Windows.Forms.Button();
             this.btnSell = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();

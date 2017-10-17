@@ -36,10 +36,10 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.heartRateChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.heartRateChart)).BeginInit();
-            this.statusStrip1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // heartRateChart
@@ -49,14 +49,9 @@
             chartArea1.AxisY.IsStartedFromZero = false;
             chartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
             chartArea1.AxisY.Title = "Temperature";
-            chartArea1.InnerPlotPosition.Auto = false;
-            chartArea1.InnerPlotPosition.Height = 80F;
-            chartArea1.InnerPlotPosition.Width = 88.36893F;
-            chartArea1.InnerPlotPosition.X = 10.46062F;
-            chartArea1.InnerPlotPosition.Y = 2F;
             chartArea1.Name = "ChartArea1";
             chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 32F;
+            chartArea1.Position.Height = 33F;
             chartArea1.Position.Width = 99F;
             chartArea1.Position.Y = 1F;
             chartArea2.AlignWithChartArea = "ChartArea1";
@@ -67,7 +62,7 @@
             chartArea2.AxisY.Title = "Heart Rate";
             chartArea2.Name = "ChartArea2";
             chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 32F;
+            chartArea2.Position.Height = 33F;
             chartArea2.Position.Width = 99F;
             chartArea2.Position.Y = 33F;
             chartArea3.AlignWithChartArea = "ChartArea1";
@@ -78,9 +73,9 @@
             chartArea3.AxisY.Title = "Conductance";
             chartArea3.Name = "ChartArea3";
             chartArea3.Position.Auto = false;
-            chartArea3.Position.Height = 32F;
+            chartArea3.Position.Height = 33F;
             chartArea3.Position.Width = 99F;
-            chartArea3.Position.Y = 64F;
+            chartArea3.Position.Y = 66F;
             this.heartRateChart.ChartAreas.Add(chartArea1);
             this.heartRateChart.ChartAreas.Add(chartArea2);
             this.heartRateChart.ChartAreas.Add(chartArea3);
@@ -112,22 +107,22 @@
             this.heartRateChart.Series.Add(series2);
             this.heartRateChart.Series.Add(series3);
             this.heartRateChart.Series.Add(series4);
-            this.heartRateChart.Size = new System.Drawing.Size(598, 359);
+            this.heartRateChart.Size = new System.Drawing.Size(598, 337);
             this.heartRateChart.TabIndex = 5;
             this.heartRateChart.Text = "chart1";
             this.heartRateChart.Click += new System.EventHandler(this.heartRateChart_Click);
             this.heartRateChart.MouseLeave += new System.EventHandler(this.heartRateChart_MouseLeave);
             this.heartRateChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.heartRateChart_MouseMove);
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 337);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(598, 22);
-            this.statusStrip1.TabIndex = 6;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Location = new System.Drawing.Point(0, 337);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(598, 22);
+            this.statusStrip.TabIndex = 6;
+            this.statusStrip.Text = "statusStrip1";
             // 
             // toolStripStatusLabel
             // 
@@ -140,8 +135,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(598, 359);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.heartRateChart);
+            this.Controls.Add(this.statusStrip);
             this.MinimizeBox = false;
             this.Name = "ChartsWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -149,8 +144,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChartsWindow_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.ChartsWindow_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.heartRateChart)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,7 +154,7 @@
         #endregion
 
         public System.Windows.Forms.DataVisualization.Charting.Chart heartRateChart;
-        public System.Windows.Forms.StatusStrip statusStrip1;
+        public System.Windows.Forms.StatusStrip statusStrip;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace NeuroXChange
 {
@@ -29,12 +30,12 @@ namespace NeuroXChange
 
         private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.rawInformationWindow.Show();
+            mainNeuroXView.rawInformationWindow.Show(dockPanel, DockState.Float);
         }
 
         private void chartsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.chartsWindow.Show();
+            mainNeuroXView.chartsWindow.Show(dockPanel, DockState.Float);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,5 +43,9 @@ namespace NeuroXChange
             mainNeuroXView.logoWindow.Show();
         }
 
+        private void newOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainNeuroXView.newOrderWindow.Show(dockPanel, DockState.Float);
+        }
     }
 }

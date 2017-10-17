@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace NeuroXChange.View
 {
-    public partial class ChartsWindow : Form
+    public partial class ChartsWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
         public ChartsWindow()
         {

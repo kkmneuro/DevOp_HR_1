@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NeuroXChange.View
 {
-    public partial class BuySellWindow : Form
+    public partial class NewOrderWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-        public BuySellWindow()
+        public NewOrderWindow()
         {
             InitializeComponent();
         }
