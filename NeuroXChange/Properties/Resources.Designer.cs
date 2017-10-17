@@ -63,6 +63,26 @@ namespace NeuroXChange.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BreathPacer {
+            get {
+                object obj = ResourceManager.GetObject("BreathPacer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Indicator {
+            get {
+                object obj = ResourceManager.GetObject("Indicator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Neuro_Xchange_logo {
             get {
                 object obj = ResourceManager.GetObject("Neuro_Xchange_logo", resourceCulture);

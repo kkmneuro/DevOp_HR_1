@@ -7,6 +7,7 @@ using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Model.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
+using System.Data;
 
 namespace NeuroXChange.View
 {
@@ -22,6 +23,9 @@ namespace NeuroXChange.View
         public RawInformationWindow rawInformationWindow { get; private set; }
         public NewOrderWindow newOrderWindow { get; private set; }
         public ChartsWindow chartsWindow { get; private set; }
+        public BreathPacerWindow breathPacerWindow { get; private set; }
+        public IndicatorsWindow indicatorsWindow { get; private set; }
+        public BehavioralModelsWindow behavioralModelWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
@@ -45,7 +49,16 @@ namespace NeuroXChange.View
             newOrderWindow.Owner = mainWindow;
 
             chartsWindow = new ChartsWindow();
-            newOrderWindow.Owner = chartsWindow;
+            chartsWindow.Owner = mainWindow;
+
+            breathPacerWindow = new BreathPacerWindow();
+            breathPacerWindow.Owner = mainWindow;
+
+            indicatorsWindow = new IndicatorsWindow();
+            indicatorsWindow.Owner = mainWindow;
+
+            behavioralModelWindow = new BehavioralModelsWindow();
+            behavioralModelWindow.Owner = mainWindow;
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
@@ -58,6 +71,22 @@ namespace NeuroXChange.View
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
             model.heartRateProcessor.RegisterObserver(this);
+
+            // fill behavioral model
+            var random = new Random(1);
+            for (int ind = 1; ind <= 15; ind++)
+            {
+                DataRow newCustomersRow = behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].NewRow();
+                newCustomersRow["Model"] = ind.ToString();
+                newCustomersRow["Initial state"] = "ON";
+                newCustomersRow["Preactivation"] = "ON";
+                newCustomersRow["Activation"] = random.Next(0, 2) == 0 ? "ON" : "OFF";
+                newCustomersRow["Security"] = "EURUSD";
+                newCustomersRow["In position"] = random.Next(0, 2) == 0 ? "LONG" : "SHORT";
+                newCustomersRow["Trades today"] = random.Next(0, 11);
+                newCustomersRow["Profitability"] = random.Next(-100, +100);
+                behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].Rows.Add(newCustomersRow);
+            }
         }
 
         public void RunApplication()
@@ -176,12 +205,9 @@ namespace NeuroXChange.View
                         temperaturePoints.RemoveAt(0);
                         hrPoints.RemoveAt(0);
                         skinCondPoints.RemoveAt(0);
-                        if (chartsWindow.Visible)
-                        {
-                            chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
-                            chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                            chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
-                        }
+                        chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                        chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
                     }
                 }));
         }
@@ -225,10 +251,7 @@ namespace NeuroXChange.View
                                                 if (hrPoints.Count > 3000)
                                                 {
                                                     hrPoints.RemoveAt(0);
-                                                    if (chartsWindow.Visible)
-                                                    {
-                                                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                                                    }
+                                                    chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
                                                 }
                                             }
 

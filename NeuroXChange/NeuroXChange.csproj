@@ -111,6 +111,24 @@
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="View\BehavioralModelsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BehavioralModelsWindow.Designer.cs">
+      <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BreathPacerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BreathPacerWindow.Designer.cs">
+      <DependentUpon>BreathPacerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\IndicatorsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\IndicatorsWindow.Designer.cs">
+      <DependentUpon>IndicatorsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\NewOrderWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +171,15 @@
     <Compile Include="View\RawInformationWindow.Designer.cs">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\BehavioralModelsWindow.resx">
+      <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BreathPacerWindow.resx">
+      <DependentUpon>BreathPacerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\IndicatorsWindow.resx">
+      <DependentUpon>IndicatorsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\NewOrderWindow.resx">
       <DependentUpon>NewOrderWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +237,12 @@
       <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
       <Name>WinFormsUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BreathPacer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Indicator.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
