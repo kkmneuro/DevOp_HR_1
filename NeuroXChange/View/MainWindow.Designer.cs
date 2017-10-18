@@ -94,42 +94,42 @@
             this.breathPacerToolStripMenuItem.Name = "breathPacerToolStripMenuItem";
             this.breathPacerToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.breathPacerToolStripMenuItem.Text = "Breath pacer";
-            this.breathPacerToolStripMenuItem.Click += new System.EventHandler(this.breathPacerToolStripMenuItem_Click);
+            this.breathPacerToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // indicatorsToolStripMenuItem
             // 
             this.indicatorsToolStripMenuItem.Name = "indicatorsToolStripMenuItem";
             this.indicatorsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.indicatorsToolStripMenuItem.Text = "Indicators";
-            this.indicatorsToolStripMenuItem.Click += new System.EventHandler(this.indicatorsToolStripMenuItem_Click);
+            this.indicatorsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // newOrderToolStripMenuItem
             // 
             this.newOrderToolStripMenuItem.Name = "newOrderToolStripMenuItem";
             this.newOrderToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.newOrderToolStripMenuItem.Text = "New order";
-            this.newOrderToolStripMenuItem.Click += new System.EventHandler(this.newOrderToolStripMenuItem_Click);
+            this.newOrderToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // behavioralModelsToolStripMenuItem
             // 
             this.behavioralModelsToolStripMenuItem.Name = "behavioralModelsToolStripMenuItem";
             this.behavioralModelsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.behavioralModelsToolStripMenuItem.Text = "Behavioral models";
-            this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.behavioralModelsToolStripMenuItem_Click);
+            this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // rawInformationToolStripMenuItem
             // 
             this.rawInformationToolStripMenuItem.Name = "rawInformationToolStripMenuItem";
             this.rawInformationToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.rawInformationToolStripMenuItem.Text = "Raw Information";
-            this.rawInformationToolStripMenuItem.Click += new System.EventHandler(this.rawInformationToolStripMenuItem_Click);
+            this.rawInformationToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // chartsToolStripMenuItem
             // 
             this.chartsToolStripMenuItem.Name = "chartsToolStripMenuItem";
             this.chartsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.chartsToolStripMenuItem.Text = "Charts";
-            this.chartsToolStripMenuItem.Click += new System.EventHandler(this.chartsToolStripMenuItem_Click);
+            this.chartsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 

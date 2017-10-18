@@ -52,39 +52,36 @@ namespace NeuroXChange
             Close();
         }
 
-        private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void windowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.rawInformationWindow.Show();
+            DockContent dockContentWindow = null;
+            if (sender == rawInformationToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.rawInformationWindow;
+            else if (sender == newOrderToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.newOrderWindow;
+            else if (sender == chartsToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.chartsWindow;
+            else if (sender == breathPacerToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.breathPacerWindow;
+            else if (sender == indicatorsToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.indicatorsWindow;
+            else if (sender == behavioralModelsToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.behavioralModelWindow;
+
+            dockContentWindow.Show();
+            if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
+            {
+                dockContentWindow.Pane.FloatWindow.TopMost = true;
+            }
         }
 
-        private void chartsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.chartsWindow.Show();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.logoWindow.Show();
-        }
-
-        private void newOrderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainNeuroXView.newOrderWindow.Show();
-        }
-
-        private void breathPacerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainNeuroXView.breathPacerWindow.Show();
-        }
-
-        private void indicatorsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainNeuroXView.indicatorsWindow.Show();
-        }
-
-        private void behavioralModelsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainNeuroXView.behavioralModelWindow.Show();
+            mainNeuroXView.logoWindow.ShowDialog();
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -96,6 +93,15 @@ namespace NeuroXChange
             iniFileReader.Write("MainWindowHeight", Size.Height.ToString(), "Interface");
         }
 
+        void dockStateChangedAction(object sender, EventArgs e)
+        {
+            var dockContentWindow = (DockContent)sender;
+            if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane!= null && dockContentWindow.Pane.IsFloat)
+            {
+                dockContentWindow.Pane.FloatWindow.TopMost = true;
+            }
+        }
+
         private void MainWindow_Load(object sender, EventArgs e)
         {
             Location = new Point(
@@ -104,6 +110,13 @@ namespace NeuroXChange
             Size = new Size(
                 Int32.Parse(iniFileReader.Read("MainWindowWidth", "Interface")),
                 Int32.Parse(iniFileReader.Read("MainWindowHeight", "Interface")));
+
+            mainNeuroXView.rawInformationWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.chartsWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.newOrderWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.breathPacerWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.indicatorsWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.behavioralModelWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);

@@ -29,14 +29,6 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.initialStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.preactivationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.activationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.securityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inPositionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tradesTodayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.profitabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.behavioralModelsDataSet = new System.Data.DataSet();
             this.dataTable1 = new System.Data.DataTable();
             this.dataColumn1 = new System.Data.DataColumn();
@@ -47,6 +39,14 @@
             this.dataColumn6 = new System.Data.DataColumn();
             this.dataColumn7 = new System.Data.DataColumn();
             this.dataColumn8 = new System.Data.DataColumn();
+            this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.initialStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.preactivationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.activationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.securityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inPositionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tradesTodayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.profitabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
@@ -54,6 +54,8 @@
             // 
             // dataGridView
             // 
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToOrderColumns = true;
             this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -71,14 +73,68 @@
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
-            this.dataGridView.Size = new System.Drawing.Size(688, 110);
+            this.dataGridView.RowHeadersVisible = false;
+            this.dataGridView.Size = new System.Drawing.Size(649, 110);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
+            // 
+            // behavioralModelsDataSet
+            // 
+            this.behavioralModelsDataSet.DataSetName = "NewDataSet";
+            this.behavioralModelsDataSet.Tables.AddRange(new System.Data.DataTable[] {
+            this.dataTable1});
+            // 
+            // dataTable1
+            // 
+            this.dataTable1.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn1,
+            this.dataColumn2,
+            this.dataColumn3,
+            this.dataColumn4,
+            this.dataColumn5,
+            this.dataColumn6,
+            this.dataColumn7,
+            this.dataColumn8});
+            this.dataTable1.TableName = "BehavioralModels";
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.ColumnName = "Model";
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.Caption = "Initial state";
+            this.dataColumn2.ColumnName = "Initial state";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.ColumnName = "Preactivation";
+            // 
+            // dataColumn4
+            // 
+            this.dataColumn4.ColumnName = "Activation";
+            // 
+            // dataColumn5
+            // 
+            this.dataColumn5.ColumnName = "Security";
+            // 
+            // dataColumn6
+            // 
+            this.dataColumn6.ColumnName = "In position";
+            // 
+            // dataColumn7
+            // 
+            this.dataColumn7.ColumnName = "Trades today";
+            // 
+            // dataColumn8
+            // 
+            this.dataColumn8.ColumnName = "Profitability";
             // 
             // modelDataGridViewTextBoxColumn
             // 
             this.modelDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.modelDataGridViewTextBoxColumn.DataPropertyName = "Model";
+            this.modelDataGridViewTextBoxColumn.Frozen = true;
             this.modelDataGridViewTextBoxColumn.HeaderText = "Model";
             this.modelDataGridViewTextBoxColumn.Name = "modelDataGridViewTextBoxColumn";
             this.modelDataGridViewTextBoxColumn.ReadOnly = true;
@@ -147,64 +203,12 @@
             this.profitabilityDataGridViewTextBoxColumn.ReadOnly = true;
             this.profitabilityDataGridViewTextBoxColumn.Width = 82;
             // 
-            // behavioralModelsDataSet
-            // 
-            this.behavioralModelsDataSet.DataSetName = "NewDataSet";
-            this.behavioralModelsDataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable1});
-            // 
-            // dataTable1
-            // 
-            this.dataTable1.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn1,
-            this.dataColumn2,
-            this.dataColumn3,
-            this.dataColumn4,
-            this.dataColumn5,
-            this.dataColumn6,
-            this.dataColumn7,
-            this.dataColumn8});
-            this.dataTable1.TableName = "BehavioralModels";
-            // 
-            // dataColumn1
-            // 
-            this.dataColumn1.ColumnName = "Model";
-            // 
-            // dataColumn2
-            // 
-            this.dataColumn2.Caption = "Initial state";
-            this.dataColumn2.ColumnName = "Initial state";
-            // 
-            // dataColumn3
-            // 
-            this.dataColumn3.ColumnName = "Preactivation";
-            // 
-            // dataColumn4
-            // 
-            this.dataColumn4.ColumnName = "Activation";
-            // 
-            // dataColumn5
-            // 
-            this.dataColumn5.ColumnName = "Security";
-            // 
-            // dataColumn6
-            // 
-            this.dataColumn6.ColumnName = "In position";
-            // 
-            // dataColumn7
-            // 
-            this.dataColumn7.ColumnName = "Trades today";
-            // 
-            // dataColumn8
-            // 
-            this.dataColumn8.ColumnName = "Profitability";
-            // 
             // BehavioralModelsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(688, 110);
+            this.ClientSize = new System.Drawing.Size(649, 110);
             this.Controls.Add(this.dataGridView);
             this.Name = "BehavioralModelsWindow";
             this.Text = "Behavioral models";

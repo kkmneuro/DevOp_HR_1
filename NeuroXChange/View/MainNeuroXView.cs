@@ -9,6 +9,7 @@ using NeuroXChange.Model.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
 using System.Data;
 using System.Threading;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace NeuroXChange.View
 {
@@ -20,6 +21,7 @@ namespace NeuroXChange.View
 
         // main application window
         public MainWindow mainWindow { get; private set; }
+        public bool allWindowsOnTop { get; private set; }
 
         // working application windows
         public RawInformationWindow rawInformationWindow { get; private set; }
@@ -91,9 +93,8 @@ namespace NeuroXChange.View
                 behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].Rows.Add(newCustomersRow);
             }
 
-            // TODO: need to set all windows top-most if this property is true
-            bool mainWindowOnTop = Boolean.Parse(model.iniFileReader.Read("MainWindowOnTop", "Interface"));
-            if (mainWindowOnTop)
+            allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface"));
+            if (allWindowsOnTop)
             {
                 mainWindow.TopMost = true;
             }
