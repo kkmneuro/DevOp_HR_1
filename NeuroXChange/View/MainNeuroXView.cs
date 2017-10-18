@@ -87,6 +87,13 @@ namespace NeuroXChange.View
                 newCustomersRow["Profitability"] = random.Next(-100, +100);
                 behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].Rows.Add(newCustomersRow);
             }
+
+            // TODO: need to set all windows top-most if this property is true
+            bool mainWindowOnTop = Boolean.Parse(model.iniFileReader.Read("MainWindowOnTop", "Interface"));
+            if (mainWindowOnTop)
+            {
+                mainWindow.TopMost = true;
+            }
         }
 
         public void RunApplication()
