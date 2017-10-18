@@ -39,27 +39,27 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 1);
+            this.pictureBox1.Location = new System.Drawing.Point(-4, -4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(252, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(248, 50);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox2.Location = new System.Drawing.Point(2, 57);
+            this.pictureBox2.Location = new System.Drawing.Point(-4, 43);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(252, 50);
+            this.pictureBox2.Size = new System.Drawing.Size(248, 50);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             // 
             // pictureBox3
             // 
             this.pictureBox3.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox3.Location = new System.Drawing.Point(2, 113);
+            this.pictureBox3.Location = new System.Drawing.Point(-4, 90);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(252, 50);
+            this.pictureBox3.Size = new System.Drawing.Size(248, 50);
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
             // 
@@ -68,7 +68,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(255, 167);
+            this.ClientSize = new System.Drawing.Size(244, 140);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);

@@ -29,6 +29,14 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.initialStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.preactivationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.activationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.securityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inPositionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tradesTodayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.profitabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.behavioralModelsDataSet = new System.Data.DataSet();
             this.dataTable1 = new System.Data.DataTable();
             this.dataColumn1 = new System.Data.DataColumn();
@@ -39,14 +47,6 @@
             this.dataColumn6 = new System.Data.DataColumn();
             this.dataColumn7 = new System.Data.DataColumn();
             this.dataColumn8 = new System.Data.DataColumn();
-            this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.initialStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.preactivationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.activationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.securityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inPositionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tradesTodayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.profitabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelsDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
@@ -74,6 +74,78 @@
             this.dataGridView.Size = new System.Drawing.Size(688, 110);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
+            // 
+            // modelDataGridViewTextBoxColumn
+            // 
+            this.modelDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.modelDataGridViewTextBoxColumn.DataPropertyName = "Model";
+            this.modelDataGridViewTextBoxColumn.HeaderText = "Model";
+            this.modelDataGridViewTextBoxColumn.Name = "modelDataGridViewTextBoxColumn";
+            this.modelDataGridViewTextBoxColumn.ReadOnly = true;
+            this.modelDataGridViewTextBoxColumn.Width = 61;
+            // 
+            // initialStateDataGridViewTextBoxColumn
+            // 
+            this.initialStateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.initialStateDataGridViewTextBoxColumn.DataPropertyName = "Initial state";
+            this.initialStateDataGridViewTextBoxColumn.HeaderText = "Initial state";
+            this.initialStateDataGridViewTextBoxColumn.Name = "initialStateDataGridViewTextBoxColumn";
+            this.initialStateDataGridViewTextBoxColumn.ReadOnly = true;
+            this.initialStateDataGridViewTextBoxColumn.Width = 82;
+            // 
+            // preactivationDataGridViewTextBoxColumn
+            // 
+            this.preactivationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.preactivationDataGridViewTextBoxColumn.DataPropertyName = "Preactivation";
+            this.preactivationDataGridViewTextBoxColumn.HeaderText = "Preactivation";
+            this.preactivationDataGridViewTextBoxColumn.Name = "preactivationDataGridViewTextBoxColumn";
+            this.preactivationDataGridViewTextBoxColumn.ReadOnly = true;
+            this.preactivationDataGridViewTextBoxColumn.Width = 94;
+            // 
+            // activationDataGridViewTextBoxColumn
+            // 
+            this.activationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.activationDataGridViewTextBoxColumn.DataPropertyName = "Activation";
+            this.activationDataGridViewTextBoxColumn.HeaderText = "Activation";
+            this.activationDataGridViewTextBoxColumn.Name = "activationDataGridViewTextBoxColumn";
+            this.activationDataGridViewTextBoxColumn.ReadOnly = true;
+            this.activationDataGridViewTextBoxColumn.Width = 79;
+            // 
+            // securityDataGridViewTextBoxColumn
+            // 
+            this.securityDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.securityDataGridViewTextBoxColumn.DataPropertyName = "Security";
+            this.securityDataGridViewTextBoxColumn.HeaderText = "Security";
+            this.securityDataGridViewTextBoxColumn.Name = "securityDataGridViewTextBoxColumn";
+            this.securityDataGridViewTextBoxColumn.ReadOnly = true;
+            this.securityDataGridViewTextBoxColumn.Width = 70;
+            // 
+            // inPositionDataGridViewTextBoxColumn
+            // 
+            this.inPositionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.inPositionDataGridViewTextBoxColumn.DataPropertyName = "In position";
+            this.inPositionDataGridViewTextBoxColumn.HeaderText = "In position";
+            this.inPositionDataGridViewTextBoxColumn.Name = "inPositionDataGridViewTextBoxColumn";
+            this.inPositionDataGridViewTextBoxColumn.ReadOnly = true;
+            this.inPositionDataGridViewTextBoxColumn.Width = 80;
+            // 
+            // tradesTodayDataGridViewTextBoxColumn
+            // 
+            this.tradesTodayDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.tradesTodayDataGridViewTextBoxColumn.DataPropertyName = "Trades today";
+            this.tradesTodayDataGridViewTextBoxColumn.HeaderText = "Trades today";
+            this.tradesTodayDataGridViewTextBoxColumn.Name = "tradesTodayDataGridViewTextBoxColumn";
+            this.tradesTodayDataGridViewTextBoxColumn.ReadOnly = true;
+            this.tradesTodayDataGridViewTextBoxColumn.Width = 94;
+            // 
+            // profitabilityDataGridViewTextBoxColumn
+            // 
+            this.profitabilityDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.profitabilityDataGridViewTextBoxColumn.DataPropertyName = "Profitability";
+            this.profitabilityDataGridViewTextBoxColumn.HeaderText = "Profitability";
+            this.profitabilityDataGridViewTextBoxColumn.Name = "profitabilityDataGridViewTextBoxColumn";
+            this.profitabilityDataGridViewTextBoxColumn.ReadOnly = true;
+            this.profitabilityDataGridViewTextBoxColumn.Width = 82;
             // 
             // behavioralModelsDataSet
             // 
@@ -127,70 +199,6 @@
             // 
             this.dataColumn8.ColumnName = "Profitability";
             // 
-            // modelDataGridViewTextBoxColumn
-            // 
-            this.modelDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.modelDataGridViewTextBoxColumn.DataPropertyName = "Model";
-            this.modelDataGridViewTextBoxColumn.HeaderText = "Model";
-            this.modelDataGridViewTextBoxColumn.Name = "modelDataGridViewTextBoxColumn";
-            this.modelDataGridViewTextBoxColumn.Width = 61;
-            // 
-            // initialStateDataGridViewTextBoxColumn
-            // 
-            this.initialStateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.initialStateDataGridViewTextBoxColumn.DataPropertyName = "Initial state";
-            this.initialStateDataGridViewTextBoxColumn.HeaderText = "Initial state";
-            this.initialStateDataGridViewTextBoxColumn.Name = "initialStateDataGridViewTextBoxColumn";
-            this.initialStateDataGridViewTextBoxColumn.Width = 82;
-            // 
-            // preactivationDataGridViewTextBoxColumn
-            // 
-            this.preactivationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.preactivationDataGridViewTextBoxColumn.DataPropertyName = "Preactivation";
-            this.preactivationDataGridViewTextBoxColumn.HeaderText = "Preactivation";
-            this.preactivationDataGridViewTextBoxColumn.Name = "preactivationDataGridViewTextBoxColumn";
-            this.preactivationDataGridViewTextBoxColumn.Width = 94;
-            // 
-            // activationDataGridViewTextBoxColumn
-            // 
-            this.activationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.activationDataGridViewTextBoxColumn.DataPropertyName = "Activation";
-            this.activationDataGridViewTextBoxColumn.HeaderText = "Activation";
-            this.activationDataGridViewTextBoxColumn.Name = "activationDataGridViewTextBoxColumn";
-            this.activationDataGridViewTextBoxColumn.Width = 79;
-            // 
-            // securityDataGridViewTextBoxColumn
-            // 
-            this.securityDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.securityDataGridViewTextBoxColumn.DataPropertyName = "Security";
-            this.securityDataGridViewTextBoxColumn.HeaderText = "Security";
-            this.securityDataGridViewTextBoxColumn.Name = "securityDataGridViewTextBoxColumn";
-            this.securityDataGridViewTextBoxColumn.Width = 70;
-            // 
-            // inPositionDataGridViewTextBoxColumn
-            // 
-            this.inPositionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.inPositionDataGridViewTextBoxColumn.DataPropertyName = "In position";
-            this.inPositionDataGridViewTextBoxColumn.HeaderText = "In position";
-            this.inPositionDataGridViewTextBoxColumn.Name = "inPositionDataGridViewTextBoxColumn";
-            this.inPositionDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // tradesTodayDataGridViewTextBoxColumn
-            // 
-            this.tradesTodayDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.tradesTodayDataGridViewTextBoxColumn.DataPropertyName = "Trades today";
-            this.tradesTodayDataGridViewTextBoxColumn.HeaderText = "Trades today";
-            this.tradesTodayDataGridViewTextBoxColumn.Name = "tradesTodayDataGridViewTextBoxColumn";
-            this.tradesTodayDataGridViewTextBoxColumn.Width = 94;
-            // 
-            // profitabilityDataGridViewTextBoxColumn
-            // 
-            this.profitabilityDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.profitabilityDataGridViewTextBoxColumn.DataPropertyName = "Profitability";
-            this.profitabilityDataGridViewTextBoxColumn.HeaderText = "Profitability";
-            this.profitabilityDataGridViewTextBoxColumn.Name = "profitabilityDataGridViewTextBoxColumn";
-            this.profitabilityDataGridViewTextBoxColumn.Width = 82;
-            // 
             // BehavioralModelsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -199,7 +207,7 @@
             this.ClientSize = new System.Drawing.Size(688, 110);
             this.Controls.Add(this.dataGridView);
             this.Name = "BehavioralModelsWindow";
-            this.Text = "BehavioralModelsWindow";
+            this.Text = "Behavioral models";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BehavioralModelsWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelsDataSet)).EndInit();

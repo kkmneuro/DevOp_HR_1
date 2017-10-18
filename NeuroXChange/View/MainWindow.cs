@@ -1,4 +1,5 @@
-﻿using NeuroXChange.View;
+﻿using NeuroXChange.Common;
+using NeuroXChange.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,12 +18,14 @@ namespace NeuroXChange
     public partial class MainWindow : Form
     {
         private MainNeuroXView mainNeuroXView = null;
+        private IniFileReader iniFileReader = null;
         private string dockPanelConfigFile = "DockPanel.config";
         private DeserializeDockContent m_deserializeDockContent;
 
-        public MainWindow(MainNeuroXView mainNeuroXView)
+        public MainWindow(MainNeuroXView mainNeuroXView, IniFileReader iniFileReader)
         {
             this.mainNeuroXView = mainNeuroXView;
+            this.iniFileReader = iniFileReader;
             InitializeComponent();
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
         }
@@ -46,18 +49,17 @@ namespace NeuroXChange
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dockPanel.SaveAsXml(dockPanelConfigFile);
-            Application.Exit();
+            Close();
         }
 
         private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.rawInformationWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.rawInformationWindow.Show();
         }
 
         private void chartsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.chartsWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.chartsWindow.Show();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -67,33 +69,51 @@ namespace NeuroXChange
 
         private void newOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.newOrderWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.newOrderWindow.Show();
         }
 
         private void breathPacerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.breathPacerWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.breathPacerWindow.Show();
         }
 
         private void indicatorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.indicatorsWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.indicatorsWindow.Show();
         }
 
         private void behavioralModelsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainNeuroXView.behavioralModelWindow.Show(dockPanel, DockState.Float);
+            mainNeuroXView.behavioralModelWindow.Show();
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             dockPanel.SaveAsXml(dockPanelConfigFile);
+            iniFileReader.Write("MainWindowX", Location.X.ToString(), "Interface");
+            iniFileReader.Write("MainWindowY", Location.Y.ToString(), "Interface");
+            iniFileReader.Write("MainWindowWidth", Size.Width.ToString(), "Interface");
+            iniFileReader.Write("MainWindowHeight", Size.Height.ToString(), "Interface");
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            Location = new Point(
+                Int32.Parse(iniFileReader.Read("MainWindowX", "Interface")),
+                Int32.Parse(iniFileReader.Read("MainWindowY", "Interface")));
+            Size = new Size(
+                Int32.Parse(iniFileReader.Read("MainWindowWidth", "Interface")),
+                Int32.Parse(iniFileReader.Read("MainWindowHeight", "Interface")));
+
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
+
+            mainNeuroXView.rawInformationWindow.DockPanel = dockPanel;
+            mainNeuroXView.chartsWindow.DockPanel = dockPanel;
+            mainNeuroXView.newOrderWindow.DockPanel = dockPanel;
+            mainNeuroXView.breathPacerWindow.DockPanel = dockPanel;
+            mainNeuroXView.indicatorsWindow.DockPanel = dockPanel;
+            mainNeuroXView.behavioralModelWindow.DockPanel = dockPanel;
         }
     }
 }

@@ -82,7 +82,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "RawInformationWindow";
-            this.Text = "RawInformationWindow";
+            this.Text = "Raw information";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RawInformationWindow_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

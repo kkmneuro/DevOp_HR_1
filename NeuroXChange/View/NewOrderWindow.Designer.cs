@@ -28,12 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewOrderWindow));
             this.btnBuy = new System.Windows.Forms.Button();
             this.btnSell = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labStepName = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBuy
@@ -64,16 +61,6 @@
             this.btnSell.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnSell.UseVisualStyleBackColor = false;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(61, 109);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(153, 50);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            // 
             // labStepName
             // 
             this.labStepName.AutoSize = true;
@@ -83,25 +70,23 @@
             this.labStepName.TabIndex = 7;
             this.labStepName.Text = "Display the stage of the loop process - HERE";
             // 
-            // BuySellWindow
+            // NewOrderWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(258, 165);
+            this.ClientSize = new System.Drawing.Size(258, 108);
             this.Controls.Add(this.labStepName);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnSell);
             this.Controls.Add(this.btnBuy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "BuySellWindow";
+            this.Name = "NewOrderWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Open new order";
+            this.Text = "New order";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuySellWindow_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,7 +96,6 @@
 
         public System.Windows.Forms.Button btnBuy;
         public System.Windows.Forms.Button btnSell;
-        private System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.Label labStepName;
     }
 }
