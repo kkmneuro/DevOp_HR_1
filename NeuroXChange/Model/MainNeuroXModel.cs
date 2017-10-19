@@ -232,6 +232,24 @@ namespace NeuroXChange.Model
         // IBioDataProcessorEventObserver implementation
         public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
         {
+            if (bioDataProcessorEvent == BioDataProcessorEvent.HeartRateRawStatistics)
+            {
+                HeartRateInfo info = (HeartRateInfo)data;
+                if (5 < info.oscillations5minAverage && info.oscillations5minAverage < 6.5)
+                {
+                    if (lastEvent != MainNeuroXModelEvent.StepPreactivation)
+                    {
+                        NotifyObservers(lastEvent = MainNeuroXModelEvent.StepPreactivation, null);
+                    }
+                }
+                else if (5 < info.oscillations3minAverage && info.oscillations3minAverage < 6.5)
+                {
+                    if (lastEvent != MainNeuroXModelEvent.StepReadyToTrade)
+                    {
+                        NotifyObservers(lastEvent = MainNeuroXModelEvent.StepReadyToTrade, null);
+                    }
+                }
+            }
         }
 
         // ---- Observable pattern implementation

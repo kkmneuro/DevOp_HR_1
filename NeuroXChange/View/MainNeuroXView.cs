@@ -117,6 +117,7 @@ namespace NeuroXChange.View
                     case MainNeuroXModelEvent.StepInitialState:
                         {
                             customDialogWindow.Hide();
+
                             newOrderWindow.labStepName.Text = "Initial stage";
                             newOrderWindow.btnBuy.Enabled = false;
                             newOrderWindow.btnSell.Enabled = false;
@@ -126,8 +127,9 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepReadyToTrade:
                         {
-                            newOrderWindow.Show();
                             customDialogWindow.Hide();
+
+                            newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = "Ready To Trade";
                             newOrderWindow.btnBuy.Enabled = false;
                             newOrderWindow.btnSell.Enabled = false;
@@ -137,6 +139,8 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepPreactivation:
                         {
+                            customDialogWindow.Hide();
+
                             newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = "Preactivation";
                             newOrderWindow.btnBuy.Enabled = true;
@@ -147,6 +151,8 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepDirectionConfirmed:
                         {
+                            customDialogWindow.Hide();
+
                             int direction = (int)data;
                             newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
@@ -165,17 +171,17 @@ namespace NeuroXChange.View
                     case MainNeuroXModelEvent.StepExecuteOrder:
                         {
                             int direction = (int)data;
-                            customDialogWindow.Show();
                             customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                                 directionName[direction], lastPrice[direction]);
+                            customDialogWindow.Show();
                             break;
                         }
                     case MainNeuroXModelEvent.StepConfirmationFilled:
                         {
                             int direction = (int)data;
-                            customDialogWindow.Show();
                             customDialogWindow.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                                 directionName[direction], lastPrice[direction]);
+                            customDialogWindow.Show();
                             break;
                         }
                     case MainNeuroXModelEvent.LogicQueryDirection:
