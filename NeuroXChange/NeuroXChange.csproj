@@ -237,6 +237,10 @@
       <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
       <Name>WinFormsUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BreathPacer\BreathPacer.csproj">
+      <Project>{CD204088-9049-4EC3-BA66-E81836101813}</Project>
+      <Name>BreathPacer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BreathPacer.png" />

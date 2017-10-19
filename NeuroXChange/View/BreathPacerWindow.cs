@@ -15,6 +15,7 @@ namespace NeuroXChange.View
         public BreathPacerWindow()
         {
             InitializeComponent();
+            breathPacerControl.Start();
         }
 
         private void BreathPacerWindow_FormClosing(object sender, FormClosingEventArgs e)

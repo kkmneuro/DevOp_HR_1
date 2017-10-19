@@ -28,16 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.breathPacerControl = new BreathPacer.BreathPacerControl();
             this.SuspendLayout();
+            // 
+            // breathPacerControl
+            // 
+            this.breathPacerControl.BallColor = System.Drawing.Color.Yellow;
+            this.breathPacerControl.BallDiameter = 25;
+            this.breathPacerControl.BreathsPerMinute = 5.5D;
+            this.breathPacerControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.breathPacerControl.ElapsedCycleCount = 0;
+            this.breathPacerControl.InhalePrecentage = 45;
+            this.breathPacerControl.LineColor = System.Drawing.Color.DeepSkyBlue;
+            this.breathPacerControl.LineWidth = 15;
+            this.breathPacerControl.Location = new System.Drawing.Point(0, 0);
+            this.breathPacerControl.Name = "breathPacerControl";
+            this.breathPacerControl.Size = new System.Drawing.Size(281, 133);
+            this.breathPacerControl.TabIndex = 0;
             // 
             // BreathPacerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::NeuroXChange.Properties.Resources.BreathPacer;
+            this.BackColor = System.Drawing.SystemColors.Desktop;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ClientSize = new System.Drawing.Size(255, 162);
+            this.ClientSize = new System.Drawing.Size(281, 133);
+            this.Controls.Add(this.breathPacerControl);
             this.Name = "BreathPacerWindow";
             this.Text = "Breath pacer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BreathPacerWindow_FormClosing);
@@ -46,5 +62,7 @@
         }
 
         #endregion
+
+        public BreathPacer.BreathPacerControl breathPacerControl;
     }
 }
