@@ -110,7 +110,6 @@ namespace NeuroXChange.Model
 
         // Logic query 1 (Direction) variables
         private int logicQueryDirectionSubProtocolID = -1;
-        private bool logicQueryDirectionFired = false;
 
         // Logic query 2 (Entry trigger) variables
         DateTime? lq2LastHartRateBigger100 = null;
@@ -165,30 +164,34 @@ namespace NeuroXChange.Model
 
 
             // ----- LOGIC QUERY 1 (Direction) event ------
-            if (data.sub_Protocol_ID != 74 && data.hartRate < logicQueryDirectionHeartRate)
+            if (lastEvent != MainNeuroXModelEvent.StepDirectionConfirmed)
             {
-                logicQueryDirectionSubProtocolID = data.sub_Protocol_ID;
-            }
-
-            if (data.sub_Protocol_ID == 74 && !logicQueryDirectionFired && logicQueryDirectionSubProtocolID > -1)
-            {
-                logicQueryDirectionFired = true;
-
-                // change application state
-                int[] buyIDs = { 66, 68, 71, 72 };
-                int[] sellIDs = { 67, 69, 70, 73 };
-                if (buyIDs.Contains(logicQueryDirectionSubProtocolID))
+                if (data.sub_Protocol_ID != 74 && data.hartRate < logicQueryDirectionHeartRate)
                 {
-                    orderDirection = 0;
+                    logicQueryDirectionSubProtocolID = data.sub_Protocol_ID;
                 }
-                else if (sellIDs.Contains(logicQueryDirectionSubProtocolID))
-                {
-                    orderDirection = 1;
-                }
-                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
 
-                // inform about logic query direction sub protocol ID
-                NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
+                if (data.sub_Protocol_ID == 74 && logicQueryDirectionSubProtocolID > -1)
+                {
+                    // change application state
+                    int[] buyIDs = { 66, 68, 71, 72 };
+                    int[] sellIDs = { 67, 69, 70, 73 };
+                    if (buyIDs.Contains(logicQueryDirectionSubProtocolID))
+                    {
+                        orderDirection = 0;
+                    }
+                    else if (sellIDs.Contains(logicQueryDirectionSubProtocolID))
+                    {
+                        orderDirection = 1;
+                    }
+                    NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
+
+                    // inform about logic query direction sub protocol ID
+                    NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
+
+                    // reset global variables
+                    logicQueryDirectionSubProtocolID = -1;
+                }
             }
 
 
