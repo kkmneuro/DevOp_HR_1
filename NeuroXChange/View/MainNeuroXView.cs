@@ -116,8 +116,6 @@ namespace NeuroXChange.View
                 {
                     case MainNeuroXModelEvent.StepInitialState:
                         {
-                            customDialogWindow.Hide();
-
                             newOrderWindow.labStepName.Text = "Initial stage";
                             newOrderWindow.btnBuy.Enabled = false;
                             newOrderWindow.btnSell.Enabled = false;
@@ -127,8 +125,6 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepReadyToTrade:
                         {
-                            customDialogWindow.Hide();
-
                             newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = "Ready To Trade";
                             newOrderWindow.btnBuy.Enabled = false;
@@ -139,8 +135,6 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepPreactivation:
                         {
-                            customDialogWindow.Hide();
-
                             newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = "Preactivation";
                             newOrderWindow.btnBuy.Enabled = true;
@@ -151,8 +145,6 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.StepDirectionConfirmed:
                         {
-                            customDialogWindow.Hide();
-
                             int direction = (int)data;
                             newOrderWindow.Show();
                             newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
@@ -160,11 +152,13 @@ namespace NeuroXChange.View
                             newOrderWindow.btnSell.Enabled = direction == 1;
                             if (direction == 0)
                             {
+                                newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
                                 newOrderWindow.btnSell.BackColor = SystemColors.Control;
                             }
                             else
                             {
                                 newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                                newOrderWindow.btnSell.BackColor = Color.Red;
                             }
                             break;
                         }
