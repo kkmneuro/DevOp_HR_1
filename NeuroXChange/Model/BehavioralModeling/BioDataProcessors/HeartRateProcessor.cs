@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NeuroXChange.Model.BioDataProcessors
+namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
 {
     public class HeartRateProcessor : AbstractBioDataProcessor
     {
@@ -17,7 +17,7 @@ namespace NeuroXChange.Model.BioDataProcessors
             HigherThanAverage
         }
 
-        private HeartRateInfo heartRateInfo = new HeartRateInfo();
+        public HeartRateInfo heartRateInfo { get; private set; }
 
         // for average heart rate calculation (over 2 minutes)
         private TimeSpan heartRateAverageTime = TimeSpan.FromMinutes(2);
@@ -34,14 +34,19 @@ namespace NeuroXChange.Model.BioDataProcessors
 
         public HeartRateProcessor()
         {
+            this.heartRateInfo = new HeartRateInfo();
+            HeartRateInfo heartRateInfo = this.heartRateInfo;
             heartRateInfo.heartRate2minAverage = -1.0;
             heartRateInfo.heartRateInnerState = HRState.InitialState.ToString();
             heartRateInfo.oscillations3minAverage = -1.0;
             heartRateInfo.oscillations5minAverage = -1.0;
+            this.heartRateInfo = heartRateInfo;
         }
 
         public override void OnNext(BioData.BioData data)
         {
+            HeartRateInfo heartRateInfo = this.heartRateInfo;
+
             double heartRateNow = data.hartRate;
 
             // update HR average for the last 2 minutes
@@ -132,6 +137,8 @@ namespace NeuroXChange.Model.BioDataProcessors
             heartRateInfo.heartRate2minAverage = HRAverage;
             heartRateInfo.heartRateInnerState = lastHRState.ToString();
             NotifyObservers(BioDataProcessorEvent.HeartRateRawStatistics, heartRateInfo);
+
+            this.heartRateInfo = heartRateInfo;
         }
     }
 }

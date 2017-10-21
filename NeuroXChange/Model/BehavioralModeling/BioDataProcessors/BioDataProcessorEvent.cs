@@ -1,4 +1,4 @@
-﻿namespace NeuroXChange.Model.BioDataProcessors
+﻿namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
 {
     public enum BioDataProcessorEvent
     {

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using NeuroXChange.Controller;
 using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
-using NeuroXChange.Model.BioDataProcessors;
+using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
 using System.Data;
 using System.Threading;

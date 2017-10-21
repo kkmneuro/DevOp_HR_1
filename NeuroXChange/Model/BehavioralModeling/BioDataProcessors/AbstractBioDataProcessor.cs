@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NeuroXChange.Model.BioData;
 
-namespace NeuroXChange.Model.BioDataProcessors
+namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
 {
     public abstract class AbstractBioDataProcessor : IBioDataObserver
     {

@@ -6,7 +6,8 @@ using System.Windows.Forms;
 using NeuroXChange.Common;
 using System.IO;
 using NeuroXChange.Model.FixApi;
-using NeuroXChange.Model.BioDataProcessors;
+using NeuroXChange.Model.BehavioralModeling;
+using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 
 namespace NeuroXChange.Model
 {
@@ -25,8 +26,8 @@ namespace NeuroXChange.Model
         // bio data processors
         public HeartRateProcessor heartRateProcessor = null;
 
-        // are we buying or selling
-        private int orderDirection = 0;  // 0 - buy, 1 - sell
+        // Behavioral Models
+        public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
 
         // step constants
         int stepChangeStart = -60;
@@ -76,6 +77,10 @@ namespace NeuroXChange.Model
                 heartRateProcessor = new HeartRateProcessor();
                 bioDataProvider.RegisterObserver(heartRateProcessor);
                 heartRateProcessor.RegisterObserver(this);
+
+                // initialization of behavioral models
+                behavioralModelsContainer = new BehavioralModelsContainer();
+                bioDataProvider.RegisterObserver(behavioralModelsContainer);
             }
             catch (Exception e)
             {
@@ -102,10 +107,14 @@ namespace NeuroXChange.Model
                 fixApiModel.StopProcessing();
         }
 
+        // are we buying or selling
+        private int orderDirection = 0;  // 0 - buy, 1 - sell
 
         // TEMP. TODO: update logic
         // application steps main loop variables
         private MainNeuroXModelEvent lastEvent = MainNeuroXModelEvent.StepInitialState;
+
+        // AccY event condition
         private bool returnedBack = false;
 
         // Logic query 1 (Direction) variables

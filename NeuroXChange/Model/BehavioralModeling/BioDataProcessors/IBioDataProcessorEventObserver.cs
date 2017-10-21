@@ -1,4 +1,5 @@
-﻿namespace NeuroXChange.Model.BioDataProcessors
+﻿namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
+
 {
     public interface IBioDataProcessorEventObserver
     {

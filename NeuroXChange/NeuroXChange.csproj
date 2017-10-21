@@ -92,11 +92,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\IniFileReader.cs" />
-    <Compile Include="Model\BioDataProcessors\AbstractBioDataProcessor.cs" />
-    <Compile Include="Model\BioDataProcessors\BioDataProcessorEvent.cs" />
-    <Compile Include="Model\BioDataProcessors\HeartRateInfo.cs" />
-    <Compile Include="Model\BioDataProcessors\HeartRateProcessor.cs" />
-    <Compile Include="Model\BioDataProcessors\IBioDataProcessorEventObserver.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AccYCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AbstractBehavioralModelCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRReadyToTradeCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRPreactivationCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery1Condition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery2Condition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\AbstractBehavioralModel.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModel1.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\BioDataProcessorEvent.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\IBioDataProcessorEventObserver.cs" />
     <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
@@ -248,6 +257,7 @@
   <ItemGroup>
     <None Include="Resources\Indicator.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)NeuroXChangeSettings.ini" "$(TargetDir)" /Y</PostBuildEvent>
