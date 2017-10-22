@@ -10,6 +10,7 @@ using NeuroXChange.Model.FixApi;
 using System.Data;
 using System.Threading;
 using WeifenLuo.WinFormsUI.Docking;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 
 namespace NeuroXChange.View
 {
@@ -87,7 +88,7 @@ namespace NeuroXChange.View
             }
 
             // move view to initial state
-            OnNext(MainNeuroXModelEvent.StepInitialState, null);
+            UpdateInterfaceFromModelState(BehavioralModelState.InitialState);
         }
 
         public void RunApplication()
@@ -95,84 +96,92 @@ namespace NeuroXChange.View
             Application.Run(mainWindow);
         }
 
+        private void UpdateInterfaceFromModelState(BehavioralModelState state)
+        {
+            switch (state)
+            {
+                case BehavioralModelState.InitialState:
+                    {
+                        newOrderWindow.labStepName.Text = "Initial stage";
+                        newOrderWindow.btnBuy.Enabled = false;
+                        newOrderWindow.btnSell.Enabled = false;
+                        newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                        newOrderWindow.btnSell.BackColor = SystemColors.Control;
+                        break;
+                    }
+                case BehavioralModelState.ReadyToTrade:
+                    {
+                        newOrderWindow.Show();
+                        newOrderWindow.labStepName.Text = "Ready To Trade";
+                        newOrderWindow.btnBuy.Enabled = false;
+                        newOrderWindow.btnSell.Enabled = false;
+                        newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                        newOrderWindow.btnSell.BackColor = SystemColors.Control;
+                        break;
+                    }
+                case BehavioralModelState.Preactivation:
+                    {
+                        newOrderWindow.Show();
+                        newOrderWindow.labStepName.Text = "Preactivation";
+                        newOrderWindow.btnBuy.Enabled = true;
+                        newOrderWindow.btnSell.Enabled = true;
+                        newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
+                        newOrderWindow.btnSell.BackColor = Color.Red;
+                        break;
+                    }
+                case BehavioralModelState.DirectionConfirmed:
+                    {
+                        int direction = model.orderDirection;
+                        newOrderWindow.Show();
+                        newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
+                        newOrderWindow.btnBuy.Enabled = direction == 0;
+                        newOrderWindow.btnSell.Enabled = direction == 1;
+                        if (direction == 0)
+                        {
+                            newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
+                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
+                        }
+                        else
+                        {
+                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                            newOrderWindow.btnSell.BackColor = Color.Red;
+                        }
+                        break;
+                    }
+                case BehavioralModelState.ExecuteOrder:
+                    {
+                        int direction = model.orderDirection;
+                        customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                            directionName[direction], lastPrice[direction]);
+                        customDialogWindow.Show();
+                        break;
+                    }
+                case BehavioralModelState.ConfirmationFilled:
+                    {
+                        int direction = model.orderDirection;
+                        customDialogWindow.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                            directionName[direction], lastPrice[direction]);
+                        customDialogWindow.Show();
+                        break;
+                    }
+            }
+
+        }
+
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
             var modelEventAction = (Action)(() =>
             {
-                switch (modelEvent)
+                if (modelEvent == MainNeuroXModelEvent.AvtiveModelStateChanged)
                 {
-                    case MainNeuroXModelEvent.StepInitialState:
-                        {
-                            newOrderWindow.labStepName.Text = "Initial stage";
-                            newOrderWindow.btnBuy.Enabled = false;
-                            newOrderWindow.btnSell.Enabled = false;
-                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                            break;
-                        }
-                    case MainNeuroXModelEvent.StepReadyToTrade:
-                        {
-                            newOrderWindow.Show();
-                            newOrderWindow.labStepName.Text = "Ready To Trade";
-                            newOrderWindow.btnBuy.Enabled = false;
-                            newOrderWindow.btnSell.Enabled = false;
-                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                            break;
-                        }
-                    case MainNeuroXModelEvent.StepPreactivation:
-                        {
-                            newOrderWindow.Show();
-                            newOrderWindow.labStepName.Text = "Preactivation";
-                            newOrderWindow.btnBuy.Enabled = true;
-                            newOrderWindow.btnSell.Enabled = true;
-                            newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
-                            newOrderWindow.btnSell.BackColor = Color.Red;
-                            break;
-                        }
-                    case MainNeuroXModelEvent.StepDirectionConfirmed:
-                        {
-                            int direction = (int)data;
-                            newOrderWindow.Show();
-                            newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
-                            newOrderWindow.btnBuy.Enabled = direction == 0;
-                            newOrderWindow.btnSell.Enabled = direction == 1;
-                            if (direction == 0)
-                            {
-                                newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
-                                newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                            }
-                            else
-                            {
-                                newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                                newOrderWindow.btnSell.BackColor = Color.Red;
-                            }
-                            break;
-                        }
-                    case MainNeuroXModelEvent.StepExecuteOrder:
-                        {
-                            int direction = (int)data;
-                            customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                                directionName[direction], lastPrice[direction]);
-                            customDialogWindow.Show();
-                            break;
-                        }
-                    case MainNeuroXModelEvent.StepConfirmationFilled:
-                        {
-                            int direction = (int)data;
-                            customDialogWindow.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                                directionName[direction], lastPrice[direction]);
-                            customDialogWindow.Show();
-                            break;
-                        }
-                    case MainNeuroXModelEvent.LogicQueryDirection:
-                        {
-                            int sub_Protocol_ID = (int)data;
-                            string[] messages = { "Direction", "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
-                            string message = 65 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 65] : "Empty message!";
-                            MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            break;
-                        }
+                    UpdateInterfaceFromModelState(model.lastEvent);
+                }
+                else if (modelEvent == MainNeuroXModelEvent.LogicQueryDirection)
+                {
+                    int sub_Protocol_ID = (int)data;
+                    string[] messages = { "Direction", "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
+                    string message = 65 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 65] : "Empty message!";
+                    MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             });
 

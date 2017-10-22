@@ -1,4 +1,5 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using System.Data;
 
 namespace NeuroXChange.Model
@@ -16,8 +17,8 @@ namespace NeuroXChange.Model
         private AbstractBehavioralModelCondition logicQuery2Condition;
 
         // behavioral model states
-        public MainNeuroXModelEvent PreviousTickState { get; private set; }
-        public MainNeuroXModelEvent CurrentTickState { get; private set; }
+        public BehavioralModelState PreviousTickState { get; private set; }
+        public BehavioralModelState CurrentTickState { get; private set; }
 
 
         // are we buying or selling
@@ -41,8 +42,8 @@ namespace NeuroXChange.Model
             this.logicQuery1Condition = logicQuery1Condition;
             this.logicQuery2Condition = logicQuery2Condition;
 
-            PreviousTickState = MainNeuroXModelEvent.StepInitialState;
-            CurrentTickState = MainNeuroXModelEvent.StepInitialState;
+            PreviousTickState = BehavioralModelState.InitialState;
+            CurrentTickState = BehavioralModelState.InitialState;
             OrderDirection = 0;
             TradesToday = 0;
             TradesTotal = 0;
@@ -58,34 +59,34 @@ namespace NeuroXChange.Model
             {
                 switch (PreviousTickState)
                 {
-                    case MainNeuroXModelEvent.StepInitialState:
+                    case BehavioralModelState.InitialState:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepReadyToTrade;
+                            CurrentTickState = BehavioralModelState.ReadyToTrade;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepReadyToTrade:
+                    case BehavioralModelState.ReadyToTrade:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepPreactivation;
+                            CurrentTickState = BehavioralModelState.Preactivation;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepPreactivation:
+                    case BehavioralModelState.Preactivation:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepDirectionConfirmed;
+                            CurrentTickState = BehavioralModelState.DirectionConfirmed;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepDirectionConfirmed:
+                    case BehavioralModelState.DirectionConfirmed:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepExecuteOrder;
+                            CurrentTickState = BehavioralModelState.ExecuteOrder;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepExecuteOrder:
+                    case BehavioralModelState.ExecuteOrder:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepConfirmationFilled;
+                            CurrentTickState = BehavioralModelState.ConfirmationFilled;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepConfirmationFilled:
+                    case BehavioralModelState.ConfirmationFilled:
                         {
-                            CurrentTickState = MainNeuroXModelEvent.StepInitialState;
+                            CurrentTickState = BehavioralModelState.InitialState;
                             break;
                         }
                 }

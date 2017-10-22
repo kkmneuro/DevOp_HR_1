@@ -2,15 +2,10 @@
 {
     public enum MainNeuroXModelEvent
     {
-        // application steps
-        StepInitialState,
-        StepReadyToTrade,
-        StepPreactivation,
-        StepDirectionConfirmed,
-        StepExecuteOrder,
-        StepConfirmationFilled,
+        ActiveModelChanged,
+        AvtiveModelStateChanged,
 
-        // logic queries
+        // inner model event
         LogicQueryDirection
     }
 }

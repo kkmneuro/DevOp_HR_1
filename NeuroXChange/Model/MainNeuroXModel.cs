@@ -8,6 +8,7 @@ using System.IO;
 using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.BehavioralModeling;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 
 namespace NeuroXChange.Model
 {
@@ -81,6 +82,11 @@ namespace NeuroXChange.Model
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer();
                 bioDataProvider.RegisterObserver(behavioralModelsContainer);
+
+                // initialize model variables
+                lastEvent = BehavioralModelState.InitialState;
+                orderDirection = 0;
+                logicQueryDirectionSubProtocolID = -1;
             }
             catch (Exception e)
             {
@@ -108,17 +114,17 @@ namespace NeuroXChange.Model
         }
 
         // are we buying or selling
-        private int orderDirection = 0;  // 0 - buy, 1 - sell
+        public int orderDirection { get; private set; }  // 0 - buy, 1 - sell
 
         // TEMP. TODO: update logic
         // application steps main loop variables
-        private MainNeuroXModelEvent lastEvent = MainNeuroXModelEvent.StepInitialState;
+        public BehavioralModelState lastEvent { get; private set; }
 
         // AccY event condition
         private bool returnedBack = false;
 
         // Logic query 1 (Direction) variables
-        private int logicQueryDirectionSubProtocolID = -1;
+        public int logicQueryDirectionSubProtocolID { get; private set; }
 
         // Logic query 2 (Entry trigger) variables
         DateTime? lq2LastHartRateBigger100 = null;
@@ -138,42 +144,43 @@ namespace NeuroXChange.Model
             {
                 returnedBack = false;
                 switch (lastEvent) {
-                    case MainNeuroXModelEvent.StepInitialState:
+                    case BehavioralModelState.InitialState:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepReadyToTrade, null);
+                            lastEvent = BehavioralModelState.ReadyToTrade;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepReadyToTrade:
+                    case BehavioralModelState.ReadyToTrade:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepPreactivation, null);
+                            lastEvent = BehavioralModelState.Preactivation;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepPreactivation:
+                    case BehavioralModelState.Preactivation:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
+                            lastEvent = BehavioralModelState.DirectionConfirmed;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepDirectionConfirmed:
+                    case BehavioralModelState.DirectionConfirmed:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
+                            lastEvent = BehavioralModelState.ExecuteOrder;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepExecuteOrder:
+                    case BehavioralModelState.ExecuteOrder:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepConfirmationFilled, orderDirection);
+                            lastEvent = BehavioralModelState.ConfirmationFilled;
                             break;
                         }
-                    case MainNeuroXModelEvent.StepConfirmationFilled:
+                    case BehavioralModelState.ConfirmationFilled:
                         {
-                            NotifyObservers(lastEvent = MainNeuroXModelEvent.StepInitialState, null);
+                            lastEvent = BehavioralModelState.InitialState;
                             break;
                         }
                 }
+                NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
             }
 
 
             // ----- LOGIC QUERY 1 (Direction) event ------
-            if (lastEvent != MainNeuroXModelEvent.StepDirectionConfirmed)
+            if (lastEvent != BehavioralModelState.DirectionConfirmed)
             {
                 if (data.sub_Protocol_ID != 74 && data.hartRate < logicQueryDirectionHeartRate)
                 {
@@ -193,7 +200,8 @@ namespace NeuroXChange.Model
                     {
                         orderDirection = 1;
                     }
-                    NotifyObservers(lastEvent = MainNeuroXModelEvent.StepDirectionConfirmed, orderDirection);
+                    lastEvent = BehavioralModelState.DirectionConfirmed;
+                    NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
 
                     // inform about logic query direction sub protocol ID
                     NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQueryDirectionSubProtocolID);
@@ -229,7 +237,8 @@ namespace NeuroXChange.Model
             }
             if (lq2ConditionsMet)
             {
-                NotifyObservers(lastEvent = MainNeuroXModelEvent.StepExecuteOrder, orderDirection);
+                lastEvent = BehavioralModelState.ExecuteOrder;
+                NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
             }
             if (data.hartRate < 60)
             {
@@ -249,16 +258,18 @@ namespace NeuroXChange.Model
                 HeartRateInfo info = (HeartRateInfo)data;
                 if (5 < info.oscillations5minAverage && info.oscillations5minAverage < 6.5)
                 {
-                    if (lastEvent != MainNeuroXModelEvent.StepPreactivation)
+                    if (lastEvent != BehavioralModelState.Preactivation)
                     {
-                        NotifyObservers(lastEvent = MainNeuroXModelEvent.StepPreactivation, null);
+                        lastEvent = BehavioralModelState.Preactivation;
+                        NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
                     }
                 }
                 else if (5 < info.oscillations3minAverage && info.oscillations3minAverage < 6.5)
                 {
-                    if (lastEvent != MainNeuroXModelEvent.StepReadyToTrade)
+                    if (lastEvent != BehavioralModelState.ReadyToTrade)
                     {
-                        NotifyObservers(lastEvent = MainNeuroXModelEvent.StepReadyToTrade, null);
+                        lastEvent = BehavioralModelState.ReadyToTrade;
+                        NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
                     }
                 }
             }
