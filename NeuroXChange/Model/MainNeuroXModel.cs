@@ -72,7 +72,7 @@ namespace NeuroXChange.Model
                 bioDataProvider.RegisterObserver(fixApiModel);
 
                 // initialization of behavioral models
-                behavioralModelsContainer = new BehavioralModelsContainer();
+                behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
                 bioDataProvider.RegisterObserver(behavioralModelsContainer);
 
                 // initialize model variables

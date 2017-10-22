@@ -1,4 +1,5 @@
-﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+﻿using NeuroXChange.Common;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BioData;
 using System;
@@ -30,7 +31,7 @@ namespace NeuroXChange.Model.BehavioralModeling
         public AbstractBehavioralModel[] behavioralModels { get; private set; }
         public int ActiveBehavioralModelIndex { get; set; }
 
-        public BehavioralModelsContainer()
+        public BehavioralModelsContainer(IniFileReader iniFileReader)
         {
             // initialize dataset to save statistics
             behavioralModelsDataSet = new DataSet("BehavioralModelsDataSet");
@@ -49,10 +50,19 @@ namespace NeuroXChange.Model.BehavioralModeling
             heartRateProcessor = new HeartRateProcessor();
 
             // initialize conditions
-            accYCondition = new AccYCondition();
-            hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor);
-            hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor);
+            var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
+            var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+            accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
+
+            double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions"));
+            double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions"));
+
+            hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
+
+            hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
+
             logicQuery1Condition = new LogicQuery1Condition();
+
             logicQuery2Condition = new LogicQuery2Condition();
 
             // add initialized conditions to List for more easy processing

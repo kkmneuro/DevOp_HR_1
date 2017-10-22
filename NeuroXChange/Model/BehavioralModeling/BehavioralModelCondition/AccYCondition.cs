@@ -3,10 +3,18 @@
     public class AccYCondition : AbstractBehavioralModelCondition
     {
         // step constants
-        private int stepChangeStart = -60;
-        private int stepChangeEnd = -20;
+        private double stepChangeStart = -60;
+        private double stepChangeEnd = -20;
 
         private bool returnedBack = false;
+
+        public AccYCondition(
+            double stepChangeStart,
+            double stepChangeEnd)
+        {
+            this.stepChangeStart = stepChangeStart;
+            this.stepChangeEnd = stepChangeEnd;
+        }
 
         public override void OnNext(BioData.BioData data)
         {
