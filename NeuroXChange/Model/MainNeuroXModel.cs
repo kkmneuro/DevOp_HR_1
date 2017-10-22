@@ -199,7 +199,9 @@ namespace NeuroXChange.Model
                     logicQueryDirectionSubProtocolID = data.sub_Protocol_ID;
                 }
 
-                if (data.sub_Protocol_ID == 74 && logicQueryDirectionSubProtocolID > -1)
+                if (data.sub_Protocol_ID == 74
+                    && 65 <= logicQueryDirectionSubProtocolID
+                    && logicQueryDirectionSubProtocolID < 74)
                 {
                     // change application state
                     int[] buyIDs = { 66, 68, 71, 72 };
