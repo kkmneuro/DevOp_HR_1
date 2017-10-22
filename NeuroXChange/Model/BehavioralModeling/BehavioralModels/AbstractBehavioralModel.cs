@@ -100,7 +100,7 @@ namespace NeuroXChange.Model
 
         public virtual void UpdateStatistics()
         {
-            dataRow["State"] = CurrentTickState.ToString();
+            dataRow["State"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
             dataRow["In position"] = OrderDirection == 0 ? "LONG" : "SHORT";
             dataRow["All trades"] = TradesTotal;
             dataRow["Trades today"] = TradesToday;

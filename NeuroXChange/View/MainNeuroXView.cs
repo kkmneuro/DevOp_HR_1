@@ -97,11 +97,12 @@ namespace NeuroXChange.View
 
         private void UpdateInterfaceFromModelState(BehavioralModelState state)
         {
+            newOrderWindow.labStepName.Text = BehavioralModelStateHelper.StateToString(state);
+
             switch (state)
             {
                 case BehavioralModelState.InitialState:
                     {
-                        newOrderWindow.labStepName.Text = "Initial stage";
                         newOrderWindow.btnBuy.Enabled = false;
                         newOrderWindow.btnSell.Enabled = false;
                         newOrderWindow.btnBuy.BackColor = SystemColors.Control;
@@ -111,7 +112,6 @@ namespace NeuroXChange.View
                 case BehavioralModelState.ReadyToTrade:
                     {
                         newOrderWindow.Show();
-                        newOrderWindow.labStepName.Text = "Ready To Trade";
                         newOrderWindow.btnBuy.Enabled = false;
                         newOrderWindow.btnSell.Enabled = false;
                         newOrderWindow.btnBuy.BackColor = SystemColors.Control;
@@ -121,7 +121,6 @@ namespace NeuroXChange.View
                 case BehavioralModelState.Preactivation:
                     {
                         newOrderWindow.Show();
-                        newOrderWindow.labStepName.Text = "Preactivation";
                         newOrderWindow.btnBuy.Enabled = true;
                         newOrderWindow.btnSell.Enabled = true;
                         newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
@@ -150,7 +149,7 @@ namespace NeuroXChange.View
                 case BehavioralModelState.ExecuteOrder:
                     {
                         int direction = model.orderDirection;
-                        customDialogWindow.labInformation.Text = string.Format("Order Executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                        customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], lastPrice[direction]);
                         customDialogWindow.Show();
                         break;
@@ -158,7 +157,7 @@ namespace NeuroXChange.View
                 case BehavioralModelState.ConfirmationFilled:
                     {
                         int direction = model.orderDirection;
-                        customDialogWindow.labInformation.Text = string.Format("Order Filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                        customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], lastPrice[direction]);
                         customDialogWindow.Show();
                         break;
