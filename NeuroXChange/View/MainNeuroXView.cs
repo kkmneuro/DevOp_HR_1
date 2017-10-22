@@ -193,8 +193,17 @@ namespace NeuroXChange.View
             }
         }
 
+        private DateTime previousTickTime = DateTime.Now;
+
         public void OnNext(BioData data)
         {
+            // optimize view on emulation mode with extra-small ticks
+            if (model.emulationOnHistory && (DateTime.Now - previousTickTime) < TimeSpan.FromMilliseconds(20))
+            {
+                return;
+            }
+            previousTickTime = DateTime.Now;
+
             HeartRateInfo hrInfo = model.behavioralModelsContainer.heartRateProcessor.heartRateInfo;
 
             mainWindow.BeginInvoke(
