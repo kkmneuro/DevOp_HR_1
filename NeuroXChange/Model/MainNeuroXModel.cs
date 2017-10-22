@@ -171,7 +171,7 @@ namespace NeuroXChange.Model
             }
 
 
-            // ----- HR Oscillations procesing
+            // ----- HR Oscillations procesing -----
             HeartRateInfo info = behavioralModelsContainer.heartRateProcessor.heartRateInfo;
             if (5 < info.oscillations5minAverage && info.oscillations5minAverage < 6.5)
             {

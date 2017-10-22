@@ -70,7 +70,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             {
                 behavioralModels[i] = 
                     new BehavioralModel1(
-                        accYCondition,
+                        null,   // no active AccY conditions
                         hrReadyToTradeCondition,
                         hrPreactivationCondition,
                         logicQuery1Condition,

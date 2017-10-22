@@ -20,7 +20,6 @@ namespace NeuroXChange.Model
         public BehavioralModelState PreviousTickState { get; private set; }
         public BehavioralModelState CurrentTickState { get; private set; }
 
-
         // are we buying or selling
         public int OrderDirection { get; private set; }  // 0 - buy, 1 - sell
 
@@ -54,8 +53,8 @@ namespace NeuroXChange.Model
         {
             PreviousTickState = CurrentTickState;
 
-            // change state according to accYCondition
-            if (accYCondition.isConditionMet)
+            // ----- AccY event ------
+            if (accYCondition != null && accYCondition.isConditionMet)
             {
                 switch (PreviousTickState)
                 {
@@ -92,6 +91,24 @@ namespace NeuroXChange.Model
                 }
             }
 
+
+            // ----- HR Oscillations conditions -----
+            if (hrReadyToTradeCondition.isConditionMet)
+            {
+                if (PreviousTickState == BehavioralModelState.InitialState)
+                {
+                    CurrentTickState = BehavioralModelState.ReadyToTrade;
+                }
+            }
+            if (hrPreactivationCondition.isConditionMet)
+            {
+                if (PreviousTickState == BehavioralModelState.ReadyToTrade)
+                {
+                    CurrentTickState = BehavioralModelState.Preactivation;
+                }
+            }
+
+
             if (PreviousTickState != CurrentTickState)
             {
                 UpdateStatistics();
@@ -101,7 +118,15 @@ namespace NeuroXChange.Model
         public virtual void UpdateStatistics()
         {
             dataRow["State"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
-            dataRow["In position"] = OrderDirection == 0 ? "LONG" : "SHORT";
+            if (CurrentTickState == BehavioralModelState.DirectionConfirmed ||
+                CurrentTickState == BehavioralModelState.ExecuteOrder)
+            {
+                dataRow["In position"] = OrderDirection == 0 ? "LONG" : "SHORT";
+            }
+            else
+            {
+                dataRow["In position"] = "-";
+            }
             dataRow["All trades"] = TradesTotal;
             dataRow["Trades today"] = TradesToday;
             dataRow["Profitability"] = Profitability;
