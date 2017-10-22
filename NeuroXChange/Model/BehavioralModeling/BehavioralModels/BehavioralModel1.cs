@@ -18,7 +18,7 @@ namespace NeuroXChange.Model.BehavioralModeling
 
         public override void OnNext(BioData.BioData data)
         {
-
+            base.OnNext(data);
         }
     }
 }

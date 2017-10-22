@@ -12,25 +12,28 @@ namespace AddToDatabase
     {
         static void Main(string[] args)
         {
-            string fileName = @"C:\tmp\neurotrader\Neuro-Xchange_Psychophysiology1.mdb";
+            string fileName = @"C:\tmp\neurotrader\data.mdb";
 
             OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName);
             conn.Open();
             Thread.Sleep(3000);
 
-            int testCase = 3;
+            int testCase = 0;
 
             // emulate program stage change
             if (testCase == 0)
             {
-                for (int i = 1000000000; i < 1000000100; i++)
+                for (int i = 0; i < 60; i++)
                 {
                     Thread.Sleep(2000);
                     Console.WriteLine("Send data, inner counter " + i.ToString());
-                    OleDbCommand cmd = new OleDbCommand(@"
-insert into Sub_Component_Protocol_Psychophysiological_Session_Data_TPS_1(
+                    var commandString = string.Format(
+                        @"
+insert into TestBehavioralModelsAccY(
 psychophysiological_Session_Data_ID, [Time], Temperature, HartRate, AccY, Session_Component_ID, Sub_Component_ID, Sub_Component_Protocol_ID, Participant_ID, [Data])
- values(" + i.ToString() + @",'10/05/2017 06:30:57', 33.6967766284943, 120.805366516113, " + (i % 2 == 0 ? "-75" : "-5") + ", 2, 4, 71, 58, 'aaa')", conn);
+ values({0},'10/05/2017 06:30:{1}', 33.6967766284943, 120.805366516113, {2}, 2, 4, 71, 58, 'aaa')",
+i, i, (i % 2 == 0 ? "-75" : "-5"));
+                    OleDbCommand cmd = new OleDbCommand(commandString, conn);
                     cmd.ExecuteNonQuery();
                 }
             }

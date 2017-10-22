@@ -64,6 +64,9 @@ namespace NeuroXChange.View
 
             behavioralModelWindow = new BehavioralModelsWindow();
             behavioralModelWindow.Owner = mainWindow;
+            behavioralModelWindow.dataGridView.AutoGenerateColumns = true;
+            behavioralModelWindow.dataGridView.DataSource = model.behavioralModelsContainer.behavioralModelsDataSet;
+            behavioralModelWindow.dataGridView.DataMember = model.behavioralModelsContainer.behavioralModelsDataTableName;
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
@@ -76,22 +79,6 @@ namespace NeuroXChange.View
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
             model.heartRateProcessor.RegisterObserver(this);
-
-            // fill behavioral model
-            var random = new Random(1);
-            for (int ind = 1; ind <= 15; ind++)
-            {
-                DataRow newCustomersRow = behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].NewRow();
-                newCustomersRow["Model"] = ind.ToString();
-                newCustomersRow["Initial state"] = "ON";
-                newCustomersRow["Preactivation"] = "ON";
-                newCustomersRow["Activation"] = random.Next(0, 2) == 0 ? "ON" : "OFF";
-                newCustomersRow["Security"] = "EURUSD";
-                newCustomersRow["In position"] = random.Next(0, 2) == 0 ? "LONG" : "SHORT";
-                newCustomersRow["Trades today"] = random.Next(0, 11);
-                newCustomersRow["Profitability"] = random.Next(-100, +100);
-                behavioralModelWindow.behavioralModelsDataSet.Tables["BehavioralModels"].Rows.Add(newCustomersRow);
-            }
 
             allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface"));
             if (allWindowsOnTop)

@@ -1,9 +1,13 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+using System.Data;
 
 namespace NeuroXChange.Model
 {
     public abstract class AbstractBehavioralModel
     {
+        // used for saving model statistic information
+        public DataRow dataRow { get; set; }
+
         // behavioral conditions
         private AccYCondition accYCondition;
         private HRReadyToTradeCondition hrReadyToTradeCondition;
@@ -77,6 +81,11 @@ namespace NeuroXChange.Model
                             break;
                         }
                 }
+            }
+
+            if (previousTickState != currentTickState)
+            {
+                dataRow["State"] = currentTickState.ToString();
             }
         }
     }

@@ -1,12 +1,19 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BioData;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace NeuroXChange.Model.BehavioralModeling
 {
     public class BehavioralModelsContainer : IBioDataObserver
     {
+        // statistics that could be used for representation in UI
+        public DataSet behavioralModelsDataSet { get; private set; }
+        public string behavioralModelsDataTableName { get; private set; }
+        private DataTable behavioralModelsDataTable;
+
         // processors of raw biological data
         public HeartRateProcessor heartRateProcessor { get; private set; }
 
@@ -19,12 +26,25 @@ namespace NeuroXChange.Model.BehavioralModeling
         public LogicQuery2Condition logicQuery2Condition { get; private set; }
 
         // behavioral models properties
-        public int behavioralModelsCount { get; private set; }
+        public int BehavioralModelsCount { get; private set; }
         public AbstractBehavioralModel[] behavioralModels { get; private set; }
-        public AbstractBehavioralModel activeBehavioralModel { get; private set; }
+        public int ActiveBehavioralModelIndex { get; set; }
 
         public BehavioralModelsContainer()
         {
+            // initialize dataset to save statistics
+            behavioralModelsDataSet = new DataSet("BehavioralModelsDataSet");
+            behavioralModelsDataTableName = "BehavioralModels";
+            behavioralModelsDataTable = behavioralModelsDataSet.Tables.Add(behavioralModelsDataTableName);
+            DataColumn pkModelID =
+                behavioralModelsDataTable.Columns.Add("Model", typeof(Int32));
+            behavioralModelsDataTable.Columns.Add("State", typeof(string));
+            behavioralModelsDataTable.Columns.Add("In position", typeof(string));
+            behavioralModelsDataTable.Columns.Add("All trades", typeof(Int32));
+            behavioralModelsDataTable.Columns.Add("Trades today", typeof(Int32));
+            behavioralModelsDataTable.Columns.Add("Profitability", typeof(Double));
+            behavioralModelsDataTable.PrimaryKey = new DataColumn[] { pkModelID };
+
             // initialize raw biological processors
             heartRateProcessor = new HeartRateProcessor();
 
@@ -44,9 +64,9 @@ namespace NeuroXChange.Model.BehavioralModeling
             conditions.Add(logicQuery2Condition);
 
             // initialize behavioral models
-            behavioralModelsCount = 15;
-            behavioralModels = new AbstractBehavioralModel[behavioralModelsCount];
-            for (int i = 0; i < behavioralModelsCount; i++)
+            BehavioralModelsCount = 15;
+            behavioralModels = new AbstractBehavioralModel[BehavioralModelsCount];
+            for (int i = 0; i < BehavioralModelsCount; i++)
             {
                 behavioralModels[i] = 
                     new BehavioralModel1(
@@ -55,8 +75,12 @@ namespace NeuroXChange.Model.BehavioralModeling
                         hrPreactivationCondition,
                         logicQuery1Condition,
                         logicQuery2Condition);
+                var row = behavioralModelsDataTable.NewRow();
+                row["Model"] = i + 1;
+                behavioralModels[i].dataRow = row;
+                behavioralModelsDataTable.Rows.Add(row);
             }
-            activeBehavioralModel = behavioralModels[0];
+            ActiveBehavioralModelIndex = 0;
         }
 
         public void OnNext(BioData.BioData data)
