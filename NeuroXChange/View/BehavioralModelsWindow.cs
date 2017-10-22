@@ -30,25 +30,7 @@ namespace NeuroXChange.View
         {
             switch (e.ColumnIndex)
             {
-                case 1:
                 case 2:
-                case 3:
-                    {
-                        if (e.Value != null)
-                        {
-                            var value = e.Value.ToString();
-                            if (value == "ON")
-                            {
-                                e.CellStyle.BackColor = Color.LightGreen;
-                            }
-                            if (value == "OFF")
-                            {
-                                e.CellStyle.BackColor = Color.Pink;
-                            }
-                        }
-                        break;
-                    }
-                case 5:
                     {
                         if (e.Value != null)
                         {
@@ -65,6 +47,11 @@ namespace NeuroXChange.View
                         break;
                     }
             }
+        }
+
+        private void BehavioralModelsWindow_Load(object sender, EventArgs e)
+        {
+            dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
         }
     }
 }

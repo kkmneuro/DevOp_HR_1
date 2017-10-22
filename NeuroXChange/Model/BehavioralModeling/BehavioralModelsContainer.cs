@@ -79,6 +79,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 row["Model"] = i + 1;
                 behavioralModels[i].dataRow = row;
                 behavioralModelsDataTable.Rows.Add(row);
+                behavioralModels[i].UpdateStatistics();
             }
             ActiveBehavioralModelIndex = 0;
         }

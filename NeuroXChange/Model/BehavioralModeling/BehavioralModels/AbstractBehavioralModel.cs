@@ -16,12 +16,17 @@ namespace NeuroXChange.Model
         private AbstractBehavioralModelCondition logicQuery2Condition;
 
         // behavioral model states
-        public MainNeuroXModelEvent previousTickState { get; private set; }
-        public MainNeuroXModelEvent currentTickState { get; private set; }
+        public MainNeuroXModelEvent PreviousTickState { get; private set; }
+        public MainNeuroXModelEvent CurrentTickState { get; private set; }
 
 
         // are we buying or selling
-        public int orderDirection { get; private set; }  // 0 - buy, 1 - sell
+        public int OrderDirection { get; private set; }  // 0 - buy, 1 - sell
+
+        // other statistics
+        public int TradesToday { get; private set; }
+        public int TradesTotal { get; private set; }
+        public double Profitability { get; private set; }
 
         public AbstractBehavioralModel(
             AccYCondition accYCondition,
@@ -36,57 +41,69 @@ namespace NeuroXChange.Model
             this.logicQuery1Condition = logicQuery1Condition;
             this.logicQuery2Condition = logicQuery2Condition;
 
-            previousTickState = MainNeuroXModelEvent.StepInitialState;
-            currentTickState = MainNeuroXModelEvent.StepInitialState;
-            orderDirection = 0;
+            PreviousTickState = MainNeuroXModelEvent.StepInitialState;
+            CurrentTickState = MainNeuroXModelEvent.StepInitialState;
+            OrderDirection = 0;
+            TradesToday = 0;
+            TradesTotal = 0;
+            Profitability = 0.0;
         }
 
         public virtual void OnNext(BioData.BioData data)
         {
-            previousTickState = currentTickState;
+            PreviousTickState = CurrentTickState;
 
             // change state according to accYCondition
             if (accYCondition.isConditionMet)
             {
-                switch (previousTickState)
+                switch (PreviousTickState)
                 {
                     case MainNeuroXModelEvent.StepInitialState:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepReadyToTrade;
+                            CurrentTickState = MainNeuroXModelEvent.StepReadyToTrade;
                             break;
                         }
                     case MainNeuroXModelEvent.StepReadyToTrade:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepPreactivation;
+                            CurrentTickState = MainNeuroXModelEvent.StepPreactivation;
                             break;
                         }
                     case MainNeuroXModelEvent.StepPreactivation:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepDirectionConfirmed;
+                            CurrentTickState = MainNeuroXModelEvent.StepDirectionConfirmed;
                             break;
                         }
                     case MainNeuroXModelEvent.StepDirectionConfirmed:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepExecuteOrder;
+                            CurrentTickState = MainNeuroXModelEvent.StepExecuteOrder;
                             break;
                         }
                     case MainNeuroXModelEvent.StepExecuteOrder:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepConfirmationFilled;
+                            CurrentTickState = MainNeuroXModelEvent.StepConfirmationFilled;
                             break;
                         }
                     case MainNeuroXModelEvent.StepConfirmationFilled:
                         {
-                            currentTickState = MainNeuroXModelEvent.StepInitialState;
+                            CurrentTickState = MainNeuroXModelEvent.StepInitialState;
                             break;
                         }
                 }
             }
 
-            if (previousTickState != currentTickState)
+            if (PreviousTickState != CurrentTickState)
             {
-                dataRow["State"] = currentTickState.ToString();
+                UpdateStatistics();
             }
+        }
+
+        public virtual void UpdateStatistics()
+        {
+            dataRow["State"] = CurrentTickState.ToString();
+            dataRow["In position"] = OrderDirection == 0 ? "LONG" : "SHORT";
+            dataRow["All trades"] = TradesTotal;
+            dataRow["Trades today"] = TradesToday;
+            dataRow["Profitability"] = Profitability;
         }
     }
 }
