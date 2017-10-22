@@ -12,7 +12,7 @@ using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 
 namespace NeuroXChange.Model
 {
-    public class MainNeuroXModel : IBioDataObserver, IBioDataProcessorEventObserver
+    public class MainNeuroXModel : IBioDataObserver
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
@@ -23,9 +23,6 @@ namespace NeuroXChange.Model
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public AbstractFixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
-
-        // bio data processors
-        public HeartRateProcessor heartRateProcessor = null;
 
         // Behavioral Models
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
@@ -73,11 +70,6 @@ namespace NeuroXChange.Model
 
                 fixApiModel = new FixApiModel(iniFileReader);
                 bioDataProvider.RegisterObserver(fixApiModel);
-
-                // bio data processors
-                heartRateProcessor = new HeartRateProcessor();
-                bioDataProvider.RegisterObserver(heartRateProcessor);
-                heartRateProcessor.RegisterObserver(this);
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer();
@@ -179,6 +171,26 @@ namespace NeuroXChange.Model
             }
 
 
+            // ----- HR Oscillations procesing
+            HeartRateInfo info = behavioralModelsContainer.heartRateProcessor.heartRateInfo;
+            if (5 < info.oscillations5minAverage && info.oscillations5minAverage < 6.5)
+            {
+                if (lastEvent != BehavioralModelState.Preactivation)
+                {
+                    lastEvent = BehavioralModelState.Preactivation;
+                    NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
+                }
+            }
+            else if (5 < info.oscillations3minAverage && info.oscillations3minAverage < 6.5)
+            {
+                if (lastEvent != BehavioralModelState.ReadyToTrade)
+                {
+                    lastEvent = BehavioralModelState.ReadyToTrade;
+                    NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
+                }
+            }
+
+
             // ----- LOGIC QUERY 1 (Direction) event ------
             if (lastEvent != BehavioralModelState.DirectionConfirmed)
             {
@@ -247,31 +259,6 @@ namespace NeuroXChange.Model
             if (data.hartRate > 100)
             {
                 lq2LastHartRateBigger100 = data.time;
-            }
-        }
-
-        // IBioDataProcessorEventObserver implementation
-        public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
-        {
-            if (bioDataProcessorEvent == BioDataProcessorEvent.HeartRateRawStatistics)
-            {
-                HeartRateInfo info = (HeartRateInfo)data;
-                if (5 < info.oscillations5minAverage && info.oscillations5minAverage < 6.5)
-                {
-                    if (lastEvent != BehavioralModelState.Preactivation)
-                    {
-                        lastEvent = BehavioralModelState.Preactivation;
-                        NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
-                    }
-                }
-                else if (5 < info.oscillations3minAverage && info.oscillations3minAverage < 6.5)
-                {
-                    if (lastEvent != BehavioralModelState.ReadyToTrade)
-                    {
-                        lastEvent = BehavioralModelState.ReadyToTrade;
-                        NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
-                    }
-                }
             }
         }
 

@@ -103,10 +103,8 @@
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModel1.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
-    <Compile Include="Model\BehavioralModeling\BioDataProcessors\BioDataProcessorEvent.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
-    <Compile Include="Model\BehavioralModeling\BioDataProcessors\IBioDataProcessorEventObserver.cs" />
     <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />

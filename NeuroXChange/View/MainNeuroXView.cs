@@ -14,7 +14,7 @@ using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 
 namespace NeuroXChange.View
 {
-    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver, IBioDataProcessorEventObserver
+    public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver
     {
         private MainNeuroXModel model;
         private MainNeuroXController controller;
@@ -79,7 +79,6 @@ namespace NeuroXChange.View
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
-            model.heartRateProcessor.RegisterObserver(this);
 
             allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface"));
             if (allWindowsOnTop)
@@ -197,6 +196,13 @@ namespace NeuroXChange.View
 
         public void OnNext(BioData data)
         {
+            HeartRateInfo hrInfo = model.behavioralModelsContainer.heartRateProcessor.heartRateInfo;
+
+            mainWindow.BeginInvoke(
+                (Action)(() =>
+                {
+
+            // update biodata information
             StringBuilder builder = new StringBuilder();
             builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");
             builder.Append("Time: " + data.time + "\r\n");
@@ -212,25 +218,43 @@ namespace NeuroXChange.View
             builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
             builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
             builder.Append("Data: " + data.data);
-            mainWindow.BeginInvoke(
-                (Action)(() =>
+
+            rawInformationWindow.bioDataRTB.Text = builder.ToString();
+            var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
+            var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
+            var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
+            temperaturePoints.AddXY(data.time, data.temperature);
+            hrPoints.AddXY(data.time, data.hartRate);
+            skinCondPoints.AddXY(data.time, data.skinConductance);
+            if (hrPoints.Count > 3000)
+            {
+                temperaturePoints.RemoveAt(0);
+                hrPoints.RemoveAt(0);
+                skinCondPoints.RemoveAt(0);
+                chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
+            }
+
+            // update HR oscillations info
+            builder = new StringBuilder();
+            builder.Append(string.Format("Heart rate 2 min average: {0:0.##}\r\n", hrInfo.heartRate2minAverage));
+            builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
+            builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
+            builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
+
+            rawInformationWindow.heartRateRTB.Text = builder.ToString();
+            if (hrInfo.heartRate2minAverage > 0)
+            {
+                hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
+                hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
+                if (hrPoints.Count > 3000)
                 {
-                    rawInformationWindow.bioDataRTB.Text = builder.ToString();
-                    var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
-                    var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
-                    var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
-                    temperaturePoints.AddXY(data.time, data.temperature);
-                    hrPoints.AddXY(data.time, data.hartRate);
-                    skinCondPoints.AddXY(data.time, data.skinConductance);
-                    if (hrPoints.Count > 3000)
-                    {
-                        temperaturePoints.RemoveAt(0);
-                        hrPoints.RemoveAt(0);
-                        skinCondPoints.RemoveAt(0);
-                        chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
-                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                        chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
-                    }
+                    hrPoints.RemoveAt(0);
+                    chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                }
+            }
+
                 }));
         }
 
@@ -247,40 +271,6 @@ namespace NeuroXChange.View
                                    lastPrice = prices;
                                }));
             }
-        }
-
-        public void OnNext(BioDataProcessorEvent bioDataProcessorEvent, object data)
-        {
-            mainWindow.BeginInvoke(
-                            (Action)(() =>
-                            {
-                                HeartRateInfo hrInfo = (HeartRateInfo)data;
-                                switch (bioDataProcessorEvent)
-                                {
-                                    case BioDataProcessorEvent.HeartRateRawStatistics:
-                                        {
-                                            StringBuilder builder = new StringBuilder();
-                                            builder.Append(string.Format("Heart rate 2 min average: {0:0.##}\r\n", hrInfo.heartRate2minAverage));
-                                            builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
-                                            builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
-                                            builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
-                                            rawInformationWindow.heartRateRTB.Text = builder.ToString();
-
-                                            if (hrInfo.heartRate2minAverage > 0)
-                                            {
-                                                var hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
-                                                hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
-                                                if (hrPoints.Count > 3000)
-                                                {
-                                                    hrPoints.RemoveAt(0);
-                                                    chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                                                }
-                                            }
-
-                                            break;
-                                        }
-                                }
-                            }));
         }
     }
 }
