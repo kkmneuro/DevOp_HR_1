@@ -63,13 +63,20 @@ namespace NeuroXChange.Model
                 }
                 bioDataProvider.RegisterObserver(this);
 
+                if (!emulationOnHistory)
+                {
+                    fixApiModel = new FixApiModel(iniFileReader);
+                }
+                else
+                {
+                    fixApiModel = new EmulationOnHistoryFixApiModel();
+                }
+                bioDataProvider.RegisterObserver(fixApiModel);
+
                 // load logic conditions constants
                 stepChangeStart = Int32.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
                 stepChangeEnd = Int32.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
                 logicQueryDirectionHeartRate = Int32.Parse(iniFileReader.Read("LogicQueryDirectionHeartRate", "LogicConditions"));
-
-                fixApiModel = new FixApiModel(iniFileReader);
-                bioDataProvider.RegisterObserver(fixApiModel);
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);

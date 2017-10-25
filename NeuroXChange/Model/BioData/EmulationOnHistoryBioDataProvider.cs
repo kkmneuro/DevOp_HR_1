@@ -17,10 +17,13 @@ namespace NeuroXChange.Model.BioData
         private long endDataRowId;
         private int tickInterval;
 
+        private string priceAtBioDataTickTable;
+
         public EmulationOnHistoryBioDataProvider(IniFileReader iniFileReader)
         {
             databaseLocation = iniFileReader.Read("Location", "Database");
             tableName = iniFileReader.Read("Table", "Database");
+            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database");
 
             if (!File.Exists(this.databaseLocation))
             {
@@ -47,17 +50,18 @@ namespace NeuroXChange.Model.BioData
                 conn.Open();
 
                 var commandStr = string.Format(
-                    @"SELECT * FROM {0}
-                WHERE psychophysiological_Session_Data_ID >= {1} AND psychophysiological_Session_Data_ID <= {2}
+                    @"SELECT {0}.*, sellPrice, buyPrice FROM {0}
+                LEFT OUTER JOIN {1} ON {0}.psychophysiological_Session_Data_ID = {1}.ID
+                WHERE psychophysiological_Session_Data_ID >= {2} AND psychophysiological_Session_Data_ID <= {3}
                 ORDER BY Psychophysiological_Session_Data_ID",
-                    tableName, startDataRowId, endDataRowId);
+                    tableName, priceAtBioDataTickTable, startDataRowId, endDataRowId);
 
                 var cmd = new OleDbCommand(commandStr, conn);
 
                 var reader = cmd.ExecuteReader();
                 while (!NeedStop && reader.Read())
                 {
-                    var data = BioData.FromOleDbDataReader(reader);
+                    var data = BioData.FromOleDbDataReader(reader, true);
                     NotifyObservers(data);
                     Thread.Sleep(tickInterval);
                 }

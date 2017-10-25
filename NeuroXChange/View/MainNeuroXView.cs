@@ -193,16 +193,16 @@ namespace NeuroXChange.View
             }
         }
 
-        private DateTime previousTickTime = DateTime.Now;
+        private DateTime previousBioTickTime = DateTime.Now;
 
         public void OnNext(BioData data)
         {
             // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistory && (DateTime.Now - previousTickTime) < TimeSpan.FromMilliseconds(20))
+            if (model.emulationOnHistory && (DateTime.Now - previousBioTickTime) < TimeSpan.FromMilliseconds(20))
             {
                 return;
             }
-            previousTickTime = DateTime.Now;
+            previousBioTickTime = DateTime.Now;
 
             HeartRateInfo hrInfo = model.behavioralModelsContainer.heartRateProcessor.heartRateInfo;
 
@@ -266,8 +266,17 @@ namespace NeuroXChange.View
                 }));
         }
 
+        private DateTime previousPriceTickTime = DateTime.Now;
+
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {
+            // optimize view on emulation mode with extra-small ticks
+            if (model.emulationOnHistory && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(20))
+            {
+                return;
+            }
+            previousPriceTickTime = DateTime.Now;
+
             if (modelEvent == FixApiModelEvent.PriceChanged)
             {
                 mainWindow.BeginInvoke(

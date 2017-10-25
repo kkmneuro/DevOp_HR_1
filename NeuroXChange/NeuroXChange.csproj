@@ -112,6 +112,7 @@
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
     <Compile Include="Model\BioData\UdpBioDataProvider.cs" />
+    <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
     <Compile Include="Model\FixApi\AbstractFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
