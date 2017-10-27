@@ -28,7 +28,7 @@ namespace NeuroXChange.Model.BehavioralModeling
 
         // behavioral models properties
         public int BehavioralModelsCount { get; private set; }
-        public AbstractBehavioralModel[] behavioralModels { get; private set; }
+        public SimpleBehavioralModel[] behavioralModels { get; private set; }
         public int ActiveBehavioralModelIndex { get; set; }
 
         public BehavioralModelsContainer(IniFileReader iniFileReader)
@@ -63,7 +63,11 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             logicQuery1Condition = new LogicQuery1Condition(60);
 
-            logicQuery2Condition = new LogicQuery2Condition(hrPreactivationCondition, true);
+            logicQuery2Condition = new LogicQuery2Condition();
+
+            // initialize specific models/conditions variants
+            Func<bool> hrPreactivationMet = () => { return hrPreactivationCondition.isConditionMet; };
+            Func<bool> hrPreactivationNotMet = () => { return !hrPreactivationCondition.isConditionMet; };
 
             // add initialized conditions to List for more easy processing
             conditions = new List<AbstractBehavioralModelCondition>();
@@ -74,15 +78,22 @@ namespace NeuroXChange.Model.BehavioralModeling
             conditions.Add(logicQuery2Condition);
 
             // initialize behavioral models
-            BehavioralModelsCount = 1;
-            behavioralModels = new AbstractBehavioralModel[BehavioralModelsCount];
-            behavioralModels[0] =
-                new SimpleBehavioralModel(
-                    null,   // no active AccY conditions
-                    hrReadyToTradeCondition,
-                    hrPreactivationCondition,
-                    logicQuery1Condition,
-                    logicQuery2Condition);
+            BehavioralModelsCount = 16;
+            behavioralModels = new SimpleBehavioralModel[BehavioralModelsCount];
+
+            // initialize all models with same conditions
+            for (int i = 0; i < BehavioralModelsCount; i++)
+            {
+                behavioralModels[i] = new SimpleBehavioralModel(
+                    null, hrReadyToTradeCondition, hrPreactivationCondition,
+                    logicQuery1Condition, logicQuery2Condition);
+
+                // models specific conditions
+                behavioralModels[i].lq2SubCondition =
+                    i % 2 == 0 ? hrPreactivationMet : hrPreactivationNotMet;
+            }
+
+            // add datarow for each model
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
                 var row = behavioralModelsDataTable.NewRow();
