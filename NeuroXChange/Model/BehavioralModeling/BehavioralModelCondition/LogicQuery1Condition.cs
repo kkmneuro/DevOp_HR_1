@@ -12,15 +12,22 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         private int[] sellIDs = { 67, 69, 70, 73 };
 
         // previous protocol ID that is not 74
-        private int lastNot74SubProtocolID = -1;
+        public int lastNot74SubProtocolID { get; private set; }
 
         public LogicQuery1Condition(int maxHeartRate)
         {
             this.maxHeartRate = maxHeartRate;
+            this.lastNot74SubProtocolID = -1;
         }
 
         public override void OnNext(BioData.BioData data)
         {
+            if(isConditionMet)
+            {
+                // reset global variables
+                lastNot74SubProtocolID = -1;
+            }
+
             isConditionMet = false;
 
             if (data.sub_Protocol_ID != 74 && data.hartRate < maxHeartRate)
@@ -42,9 +49,6 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                 }
 
                 isConditionMet = true;
-
-                // reset global variables
-                lastNot74SubProtocolID = -1;
             }
         }
     }

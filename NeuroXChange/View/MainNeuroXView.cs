@@ -98,6 +98,8 @@ namespace NeuroXChange.View
         private void UpdateInterfaceFromModelState(BehavioralModelState state)
         {
             newOrderWindow.labStepName.Text = BehavioralModelStateHelper.StateToString(state);
+            var activeModel = model.behavioralModelsContainer.behavioralModels[
+                                     model.behavioralModelsContainer.ActiveBehavioralModelIndex];
 
             switch (state)
             {
@@ -129,7 +131,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.DirectionConfirmed:
                     {
-                        int direction = model.orderDirection;
+                        int direction = activeModel.OrderDirection;
                         newOrderWindow.Show();
                         newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
                         newOrderWindow.btnBuy.Enabled = direction == 0;
@@ -148,7 +150,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.ExecuteOrder:
                     {
-                        int direction = model.orderDirection;
+                        int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], lastPrice[direction]);
                         customDialogWindow.Show();
@@ -156,7 +158,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.ConfirmationFilled:
                     {
-                        int direction = model.orderDirection;
+                        int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], lastPrice[direction]);
                         customDialogWindow.Show();
@@ -172,7 +174,7 @@ namespace NeuroXChange.View
             {
                 if (modelEvent == MainNeuroXModelEvent.AvtiveModelStateChanged)
                 {
-                    UpdateInterfaceFromModelState(model.lastEvent);
+                    UpdateInterfaceFromModelState(model.getActiveBehavioralModel().CurrentTickState);
                 }
                 else if (modelEvent == MainNeuroXModelEvent.LogicQueryDirection)
                 {
