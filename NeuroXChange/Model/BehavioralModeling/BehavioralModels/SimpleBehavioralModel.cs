@@ -2,9 +2,9 @@
 
 namespace NeuroXChange.Model.BehavioralModeling
 {
-    public class BehavioralModel1 : AbstractBehavioralModel
+    public class SimpleBehavioralModel : AbstractBehavioralModel
     {
-        public BehavioralModel1(
+        public SimpleBehavioralModel(
             AccYCondition accYCondition,
             HRReadyToTradeCondition hrReadyToTradeCondition,
             HRPreactivationCondition hrPreactivationCondition,

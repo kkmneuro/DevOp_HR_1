@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+using System;
 using System.Data;
 
 namespace NeuroXChange.Model
@@ -28,6 +29,11 @@ namespace NeuroXChange.Model
         public int TradesTotal { get; private set; }
         public double Profitability { get; private set; }
 
+        // some variables
+        private DateTime previousTickTime;
+        private int lq1OrderDirection;
+        private int lq2OrderDirection;
+
         public AbstractBehavioralModel(
             AccYCondition accYCondition,
             HRReadyToTradeCondition hrReadyToTradeCondition,
@@ -47,11 +53,21 @@ namespace NeuroXChange.Model
             TradesToday = 0;
             TradesTotal = 0;
             Profitability = 0.0;
+
+            previousTickTime = DateTime.FromOADate(0);
         }
 
         public virtual void OnNext(BioData.BioData data)
         {
             PreviousTickState = CurrentTickState;
+
+            // reset count of trades today if date is new
+            if (previousTickTime.Date != data.time.Date)
+            {
+                TradesToday = 0;
+                dataRow["Trades today"] = TradesToday;
+            }
+            previousTickTime = data.time;
 
             // ----- AccY event ------
             if (accYCondition != null && accYCondition.isConditionMet)
@@ -100,12 +116,53 @@ namespace NeuroXChange.Model
                     CurrentTickState = BehavioralModelState.ReadyToTrade;
                 }
             }
+
             if (hrPreactivationCondition.isConditionMet)
             {
                 if (PreviousTickState == BehavioralModelState.ReadyToTrade)
                 {
                     CurrentTickState = BehavioralModelState.Preactivation;
                 }
+            }
+
+
+            // ------ Logic Query 1 ------
+            if (logicQuery1Condition.isConditionMet)
+            {
+                if (PreviousTickState == BehavioralModelState.Preactivation)
+                {
+                    CurrentTickState = BehavioralModelState.DirectionConfirmed;
+                    lq1OrderDirection = (int)logicQuery1Condition.detailsData;
+                    OrderDirection = lq1OrderDirection;
+                }
+            }
+
+            //  ------ Logic Query 2 ------
+            if (logicQuery2Condition.isConditionMet)
+            {
+                int localLq2OrderDirection = (int)logicQuery2Condition.detailsData;
+                if (PreviousTickState == BehavioralModelState.DirectionConfirmed)
+                {
+                    if (lq1OrderDirection == localLq2OrderDirection)
+                    {
+                        CurrentTickState = BehavioralModelState.ExecuteOrder;
+                        lq2OrderDirection = localLq2OrderDirection;
+                        OrderDirection = lq2OrderDirection;
+                    }
+                }
+            }
+
+
+            // ------ Simple transition between last 2 states ------
+            if (PreviousTickState == BehavioralModelState.ExecuteOrder)
+            {
+                CurrentTickState = BehavioralModelState.ConfirmationFilled;
+            }
+            else if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
+            {
+                TradesTotal++;
+                TradesToday++;
+                CurrentTickState = BehavioralModelState.InitialState;
             }
 
 

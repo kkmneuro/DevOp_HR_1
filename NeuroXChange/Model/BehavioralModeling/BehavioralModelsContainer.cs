@@ -61,9 +61,9 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
 
-            logicQuery1Condition = new LogicQuery1Condition();
+            logicQuery1Condition = new LogicQuery1Condition(60);
 
-            logicQuery2Condition = new LogicQuery2Condition();
+            logicQuery2Condition = new LogicQuery2Condition(hrPreactivationCondition, true);
 
             // add initialized conditions to List for more easy processing
             conditions = new List<AbstractBehavioralModelCondition>();
@@ -74,23 +74,24 @@ namespace NeuroXChange.Model.BehavioralModeling
             conditions.Add(logicQuery2Condition);
 
             // initialize behavioral models
-            BehavioralModelsCount = 15;
+            BehavioralModelsCount = 1;
             behavioralModels = new AbstractBehavioralModel[BehavioralModelsCount];
+            behavioralModels[0] =
+                new SimpleBehavioralModel(
+                    null,   // no active AccY conditions
+                    hrReadyToTradeCondition,
+                    hrPreactivationCondition,
+                    logicQuery1Condition,
+                    logicQuery2Condition);
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
-                behavioralModels[i] = 
-                    new BehavioralModel1(
-                        null,   // no active AccY conditions
-                        hrReadyToTradeCondition,
-                        hrPreactivationCondition,
-                        logicQuery1Condition,
-                        logicQuery2Condition);
                 var row = behavioralModelsDataTable.NewRow();
                 row["Model"] = i + 1;
                 behavioralModels[i].dataRow = row;
                 behavioralModelsDataTable.Rows.Add(row);
                 behavioralModels[i].UpdateStatistics();
             }
+
             ActiveBehavioralModelIndex = 0;
         }
 

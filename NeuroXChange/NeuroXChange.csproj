@@ -100,7 +100,7 @@
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery2Condition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\AbstractBehavioralModel.cs" />
-    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModel1.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\SimpleBehavioralModel.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelStateHelper.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />

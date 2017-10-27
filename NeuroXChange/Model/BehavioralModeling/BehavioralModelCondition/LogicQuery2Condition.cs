@@ -10,6 +10,17 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         private DateTime? lq2LastHartRateBigger100 = null;
         private DateTime? lq2LastHartRateSmaller60 = null;
 
+        private AbstractBehavioralModelCondition subCondition;
+        private bool subConditionShouldMet;
+
+        public LogicQuery2Condition(
+            AbstractBehavioralModelCondition subCondition,
+            bool subConditionShouldMet)
+        {
+            this.subCondition = subCondition;
+            this.subConditionShouldMet = subConditionShouldMet;
+        }
+
         public override void OnNext(BioData.BioData data)
         {
             isConditionMet = false;
@@ -23,17 +34,20 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                 lq2LastHartRateSmaller60 = null;
             }
 
-            if (lq2LastHartRateBigger100.HasValue && data.hartRate < 60)
+            if (subCondition == null || (subCondition.isConditionMet == subConditionShouldMet))
             {
-                lq2LastHartRateBigger100 = null;
-                isConditionMet = true;
-                detailsData = 0;
-            }
-            if (lq2LastHartRateSmaller60.HasValue && data.hartRate > 100)
-            {
-                lq2LastHartRateSmaller60 = null;
-                isConditionMet = true;
-                detailsData = 1;
+                if (lq2LastHartRateBigger100.HasValue && data.hartRate < 60)
+                {
+                    lq2LastHartRateBigger100 = null;
+                    isConditionMet = true;
+                    detailsData = 0;
+                }
+                if (lq2LastHartRateSmaller60.HasValue && data.hartRate > 100)
+                {
+                    lq2LastHartRateSmaller60 = null;
+                    isConditionMet = true;
+                    detailsData = 1;
+                }
             }
 
             if (data.hartRate < 60)

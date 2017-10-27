@@ -14,6 +14,11 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         // previous protocol ID that is not 74
         private int lastNot74SubProtocolID = -1;
 
+        public LogicQuery1Condition(int maxHeartRate)
+        {
+            this.maxHeartRate = maxHeartRate;
+        }
+
         public override void OnNext(BioData.BioData data)
         {
             isConditionMet = false;
@@ -23,7 +28,9 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                 lastNot74SubProtocolID = data.sub_Protocol_ID;
             }
 
-            if (data.sub_Protocol_ID == 74 && lastNot74SubProtocolID > -1)
+            if (data.sub_Protocol_ID == 74
+                && 65 <= lastNot74SubProtocolID
+                && lastNot74SubProtocolID < 74)
             {
                 if (buyIDs.Contains(lastNot74SubProtocolID))
                 {
