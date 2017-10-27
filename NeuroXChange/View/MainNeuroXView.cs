@@ -63,7 +63,7 @@ namespace NeuroXChange.View
             indicatorsWindow = new IndicatorsWindow();
             indicatorsWindow.Owner = mainWindow;
 
-            behavioralModelWindow = new BehavioralModelsWindow();
+            behavioralModelWindow = new BehavioralModelsWindow(controller);
             behavioralModelWindow.Owner = mainWindow;
             behavioralModelWindow.dataGridView.AutoGenerateColumns = true;
             behavioralModelWindow.dataGridView.DataSource = model.behavioralModelsContainer.behavioralModelsDataSet;
@@ -172,7 +172,11 @@ namespace NeuroXChange.View
         {
             var modelEventAction = (Action)(() =>
             {
-                if (modelEvent == MainNeuroXModelEvent.AvtiveModelStateChanged)
+                if (modelEvent == MainNeuroXModelEvent.ActiveModelChanged)
+                {
+                    mainWindow.behavioralModelSL.Text = "Behavioral model: " + (model.behavioralModelsContainer.ActiveBehavioralModelIndex + 1);
+                }
+                else if (modelEvent == MainNeuroXModelEvent.AvtiveModelStateChanged)
                 {
                     UpdateInterfaceFromModelState(model.getActiveBehavioralModel().CurrentTickState);
                 }

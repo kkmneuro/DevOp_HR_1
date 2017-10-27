@@ -222,8 +222,8 @@
         public System.Windows.Forms.ToolStripStatusLabel modeNameSL;
         private System.Windows.Forms.ToolStripMenuItem breathPacerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem indicatorsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
         private System.Windows.Forms.ToolStripMenuItem behavioralModelsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
     }
 }
 

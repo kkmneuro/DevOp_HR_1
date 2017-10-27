@@ -29,7 +29,27 @@ namespace NeuroXChange.Model.BehavioralModeling
         // behavioral models properties
         public int BehavioralModelsCount { get; private set; }
         public SimpleBehavioralModel[] behavioralModels { get; private set; }
-        public int ActiveBehavioralModelIndex { get; set; }
+
+        private int activeBehavioralModelIndex;
+        public int ActiveBehavioralModelIndex
+        {
+            get
+            {
+                return activeBehavioralModelIndex;
+            }
+
+            set
+            {
+                if (activeBehavioralModelIndex == value)
+                {
+                    return;
+                }
+                int oldActiveIndex = activeBehavioralModelIndex;
+                activeBehavioralModelIndex = value;
+                UpdateActiveTag(oldActiveIndex);
+                UpdateActiveTag(ActiveBehavioralModelIndex);
+            }
+        }
 
         public BehavioralModelsContainer(IniFileReader iniFileReader)
         {
@@ -38,7 +58,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             behavioralModelsDataTableName = "BehavioralModels";
             behavioralModelsDataTable = behavioralModelsDataSet.Tables.Add(behavioralModelsDataTableName);
             DataColumn pkModelID =
-                behavioralModelsDataTable.Columns.Add("Model", typeof(Int32));
+                behavioralModelsDataTable.Columns.Add("Model", typeof(string));
             behavioralModelsDataTable.Columns.Add("State", typeof(string));
             behavioralModelsDataTable.Columns.Add("In position", typeof(string));
             behavioralModelsDataTable.Columns.Add("All trades", typeof(Int32));
@@ -104,6 +124,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             }
 
             ActiveBehavioralModelIndex = 0;
+            UpdateActiveTag(ActiveBehavioralModelIndex);
         }
 
         public void OnNext(BioData.BioData data)
@@ -121,6 +142,19 @@ namespace NeuroXChange.Model.BehavioralModeling
             foreach (var model in behavioralModels)
             {
                 model.OnNext(data);
+            }
+        }
+
+        // update statistics for specific model
+        private void UpdateActiveTag(int modelInd)
+        {
+            var modelIndStr = (modelInd + 1).ToString();
+            if (modelInd == ActiveBehavioralModelIndex)
+            {
+                behavioralModels[modelInd].dataRow["Model"] = modelIndStr + " (active)";
+            } else
+            {
+                behavioralModels[modelInd].dataRow["Model"] = modelIndStr;
             }
         }
     }

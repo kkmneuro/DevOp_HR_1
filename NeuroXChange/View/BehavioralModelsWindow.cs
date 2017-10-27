@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuroXChange.Controller;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,11 @@ namespace NeuroXChange.View
 {
     public partial class BehavioralModelsWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-        public BehavioralModelsWindow()
+        MainNeuroXController controller;
+
+        public BehavioralModelsWindow(MainNeuroXController controller)
         {
+            this.controller = controller;
             InitializeComponent();
         }
 
@@ -52,6 +56,11 @@ namespace NeuroXChange.View
         private void BehavioralModelsWindow_Load(object sender, EventArgs e)
         {
             dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+        }
+
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            controller.ChangeActiveModel(e.RowIndex);
         }
     }
 }

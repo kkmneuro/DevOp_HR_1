@@ -15,5 +15,10 @@ namespace NeuroXChange.Controller
         {
             this.model = model;
         }
+
+        public void ChangeActiveModel(int modelInd)
+        {
+            model.setActiveBehavioralModelIndex(modelInd);
+        }
     }
 }

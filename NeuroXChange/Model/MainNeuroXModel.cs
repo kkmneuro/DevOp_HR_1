@@ -33,6 +33,16 @@ namespace NeuroXChange.Model
                 behavioralModelsContainer.ActiveBehavioralModelIndex];
         }
 
+        public void setActiveBehavioralModelIndex(int modelInd)
+        {
+            if (behavioralModelsContainer.ActiveBehavioralModelIndex == modelInd)
+            {
+                return;
+            }
+            behavioralModelsContainer.ActiveBehavioralModelIndex = modelInd;
+            NotifyObservers(MainNeuroXModelEvent.ActiveModelChanged, null);
+        }
+
         public MainNeuroXModel()
         {
             try
