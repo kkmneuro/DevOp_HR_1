@@ -81,7 +81,7 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
 
-            logicQuery1Condition = new LogicQuery1Condition(60);
+            logicQuery1Condition = new LogicQuery1Condition(100, 60);
 
             logicQuery2Condition = new LogicQuery2Condition();
 

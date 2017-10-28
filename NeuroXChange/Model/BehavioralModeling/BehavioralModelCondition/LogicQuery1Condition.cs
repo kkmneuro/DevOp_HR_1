@@ -1,23 +1,48 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
 {
     public class LogicQuery1Condition : AbstractBehavioralModelCondition
     {
-        // hart rate const
-        private int maxHeartRate = 60;
+        // we will look at sub_protocol_id in the range [66,73]
+        private const int subProtocolIdLeftBorder = 66;
+        private const int subProtocolIdRigtBorder = 73;
+        private const int subProtocolIdRangeCount = subProtocolIdRigtBorder - subProtocolIdLeftBorder + 1;
+        private const int subProtocolFire = 74;
+
+        private TimeSpan minuteSpan = TimeSpan.FromMinutes(1);
 
         // arrays that helps determine is it buy or sell condition
         private int[] buyIDs = { 66, 68, 71, 72 };
         private int[] sellIDs = { 67, 69, 70, 73 };
 
+        // hart rate should be less than heartRateDown
+        // or doesn't matter if heartRateDown == -1
+        private int heartRateDown = 60;
+
+        // hart rate should be less than heartRateDown
+        // or doesn't matter if heartRateUp == -1
+        private int heartRateUp = 100;
+
         // previous protocol ID that is not 74
         public int lastNot74SubProtocolID { get; private set; }
 
-        public LogicQuery1Condition(int maxHeartRate)
+        private LinkedList<DateTime>[] higherHRElements;
+        private LinkedList<DateTime>[] lowerHRElements;
+
+        public LogicQuery1Condition(int heartRateUp, int heartRateDown)
         {
-            this.maxHeartRate = maxHeartRate;
-            this.lastNot74SubProtocolID = -1;
+            this.heartRateUp = heartRateUp;
+            this.heartRateDown = heartRateDown;
+            higherHRElements = new LinkedList<DateTime>[subProtocolIdRangeCount];
+            lowerHRElements = new LinkedList<DateTime>[subProtocolIdRangeCount];
+            for (int i = 0; i < subProtocolIdRangeCount; i++)
+            {
+                higherHRElements[i] = new LinkedList<DateTime>();
+                lowerHRElements[i] = new LinkedList<DateTime>();
+            }
         }
 
         public override void OnNext(BioData.BioData data)
@@ -30,25 +55,91 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
 
             isConditionMet = false;
 
-            if (data.sub_Protocol_ID != 74 && data.hartRate < maxHeartRate)
+            if (subProtocolIdLeftBorder <= data.sub_Protocol_ID
+                && data.sub_Protocol_ID <= subProtocolIdRigtBorder)
             {
-                lastNot74SubProtocolID = data.sub_Protocol_ID;
+                int id = data.sub_Protocol_ID - subProtocolIdLeftBorder;
+                if (heartRateUp == -1 || data.hartRate > heartRateUp)
+                {
+                    higherHRElements[id].AddLast(data.time);
+                    UpdateExpired(higherHRElements[id], data.time);
+                }
+                if (heartRateDown == -1 || data.hartRate < heartRateDown)
+                {
+                    lowerHRElements[id].AddLast(data.time);
+                    UpdateExpired(lowerHRElements[id], data.time);
+                }
             }
-
-            if (data.sub_Protocol_ID == 74
-                && 65 <= lastNot74SubProtocolID
-                && lastNot74SubProtocolID < 74)
+            else if (data.sub_Protocol_ID == subProtocolFire)
             {
-                if (buyIDs.Contains(lastNot74SubProtocolID))
+                int bestId = -1;
+                DateTime bestTime = DateTime.FromOADate(0);
+                for (int id = 0; id < subProtocolIdRangeCount; id++)
                 {
-                    detailsData = 0;
-                }
-                else if (sellIDs.Contains(lastNot74SubProtocolID))
-                {
-                    detailsData = 1;
+                    UpdateExpired(higherHRElements[id], data.time);
+                    UpdateExpired(lowerHRElements[id], data.time);
+
+                    DateTime compateTo = bestTime;
+
+                    // need to check conditions bigger than heartRateUp
+                    if (heartRateUp != -1)
+                    {
+                        if (higherHRElements[id].Count == 0)
+                        {
+                            continue;
+                        }
+                        compateTo = higherHRElements[id].Last.Value;
+                    }
+
+                    // need to check conditions less than heartRateDown
+                    if (heartRateDown != -1)
+                    {
+                        if (lowerHRElements[id].Count == 0)
+                        {
+                            continue;
+                        }
+                        if (heartRateUp != -1)
+                        {
+                            if (higherHRElements[id].First.Value > lowerHRElements[id].Last.Value)
+                            {
+                                return;
+                            }
+                        }
+                        compateTo = lowerHRElements[id].Last.Value;
+                    }
+
+                    // compare with best variant so far
+                    if (bestId == -1 || bestTime < compateTo)
+                    {
+                        bestId = id;
+                        bestTime = compateTo;
+                    }
                 }
 
-                isConditionMet = true;
+                // found subprotocol_id from the range with HR met conditions
+                if (bestId != -1)
+                {
+                    lastNot74SubProtocolID = bestId + subProtocolIdLeftBorder;
+
+                    if (buyIDs.Contains(lastNot74SubProtocolID))
+                    {
+                        detailsData = 0;
+                    }
+                    else if (sellIDs.Contains(lastNot74SubProtocolID))
+                    {
+                        detailsData = 1;
+                    }
+
+                    isConditionMet = true;
+                }
+            }
+        }
+
+        private void UpdateExpired(LinkedList<DateTime> list, DateTime time)
+        {
+            while (list.Count > 0 && (time - list.First.Value) > minuteSpan)
+            {
+                list.RemoveFirst();
             }
         }
     }
