@@ -272,7 +272,7 @@ namespace NeuroXChange.View
                 }));
         }
 
-        private DateTime previousPriceTickTime = DateTime.Now;
+        private DateTime previousPriceTickTime = DateTime.FromOADate(0);
 
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {

@@ -104,13 +104,15 @@ namespace NeuroXChange.Model.BehavioralModeling
             // initialize all models with same conditions
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
-                behavioralModels[i] = new SimpleBehavioralModel(
+                var model = new SimpleBehavioralModel(
                     null, hrReadyToTradeCondition, hrPreactivationCondition,
                     logicQuery1Condition, logicQuery2Condition);
+                behavioralModels[i] = model;
 
-                // models specific conditions
-                behavioralModels[i].lq2SubCondition =
-                    i % 2 == 0 ? hrPreactivationMet : hrPreactivationNotMet;
+                model.LQ1SubCondition = hrPreactivationMet;
+                model.LQ2SubCondition = i % 2 == 0 ? hrPreactivationMet : hrPreactivationNotMet;
+                model.DirectionConfirmedExpirationTime = TimeSpan.FromMinutes(15);
+                model.MoveBackIfHROscNotMet = true;
             }
 
             // add datarow for each model

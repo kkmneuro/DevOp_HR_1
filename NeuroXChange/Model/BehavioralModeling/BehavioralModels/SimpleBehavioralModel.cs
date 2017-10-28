@@ -18,7 +18,12 @@ namespace NeuroXChange.Model
         private AbstractBehavioralModelCondition logicQuery2Condition;
 
         // specific condition variants
-        public Func<bool> lq2SubCondition { get; set; }
+        public Func<bool> LQ1SubCondition { get; set; }
+        public Func<bool> LQ2SubCondition { get; set; }
+        // if HR Oscillation not met, move to "Initial state" / "Ready to trade"
+        public bool MoveBackIfHROscNotMet { get; set; }
+        // after this period of time, if there no LQ2 condition, move back to "Preactivation" state
+        public TimeSpan DirectionConfirmedExpirationTime { get; set; }
 
         // behavioral model states
         public BehavioralModelState PreviousTickState { get; private set; }
@@ -36,6 +41,7 @@ namespace NeuroXChange.Model
         private DateTime previousTickTime;
         private int lq1OrderDirection;
         private int lq2OrderDirection;
+        private DateTime previousTransitionToDirectionConfirmed;
 
         public SimpleBehavioralModel(
             AccYCondition accYCondition,
@@ -57,9 +63,13 @@ namespace NeuroXChange.Model
             TradesTotal = 0;
             Profitability = 0.0;
 
-            lq2SubCondition = null;
+            LQ1SubCondition = null;
+            LQ2SubCondition = null;
+            MoveBackIfHROscNotMet = false;
+            DirectionConfirmedExpirationTime = TimeSpan.FromMinutes(15);
 
             previousTickTime = DateTime.FromOADate(0);
+            previousTransitionToDirectionConfirmed = DateTime.FromOADate(0);
         }
 
         public virtual void OnNext(BioData.BioData data)
@@ -113,6 +123,38 @@ namespace NeuroXChange.Model
             }
 
 
+            // ----- Move back if HR Oscillations conditions not met -----
+            if (MoveBackIfHROscNotMet)
+            {
+                if (!hrPreactivationCondition.isConditionMet
+                    && (PreviousTickState == BehavioralModelState.Preactivation
+                        || PreviousTickState == BehavioralModelState.DirectionConfirmed))
+                {
+                    CurrentTickState = BehavioralModelState.ReadyToTrade;
+                }
+                if (!hrReadyToTradeCondition.isConditionMet
+                    && (PreviousTickState == BehavioralModelState.ReadyToTrade
+                        || PreviousTickState == BehavioralModelState.Preactivation
+                        || PreviousTickState == BehavioralModelState.DirectionConfirmed))
+                {
+                    CurrentTickState = BehavioralModelState.InitialState;
+                }
+            }
+
+
+            // ----- HR Oscillations conditions -----
+            if (DirectionConfirmedExpirationTime != null)
+            {
+                if (PreviousTickState == BehavioralModelState.DirectionConfirmed)
+                {
+                    if (DirectionConfirmedExpirationTime < (data.time - previousTransitionToDirectionConfirmed))
+                    {
+                        CurrentTickState = BehavioralModelState.Preactivation;
+                    }
+                }
+            }
+
+
             // ----- HR Oscillations conditions -----
             if (hrReadyToTradeCondition.isConditionMet)
             {
@@ -136,9 +178,13 @@ namespace NeuroXChange.Model
             {
                 if (PreviousTickState == BehavioralModelState.Preactivation)
                 {
-                    CurrentTickState = BehavioralModelState.DirectionConfirmed;
-                    lq1OrderDirection = (int)logicQuery1Condition.detailsData;
-                    OrderDirection = lq1OrderDirection;
+                    if (LQ1SubCondition == null || LQ1SubCondition())
+                    {
+                        CurrentTickState = BehavioralModelState.DirectionConfirmed;
+                        lq1OrderDirection = (int)logicQuery1Condition.detailsData;
+                        OrderDirection = lq1OrderDirection;
+                        previousTransitionToDirectionConfirmed = data.time;
+                    }
                 }
             }
 
@@ -149,7 +195,7 @@ namespace NeuroXChange.Model
                 {
                     int localLq2OrderDirection = (int)logicQuery2Condition.detailsData;
                     if (lq1OrderDirection == localLq2OrderDirection &&
-                        (lq2SubCondition == null || lq2SubCondition()))
+                        (LQ2SubCondition == null || LQ2SubCondition()))
                     {
                         CurrentTickState = BehavioralModelState.ExecuteOrder;
                         lq2OrderDirection = localLq2OrderDirection;
