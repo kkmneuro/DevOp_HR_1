@@ -183,8 +183,8 @@ namespace NeuroXChange.View
                 else if (modelEvent == MainNeuroXModelEvent.LogicQueryDirection)
                 {
                     int sub_Protocol_ID = (int)data;
-                    string[] messages = { "Direction", "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
-                    string message = 65 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 65] : "Empty message!";
+                    string[] messages = { "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
+                    string message = 66 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 66] : "Empty message!";
                     MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             });
