@@ -20,6 +20,7 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
             {
                 model.lq1OrderDirection = (int)logicQuery1Condition.detailsData;
                 model.OrderDirection = model.lq1OrderDirection;
+                model.lastNot74SubProtocolID = logicQuery1Condition.lastNot74SubProtocolID;
                 return toState;
             }
             else

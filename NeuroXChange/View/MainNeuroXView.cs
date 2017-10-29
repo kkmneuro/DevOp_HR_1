@@ -37,7 +37,7 @@ namespace NeuroXChange.View
         public LogoWindow logoWindow { get; private set; }
 
         private string[] lastPrice = { "0.0", "0.0" };     // array of 2 strings [buy price, sell price]
-        private string[] directionName = { "Buy", "Sell" };
+        private string[] directionName = { "Buy", "Sell", "No direction" };
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -141,10 +141,15 @@ namespace NeuroXChange.View
                             newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
                             newOrderWindow.btnSell.BackColor = SystemColors.Control;
                         }
-                        else
+                        else if (direction == 1)
                         {
                             newOrderWindow.btnBuy.BackColor = SystemColors.Control;
                             newOrderWindow.btnSell.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
+                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
                         }
                         break;
                     }
@@ -184,7 +189,7 @@ namespace NeuroXChange.View
                 {
                     int sub_Protocol_ID = (int)data;
                     string[] messages = { "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
-                    string message = 66 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 66] : "Empty message!";
+                    string message = 66 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 66] : "No direction confirmed!";
                     MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             });

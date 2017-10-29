@@ -29,13 +29,23 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         // previous protocol ID that is not 74
         public int lastNot74SubProtocolID { get; private set; }
 
+        // treat basic condition conversely
+        private bool inverseCondition;
+
         private LinkedList<DateTime>[] higherHRElements;
         private LinkedList<DateTime>[] lowerHRElements;
 
-        public LogicQuery1Condition(int heartRateUp, int heartRateDown)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="heartRateUp"></param>
+        /// <param name="heartRateDown"></param>
+        /// <param name="doesNotCondition">where Sub-protocol_ID does not fulfill the condition</param>
+        public LogicQuery1Condition(int heartRateUp, int heartRateDown, bool inverseCondition = false)
         {
             this.heartRateUp = heartRateUp;
             this.heartRateDown = heartRateDown;
+            this.inverseCondition = inverseCondition;
             higherHRElements = new LinkedList<DateTime>[subProtocolIdRangeCount];
             lowerHRElements = new LinkedList<DateTime>[subProtocolIdRangeCount];
             for (int i = 0; i < subProtocolIdRangeCount; i++)
@@ -117,7 +127,7 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                 }
 
                 // found subprotocol_id from the range with HR met conditions
-                if (bestId != -1)
+                if (!inverseCondition && bestId != -1)
                 {
                     lastNot74SubProtocolID = bestId + subProtocolIdLeftBorder;
 
@@ -130,6 +140,14 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                         detailsData = 1;
                     }
 
+                    isConditionMet = true;
+                }
+
+                // can't find condition
+                if (inverseCondition && bestId == -1)
+                {
+                    lastNot74SubProtocolID = -1;
+                    detailsData = 2;
                     isConditionMet = true;
                 }
             }

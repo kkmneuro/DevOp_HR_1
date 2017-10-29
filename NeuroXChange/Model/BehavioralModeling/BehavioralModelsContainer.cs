@@ -22,11 +22,11 @@ namespace NeuroXChange.Model.BehavioralModeling
 
         // behavioral model conditions properties
         public List<AbstractBehavioralModelCondition> conditions { get; private set; }
-        public AccYCondition accYCondition { get; private set; }
-        public HRReadyToTradeCondition hrReadyToTradeCondition { get; private set; }
-        public HRPreactivationCondition hrPreactivationCondition { get; private set; }
-        public LogicQuery1Condition logicQuery1Condition { get; private set; }
-        public LogicQuery2Condition logicQuery2Condition { get; private set; }
+        //private AccYCondition accYCondition;
+        //private HRReadyToTradeCondition hrReadyToTradeCondition;
+        //private HRPreactivationCondition hrPreactivationCondition;
+        //private LogicQuery1Condition logicQuery1Condition;
+        //private LogicQuery2Condition logicQuery2Condition;
 
         // behavioral models properties
         public int BehavioralModelsCount { get; private set; }
@@ -74,20 +74,24 @@ namespace NeuroXChange.Model.BehavioralModeling
             // initialize conditions
             var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
             var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
-            accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
+            //var accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
             double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions"));
             double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions"));
-            hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
-            hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
-            logicQuery1Condition = new LogicQuery1Condition(100, 60);
-            logicQuery2Condition = new LogicQuery2Condition();
+            var hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
+            var hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
+            var logicQuery1Condition = new LogicQuery1Condition(100, 60);
+            var logicQuery1ConditionV2 = new LogicQuery1Condition(100, -1);
+            var logicQuery1ConditionV3 = new LogicQuery1Condition(100, 60, true);
+            var logicQuery2Condition = new LogicQuery2Condition();
 
             // add initialized conditions to List for more easy processing
             conditions = new List<AbstractBehavioralModelCondition>();
-            conditions.Add(accYCondition);
+            //conditions.Add(accYCondition);
             conditions.Add(hrReadyToTradeCondition);
             conditions.Add(hrPreactivationCondition);
             conditions.Add(logicQuery1Condition);
+            conditions.Add(logicQuery1ConditionV2);
+            conditions.Add(logicQuery1ConditionV3);
             conditions.Add(logicQuery2Condition);
 
             // create transitions
@@ -109,9 +113,20 @@ namespace NeuroXChange.Model.BehavioralModeling
                 hrReadyToTradeNotMet,
                 BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
                 BehavioralModelState.InitialState);
+            var hrPreactivationNotMetTransitionV2 = new FunctionalTransition(
+                hrPreactivationNotMet,
+                BehavioralModelState.Preactivation,
+                BehavioralModelState.ReadyToTrade);
+            var hrReadyToTradeNotMetTransitionV2 = new FunctionalTransition(
+                hrReadyToTradeNotMet,
+                BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation,
+                BehavioralModelState.InitialState);
             var directionConfirmedExpirationTransition = new DirectionConfirmedExpirationTransition(TimeSpan.FromMinutes(15));
             var logicQuery1Transition = new LogicQuery1Transition(logicQuery1Condition);
+            var logicQuery1TransitionV2 = new LogicQuery1Transition(logicQuery1ConditionV2);
+            var logicQuery1TransitionV3 = new LogicQuery1Transition(logicQuery1ConditionV3);
             var logicQuery2Transition = new LogicQuery2Transition(logicQuery2Condition);
+            var logicQuery2TransitionV2 = new LogicQuery2Transition(logicQuery2Condition, false);
             Func<bool> alwaysTrueFunction = () => { return true; };
             var executeOrderToConfirmationFilledTransition = new FunctionalTransition(
                 alwaysTrueFunction,
@@ -126,6 +141,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             BehavioralModelsCount = 16;
             behavioralModels = new SimpleBehavioralModel[BehavioralModelsCount];
 
+   
             // initialize all models with same conditions
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
@@ -134,14 +150,40 @@ namespace NeuroXChange.Model.BehavioralModeling
 
                 model.transitions.Add(hrReadyToTradeTransition);
                 model.transitions.Add(hrPreactivationTransition);
-                model.transitions.Add(hrPreactivationNotMetTransition);
-                model.transitions.Add(hrReadyToTradeNotMetTransition);
+
+                if (i % 2 == 0)
+                {
+                    model.transitions.Add(hrPreactivationNotMetTransition);
+                    model.transitions.Add(hrReadyToTradeNotMetTransition);
+                }
+                else
+                {
+                    model.transitions.Add(hrPreactivationNotMetTransitionV2);
+                    model.transitions.Add(hrReadyToTradeNotMetTransitionV2);
+                }
+
                 model.transitions.Add(directionConfirmedExpirationTransition);
-                model.transitions.Add(logicQuery1Transition);
-                model.transitions.Add(logicQuery2Transition);
+
+                if (i == 0 || i == 1)
+                {
+                    model.transitions.Add(logicQuery1Transition);
+                    model.transitions.Add(logicQuery2Transition);
+                }
+                else if(i == 2 || i == 3)
+                {
+                    model.transitions.Add(logicQuery1TransitionV2);
+                    model.transitions.Add(logicQuery2Transition);
+                }
+                else if (i == 4 || i == 5)
+                {
+                    model.transitions.Add(logicQuery1TransitionV3);
+                    model.transitions.Add(logicQuery2TransitionV2);
+                }
+
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
                 model.transitions.Add(confirmationFilledToInitialStateTransition);
             }
+
 
             // add datarow for each model
             for (int i = 0; i < BehavioralModelsCount; i++)

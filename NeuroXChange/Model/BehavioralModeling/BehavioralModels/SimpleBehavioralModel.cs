@@ -31,6 +31,7 @@ namespace NeuroXChange.Model
         public int lq1OrderDirection { get; set; }
         public int lq2OrderDirection { get; set; }
         public DateTime previousTransitionToDirectionConfirmed { get; private set; }
+        public int lastNot74SubProtocolID { get; set; }
 
         public SimpleBehavioralModel()
         {
@@ -86,7 +87,7 @@ namespace NeuroXChange.Model
             if (CurrentTickState == BehavioralModelState.DirectionConfirmed ||
                 CurrentTickState == BehavioralModelState.ExecuteOrder)
             {
-                dataRow["In position"] = OrderDirection == 0 ? "LONG" : "SHORT";
+                dataRow["In position"] = OrderDirection == 0 ? "LONG" : OrderDirection == 1 ? "SHORT" : "NO DIRECTION";
             }
             else
             {

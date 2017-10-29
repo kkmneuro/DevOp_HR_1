@@ -123,7 +123,7 @@ namespace NeuroXChange.Model
 
                 if (activeModel.CurrentTickState == BehavioralModelState.DirectionConfirmed)
                 {
-                    NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, behavioralModelsContainer.logicQuery1Condition.lastNot74SubProtocolID);
+                    NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, getActiveBehavioralModel().lastNot74SubProtocolID);
                 }
             }
         }
