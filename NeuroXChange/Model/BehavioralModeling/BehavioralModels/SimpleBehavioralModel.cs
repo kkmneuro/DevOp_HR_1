@@ -1,36 +1,26 @@
-﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
-using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+using NeuroXChange.Model.BehavioralModeling.Transitions;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace NeuroXChange.Model
 {
     public class SimpleBehavioralModel
     {
+        // transitions
+        public List<AbstractTransition> transitions { get; set; }
+
         // used for saving model statistic information
         public DataRow dataRow { get; set; }
-
-        // behavioral conditions
-        private AccYCondition accYCondition;
-        private HRReadyToTradeCondition hrReadyToTradeCondition;
-        private HRPreactivationCondition hrPreactivationCondition;
-        private AbstractBehavioralModelCondition logicQuery1Condition;
-        private AbstractBehavioralModelCondition logicQuery2Condition;
-
-        // specific condition variants
-        public Func<bool> LQ1SubCondition { get; set; }
-        public Func<bool> LQ2SubCondition { get; set; }
-        // if HR Oscillation not met, move to "Initial state" / "Ready to trade"
-        public bool MoveBackIfHROscNotMet { get; set; }
-        // after this period of time, if there no LQ2 condition, move back to "Preactivation" state
-        public TimeSpan DirectionConfirmedExpirationTime { get; set; }
 
         // behavioral model states
         public BehavioralModelState PreviousTickState { get; private set; }
         public BehavioralModelState CurrentTickState { get; private set; }
+        private DateTime previousTickTime;
 
         // are we buying or selling
-        public int OrderDirection { get; private set; }  // 0 - buy, 1 - sell
+        public int OrderDirection { get; set; }  // 0 - buy, 1 - sell
 
         // other statistics
         public int TradesToday { get; private set; }
@@ -38,38 +28,15 @@ namespace NeuroXChange.Model
         public double Profitability { get; private set; }
 
         // some variables
-        private DateTime previousTickTime;
-        private int lq1OrderDirection;
-        private int lq2OrderDirection;
-        private DateTime previousTransitionToDirectionConfirmed;
+        public int lq1OrderDirection { get; set; }
+        public int lq2OrderDirection { get; set; }
+        public DateTime previousTransitionToDirectionConfirmed { get; private set; }
 
-        public SimpleBehavioralModel(
-            AccYCondition accYCondition,
-            HRReadyToTradeCondition hrReadyToTradeCondition,
-            HRPreactivationCondition hrPreactivationCondition,
-            AbstractBehavioralModelCondition logicQuery1Condition,
-            AbstractBehavioralModelCondition logicQuery2Condition)
+        public SimpleBehavioralModel()
         {
-            this.accYCondition = accYCondition;
-            this.hrReadyToTradeCondition = hrReadyToTradeCondition;
-            this.hrPreactivationCondition = hrPreactivationCondition;
-            this.logicQuery1Condition = logicQuery1Condition;
-            this.logicQuery2Condition = logicQuery2Condition;
-
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
-            OrderDirection = 0;
-            TradesToday = 0;
-            TradesTotal = 0;
-            Profitability = 0.0;
-
-            LQ1SubCondition = null;
-            LQ2SubCondition = null;
-            MoveBackIfHROscNotMet = false;
-            DirectionConfirmedExpirationTime = TimeSpan.FromMinutes(15);
-
-            previousTickTime = DateTime.FromOADate(0);
-            previousTransitionToDirectionConfirmed = DateTime.FromOADate(0);
+            transitions = new List<AbstractTransition>();
         }
 
         public virtual void OnNext(BioData.BioData data)
@@ -84,142 +51,31 @@ namespace NeuroXChange.Model
             }
             previousTickTime = data.time;
 
-            // ----- AccY event ------
-            if (accYCondition != null && accYCondition.isConditionMet)
+            // execute transitions code
+            foreach (var transition in transitions)
             {
-                switch (PreviousTickState)
+                // transitions could not only transit to another state,
+                // but also update behavioral model inner variables
+                CurrentTickState = transition.Execute(this, data.time);
+
+                // if state was changed, skip other transitions
+                if (PreviousTickState != CurrentTickState)
                 {
-                    case BehavioralModelState.InitialState:
-                        {
-                            CurrentTickState = BehavioralModelState.ReadyToTrade;
-                            break;
-                        }
-                    case BehavioralModelState.ReadyToTrade:
-                        {
-                            CurrentTickState = BehavioralModelState.Preactivation;
-                            break;
-                        }
-                    case BehavioralModelState.Preactivation:
-                        {
-                            CurrentTickState = BehavioralModelState.DirectionConfirmed;
-                            break;
-                        }
-                    case BehavioralModelState.DirectionConfirmed:
-                        {
-                            CurrentTickState = BehavioralModelState.ExecuteOrder;
-                            break;
-                        }
-                    case BehavioralModelState.ExecuteOrder:
-                        {
-                            CurrentTickState = BehavioralModelState.ConfirmationFilled;
-                            break;
-                        }
-                    case BehavioralModelState.ConfirmationFilled:
-                        {
-                            CurrentTickState = BehavioralModelState.InitialState;
-                            break;
-                        }
+                    break;
                 }
             }
-
-
-            // ----- Move back if HR Oscillations conditions not met -----
-            if (MoveBackIfHROscNotMet)
-            {
-                if (!hrPreactivationCondition.isConditionMet
-                    && (PreviousTickState == BehavioralModelState.Preactivation
-                        || PreviousTickState == BehavioralModelState.DirectionConfirmed))
-                {
-                    CurrentTickState = BehavioralModelState.ReadyToTrade;
-                }
-                if (!hrReadyToTradeCondition.isConditionMet
-                    && (PreviousTickState == BehavioralModelState.ReadyToTrade
-                        || PreviousTickState == BehavioralModelState.Preactivation
-                        || PreviousTickState == BehavioralModelState.DirectionConfirmed))
-                {
-                    CurrentTickState = BehavioralModelState.InitialState;
-                }
-            }
-
-
-            // ----- HR Oscillations conditions -----
-            if (DirectionConfirmedExpirationTime != null)
-            {
-                if (PreviousTickState == BehavioralModelState.DirectionConfirmed)
-                {
-                    if (DirectionConfirmedExpirationTime < (data.time - previousTransitionToDirectionConfirmed))
-                    {
-                        CurrentTickState = BehavioralModelState.Preactivation;
-                    }
-                }
-            }
-
-
-            // ----- HR Oscillations conditions -----
-            if (hrReadyToTradeCondition.isConditionMet)
-            {
-                if (PreviousTickState == BehavioralModelState.InitialState)
-                {
-                    CurrentTickState = BehavioralModelState.ReadyToTrade;
-                }
-            }
-
-            if (hrPreactivationCondition.isConditionMet)
-            {
-                if (PreviousTickState == BehavioralModelState.ReadyToTrade)
-                {
-                    CurrentTickState = BehavioralModelState.Preactivation;
-                }
-            }
-
-
-            // ------ Logic Query 1 ------
-            if (logicQuery1Condition.isConditionMet)
-            {
-                if (PreviousTickState == BehavioralModelState.Preactivation)
-                {
-                    if (LQ1SubCondition == null || LQ1SubCondition())
-                    {
-                        CurrentTickState = BehavioralModelState.DirectionConfirmed;
-                        lq1OrderDirection = (int)logicQuery1Condition.detailsData;
-                        OrderDirection = lq1OrderDirection;
-                        previousTransitionToDirectionConfirmed = data.time;
-                    }
-                }
-            }
-
-            //  ------ Logic Query 2 ------
-            if (logicQuery2Condition.isConditionMet)
-            {
-                if (PreviousTickState == BehavioralModelState.DirectionConfirmed)
-                {
-                    int localLq2OrderDirection = (int)logicQuery2Condition.detailsData;
-                    if (lq1OrderDirection == localLq2OrderDirection &&
-                        (LQ2SubCondition == null || LQ2SubCondition()))
-                    {
-                        CurrentTickState = BehavioralModelState.ExecuteOrder;
-                        lq2OrderDirection = localLq2OrderDirection;
-                        OrderDirection = lq2OrderDirection;
-                    }
-                }
-            }
-
-
-            // ------ Simple transition between last 2 states ------
-            if (PreviousTickState == BehavioralModelState.ExecuteOrder)
-            {
-                CurrentTickState = BehavioralModelState.ConfirmationFilled;
-            }
-            else if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
-            {
-                TradesTotal++;
-                TradesToday++;
-                CurrentTickState = BehavioralModelState.InitialState;
-            }
-
 
             if (PreviousTickState != CurrentTickState)
             {
+                if (CurrentTickState == BehavioralModelState.DirectionConfirmed)
+                {
+                    previousTransitionToDirectionConfirmed = data.time;
+                }
+                if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
+                {
+                    TradesTotal++;
+                    TradesToday++;
+                }
                 UpdateStatistics();
             }
         }

@@ -105,6 +105,12 @@
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\ConditionalTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\AbstractTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\FunctionalTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery1Transition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery2Transition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\DirectionConfirmedExpirationTransition.cs" />
     <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />

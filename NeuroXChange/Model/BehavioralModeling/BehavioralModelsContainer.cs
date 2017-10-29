@@ -1,6 +1,8 @@
 ﻿using NeuroXChange.Common;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
+using NeuroXChange.Model.BehavioralModeling.Transitions;
 using NeuroXChange.Model.BioData;
 using System;
 using System.Collections.Generic;
@@ -73,21 +75,12 @@ namespace NeuroXChange.Model.BehavioralModeling
             var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
             var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
             accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
-
             double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions"));
             double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions"));
-
             hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
-
             hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
-
             logicQuery1Condition = new LogicQuery1Condition(100, 60);
-
             logicQuery2Condition = new LogicQuery2Condition();
-
-            // initialize specific models/conditions variants
-            Func<bool> hrPreactivationMet = () => { return hrPreactivationCondition.isConditionMet; };
-            Func<bool> hrPreactivationNotMet = () => { return !hrPreactivationCondition.isConditionMet; };
 
             // add initialized conditions to List for more easy processing
             conditions = new List<AbstractBehavioralModelCondition>();
@@ -97,6 +90,38 @@ namespace NeuroXChange.Model.BehavioralModeling
             conditions.Add(logicQuery1Condition);
             conditions.Add(logicQuery2Condition);
 
+            // create transitions
+            var hrReadyToTradeTransition = new ConditionalTransition(
+                hrReadyToTradeCondition,
+                BehavioralModelState.InitialState,
+                BehavioralModelState.ReadyToTrade);
+            var hrPreactivationTransition = new ConditionalTransition(
+                hrPreactivationCondition,
+                BehavioralModelState.ReadyToTrade,
+                BehavioralModelState.Preactivation);
+            Func<bool> hrPreactivationNotMet = () => { return !hrPreactivationCondition.isConditionMet; };
+            Func<bool> hrReadyToTradeNotMet = () => { return !hrReadyToTradeCondition.isConditionMet; };
+            var hrPreactivationNotMetTransition = new FunctionalTransition(
+                hrPreactivationNotMet,
+                BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
+                BehavioralModelState.ReadyToTrade);
+            var hrReadyToTradeNotMetTransition = new FunctionalTransition(
+                hrReadyToTradeNotMet,
+                BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
+                BehavioralModelState.InitialState);
+            var directionConfirmedExpirationTransition = new DirectionConfirmedExpirationTransition(TimeSpan.FromMinutes(15));
+            var logicQuery1Transition = new LogicQuery1Transition(logicQuery1Condition);
+            var logicQuery2Transition = new LogicQuery2Transition(logicQuery2Condition);
+            Func<bool> alwaysTrueFunction = () => { return true; };
+            var executeOrderToConfirmationFilledTransition = new FunctionalTransition(
+                alwaysTrueFunction,
+                BehavioralModelState.ExecuteOrder,
+                BehavioralModelState.ConfirmationFilled);
+            var confirmationFilledToInitialStateTransition = new FunctionalTransition(
+                alwaysTrueFunction,
+                BehavioralModelState.ConfirmationFilled,
+                BehavioralModelState.InitialState);
+
             // initialize behavioral models
             BehavioralModelsCount = 16;
             behavioralModels = new SimpleBehavioralModel[BehavioralModelsCount];
@@ -104,15 +129,18 @@ namespace NeuroXChange.Model.BehavioralModeling
             // initialize all models with same conditions
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
-                var model = new SimpleBehavioralModel(
-                    null, hrReadyToTradeCondition, hrPreactivationCondition,
-                    logicQuery1Condition, logicQuery2Condition);
+                var model = new SimpleBehavioralModel();
                 behavioralModels[i] = model;
 
-                model.LQ1SubCondition = hrPreactivationMet;
-                model.LQ2SubCondition = i % 2 == 0 ? hrPreactivationMet : hrPreactivationNotMet;
-                model.DirectionConfirmedExpirationTime = TimeSpan.FromMinutes(15);
-                model.MoveBackIfHROscNotMet = true;
+                model.transitions.Add(hrReadyToTradeTransition);
+                model.transitions.Add(hrPreactivationTransition);
+                model.transitions.Add(hrPreactivationNotMetTransition);
+                model.transitions.Add(hrReadyToTradeNotMetTransition);
+                model.transitions.Add(directionConfirmedExpirationTransition);
+                model.transitions.Add(logicQuery1Transition);
+                model.transitions.Add(logicQuery2Transition);
+                model.transitions.Add(executeOrderToConfirmationFilledTransition);
+                model.transitions.Add(confirmationFilledToInitialStateTransition);
             }
 
             // add datarow for each model
