@@ -38,30 +38,31 @@
             this.peakPerformanceGauge.BaseArcStart = 180;
             this.peakPerformanceGauge.BaseArcSweep = 180;
             this.peakPerformanceGauge.BaseArcWidth = 2;
-            this.peakPerformanceGauge.Cap_Idx = ((byte)(0));
+            this.peakPerformanceGauge.Cap_Idx = ((byte)(1));
             this.peakPerformanceGauge.CapColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black,
         System.Drawing.Color.Black,
         System.Drawing.Color.Black,
         System.Drawing.Color.Black,
         System.Drawing.Color.Black};
-            this.peakPerformanceGauge.CapPosition = new System.Drawing.Point(10, 10);
+            this.peakPerformanceGauge.CapFont = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.peakPerformanceGauge.CapPosition = new System.Drawing.Point(65, 70);
             this.peakPerformanceGauge.CapsPosition = new System.Drawing.Point[] {
-        new System.Drawing.Point(10, 10),
-        new System.Drawing.Point(142, 100),
+        new System.Drawing.Point(81, 60),
+        new System.Drawing.Point(65, 70),
         new System.Drawing.Point(120, 200),
         new System.Drawing.Point(10, 10),
         new System.Drawing.Point(10, 10)};
             this.peakPerformanceGauge.CapsText = new string[] {
-        "",
-        "",
+        "peak",
+        "performance",
         "",
         "",
         ""};
-            this.peakPerformanceGauge.CapText = "";
+            this.peakPerformanceGauge.CapText = "performance";
             this.peakPerformanceGauge.Center = new System.Drawing.Point(90, 90);
             this.peakPerformanceGauge.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.peakPerformanceGauge.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.peakPerformanceGauge.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.peakPerformanceGauge.Location = new System.Drawing.Point(0, 0);
             this.peakPerformanceGauge.MaxValue = 10F;
             this.peakPerformanceGauge.MinValue = 0F;
@@ -86,7 +87,7 @@
         System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(209)))), ((int)(((byte)(133))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(178)))), ((int)(((byte)(78))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(144)))), ((int)(((byte)(69))))),
-         System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(121)))), ((int)(((byte)(63))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(121)))), ((int)(((byte)(63))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(86)))), ((int)(((byte)(46)))))};
             this.peakPerformanceGauge.RangesEnabled = new bool[] {
         true,

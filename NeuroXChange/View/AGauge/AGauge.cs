@@ -195,6 +195,7 @@ namespace AGaugeApp
                 Refresh();
             }
         }
+
         public override System.Windows.Forms.ImageLayout BackgroundImageLayout
         {
             get
@@ -314,6 +315,28 @@ namespace AGaugeApp
             set
             {
                 m_CapColor = value;
+            }
+        }
+
+
+        private System.Drawing.Font m_capFont = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        [System.ComponentModel.Browsable(true),
+        System.ComponentModel.Category("AGauge"),
+        System.ComponentModel.Description("The font of the caption text.")]
+        public System.Drawing.Font CapFont
+        {
+            get
+            {
+                return m_capFont;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    m_capFont = value;
+                    drawGaugeBackground = true;
+                    Refresh();
+                }
             }
         }
 
@@ -1526,12 +1549,12 @@ namespace AGaugeApp
                 {
                    ggr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
                 }
-                
+
                 for (Int32 counter= 0; counter<NUMOFCAPS; counter++)
                 {
                     if (m_CapText[counter] != "")
                     {
-                       ggr.DrawString(m_CapText[counter], Font, new SolidBrush(m_CapColor[counter]), m_CapPosition[counter].X, m_CapPosition[counter].Y, StringFormat.GenericTypographic);
+                       ggr.DrawString(m_CapText[counter], CapFont, new SolidBrush(m_CapColor[counter]), m_CapPosition[counter].X, m_CapPosition[counter].Y, StringFormat.GenericTypographic);
                     }
                 }
             }

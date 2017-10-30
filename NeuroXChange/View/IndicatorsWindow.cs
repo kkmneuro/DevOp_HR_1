@@ -32,6 +32,16 @@ namespace NeuroXChange.View
             center.X = Width / 2;
             center.Y = Height / 2 + 90 / 2 - 4;
             peakPerformanceGauge.Center = center;
+
+            var capPos = center;
+            peakPerformanceGauge.Cap_Idx = 0;
+            capPos.X = center.X - 9;
+            capPos.Y = center.Y - 32;
+            peakPerformanceGauge.CapPosition = capPos;
+            peakPerformanceGauge.Cap_Idx = 1;
+            capPos.X = center.X - 25;
+            capPos.Y = center.Y - 20;
+            peakPerformanceGauge.CapPosition = capPos;
         }
 
         private void peakPerformanceGauge_SizeChanged(object sender, EventArgs e)
