@@ -16,8 +16,7 @@ namespace BreathPacer
         double speed;
         int steps;
         int step = 0;
-        int x, y, x1, x2, y1, y2;
-        bool directionSwitched = false;
+        double x1, x2, y1, y2;      // coordinates in [0,1] range according to width and height of panel
         int inhalePrecentage, exhalePrecentage;
         double breathsPerMinute;
         int lineWidth;
@@ -25,7 +24,6 @@ namespace BreathPacer
         Color lineColor;
         Form formToOpen;
         int cyclesToOpenClose;
-        DateTime stoperStart;
         private int breathSettingsIndex;
         Stopwatch stopWatch = new Stopwatch();
 
@@ -133,12 +131,9 @@ namespace BreathPacer
         {
             InitializeComponent();
 
-            SetStyle(ControlStyles.ResizeRedraw, true);
-            SetStyle(ControlStyles.UserPaint, true);
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.ResizeRedraw = true;
+            this.DoubleBuffered = true;
 
-            Size = new Size(200, 130);
             BreathsPerMinute = 5.5;
             LineWidth = 15;
             BallDiameter = 25;
@@ -148,7 +143,7 @@ namespace BreathPacer
             exhalePrecentage = 100 - InhalePrecentage;
             lblBpm.Text = breathsPerMinute + " bpm";
             pbBall.Left = 0;
-            pbBall.Top = pbPacer.Height - pbBall.Height;
+            pbBall.Top = Height - pbBall.Height;
         }
 
         /// <summary>
@@ -186,12 +181,11 @@ namespace BreathPacer
             steps = (int)(InhalePrecentage * speed);
             step = 0;
 
-            x1 = -pbBall.Width / 2;
-            x2 = pbPacer.Width * InhalePrecentage / 100 - pbBall.Width / 2;
-            y1 = pbPacer.Height - pbBall.Height / 2;
-            y2 = -pbBall.Height / 2;
-            x = pbBall.Left = 0;
-            y = pbBall.Top = pbPacer.Height;
+            x1 = 0;
+            x2 = ((double)InhalePrecentage) / 100;
+            y1 = 1;
+            y2 = 0;
+
             tmrPacer.Interval = 20;
             ElapsedCycleCount = 0;
             Refresh();
@@ -236,6 +230,24 @@ namespace BreathPacer
             Start(breathSettings);
         }
 
+        private void pbPacer_SizeChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void BreathPacerControl_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            GraphicsPath gp = new GraphicsPath();
+            gp.AddLines(new Point[] {
+                new Point(0, Height),
+                new Point(Width * InhalePrecentage / 100, 0),
+                new Point(Width, Height),
+            });
+
+            e.Graphics.DrawPath(new Pen(LineColor, LineWidth), gp);
+        }
+
         protected virtual void OnCycleElapsedEvent(PacerEventArgs e)
         {
             EventHandler<PacerEventArgs> handler = CycleElapsed;
@@ -248,13 +260,14 @@ namespace BreathPacer
 
         private void pnlPacer_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.Clear(SystemColors.Control);
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
             GraphicsPath gp = new GraphicsPath();
             gp.AddLines(new Point[] {
-                new Point(0, pbPacer.Height),
-                new Point(pbPacer.Width * InhalePrecentage / 100, 0),
-                new Point(pbPacer.Width, pbPacer.Height),
+                new Point(0, Height),
+                new Point(Width * InhalePrecentage / 100, 0),
+                new Point(Width, Height),
             });
 
             e.Graphics.DrawPath(new Pen(LineColor, LineWidth), gp);
@@ -273,79 +286,77 @@ namespace BreathPacer
 
         private void tmrPacer_Tick(object sender, EventArgs e)
         {
-            if (pbBall.Left < pbPacer.Width * InhalePrecentage / 100 && pbBall.Top > - pbBall.Height / 2)
+            if (step < steps)
             {
                 move();
             }
-            else if(pbBall.Left < pbPacer.Width && pbBall.Top < pbPacer.Height)
+            else
             {
-                if(!directionSwitched)
+                if (y1 > y2)
                 {
-                    x1 = x;
-                    x2 = pbPacer.Width - pbBall.Width / 2;
-                    y1 = y;
-                    y2 = pbPacer.Height - pbBall.Height / 2;
+                    x1 = ((double)InhalePrecentage) / 100;
+                    x2 = 1;
+                    y1 = 0;
+                    y2 = 1;
                     steps = (int)(exhalePrecentage * speed);
-                    step = 0;
-                    directionSwitched = true;
+                } else // cycle elapsed
+                {
+                    x1 = 0;
+                    x2 = ((double)InhalePrecentage) / 100;
+                    y1 = 1;
+                    y2 = 0;
+                    steps = (int)(InhalePrecentage * speed);
+
+                    OnCycleElapsedEvent(new PacerEventArgs(++ElapsedCycleCount));
                 }
+                step = 0;
                 move();
             }
-            else //cycle elapsed
-            {
-                stopWatch.Stop();
-                lblBpm.Text = string.Format("{0} bpm \nmeasured time: {1}\nmeasured bpm:{2}, ", BreathsPerMinute, stopWatch.Elapsed, (60 / stopWatch.Elapsed.TotalSeconds));
-                lblBpm.Left = 4;//for longer texts to be visible (after tests we comment this out)
+            //else //cycle elapsed
+            //{
+            //    stopWatch.Stop();
 
-                OnCycleElapsedEvent(new PacerEventArgs(++ElapsedCycleCount));
+            //    OnCycleElapsedEvent(new PacerEventArgs(++ElapsedCycleCount));
 
-                if(BreathSettingsCollection != null  && BreathSettingsCollection[breathSettingsIndex].CyclesToFinish  == ElapsedCycleCount)
-                {
-                    if(breathSettingsIndex < BreathSettingsCollection.Count - 1)
-                    {
-                        breathSettingsIndex++;
-                        BreathsPerMinute = BreathSettingsCollection[breathSettingsIndex].BreathsPerMinute;
-                        CyclesToFinish = BreathSettingsCollection[breathSettingsIndex].CyclesToFinish;
-                        Start();
-                    }
-                    else
-                    {
-                        Stop();
-                        ParentForm.Close();
-                    }
-                }
+            //    if(BreathSettingsCollection != null  && BreathSettingsCollection[breathSettingsIndex].CyclesToFinish  == ElapsedCycleCount)
+            //    {
+            //        if(breathSettingsIndex < BreathSettingsCollection.Count - 1)
+            //        {
+            //            breathSettingsIndex++;
+            //            BreathsPerMinute = BreathSettingsCollection[breathSettingsIndex].BreathsPerMinute;
+            //            CyclesToFinish = BreathSettingsCollection[breathSettingsIndex].CyclesToFinish;
+            //            Start();
+            //        }
+            //        else
+            //        {
+            //            Stop();
+            //            ParentForm.Close();
+            //        }
+            //    }
 
-                if(cyclesToOpenClose > 0 && ElapsedCycleCount == cyclesToOpenClose)
-                {
-                    if (formToOpen != null)
-                    {
-                        formToOpen.Show();
-                    }
-                    this.ParentForm.Close();
-                }
+            //    if(cyclesToOpenClose > 0 && ElapsedCycleCount == cyclesToOpenClose)
+            //    {
+            //        if (formToOpen != null)
+            //        {
+            //            formToOpen.Show();
+            //        }
+            //        this.ParentForm.Close();
+            //    }
 
-                x1 = -pbBall.Width / 2;
-                x2 = pbPacer.Width * InhalePrecentage / 100 - pbBall.Width / 2;
-                y1 = pbPacer.Height - pbBall.Height / 2;
-                y2 = -pbBall.Height / 2;
+            //    stopWatch.Restart();
 
-                stopWatch.Restart();
-
-                steps = (int)(InhalePrecentage * speed);
-                step = 0;
-                pbBall.Left = 0;
-                pbBall.Top = pbPacer.Height;
-                directionSwitched = false;
-            }
+            //    steps = (int)(InhalePrecentage * speed);
+            //    step = 0;
+            //    pbBall.Left = 0;
+            //    pbBall.Top = Height;
+            //}
         }
 
         private void move()
         {
-            if (steps == 0) return;
-            x = x1 + (x2 - x1) * step / steps;
-            y = y1 + (y2 - y1) * step++ / steps;
-            pbBall.Left = x;
-            pbBall.Top = y;
+            step++;
+            pbBall.Left = (int) (((steps - step) * x1 + step * x2) / steps * Width) - pbBall.Width / 2;
+            pbBall.Top = (int)(((steps - step) * y1 + step * y2) / steps * Height) - pbBall.Height / 2;
         }
     }
 
