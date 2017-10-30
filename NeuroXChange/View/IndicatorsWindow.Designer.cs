@@ -28,64 +28,165 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.peakPerformanceGauge = new AGaugeApp.AGauge();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // peakPerformanceGauge
             // 
-            this.pictureBox1.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox1.Location = new System.Drawing.Point(-4, -4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(248, 50);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox2.Location = new System.Drawing.Point(-4, 43);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(248, 50);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::NeuroXChange.Properties.Resources.Indicator;
-            this.pictureBox3.Location = new System.Drawing.Point(-4, 90);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(248, 50);
-            this.pictureBox3.TabIndex = 2;
-            this.pictureBox3.TabStop = false;
+            this.peakPerformanceGauge.BaseArcColor = System.Drawing.Color.Gray;
+            this.peakPerformanceGauge.BaseArcRadius = 60;
+            this.peakPerformanceGauge.BaseArcStart = 180;
+            this.peakPerformanceGauge.BaseArcSweep = 180;
+            this.peakPerformanceGauge.BaseArcWidth = 2;
+            this.peakPerformanceGauge.Cap_Idx = ((byte)(0));
+            this.peakPerformanceGauge.CapColors = new System.Drawing.Color[] {
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black};
+            this.peakPerformanceGauge.CapPosition = new System.Drawing.Point(10, 10);
+            this.peakPerformanceGauge.CapsPosition = new System.Drawing.Point[] {
+        new System.Drawing.Point(10, 10),
+        new System.Drawing.Point(142, 100),
+        new System.Drawing.Point(120, 200),
+        new System.Drawing.Point(10, 10),
+        new System.Drawing.Point(10, 10)};
+            this.peakPerformanceGauge.CapsText = new string[] {
+        "",
+        "",
+        "",
+        "",
+        ""};
+            this.peakPerformanceGauge.CapText = "";
+            this.peakPerformanceGauge.Center = new System.Drawing.Point(90, 90);
+            this.peakPerformanceGauge.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.peakPerformanceGauge.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.peakPerformanceGauge.Location = new System.Drawing.Point(0, 0);
+            this.peakPerformanceGauge.MaxValue = 10F;
+            this.peakPerformanceGauge.MinValue = 0F;
+            this.peakPerformanceGauge.Name = "peakPerformanceGauge";
+            this.peakPerformanceGauge.NeedleColor1 = AGaugeApp.AGauge.NeedleColorEnum.Yellow;
+            this.peakPerformanceGauge.NeedleColor2 = System.Drawing.Color.DimGray;
+            this.peakPerformanceGauge.NeedleRadius = 60;
+            this.peakPerformanceGauge.NeedleType = 0;
+            this.peakPerformanceGauge.NeedleWidth = 1;
+            this.peakPerformanceGauge.Range_Idx = ((byte)(4));
+            this.peakPerformanceGauge.RangeColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(225)))), ((int)(((byte)(170)))));
+            this.peakPerformanceGauge.RangeEnabled = true;
+            this.peakPerformanceGauge.RangeEndValue = 5F;
+            this.peakPerformanceGauge.RangeInnerRadius = 35;
+            this.peakPerformanceGauge.RangeOuterRadius = 60;
+            this.peakPerformanceGauge.RangesColor = new System.Drawing.Color[] {
+        System.Drawing.Color.Red,
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.Yellow,
+        System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(239)))), ((int)(((byte)(208))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(225)))), ((int)(((byte)(170))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(209)))), ((int)(((byte)(133))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(178)))), ((int)(((byte)(78))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(144)))), ((int)(((byte)(69))))),
+         System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(121)))), ((int)(((byte)(63))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(86)))), ((int)(((byte)(46)))))};
+            this.peakPerformanceGauge.RangesEnabled = new bool[] {
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true};
+            this.peakPerformanceGauge.RangesEndValue = new float[] {
+        1F,
+        2F,
+        3F,
+        4F,
+        5F,
+        6F,
+        7F,
+        8F,
+        9F,
+        10F};
+            this.peakPerformanceGauge.RangesInnerRadius = new int[] {
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35};
+            this.peakPerformanceGauge.RangesOuterRadius = new int[] {
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60};
+            this.peakPerformanceGauge.RangesStartValue = new float[] {
+        0F,
+        1F,
+        2F,
+        3F,
+        4F,
+        5F,
+        6F,
+        7F,
+        8F,
+        9F};
+            this.peakPerformanceGauge.RangeStartValue = 4F;
+            this.peakPerformanceGauge.ScaleLinesInterColor = System.Drawing.Color.Black;
+            this.peakPerformanceGauge.ScaleLinesInterInnerRadius = 60;
+            this.peakPerformanceGauge.ScaleLinesInterOuterRadius = 65;
+            this.peakPerformanceGauge.ScaleLinesInterWidth = 1;
+            this.peakPerformanceGauge.ScaleLinesMajorColor = System.Drawing.Color.Black;
+            this.peakPerformanceGauge.ScaleLinesMajorInnerRadius = 60;
+            this.peakPerformanceGauge.ScaleLinesMajorOuterRadius = 72;
+            this.peakPerformanceGauge.ScaleLinesMajorStepValue = 1F;
+            this.peakPerformanceGauge.ScaleLinesMajorWidth = 3;
+            this.peakPerformanceGauge.ScaleLinesMinorColor = System.Drawing.Color.Gray;
+            this.peakPerformanceGauge.ScaleLinesMinorInnerRadius = 120;
+            this.peakPerformanceGauge.ScaleLinesMinorNumOf = 1;
+            this.peakPerformanceGauge.ScaleLinesMinorOuterRadius = 70;
+            this.peakPerformanceGauge.ScaleLinesMinorWidth = 1;
+            this.peakPerformanceGauge.ScaleNumbersColor = System.Drawing.Color.Black;
+            this.peakPerformanceGauge.ScaleNumbersFormat = null;
+            this.peakPerformanceGauge.ScaleNumbersRadius = 82;
+            this.peakPerformanceGauge.ScaleNumbersRotation = 0;
+            this.peakPerformanceGauge.ScaleNumbersStartScaleLine = 0;
+            this.peakPerformanceGauge.ScaleNumbersStepScaleLines = 1;
+            this.peakPerformanceGauge.Size = new System.Drawing.Size(207, 166);
+            this.peakPerformanceGauge.TabIndex = 22;
+            this.peakPerformanceGauge.Text = "aGauge13";
+            this.peakPerformanceGauge.Value = 0.5F;
+            this.peakPerformanceGauge.SizeChanged += new System.EventHandler(this.peakPerformanceGauge_SizeChanged);
+            this.peakPerformanceGauge.Resize += new System.EventHandler(this.peakPerformanceGauge_Resize);
             // 
             // IndicatorsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(244, 140);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(207, 166);
+            this.Controls.Add(this.peakPerformanceGauge);
             this.Name = "IndicatorsWindow";
             this.Text = "Indicators";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndicatorsWindow_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        public AGaugeApp.AGauge peakPerformanceGauge;
     }
 }

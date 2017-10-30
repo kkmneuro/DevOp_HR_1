@@ -126,6 +126,10 @@
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="View\AGauge\AGauge.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\AGauge\AGauge.Designer.cs" />
     <Compile Include="View\BehavioralModelsWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -25,5 +25,18 @@ namespace NeuroXChange.View
                 e.Cancel = true;
             }
         }
+
+        private void peakPerformanceGauge_Resize(object sender, EventArgs e)
+        {
+            var center = peakPerformanceGauge.Center;
+            center.X = Width / 2;
+            center.Y = Height / 2 + 90 / 2 - 4;
+            peakPerformanceGauge.Center = center;
+        }
+
+        private void peakPerformanceGauge_SizeChanged(object sender, EventArgs e)
+        {
+            peakPerformanceGauge_Resize(sender, e);
+        }
     }
 }
