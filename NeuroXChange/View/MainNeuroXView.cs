@@ -242,6 +242,20 @@ namespace NeuroXChange.View
                     var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
                     var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
                     var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
+                    if (temperaturePoints.Count > 0)
+                    {
+                        double point = temperaturePoints[temperaturePoints.Count - 1].XValue;
+                        DateTime pointTime = DateTime.FromOADate(point);
+                        DateTime dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                        if (dataTime - pointTime > TimeSpan.FromHours(1) || dataTime < pointTime)
+                        {
+                            temperaturePoints.Clear();
+                            hrPoints.Clear();
+                            skinCondPoints.Clear();
+                            chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points.Clear();
+                        }
+                    }
+
                     temperaturePoints.AddXY(data.time, data.temperature);
                     hrPoints.AddXY(data.time, data.hartRate);
                     skinCondPoints.AddXY(data.time, data.skinConductance);
