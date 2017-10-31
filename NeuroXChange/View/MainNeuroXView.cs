@@ -221,58 +221,107 @@ namespace NeuroXChange.View
                 (Action)(() =>
                 {
 
-            // update biodata information
-            StringBuilder builder = new StringBuilder();
-            builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");
-            builder.Append("Time: " + data.time + "\r\n");
-            builder.Append("Temperature: " + data.temperature.ToString("0.##") + "\r\n");
-            builder.Append("HartRate: " + data.hartRate.ToString("0.##") + "\r\n");
-            builder.Append("SkinConductance: " + data.skinConductance.ToString("0.##") + "\r\n");
-            builder.Append("AccX: " + data.accX.ToString("0.##") + "\r\n");
-            builder.Append("AccY: " + data.accY.ToString("0.##") + "\r\n");
-            builder.Append("AccZ: " + data.accZ.ToString("0.##") + "\r\n");
-            builder.Append("Session_Component_ID: " + data.session_Component_ID + "\r\n");
-            builder.Append("Sub_Component_ID: " + data.sub_Component_ID + "\r\n");
-            builder.Append("Sub_Component_Protocol_ID: " + data.sub_Component_Protocol_ID + "\r\n");
-            builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
-            builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
-            builder.Append("Data: " + data.data);
+                    // update biodata information
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");
+                    builder.Append("Time: " + data.time + "\r\n");
+                    builder.Append("Temperature: " + data.temperature.ToString("0.##") + "\r\n");
+                    builder.Append("HartRate: " + data.hartRate.ToString("0.##") + "\r\n");
+                    builder.Append("SkinConductance: " + data.skinConductance.ToString("0.##") + "\r\n");
+                    builder.Append("AccX: " + data.accX.ToString("0.##") + "\r\n");
+                    builder.Append("AccY: " + data.accY.ToString("0.##") + "\r\n");
+                    builder.Append("AccZ: " + data.accZ.ToString("0.##") + "\r\n");
+                    builder.Append("Session_Component_ID: " + data.session_Component_ID + "\r\n");
+                    builder.Append("Sub_Component_ID: " + data.sub_Component_ID + "\r\n");
+                    builder.Append("Sub_Component_Protocol_ID: " + data.sub_Component_Protocol_ID + "\r\n");
+                    builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
+                    builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
+                    builder.Append("Data: " + data.data);
 
-            rawInformationWindow.bioDataRTB.Text = builder.ToString();
-            var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
-            var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
-            var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
-            temperaturePoints.AddXY(data.time, data.temperature);
-            hrPoints.AddXY(data.time, data.hartRate);
-            skinCondPoints.AddXY(data.time, data.skinConductance);
-            if (hrPoints.Count > 3000)
-            {
-                temperaturePoints.RemoveAt(0);
-                hrPoints.RemoveAt(0);
-                skinCondPoints.RemoveAt(0);
-                chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
-                chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
-            }
+                    rawInformationWindow.bioDataRTB.Text = builder.ToString();
+                    var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
+                    var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
+                    var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
+                    temperaturePoints.AddXY(data.time, data.temperature);
+                    hrPoints.AddXY(data.time, data.hartRate);
+                    skinCondPoints.AddXY(data.time, data.skinConductance);
+                    if (hrPoints.Count > 3000)
+                    {
+                        temperaturePoints.RemoveAt(0);
+                        hrPoints.RemoveAt(0);
+                        skinCondPoints.RemoveAt(0);
+                        chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                        chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
+                    }
 
-            // update HR oscillations info
-            builder = new StringBuilder();
-            builder.Append(string.Format("Heart rate 2 min average: {0:0.##}\r\n", hrInfo.heartRate2minAverage));
-            builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
-            builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
-            builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
+                    // update HR oscillations info
+                    builder = new StringBuilder();
+                    builder.Append(string.Format("Heart rate 2 min average: {0:0.##}\r\n", hrInfo.heartRate2minAverage));
+                    builder.Append(string.Format("Heart rate innter state: {0}\r\n", hrInfo.heartRateInnerState));
+                    builder.Append(string.Format("Oscillations per min, 1 min average: {0:0.##}\r\n", hrInfo.oscillations1minAverage));
+                    builder.Append(string.Format("Oscillations per min, 3 min average: {0:0.##}\r\n", hrInfo.oscillations3minAverage));
+                    builder.Append(string.Format("Oscillations per min, 5 min average: {0:0.##}", hrInfo.oscillations5minAverage));
 
-            rawInformationWindow.heartRateRTB.Text = builder.ToString();
-            if (hrInfo.heartRate2minAverage > 0)
-            {
-                hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
-                hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
-                if (hrPoints.Count > 3000)
-                {
-                    hrPoints.RemoveAt(0);
-                    chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                }
-            }
+                    rawInformationWindow.heartRateRTB.Text = builder.ToString();
+                    if (hrInfo.heartRate2minAverage > 0)
+                    {
+                        hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
+                        hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
+                        if (hrPoints.Count > 3000)
+                        {
+                            hrPoints.RemoveAt(0);
+                            chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                        }
+                    }
+
+                    // update indicators
+                    int peakIndValue = 1;
+                    double hr1min = hrInfo.oscillations1minAverage;
+                    double hr3min = hrInfo.oscillations3minAverage;
+                    double hr5min = hrInfo.oscillations5minAverage;
+                    if (5 < hr5min && hr5min < 6.5 && 5 < hr3min && hr3min < 6.5 && 5 < hr1min && hr1min < 6.5)
+                    {
+                        peakIndValue = 10;
+                    }
+                    else if (5 < hr3min && hr3min < 6.5 && 5 < hr1min && hr1min < 6.5)
+                    {
+                        peakIndValue = 9;
+                    }
+                    else if (5 < hr1min && hr1min < 6.5)
+                    {
+                        peakIndValue = 8;
+                    }
+                    else if (5 < hr5min && hr5min < 6.5 && 5 < hr3min && hr3min < 6.5 && 6.5 < hr1min && hr1min < 12)
+                    {
+                        peakIndValue = 7;
+                    }
+                    else if (5 < hr5min && hr5min < 6.5 && 6.5 < hr3min && hr3min < 12)
+                    {
+                        peakIndValue = 6;
+                    }
+                    else if (6.5 < hr5min && hr5min < 12)
+                    {
+                        peakIndValue = 5;
+                    }
+                    else if (6.5 < hr3min && hr3min < 12 && 12 < hr1min)
+                    {
+                        peakIndValue = 4;
+                    }
+                    else if (6.5 < hr5min && hr5min < 12 && 12 < hr3min)
+                    {
+                        peakIndValue = 3;
+                    }
+                    else if (12 < hr5min)
+                    {
+                        peakIndValue = 2;
+                    }
+                    else
+                    {
+                        peakIndValue = 1;
+                    }
+                    indicatorsWindow.peakPerformanceGauge.Value = ((float)peakIndValue) - 0.5f;
+
 
                 }));
         }

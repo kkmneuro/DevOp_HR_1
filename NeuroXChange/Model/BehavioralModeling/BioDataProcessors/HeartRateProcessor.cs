@@ -38,6 +38,7 @@ namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
             HeartRateInfo heartRateInfo = this.heartRateInfo;
             heartRateInfo.heartRate2minAverage = -1.0;
             heartRateInfo.heartRateInnerState = HRState.InitialState.ToString();
+            heartRateInfo.oscillations1minAverage = -1.0;
             heartRateInfo.oscillations3minAverage = -1.0;
             heartRateInfo.oscillations5minAverage = -1.0;
             this.heartRateInfo = heartRateInfo;
@@ -123,10 +124,25 @@ namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
                             heartRateInfo.oscillations3minAverage = 60 / (interval3min / (lastStatesChanges.Count - firstIn3min - 1));
                         }
                     }
+
+                    int firstIn1min = firstIn3min;
+                    while (firstIn1min < lastStatesChanges.Count && (data.time - lastStatesChanges[firstIn1min]) > TimeSpan.FromMinutes(1))
+                    {
+                        firstIn1min++;
+                    }
+                    if (firstIn1min + 1 < lastStatesChanges.Count)
+                    {
+                        var interval1min = (data.time - lastStatesChanges[firstIn1min]).TotalSeconds;
+                        if (interval1min > 30)
+                        {
+                            heartRateInfo.oscillations1minAverage = 60 / (interval1min / (lastStatesChanges.Count - firstIn1min - 1));
+                        }
+                    }
                 }
             }
             else
             {
+                heartRateInfo.oscillations1minAverage = -1.0;
                 heartRateInfo.oscillations3minAverage = -1.0;
                 heartRateInfo.oscillations5minAverage = -1.0;
             }

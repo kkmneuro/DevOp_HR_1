@@ -7,6 +7,7 @@ namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
         public DateTime time;
         public double heartRate2minAverage;
         public string heartRateInnerState;
+        public double oscillations1minAverage;
         public double oscillations3minAverage;
         public double oscillations5minAverage;
     }
