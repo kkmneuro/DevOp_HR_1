@@ -292,23 +292,23 @@ namespace NeuroXChange.View
                     {
                         peakIndValue = 8;
                     }
-                    else if (5 < hr5min && hr5min < 6.5 && 5 < hr3min && hr3min < 6.5 && 6.5 < hr1min && hr1min < 12)
+                    else if (5 < hr5min && hr5min < 6.5 && 5 < hr3min && hr3min < 6.5 && 4 < hr1min && hr1min < 12)
                     {
                         peakIndValue = 7;
                     }
-                    else if (5 < hr5min && hr5min < 6.5 && 6.5 < hr3min && hr3min < 12)
+                    else if (5 < hr5min && hr5min < 6.5 && 4 < hr3min && hr3min < 12)
                     {
                         peakIndValue = 6;
                     }
-                    else if (6.5 < hr5min && hr5min < 12)
+                    else if (4 < hr5min && hr5min < 12)
                     {
                         peakIndValue = 5;
                     }
-                    else if (6.5 < hr3min && hr3min < 12 && 12 < hr1min)
+                    else if (4 < hr3min && hr3min < 12 && 12 < hr1min)
                     {
                         peakIndValue = 4;
                     }
-                    else if (6.5 < hr5min && hr5min < 12 && 12 < hr3min)
+                    else if (4 < hr5min && hr5min < 12 && 12 < hr3min)
                     {
                         peakIndValue = 3;
                     }
