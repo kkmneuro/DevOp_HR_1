@@ -22,11 +22,6 @@ namespace NeuroXChange.Model.BehavioralModeling
 
         // behavioral model conditions properties
         public List<AbstractBehavioralModelCondition> conditions { get; private set; }
-        //private AccYCondition accYCondition;
-        //private HRReadyToTradeCondition hrReadyToTradeCondition;
-        //private HRPreactivationCondition hrPreactivationCondition;
-        //private LogicQuery1Condition logicQuery1Condition;
-        //private LogicQuery2Condition logicQuery2Condition;
 
         // behavioral models properties
         public int BehavioralModelsCount { get; private set; }
@@ -82,6 +77,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             var logicQuery1Condition = new LogicQuery1Condition(100, 60);
             var logicQuery1ConditionV2 = new LogicQuery1Condition(100, -1);
             var logicQuery1ConditionV3 = new LogicQuery1Condition(100, 60, true);
+            var logicQuery1ConditionV4 = new LogicQuery1Condition(-1, 60);
             var logicQuery2Condition = new LogicQuery2Condition();
 
             // add initialized conditions to List for more easy processing
@@ -92,6 +88,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             conditions.Add(logicQuery1Condition);
             conditions.Add(logicQuery1ConditionV2);
             conditions.Add(logicQuery1ConditionV3);
+            conditions.Add(logicQuery1ConditionV4);
             conditions.Add(logicQuery2Condition);
 
             // create transitions
@@ -125,6 +122,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             var logicQuery1Transition = new LogicQuery1Transition(logicQuery1Condition);
             var logicQuery1TransitionV2 = new LogicQuery1Transition(logicQuery1ConditionV2);
             var logicQuery1TransitionV3 = new LogicQuery1Transition(logicQuery1ConditionV3);
+            var logicQuery1TransitionV4 = new LogicQuery1Transition(logicQuery1ConditionV4);
             var logicQuery2Transition = new LogicQuery2Transition(logicQuery2Condition);
             var logicQuery2TransitionV2 = new LogicQuery2Transition(logicQuery2Condition, false);
             Func<bool> alwaysTrueFunction = () => { return true; };
@@ -137,6 +135,21 @@ namespace NeuroXChange.Model.BehavioralModeling
                 BehavioralModelState.ConfirmationFilled,
                 BehavioralModelState.InitialState);
 
+            // models 7+
+            var hrReadyToTradeTransitionV2 = new FunctionalTransition(
+                hrReadyToTradeNotMet,
+                BehavioralModelState.InitialState,
+                BehavioralModelState.ReadyToTrade);
+            var hrReadyToTradeNotMetTransitionV3 = new FunctionalTransition(
+                hrReadyToTradeNotMet,
+                BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
+                BehavioralModelState.InitialState);
+            var hrReadyToTradeNotMetTransitionV4 = new FunctionalTransition(
+                hrReadyToTradeNotMet,
+                BehavioralModelState.Preactivation,
+                BehavioralModelState.InitialState);
+
+
             // initialize behavioral models
             BehavioralModelsCount = 16;
             behavioralModels = new SimpleBehavioralModel[BehavioralModelsCount];
@@ -148,36 +161,64 @@ namespace NeuroXChange.Model.BehavioralModeling
                 var model = new SimpleBehavioralModel();
                 behavioralModels[i] = model;
 
-                model.transitions.Add(hrReadyToTradeTransition);
-                model.transitions.Add(hrPreactivationTransition);
-
-                if (i % 2 == 0)
+                if (i <= 5 || i == 12 || i == 13)
                 {
-                    model.transitions.Add(hrPreactivationNotMetTransition);
-                    model.transitions.Add(hrReadyToTradeNotMetTransition);
+                    model.transitions.Add(hrReadyToTradeTransition);
                 }
                 else
                 {
-                    model.transitions.Add(hrPreactivationNotMetTransitionV2);
-                    model.transitions.Add(hrReadyToTradeNotMetTransitionV2);
+                    model.transitions.Add(hrReadyToTradeTransitionV2);
+                }
+
+                model.transitions.Add(hrPreactivationTransition);
+
+                if (i < 6 || i == 12 || i == 13)
+                {
+                    if (i % 2 == 0)
+                    {
+                        model.transitions.Add(hrPreactivationNotMetTransition);
+                        model.transitions.Add(hrReadyToTradeNotMetTransition);
+                    }
+                    else
+                    {
+                        model.transitions.Add(hrPreactivationNotMetTransitionV2);
+                        model.transitions.Add(hrReadyToTradeNotMetTransitionV2);
+                    }
+                } else
+                {
+                    if (i % 2 == 0)
+                    {
+                        model.transitions.Add(hrPreactivationNotMetTransition);
+                        model.transitions.Add(hrReadyToTradeNotMetTransitionV3);
+                    }
+                    else
+                    {
+                        model.transitions.Add(hrPreactivationNotMetTransitionV2);
+                        model.transitions.Add(hrReadyToTradeNotMetTransitionV4);
+                    }
                 }
 
                 model.transitions.Add(directionConfirmedExpirationTransition);
 
-                if (i == 0 || i == 1)
+                if (i == 0 || i == 1 || i == 6 || i == 7)
                 {
                     model.transitions.Add(logicQuery1Transition);
                     model.transitions.Add(logicQuery2Transition);
                 }
-                else if(i == 2 || i == 3)
+                else if (i == 2 || i == 3 || i == 8 || i == 9)
                 {
                     model.transitions.Add(logicQuery1TransitionV2);
                     model.transitions.Add(logicQuery2Transition);
                 }
-                else if (i == 4 || i == 5)
+                else if (i == 4 || i == 5 || i == 10 || i == 11)
                 {
                     model.transitions.Add(logicQuery1TransitionV3);
                     model.transitions.Add(logicQuery2TransitionV2);
+                }
+                else if (12 <= i && i <= 15)
+                {
+                    model.transitions.Add(logicQuery1TransitionV4);
+                    model.transitions.Add(logicQuery2Transition);
                 }
 
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
