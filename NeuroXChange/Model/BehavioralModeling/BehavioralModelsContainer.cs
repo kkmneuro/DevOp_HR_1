@@ -93,58 +93,69 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             // create transitions
             var hrReadyToTradeTransition = new ConditionalTransition(
+                "Ready to trade",
                 hrReadyToTradeCondition,
                 BehavioralModelState.InitialState,
                 BehavioralModelState.ReadyToTrade);
             var hrPreactivationTransition = new ConditionalTransition(
+                "Preactivation",
                 hrPreactivationCondition,
                 BehavioralModelState.ReadyToTrade,
                 BehavioralModelState.Preactivation);
             Func<bool> hrPreactivationNotMet = () => { return !hrPreactivationCondition.isConditionMet; };
             Func<bool> hrReadyToTradeNotMet = () => { return !hrReadyToTradeCondition.isConditionMet; };
             var hrPreactivationNotMetTransition = new FunctionalTransition(
+                "Preactivation not met",
                 hrPreactivationNotMet,
                 BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
                 BehavioralModelState.ReadyToTrade);
             var hrReadyToTradeNotMetTransition = new FunctionalTransition(
+                "Ready to trade not met",
                 hrReadyToTradeNotMet,
                 BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
                 BehavioralModelState.InitialState);
             var hrPreactivationNotMetTransitionV2 = new FunctionalTransition(
+                "Preactivation not met v2",
                 hrPreactivationNotMet,
                 BehavioralModelState.Preactivation,
                 BehavioralModelState.ReadyToTrade);
             var hrReadyToTradeNotMetTransitionV2 = new FunctionalTransition(
+                "Ready to trade not met v2",
                 hrReadyToTradeNotMet,
                 BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation,
                 BehavioralModelState.InitialState);
-            var directionConfirmedExpirationTransition = new DirectionConfirmedExpirationTransition(TimeSpan.FromMinutes(15));
-            var logicQuery1Transition = new LogicQuery1Transition(logicQuery1Condition);
-            var logicQuery1TransitionV2 = new LogicQuery1Transition(logicQuery1ConditionV2);
-            var logicQuery1TransitionV3 = new LogicQuery1Transition(logicQuery1ConditionV3);
-            var logicQuery1TransitionV4 = new LogicQuery1Transition(logicQuery1ConditionV4);
-            var logicQuery2Transition = new LogicQuery2Transition(logicQuery2Condition);
-            var logicQuery2TransitionV2 = new LogicQuery2Transition(logicQuery2Condition, false);
+            var directionConfirmedExpirationTransition = new DirectionConfirmedExpirationTransition("Time expired", TimeSpan.FromMinutes(15));
+            var logicQuery1Transition = new LogicQuery1Transition("Logic query 1", logicQuery1Condition);
+            var logicQuery1TransitionV2 = new LogicQuery1Transition("Logic query 1 v2", logicQuery1ConditionV2);
+            var logicQuery1TransitionV3 = new LogicQuery1Transition("Logic query 1 v3", logicQuery1ConditionV3);
+            var logicQuery1TransitionV4 = new LogicQuery1Transition("Logic query 1 v4", logicQuery1ConditionV4);
+            var logicQuery2Transition = new LogicQuery2Transition("Logic query 2", logicQuery2Condition);
+            var logicQuery2TransitionV2 = new LogicQuery2Transition("Logic query 2 v2", logicQuery2Condition, false);
             Func<bool> alwaysTrueFunction = () => { return true; };
             var executeOrderToConfirmationFilledTransition = new FunctionalTransition(
+                "Execute order to confirmation filled",
                 alwaysTrueFunction,
                 BehavioralModelState.ExecuteOrder,
                 BehavioralModelState.ConfirmationFilled);
             var confirmationFilledToInitialStateTransition = new FunctionalTransition(
+                "Confirmation filled to initial state",
                 alwaysTrueFunction,
                 BehavioralModelState.ConfirmationFilled,
                 BehavioralModelState.InitialState);
 
             // models 7+
             var hrReadyToTradeTransitionV2 = new FunctionalTransition(
+                "Ready to trade v2",
                 hrReadyToTradeNotMet,
                 BehavioralModelState.InitialState,
                 BehavioralModelState.ReadyToTrade);
             var hrReadyToTradeNotMetTransitionV3 = new FunctionalTransition(
+                "Ready to trade not met v3",
                 hrReadyToTradeNotMet,
                 BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
                 BehavioralModelState.InitialState);
             var hrReadyToTradeNotMetTransitionV4 = new FunctionalTransition(
+                "Ready to trade not met v4",
                 hrReadyToTradeNotMet,
                 BehavioralModelState.Preactivation,
                 BehavioralModelState.InitialState);

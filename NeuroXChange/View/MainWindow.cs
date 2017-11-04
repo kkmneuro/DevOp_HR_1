@@ -44,6 +44,8 @@ namespace NeuroXChange
                 return mainNeuroXView.newOrderWindow;
             else if (persistString == typeof(RawInformationWindow).ToString())
                 return mainNeuroXView.rawInformationWindow;
+            else if (persistString == typeof(BehavioralModelTransitionsWindow).ToString())
+                return mainNeuroXView.behavioralModelTransitionsWindow;
             return null;
         }
 
@@ -67,16 +69,14 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.indicatorsWindow;
             else if (sender == behavioralModelsToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.behavioralModelWindow;
+            else if (sender == behavioralModelTransitonsToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.behavioralModelTransitionsWindow;
 
             dockContentWindow.Show();
             if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
             {
                 dockContentWindow.Pane.FloatWindow.TopMost = true;
             }
-        }
-
-        private void rawInformationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -117,6 +117,7 @@ namespace NeuroXChange
             mainNeuroXView.breathPacerWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.indicatorsWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.behavioralModelWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.behavioralModelTransitionsWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
@@ -127,6 +128,7 @@ namespace NeuroXChange
             mainNeuroXView.breathPacerWindow.DockPanel = dockPanel;
             mainNeuroXView.indicatorsWindow.DockPanel = dockPanel;
             mainNeuroXView.behavioralModelWindow.DockPanel = dockPanel;
+            mainNeuroXView.behavioralModelTransitionsWindow.DockPanel = dockPanel;
         }
     }
 }

@@ -33,11 +33,21 @@ namespace NeuroXChange.Model
         public DateTime previousTransitionToDirectionConfirmed { get; private set; }
         public int lastNot74SubProtocolID { get; set; }
 
+        // transition history
+        public DataSet TransitionHistorySet { get; private set; }
+        public DataTable TransitionHistoryTable { get; private set; }
+
         public SimpleBehavioralModel()
         {
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
+            TransitionHistorySet = new DataSet("Transition history");
+            TransitionHistoryTable = TransitionHistorySet.Tables.Add("TransitionHistory");
+            TransitionHistoryTable.Columns.Add("Time", typeof(string));
+            TransitionHistoryTable.Columns.Add("To state", typeof(string));
+            TransitionHistoryTable.Columns.Add("From state", typeof(string));
+            TransitionHistoryTable.Columns.Add("Transition", typeof(string));
         }
 
         public virtual void OnNext(BioData.BioData data)
@@ -53,6 +63,7 @@ namespace NeuroXChange.Model
             previousTickTime = data.time;
 
             // execute transitions code
+            AbstractTransition executedTransition = null;
             foreach (var transition in transitions)
             {
                 // transitions could not only transit to another state,
@@ -62,6 +73,7 @@ namespace NeuroXChange.Model
                 // if state was changed, skip other transitions
                 if (PreviousTickState != CurrentTickState)
                 {
+                    executedTransition = transition;
                     break;
                 }
             }
@@ -78,6 +90,13 @@ namespace NeuroXChange.Model
                     TradesToday++;
                 }
                 UpdateStatistics();
+
+                var row = TransitionHistoryTable.NewRow();
+                row["Time"] = data.time.ToString("MM/dd  HH:mm:ss");
+                row["To state"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
+                row["From state"] = BehavioralModelStateHelper.StateToString(PreviousTickState);
+                row["Transition"] = executedTransition.ToString();
+                TransitionHistoryTable.Rows.Add(row);
             }
         }
 

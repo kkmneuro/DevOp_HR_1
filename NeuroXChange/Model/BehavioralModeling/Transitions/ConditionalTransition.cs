@@ -8,9 +8,10 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
     {
         private AbstractBehavioralModelCondition condition;
 
-        public ConditionalTransition(AbstractBehavioralModelCondition condition,
+        public ConditionalTransition(string name,
+            AbstractBehavioralModelCondition condition,
             BehavioralModelState fromStates,
-            BehavioralModelState toState) : base(fromStates, toState)
+            BehavioralModelState toState) : base(name, fromStates, toState)
         {
             this.condition = condition;
         }

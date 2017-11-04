@@ -7,8 +7,8 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
     {
         private TimeSpan expirationTime;
 
-        public DirectionConfirmedExpirationTransition(TimeSpan expirationTime)
-            : base(BehavioralModelState.DirectionConfirmed, BehavioralModelState.Preactivation)
+        public DirectionConfirmedExpirationTransition(string name, TimeSpan expirationTime)
+            : base(name, BehavioralModelState.DirectionConfirmed, BehavioralModelState.Preactivation)
         {
             this.expirationTime = expirationTime;
         }

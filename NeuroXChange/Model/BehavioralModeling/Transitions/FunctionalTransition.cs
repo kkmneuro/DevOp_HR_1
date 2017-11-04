@@ -8,9 +8,10 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
 {
         private Func<bool> func;
 
-        public FunctionalTransition(Func<bool> func,
+        public FunctionalTransition(string name,
+            Func<bool> func,
             BehavioralModelState fromStates,
-            BehavioralModelState toState) : base(fromStates, toState)
+            BehavioralModelState toState) : base(name, fromStates, toState)
         {
             this.func = func;
         }

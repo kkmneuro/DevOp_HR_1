@@ -9,8 +9,11 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
         private LogicQuery2Condition logicQuery2Condition;
         private bool checkLQ1Direction;
 
-        public LogicQuery2Transition(LogicQuery2Condition logicQuery2Condition, bool checkLQ1Direction = true)
-            : base(BehavioralModelState.DirectionConfirmed, BehavioralModelState.ExecuteOrder)
+        public LogicQuery2Transition(
+            string name,
+            LogicQuery2Condition logicQuery2Condition,
+            bool checkLQ1Direction = true)
+            : base(name, BehavioralModelState.DirectionConfirmed, BehavioralModelState.ExecuteOrder)
         {
             this.logicQuery2Condition = logicQuery2Condition;
             this.checkLQ1Direction = checkLQ1Direction;

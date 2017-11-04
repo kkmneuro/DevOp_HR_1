@@ -136,6 +136,12 @@
     <Compile Include="View\BehavioralModelsWindow.Designer.cs">
       <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\BehavioralModelTransitionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BehavioralModelTransitionsWindow.Designer.cs">
+      <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\BreathPacerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,9 @@
     </Compile>
     <EmbeddedResource Include="View\BehavioralModelsWindow.resx">
       <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BehavioralModelTransitionsWindow.resx">
+      <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BreathPacerWindow.resx">
       <DependentUpon>BreathPacerWindow.cs</DependentUpon>

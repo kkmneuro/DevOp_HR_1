@@ -45,6 +45,7 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
+            this.behavioralModelTransitonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +84,7 @@
             this.indicatorsToolStripMenuItem,
             this.newOrderToolStripMenuItem,
             this.behavioralModelsToolStripMenuItem,
+            this.behavioralModelTransitonsToolStripMenuItem,
             this.rawInformationToolStripMenuItem,
             this.chartsToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
@@ -92,42 +94,42 @@
             // breathPacerToolStripMenuItem
             // 
             this.breathPacerToolStripMenuItem.Name = "breathPacerToolStripMenuItem";
-            this.breathPacerToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.breathPacerToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.breathPacerToolStripMenuItem.Text = "Breath pacer";
             this.breathPacerToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // indicatorsToolStripMenuItem
             // 
             this.indicatorsToolStripMenuItem.Name = "indicatorsToolStripMenuItem";
-            this.indicatorsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.indicatorsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.indicatorsToolStripMenuItem.Text = "Indicators";
             this.indicatorsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // newOrderToolStripMenuItem
             // 
             this.newOrderToolStripMenuItem.Name = "newOrderToolStripMenuItem";
-            this.newOrderToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.newOrderToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.newOrderToolStripMenuItem.Text = "New order";
             this.newOrderToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // behavioralModelsToolStripMenuItem
             // 
             this.behavioralModelsToolStripMenuItem.Name = "behavioralModelsToolStripMenuItem";
-            this.behavioralModelsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.behavioralModelsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.behavioralModelsToolStripMenuItem.Text = "Behavioral models";
             this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // rawInformationToolStripMenuItem
             // 
             this.rawInformationToolStripMenuItem.Name = "rawInformationToolStripMenuItem";
-            this.rawInformationToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.rawInformationToolStripMenuItem.Text = "Raw Information";
+            this.rawInformationToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.rawInformationToolStripMenuItem.Text = "Raw information";
             this.rawInformationToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // chartsToolStripMenuItem
             // 
             this.chartsToolStripMenuItem.Name = "chartsToolStripMenuItem";
-            this.chartsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.chartsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.chartsToolStripMenuItem.Text = "Charts";
             this.chartsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
@@ -183,6 +185,13 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015LightTheme1;
             // 
+            // behavioralModelTransitonsToolStripMenuItem
+            // 
+            this.behavioralModelTransitonsToolStripMenuItem.Name = "behavioralModelTransitonsToolStripMenuItem";
+            this.behavioralModelTransitonsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.behavioralModelTransitonsToolStripMenuItem.Text = "Behavioral model transitons";
+            this.behavioralModelTransitonsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -224,6 +233,7 @@
         private System.Windows.Forms.ToolStripMenuItem indicatorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem behavioralModelsToolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
+        private System.Windows.Forms.ToolStripMenuItem behavioralModelTransitonsToolStripMenuItem;
     }
 }
 

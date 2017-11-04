@@ -8,8 +8,9 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
     {
         private LogicQuery1Condition logicQuery1Condition;
 
-        public LogicQuery1Transition(LogicQuery1Condition logicQuery1Condition)
-            : base(BehavioralModelState.Preactivation, BehavioralModelState.DirectionConfirmed)
+        public LogicQuery1Transition(string name,
+            LogicQuery1Condition logicQuery1Condition)
+            : base(name, BehavioralModelState.Preactivation, BehavioralModelState.DirectionConfirmed)
         {
             this.logicQuery1Condition = logicQuery1Condition;
         }

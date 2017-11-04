@@ -31,6 +31,7 @@ namespace NeuroXChange.View
         public BreathPacerWindow breathPacerWindow { get; private set; }
         public IndicatorsWindow indicatorsWindow { get; private set; }
         public BehavioralModelsWindow behavioralModelWindow { get; private set; }
+        public BehavioralModelTransitionsWindow behavioralModelTransitionsWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
@@ -68,6 +69,9 @@ namespace NeuroXChange.View
             behavioralModelWindow.dataGridView.AutoGenerateColumns = true;
             behavioralModelWindow.dataGridView.DataSource = model.behavioralModelsContainer.behavioralModelsDataSet;
             behavioralModelWindow.dataGridView.DataMember = model.behavioralModelsContainer.behavioralModelsDataTableName;
+
+            behavioralModelTransitionsWindow = new BehavioralModelTransitionsWindow(model);
+            behavioralModelTransitionsWindow.Owner = mainWindow;
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
