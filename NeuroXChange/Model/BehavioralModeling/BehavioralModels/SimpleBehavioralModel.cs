@@ -12,7 +12,7 @@ namespace NeuroXChange.Model
         public List<AbstractTransition> transitions { get; set; }
 
         // used for saving model statistic information
-        public DataRow dataRow { get; set; }
+        public DataRow DataRowInBehavioralModelsWindow { get; set; }
 
         // behavioral model states
         public BehavioralModelState PreviousTickState { get; private set; }
@@ -34,7 +34,6 @@ namespace NeuroXChange.Model
         public int lastNot74SubProtocolID { get; set; }
 
         // transition history
-        public DataSet TransitionHistorySet { get; private set; }
         public DataTable TransitionHistoryTable { get; private set; }
 
         public SimpleBehavioralModel()
@@ -42,8 +41,7 @@ namespace NeuroXChange.Model
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
-            TransitionHistorySet = new DataSet("Transition history");
-            TransitionHistoryTable = TransitionHistorySet.Tables.Add("TransitionHistory");
+            TransitionHistoryTable = new DataTable("TransitionHistory");
             TransitionHistoryTable.Columns.Add("Time", typeof(string));
             TransitionHistoryTable.Columns.Add("To state", typeof(string));
             TransitionHistoryTable.Columns.Add("From state", typeof(string));
@@ -58,7 +56,7 @@ namespace NeuroXChange.Model
             if (previousTickTime.Date != data.time.Date)
             {
                 TradesToday = 0;
-                dataRow["Trades today"] = TradesToday;
+                DataRowInBehavioralModelsWindow["Trades today"] = TradesToday;
             }
             previousTickTime = data.time;
 
@@ -102,19 +100,19 @@ namespace NeuroXChange.Model
 
         public virtual void UpdateStatistics()
         {
-            dataRow["State"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
+            DataRowInBehavioralModelsWindow["State"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
             if (CurrentTickState == BehavioralModelState.DirectionConfirmed ||
                 CurrentTickState == BehavioralModelState.ExecuteOrder)
             {
-                dataRow["In position"] = OrderDirection == 0 ? "LONG" : OrderDirection == 1 ? "SHORT" : "NO DIRECTION";
+                DataRowInBehavioralModelsWindow["In position"] = OrderDirection == 0 ? "LONG" : OrderDirection == 1 ? "SHORT" : "NO DIRECTION";
             }
             else
             {
-                dataRow["In position"] = "-";
+                DataRowInBehavioralModelsWindow["In position"] = "-";
             }
-            dataRow["All trades"] = TradesTotal;
-            dataRow["Trades today"] = TradesToday;
-            dataRow["Profitability"] = Profitability;
+            DataRowInBehavioralModelsWindow["All trades"] = TradesTotal;
+            DataRowInBehavioralModelsWindow["Trades today"] = TradesToday;
+            DataRowInBehavioralModelsWindow["Profitability"] = Profitability;
         }
     }
 }

@@ -242,7 +242,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             {
                 var row = behavioralModelsDataTable.NewRow();
                 row["Model"] = i + 1;
-                behavioralModels[i].dataRow = row;
+                behavioralModels[i].DataRowInBehavioralModelsWindow = row;
                 behavioralModelsDataTable.Rows.Add(row);
                 behavioralModels[i].UpdateStatistics();
             }
@@ -275,10 +275,10 @@ namespace NeuroXChange.Model.BehavioralModeling
             var modelIndStr = (modelInd + 1).ToString();
             if (modelInd == ActiveBehavioralModelIndex)
             {
-                behavioralModels[modelInd].dataRow["Model"] = modelIndStr + " (active)";
+                behavioralModels[modelInd].DataRowInBehavioralModelsWindow["Model"] = modelIndStr + " (active)";
             } else
             {
-                behavioralModels[modelInd].dataRow["Model"] = modelIndStr;
+                behavioralModels[modelInd].DataRowInBehavioralModelsWindow["Model"] = modelIndStr;
             }
         }
     }
