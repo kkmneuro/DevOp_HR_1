@@ -38,24 +38,20 @@
             this.modelCB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.behavioralModelTransitionsDGV = new System.Windows.Forms.DataGridView();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelTransitionsDGV)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.confirmationFilledCB);
-            this.panel1.Controls.Add(this.executeOrderCB);
-            this.panel1.Controls.Add(this.directionConfirmedCB);
-            this.panel1.Controls.Add(this.preactivationCB);
-            this.panel1.Controls.Add(this.readyToTradeCB);
-            this.panel1.Controls.Add(this.initialStateCB);
             this.panel1.Controls.Add(this.modelCB);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(588, 57);
+            this.panel1.Size = new System.Drawing.Size(588, 31);
             this.panel1.TabIndex = 0;
             // 
             // confirmationFilledCB
@@ -63,7 +59,7 @@
             this.confirmationFilledCB.AutoSize = true;
             this.confirmationFilledCB.Checked = true;
             this.confirmationFilledCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.confirmationFilledCB.Location = new System.Drawing.Point(477, 31);
+            this.confirmationFilledCB.Location = new System.Drawing.Point(3, 26);
             this.confirmationFilledCB.Name = "confirmationFilledCB";
             this.confirmationFilledCB.Size = new System.Drawing.Size(108, 17);
             this.confirmationFilledCB.TabIndex = 7;
@@ -77,7 +73,7 @@
             this.executeOrderCB.AutoSize = true;
             this.executeOrderCB.Checked = true;
             this.executeOrderCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.executeOrderCB.Location = new System.Drawing.Point(384, 31);
+            this.executeOrderCB.Location = new System.Drawing.Point(404, 3);
             this.executeOrderCB.Name = "executeOrderCB";
             this.executeOrderCB.Size = new System.Drawing.Size(92, 17);
             this.executeOrderCB.TabIndex = 6;
@@ -91,7 +87,7 @@
             this.directionConfirmedCB.AutoSize = true;
             this.directionConfirmedCB.Checked = true;
             this.directionConfirmedCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.directionConfirmedCB.Location = new System.Drawing.Point(266, 31);
+            this.directionConfirmedCB.Location = new System.Drawing.Point(281, 3);
             this.directionConfirmedCB.Name = "directionConfirmedCB";
             this.directionConfirmedCB.Size = new System.Drawing.Size(117, 17);
             this.directionConfirmedCB.TabIndex = 5;
@@ -103,7 +99,7 @@
             // preactivationCB
             // 
             this.preactivationCB.AutoSize = true;
-            this.preactivationCB.Location = new System.Drawing.Point(178, 31);
+            this.preactivationCB.Location = new System.Drawing.Point(187, 3);
             this.preactivationCB.Name = "preactivationCB";
             this.preactivationCB.Size = new System.Drawing.Size(88, 17);
             this.preactivationCB.TabIndex = 4;
@@ -115,7 +111,7 @@
             // readyToTradeCB
             // 
             this.readyToTradeCB.AutoSize = true;
-            this.readyToTradeCB.Location = new System.Drawing.Point(82, 31);
+            this.readyToTradeCB.Location = new System.Drawing.Point(85, 3);
             this.readyToTradeCB.Name = "readyToTradeCB";
             this.readyToTradeCB.Size = new System.Drawing.Size(96, 17);
             this.readyToTradeCB.TabIndex = 3;
@@ -127,7 +123,7 @@
             // initialStateCB
             // 
             this.initialStateCB.AutoSize = true;
-            this.initialStateCB.Location = new System.Drawing.Point(6, 31);
+            this.initialStateCB.Location = new System.Drawing.Point(3, 3);
             this.initialStateCB.Name = "initialStateCB";
             this.initialStateCB.Size = new System.Drawing.Size(76, 17);
             this.initialStateCB.TabIndex = 2;
@@ -178,19 +174,35 @@
             this.behavioralModelTransitionsDGV.AllowUserToOrderColumns = true;
             this.behavioralModelTransitionsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.behavioralModelTransitionsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.behavioralModelTransitionsDGV.Location = new System.Drawing.Point(0, 57);
+            this.behavioralModelTransitionsDGV.Location = new System.Drawing.Point(0, 31);
             this.behavioralModelTransitionsDGV.Name = "behavioralModelTransitionsDGV";
             this.behavioralModelTransitionsDGV.ReadOnly = true;
             this.behavioralModelTransitionsDGV.RowHeadersVisible = false;
             this.behavioralModelTransitionsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.behavioralModelTransitionsDGV.Size = new System.Drawing.Size(588, 176);
+            this.behavioralModelTransitionsDGV.Size = new System.Drawing.Size(588, 202);
             this.behavioralModelTransitionsDGV.TabIndex = 1;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(this.initialStateCB);
+            this.flowLayoutPanel1.Controls.Add(this.readyToTradeCB);
+            this.flowLayoutPanel1.Controls.Add(this.preactivationCB);
+            this.flowLayoutPanel1.Controls.Add(this.directionConfirmedCB);
+            this.flowLayoutPanel1.Controls.Add(this.executeOrderCB);
+            this.flowLayoutPanel1.Controls.Add(this.confirmationFilledCB);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 31);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(588, 46);
+            this.flowLayoutPanel1.TabIndex = 8;
             // 
             // BehavioralModelTransitionsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(588, 233);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.behavioralModelTransitionsDGV);
             this.Controls.Add(this.panel1);
             this.Name = "BehavioralModelTransitionsWindow";
@@ -200,7 +212,10 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelTransitionsDGV)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -216,5 +231,6 @@
         private System.Windows.Forms.CheckBox initialStateCB;
         private System.Windows.Forms.CheckBox confirmationFilledCB;
         private System.Windows.Forms.CheckBox executeOrderCB;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
