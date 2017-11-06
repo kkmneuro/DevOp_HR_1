@@ -36,6 +36,7 @@
             this.indicatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.behavioralModelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.behavioralModelTransitonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rawInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,6 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
-            this.behavioralModelTransitonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -119,6 +119,13 @@
             this.behavioralModelsToolStripMenuItem.Text = "Behavioral models";
             this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
+            // behavioralModelTransitonsToolStripMenuItem
+            // 
+            this.behavioralModelTransitonsToolStripMenuItem.Name = "behavioralModelTransitonsToolStripMenuItem";
+            this.behavioralModelTransitonsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.behavioralModelTransitonsToolStripMenuItem.Text = "Behavioral model transitons";
+            this.behavioralModelTransitonsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // rawInformationToolStripMenuItem
             // 
             this.rawInformationToolStripMenuItem.Name = "rawInformationToolStripMenuItem";
@@ -179,18 +186,10 @@
             this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
             this.dockPanel.Location = new System.Drawing.Point(0, 24);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel.ShowAutoHideContentOnHover = false;
             this.dockPanel.Size = new System.Drawing.Size(397, 296);
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015LightTheme1;
-            // 
-            // behavioralModelTransitonsToolStripMenuItem
-            // 
-            this.behavioralModelTransitonsToolStripMenuItem.Name = "behavioralModelTransitonsToolStripMenuItem";
-            this.behavioralModelTransitonsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.behavioralModelTransitonsToolStripMenuItem.Text = "Behavioral model transitons";
-            this.behavioralModelTransitonsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -203,7 +202,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
-            this.Text = "NeuroXChange";
+            this.Text = "NeuroTrader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -225,7 +224,6 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rawInformationToolStripMenuItem;
         public WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
-        private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
         private System.Windows.Forms.ToolStripMenuItem newOrderToolStripMenuItem;
         public System.Windows.Forms.StatusStrip statusStrip;
         public System.Windows.Forms.ToolStripStatusLabel modeNameSL;
@@ -234,6 +232,7 @@
         private System.Windows.Forms.ToolStripMenuItem behavioralModelsToolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
         private System.Windows.Forms.ToolStripMenuItem behavioralModelTransitonsToolStripMenuItem;
+        private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
     }
 }
 

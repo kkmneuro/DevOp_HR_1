@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroXChange", "NeuroXChange\NeuroXChange.csproj", "{56E015C9-0CC5-4AC7-98D7-8E42D1265A19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroTrader", "NeuroXChange\NeuroTrader.csproj", "{56E015C9-0CC5-4AC7-98D7-8E42D1265A19}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1} = {C75532C4-765B-418E-B09B-46D36B2ABDB1}
 		{007D4AC8-948F-4816-86AD-B9D1343672C1} = {007D4AC8-948F-4816-86AD-B9D1343672C1}
