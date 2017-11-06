@@ -34,6 +34,38 @@ namespace NeuroXChange.View
         {
             switch (e.ColumnIndex)
             {
+                case 1:
+                    {
+                        if (e.Value != null)
+                        {
+                            var value = e.Value.ToString();
+                            if (value == "Initial state")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(230, 184, 175);
+                            }
+                            else if (value == "Ready to trade")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(244, 204, 204);
+                            }
+                            else if (value == "Preactivation")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(234, 209, 220);
+                            }
+                            else if (value == "Direction confirmed")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(217, 210, 233);
+                            }
+                            else if (value == "Execute order")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(201, 218, 248);
+                            }
+                            else if (value == "Confirmation filled")
+                            {
+                                e.CellStyle.BackColor = Color.FromArgb(217, 234, 211);
+                            }
+                        }
+                        break;
+                    }
                 case 2:
                     {
                         if (e.Value != null)
