@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.modelCB = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.confirmationFilledCB = new System.Windows.Forms.CheckBox();
             this.executeOrderCB = new System.Windows.Forms.CheckBox();
             this.directionConfirmedCB = new System.Windows.Forms.CheckBox();
             this.preactivationCB = new System.Windows.Forms.CheckBox();
             this.readyToTradeCB = new System.Windows.Forms.CheckBox();
             this.initialStateCB = new System.Windows.Forms.CheckBox();
-            this.modelCB = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.behavioralModelTransitionsDGV = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
@@ -53,6 +53,41 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(588, 31);
             this.panel1.TabIndex = 0;
+            // 
+            // modelCB
+            // 
+            this.modelCB.FormattingEnabled = true;
+            this.modelCB.Items.AddRange(new object[] {
+            "Behavioral model 1",
+            "Behavioral model 2",
+            "Behavioral model 3",
+            "Behavioral model 4",
+            "Behavioral model 5",
+            "Behavioral model 6",
+            "Behavioral model 7",
+            "Behavioral model 8",
+            "Behavioral model 9",
+            "Behavioral model 10",
+            "Behavioral model 11",
+            "Behavioral model 12",
+            "Behavioral model 13",
+            "Behavioral model 14",
+            "Behavioral model 15",
+            "Behavioral model 16"});
+            this.modelCB.Location = new System.Drawing.Point(41, 4);
+            this.modelCB.Name = "modelCB";
+            this.modelCB.Size = new System.Drawing.Size(124, 21);
+            this.modelCB.TabIndex = 1;
+            this.modelCB.SelectedIndexChanged += new System.EventHandler(this.modelCB_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Model:";
             // 
             // confirmationFilledCB
             // 
@@ -132,41 +167,6 @@
             this.initialStateCB.UseVisualStyleBackColor = true;
             this.initialStateCB.CheckedChanged += new System.EventHandler(this.stateCheckbox_CheckedChanged);
             // 
-            // modelCB
-            // 
-            this.modelCB.FormattingEnabled = true;
-            this.modelCB.Items.AddRange(new object[] {
-            "Behavioral model 1",
-            "Behavioral model 2",
-            "Behavioral model 3",
-            "Behavioral model 4",
-            "Behavioral model 5",
-            "Behavioral model 6",
-            "Behavioral model 7",
-            "Behavioral model 8",
-            "Behavioral model 9",
-            "Behavioral model 10",
-            "Behavioral model 11",
-            "Behavioral model 12",
-            "Behavioral model 13",
-            "Behavioral model 14",
-            "Behavioral model 15",
-            "Behavioral model 16"});
-            this.modelCB.Location = new System.Drawing.Point(41, 4);
-            this.modelCB.Name = "modelCB";
-            this.modelCB.Size = new System.Drawing.Size(124, 21);
-            this.modelCB.TabIndex = 1;
-            this.modelCB.SelectedIndexChanged += new System.EventHandler(this.modelCB_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Model:";
-            // 
             // behavioralModelTransitionsDGV
             // 
             this.behavioralModelTransitionsDGV.AllowUserToAddRows = false;
@@ -174,12 +174,12 @@
             this.behavioralModelTransitionsDGV.AllowUserToOrderColumns = true;
             this.behavioralModelTransitionsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.behavioralModelTransitionsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.behavioralModelTransitionsDGV.Location = new System.Drawing.Point(0, 31);
+            this.behavioralModelTransitionsDGV.Location = new System.Drawing.Point(0, 77);
             this.behavioralModelTransitionsDGV.Name = "behavioralModelTransitionsDGV";
             this.behavioralModelTransitionsDGV.ReadOnly = true;
             this.behavioralModelTransitionsDGV.RowHeadersVisible = false;
             this.behavioralModelTransitionsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.behavioralModelTransitionsDGV.Size = new System.Drawing.Size(588, 202);
+            this.behavioralModelTransitionsDGV.Size = new System.Drawing.Size(588, 156);
             this.behavioralModelTransitionsDGV.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -202,8 +202,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(588, 233);
-            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.behavioralModelTransitionsDGV);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Name = "BehavioralModelTransitionsWindow";
             this.Text = "BehavioralModelTransitionsWindow";
