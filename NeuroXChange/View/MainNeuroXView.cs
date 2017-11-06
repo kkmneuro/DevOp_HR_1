@@ -224,7 +224,6 @@ namespace NeuroXChange.View
             mainWindow.BeginInvoke(
                 (Action)(() =>
                 {
-
                     // update biodata information
                     StringBuilder builder = new StringBuilder();
                     builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");
@@ -258,20 +257,26 @@ namespace NeuroXChange.View
                             skinCondPoints.Clear();
                             chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points.Clear();
                         }
+                        else
+                        {
+                            point = temperaturePoints[0].XValue;
+                            pointTime = DateTime.FromOADate(point);
+                            dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                            if (dataTime - pointTime > TimeSpan.FromMinutes(5))
+                            {
+                                temperaturePoints.RemoveAt(0);
+                                hrPoints.RemoveAt(0);
+                                skinCondPoints.RemoveAt(0);
+                                chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
+                                chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
+                                chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
+                            }
+                        }
                     }
 
                     temperaturePoints.AddXY(data.time, data.temperature);
                     hrPoints.AddXY(data.time, data.hartRate);
                     skinCondPoints.AddXY(data.time, data.skinConductance);
-                    if (hrPoints.Count > 3000)
-                    {
-                        temperaturePoints.RemoveAt(0);
-                        hrPoints.RemoveAt(0);
-                        skinCondPoints.RemoveAt(0);
-                        chartsWindow.heartRateChart.ChartAreas[0].RecalculateAxesScale();
-                        chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
-                        chartsWindow.heartRateChart.ChartAreas[2].RecalculateAxesScale();
-                    }
 
                     // update HR oscillations info
                     builder = new StringBuilder();
@@ -284,11 +289,11 @@ namespace NeuroXChange.View
                     rawInformationWindow.heartRateRTB.Text = builder.ToString();
                     if (hrInfo.heartRate2minAverage > 0)
                     {
-                        hrPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
-                        hrPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
-                        if (hrPoints.Count > 3000)
+                        var hrOscPoints = chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points;
+                        hrOscPoints.AddXY(hrInfo.time, hrInfo.heartRate2minAverage);
+                        if (hrOscPoints[0].XValue < hrPoints[0].XValue)
                         {
-                            hrPoints.RemoveAt(0);
+                            hrOscPoints.RemoveAt(0);
                             chartsWindow.heartRateChart.ChartAreas[1].RecalculateAxesScale();
                         }
                     }
