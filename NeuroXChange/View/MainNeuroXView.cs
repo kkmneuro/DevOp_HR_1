@@ -438,7 +438,12 @@ namespace NeuroXChange.View
 
                                    if (price.buy.Length > 0)
                                    {
-                                       bMColorCodedWithPriceWindow.chart.Series["Price"].Points.AddXY(price.time, Double.Parse(price.buy));
+                                       var value = Double.Parse(price.buy);
+                                       if (value < bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum)
+                                       {
+                                           bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum = value;
+                                       }
+                                       bMColorCodedWithPriceWindow.chart.Series["Price"].Points.AddXY(price.time, value);
                                    }
                                }));
             }
