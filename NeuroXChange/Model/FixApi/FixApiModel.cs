@@ -186,7 +186,11 @@ namespace NeuroXChange.Model.FixApi
             }
             if (prices.Count == 2)
             {
-                NotifyObservers(FixApiModelEvent.PriceChanged, new string[2] {prices[0], prices[1] });
+                var tickPrice = new TickPrice();
+                tickPrice.buy = prices[0];
+                tickPrice.sell = prices[1];
+                tickPrice.time = DateTime.Now;
+                NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);
                 if (saveTickPrice)
                 {
                     var commandStr = string.Format(

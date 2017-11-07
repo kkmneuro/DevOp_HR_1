@@ -7,6 +7,7 @@ using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
+using System.Linq;
 using System.Data;
 using System.Threading;
 using WeifenLuo.WinFormsUI.Docking;
@@ -32,12 +33,13 @@ namespace NeuroXChange.View
         public IndicatorsWindow indicatorsWindow { get; private set; }
         public BehavioralModelsWindow behavioralModelWindow { get; private set; }
         public BehavioralModelTransitionsWindow behavioralModelTransitionsWindow { get; private set; }
+        public BMColorCodedWithPriceWindow bMColorCodedWithPriceWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
         public LogoWindow logoWindow { get; private set; }
 
-        private string[] lastPrice = { "0.0", "0.0" };     // array of 2 strings [buy price, sell price]
+        private TickPrice lastPrice = new TickPrice();
         private string[] directionName = { "Buy", "Sell", "No direction" };
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
@@ -72,6 +74,9 @@ namespace NeuroXChange.View
 
             behavioralModelTransitionsWindow = new BehavioralModelTransitionsWindow(model);
             behavioralModelTransitionsWindow.Owner = mainWindow;
+
+            bMColorCodedWithPriceWindow = new BMColorCodedWithPriceWindow();
+            bMColorCodedWithPriceWindow.Owner = mainWindow;
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
@@ -161,7 +166,7 @@ namespace NeuroXChange.View
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], lastPrice[direction]);
+                            directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
                         customDialogWindow.Show();
                         break;
                     }
@@ -169,7 +174,7 @@ namespace NeuroXChange.View
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], lastPrice[direction]);
+                            directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
                         customDialogWindow.Show();
                         break;
                     }
@@ -256,6 +261,11 @@ namespace NeuroXChange.View
                             hrPoints.Clear();
                             skinCondPoints.Clear();
                             chartsWindow.heartRateChart.Series["AVG Heart Rate"].Points.Clear();
+
+                            foreach (var series in bMColorCodedWithPriceWindow.chart.Series)
+                            {
+                                series.Points.Clear();
+                            }
                         }
                         else
                         {
@@ -345,7 +355,63 @@ namespace NeuroXChange.View
                     }
                     indicatorsWindow.peakPerformanceGauge.Value = ((float)peakIndValue) - 0.5f;
 
+                    // update BM color-coded charts
+                    bool addBmPoints = bMColorCodedWithPriceWindow.chart.Series[0].Points.Count < 10;
+                    if (!addBmPoints)
+                    {
+                        foreach (var bModel in model.behavioralModelsContainer.behavioralModels)
+                        {
+                            addBmPoints |= bModel.PreviousTickState != bModel.CurrentTickState;
+                        }
+                    }
+                    if (!addBmPoints)
+                    {
+                        var point = bMColorCodedWithPriceWindow.chart.Series[0].Points.Last().XValue;
+                        var pointTime = DateTime.FromOADate(point);
+                        var dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                        addBmPoints = dataTime - pointTime > TimeSpan.FromSeconds(5);
 
+                        var pointFirst = bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue;
+                        var pointTimeFirst = DateTime.FromOADate(point);
+                        if (dataTime - pointTime > TimeSpan.FromMinutes(15))
+                        {
+                            foreach (var series in bMColorCodedWithPriceWindow.chart.Series)
+                            {
+                                if (series.Points.Count > 0)
+                                {
+                                    series.Points.RemoveAt(0);
+                                }
+                            }
+                            bMColorCodedWithPriceWindow.chart.ChartAreas[0].RecalculateAxesScale();
+                        }
+                    }
+                    if (addBmPoints)
+                    {
+                        for (int i = 0; i < model.behavioralModelsContainer.BehavioralModelsCount; i++)
+                        {
+                            var bModel = model.behavioralModelsContainer.behavioralModels[i];
+                            double value = 0;
+                            switch (bModel.CurrentTickState)
+                            {
+                                case BehavioralModelState.InitialState:
+                                    value = 1;
+                                    break;
+                                case BehavioralModelState.ReadyToTrade:
+                                    value = 1.5;
+                                    break;
+                                case BehavioralModelState.Preactivation:
+                                    value = 2;
+                                    break;
+                                case BehavioralModelState.DirectionConfirmed:
+                                    value = 2.5;
+                                    break;
+                                case BehavioralModelState.ExecuteOrder:
+                                    value = 4;
+                                    break;
+                            }
+                            bMColorCodedWithPriceWindow.chart.Series[i].Points.AddXY(data.time, value);
+                        }
+                    }
                 }));
         }
 
@@ -365,10 +431,15 @@ namespace NeuroXChange.View
                 mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   var prices = (string[])data;
-                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + prices[0];
-                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + prices[1];
-                                   lastPrice = prices;
+                                   var price = (TickPrice)data;
+                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + price.buy;
+                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + price.sell;
+                                   lastPrice = price;
+
+                                   if (price.buy.Length > 0)
+                                   {
+                                       bMColorCodedWithPriceWindow.chart.Series["Price"].Points.AddXY(price.time, Double.Parse(price.buy));
+                                   }
                                }));
             }
         }

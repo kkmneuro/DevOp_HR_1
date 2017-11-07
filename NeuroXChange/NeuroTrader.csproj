@@ -123,6 +123,7 @@
     <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
     <Compile Include="Model\FixApi\IFixApiObserver.cs" />
     <Compile Include="Model\FixApi\MessageConstructor.cs" />
+    <Compile Include="Model\FixApi\TickPrice.cs" />
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
@@ -141,6 +142,12 @@
     </Compile>
     <Compile Include="View\BehavioralModelTransitionsWindow.Designer.cs">
       <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BMColorCodedWithPriceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BMColorCodedWithPriceWindow.Designer.cs">
+      <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BreathPacerWindow.cs">
       <SubType>Form</SubType>
@@ -208,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BehavioralModelTransitionsWindow.resx">
       <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BMColorCodedWithPriceWindow.resx">
+      <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BreathPacerWindow.resx">
       <DependentUpon>BreathPacerWindow.cs</DependentUpon>

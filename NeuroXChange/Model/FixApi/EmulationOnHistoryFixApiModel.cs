@@ -16,7 +16,12 @@ namespace NeuroXChange.Model.FixApi
             // treat payload as price information
             if ((data.payload != null) && (data.payload is string[]))
             {
-                NotifyObservers(FixApiModelEvent.PriceChanged, (string[]) data.payload);
+                var payload = (string[])data.payload;
+                var tickPrice = new TickPrice();
+                tickPrice.buy = payload[0];
+                tickPrice.sell = payload[1];
+                tickPrice.time = data.time;
+                NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);
             }
         }
 

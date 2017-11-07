@@ -46,6 +46,7 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
+            this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +87,8 @@
             this.behavioralModelsToolStripMenuItem,
             this.behavioralModelTransitonsToolStripMenuItem,
             this.rawInformationToolStripMenuItem,
-            this.chartsToolStripMenuItem});
+            this.chartsToolStripMenuItem,
+            this.bMColorCodedWithPriceToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -186,10 +188,18 @@
             this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
             this.dockPanel.Location = new System.Drawing.Point(0, 24);
             this.dockPanel.Name = "dockPanel";
+            this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel.ShowAutoHideContentOnHover = false;
             this.dockPanel.Size = new System.Drawing.Size(397, 296);
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015LightTheme1;
+            // 
+            // bMColorCodedWithPriceToolStripMenuItem
+            // 
+            this.bMColorCodedWithPriceToolStripMenuItem.Name = "bMColorCodedWithPriceToolStripMenuItem";
+            this.bMColorCodedWithPriceToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.bMColorCodedWithPriceToolStripMenuItem.Text = "BM color coded with price";
+            this.bMColorCodedWithPriceToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -233,6 +243,7 @@
         public System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
         private System.Windows.Forms.ToolStripMenuItem behavioralModelTransitonsToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
+        private System.Windows.Forms.ToolStripMenuItem bMColorCodedWithPriceToolStripMenuItem;
     }
 }
 

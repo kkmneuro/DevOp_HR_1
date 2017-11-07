@@ -46,7 +46,8 @@ namespace NeuroXChange
                 return mainNeuroXView.rawInformationWindow;
             else if (persistString == typeof(BehavioralModelTransitionsWindow).ToString())
                 return mainNeuroXView.behavioralModelTransitionsWindow;
-            return null;
+            else if (persistString == typeof(BMColorCodedWithPriceWindow).ToString())
+                return mainNeuroXView.bMColorCodedWithPriceWindow; return null;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -71,6 +72,8 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.behavioralModelWindow;
             else if (sender == behavioralModelTransitonsToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.behavioralModelTransitionsWindow;
+            else if (sender == bMColorCodedWithPriceToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.bMColorCodedWithPriceWindow;
 
             dockContentWindow.Show();
             if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
@@ -118,6 +121,7 @@ namespace NeuroXChange
             mainNeuroXView.indicatorsWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.behavioralModelWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.behavioralModelTransitionsWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.bMColorCodedWithPriceWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
@@ -129,6 +133,7 @@ namespace NeuroXChange
             mainNeuroXView.indicatorsWindow.DockPanel = dockPanel;
             mainNeuroXView.behavioralModelWindow.DockPanel = dockPanel;
             mainNeuroXView.behavioralModelTransitionsWindow.DockPanel = dockPanel;
+            mainNeuroXView.bMColorCodedWithPriceWindow.DockPanel = dockPanel;
         }
     }
 }
