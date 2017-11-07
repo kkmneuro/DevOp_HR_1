@@ -127,8 +127,7 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(60, 17);
-            this.toolStripStatusLabel.Text = "some hint";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // ChartsWindow
             // 
