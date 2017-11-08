@@ -16,5 +16,14 @@ namespace NeuroXChange.View
         {
             InitializeComponent();
         }
+
+        private void BMColorCodedWithPriceWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Hide();
+                e.Cancel = true;
+            }
+        }
     }
 }

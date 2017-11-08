@@ -169,6 +169,7 @@
             this.Controls.Add(this.chart);
             this.Name = "BMColorCodedWithPriceWindow";
             this.Text = "BMColorCodedWithPrice";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMColorCodedWithPriceWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
 
