@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -47,6 +48,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -161,6 +163,12 @@
             this.chart.TabIndex = 0;
             this.chart.Text = "chart";
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.ChartUpdate);
+            // 
             // BMColorCodedWithPriceWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,6 +178,7 @@
             this.Name = "BMColorCodedWithPriceWindow";
             this.Text = "BMColorCodedWithPrice";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMColorCodedWithPriceWindow_FormClosing);
+            this.Load += new System.EventHandler(this.BMColorCodedWithPriceWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
 
@@ -178,5 +187,6 @@
         #endregion
 
         public System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,16 @@ namespace NeuroXChange.View
                 Hide();
                 e.Cancel = true;
             }
+        }
+
+        private void ChartUpdate(object sender, EventArgs e)
+        {
+            ControlPaintUtils.Update(chart);
+        }
+
+        private void BMColorCodedWithPriceWindow_Load(object sender, EventArgs e)
+        {
+            //Utils.Suspend(chart);
         }
     }
 }
