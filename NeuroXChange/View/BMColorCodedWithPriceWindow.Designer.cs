@@ -175,7 +175,7 @@
             this.ClientSize = new System.Drawing.Size(565, 438);
             this.Controls.Add(this.chart);
             this.Name = "BMColorCodedWithPriceWindow";
-            this.Text = "BMColorCodedWithPrice";
+            this.Text = "Behavioral models with price";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMColorCodedWithPriceWindow_FormClosing);
             this.Load += new System.EventHandler(this.BMColorCodedWithPriceWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
