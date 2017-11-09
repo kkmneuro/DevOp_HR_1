@@ -369,11 +369,11 @@ namespace NeuroXChange.View
                         var point = bMColorCodedWithPriceWindow.chart.Series[0].Points.Last().XValue;
                         var pointTime = DateTime.FromOADate(point);
                         var dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
-                        addBmPoints = dataTime - pointTime > TimeSpan.FromSeconds(5);
+                        addBmPoints = dataTime - pointTime > TimeSpan.FromSeconds(2);
 
                         var pointFirst = bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue;
-                        var pointTimeFirst = DateTime.FromOADate(point);
-                        if (dataTime - pointTime > TimeSpan.FromMinutes(15))
+                        var pointTimeFirst = DateTime.FromOADate(pointFirst);
+                        while (dataTime - pointTimeFirst > TimeSpan.FromMinutes(3))
                         {
                             foreach (var series in bMColorCodedWithPriceWindow.chart.Series)
                             {
@@ -382,11 +382,30 @@ namespace NeuroXChange.View
                                     series.Points.RemoveAt(0);
                                 }
                             }
+                            pointFirst = bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue;
+                            pointTimeFirst = DateTime.FromOADate(pointFirst);
                             bMColorCodedWithPriceWindow.chart.ChartAreas[0].RecalculateAxesScale();
                         }
+
+                        // remove price points
+                        if (bMColorCodedWithPriceWindow.chart.Series["Price"].Points.Count > 0)
+                        {
+                            pointFirst = bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue;
+                            pointTimeFirst = DateTime.FromOADate(pointFirst);
+                            while (dataTime - pointTimeFirst > TimeSpan.FromMinutes(3) ||
+                                 (bMColorCodedWithPriceWindow.chart.Series[0].Points.Count > 0 && bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue < bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue))
+                            {
+                                bMColorCodedWithPriceWindow.chart.Series["Price"].Points.RemoveAt(0);
+                                if (bMColorCodedWithPriceWindow.chart.Series["Price"].Points.Count == 0)
+                                {
+                                    break;
+                                }
+                                pointFirst = bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue;
+                                pointTimeFirst = DateTime.FromOADate(pointFirst);
+                                bMColorCodedWithPriceWindow.chart.ChartAreas[0].RecalculateAxesScale();
+                            }
+                        }
                     }
-                    if (addBmPoints)
-                    {
                         for (int i = 0; i < model.behavioralModelsContainer.BehavioralModelsCount; i++)
                         {
                             var bModel = model.behavioralModelsContainer.behavioralModels[i];
@@ -409,8 +428,16 @@ namespace NeuroXChange.View
                                     value = 4;
                                     break;
                             }
+                        if (addBmPoints)
+                        {
                             bMColorCodedWithPriceWindow.chart.Series[i].Points.AddXY(data.time, value);
                         }
+                        else
+                        {
+                            //bMColorCodedWithPriceWindow.chart.Series[i].Points.Last().SetValueXY(data.time, value);
+                        }
+                        //int pointCount = bMColorCodedWithPriceWindow.chart.Series.Select(s => s.Points.Count).Sum();
+                        //bMColorCodedWithPriceWindow.Text = pointCount.ToString();
                     }
                 }));
         }
@@ -420,7 +447,7 @@ namespace NeuroXChange.View
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {
             // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistory && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(20))
+            if (model.emulationOnHistory && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(100))
             {
                 return;
             }
@@ -444,6 +471,24 @@ namespace NeuroXChange.View
                                            bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum = value;
                                        }
                                        bMColorCodedWithPriceWindow.chart.Series["Price"].Points.AddXY(price.time, value);
+
+                                       var point = bMColorCodedWithPriceWindow.chart.Series["Price"].Points.Last().XValue;
+                                       var pointTime = DateTime.FromOADate(point);
+                                       var dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, price.time.Hour, price.time.Minute, price.time.Second, price.time.Millisecond);
+                                       var pointFirst = bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue;
+                                       var pointTimeFirst = DateTime.FromOADate(pointFirst);
+                                       while (dataTime - pointTimeFirst > TimeSpan.FromMinutes(3) ||
+                                            (bMColorCodedWithPriceWindow.chart.Series[0].Points.Count > 0 && bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue < bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue) )
+                                       {
+                                           bMColorCodedWithPriceWindow.chart.Series["Price"].Points.RemoveAt(0);
+                                           if (bMColorCodedWithPriceWindow.chart.Series["Price"].Points.Count == 0)
+                                           {
+                                            break;
+                                           }
+                                           pointFirst = bMColorCodedWithPriceWindow.chart.Series["Price"].Points[0].XValue;
+                                           pointTimeFirst = DateTime.FromOADate(pointFirst);
+                                           bMColorCodedWithPriceWindow.chart.ChartAreas[0].RecalculateAxesScale();
+                                       }
                                    }
                                }));
             }

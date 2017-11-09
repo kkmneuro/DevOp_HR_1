@@ -138,7 +138,6 @@
             series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series17.Color = System.Drawing.Color.Red;
             series17.Name = "Price";
-            series17.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             series17.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             series17.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             series17.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;

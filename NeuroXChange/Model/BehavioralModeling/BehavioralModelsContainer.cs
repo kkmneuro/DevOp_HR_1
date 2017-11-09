@@ -149,15 +149,15 @@ namespace NeuroXChange.Model.BehavioralModeling
                 hrReadyToTradeNotMet,
                 BehavioralModelState.InitialState,
                 BehavioralModelState.ReadyToTrade);
-            var hrReadyToTradeNotMetTransitionV3 = new FunctionalTransition(
+            var hrReadyToTradeNotMetTransitionV3 = new ConditionalTransition(
                 "Ready to trade not met v3",
-                hrReadyToTradeNotMet,
-                BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
+                hrReadyToTradeCondition,
+                BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation | BehavioralModelState.DirectionConfirmed,
                 BehavioralModelState.InitialState);
-            var hrReadyToTradeNotMetTransitionV4 = new FunctionalTransition(
+            var hrReadyToTradeNotMetTransitionV4 = new ConditionalTransition(
                 "Ready to trade not met v4",
-                hrReadyToTradeNotMet,
-                BehavioralModelState.Preactivation,
+                hrReadyToTradeCondition,
+                BehavioralModelState.ReadyToTrade | BehavioralModelState.Preactivation,
                 BehavioralModelState.InitialState);
 
 
@@ -183,7 +183,7 @@ namespace NeuroXChange.Model.BehavioralModeling
 
                 model.transitions.Add(hrPreactivationTransition);
 
-                if (i < 6 || i == 12 || i == 13)
+                if (i <= 5 || i == 12 || i == 13)
                 {
                     if (i % 2 == 0)
                     {
