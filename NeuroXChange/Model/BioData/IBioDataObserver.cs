@@ -8,6 +8,6 @@ namespace NeuroXChange.Model.BioData
 {
     public interface IBioDataObserver
     {
-        void OnNext(BioData data);
+        void OnNext(BioDataEvent bioDataEvent, object data);
     }
 }

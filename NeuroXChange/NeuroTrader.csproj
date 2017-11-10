@@ -111,6 +111,7 @@
     <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery1Transition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery2Transition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\DirectionConfirmedExpirationTransition.cs" />
+    <Compile Include="Model\BioData\BioDataEvent.cs" />
     <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />

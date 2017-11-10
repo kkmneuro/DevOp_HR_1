@@ -52,7 +52,7 @@ namespace NeuroXChange.Model.BioData
                 {
                     var data = BioData.FromOleDbDataReader(reader);
                     lastID = data.psychophysiological_Session_Data_ID;
-                    NotifyObservers(data);
+                    NotifyObservers(BioDataEvent.NewBioDataTick, data);
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -87,7 +87,7 @@ namespace NeuroXChange.Model.BioData
                         lastID = currID;
 
                         var data = BioData.FromOleDbDataReader(reader);
-                        NotifyObservers(data);
+                        NotifyObservers(BioDataEvent.NewBioDataTick, data);
                     }
                     reader.Close();
                     cmd.Dispose();

@@ -71,7 +71,7 @@ namespace NeuroXChange.Model.BioData
                         data_tps.participant_ID = Int32.Parse(args[12]);
                     if (args.Length > 13)
                         data_tps.data = args[13];
-                    NotifyObservers(data_tps);
+                    NotifyObservers(BioDataEvent.NewBioDataTick, data_tps);
                 } catch
                 {
                 }

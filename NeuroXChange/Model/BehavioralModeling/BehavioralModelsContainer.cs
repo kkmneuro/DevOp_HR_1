@@ -10,7 +10,7 @@ using System.Data;
 
 namespace NeuroXChange.Model.BehavioralModeling
 {
-    public class BehavioralModelsContainer : IBioDataObserver
+    public class BehavioralModelsContainer
     {
         // statistics that could be used for representation in UI
         public DataSet behavioralModelsDataSet { get; private set; }
@@ -247,7 +247,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 behavioralModels[i].UpdateStatistics();
             }
 
-            ActiveBehavioralModelIndex = 0;
+            ActiveBehavioralModelIndex = Int32.Parse(iniFileReader.Read("ActiveModel", "BehavioralModels")) - 1;
             UpdateActiveTag(ActiveBehavioralModelIndex);
         }
 

@@ -251,8 +251,15 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
             }
         }
 
-        public override void OnNext(BioData.BioData data)
+        public override void OnNext(BioDataEvent bioDataEvent, object data)
         {
+            if (bioDataEvent != BioDataEvent.NewBioDataTick)
+            {
+                return;
+            }
+
+            var biodata = (BioData.BioData)data;
+
             if (!savePriceAtBioDataTick)
             {
                 return;
@@ -267,23 +274,23 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
                 priceDataBottom = priceData.Dequeue();
             }
 
-            while (priceData.Count > 0 && priceData.Peek().timestamp < data.time)
+            while (priceData.Count > 0 && priceData.Peek().timestamp < biodata.time)
             {
                 priceDataBottom = priceData.Dequeue();
             }
 
             DateTime selectedDateTime = priceDataBottom.Value.timestamp;
-            if (priceData.Count == 0 && data.time - selectedDateTime > TimeSpan.FromMinutes(1))
+            if (priceData.Count == 0 && biodata.time - selectedDateTime > TimeSpan.FromMinutes(1))
             {
                 priceDataBottom = null;
                 return;
             }
 
-            if (priceDataBottom.HasValue && priceDataBottom.Value.timestamp < data.time)
+            if (priceDataBottom.HasValue && priceDataBottom.Value.timestamp < biodata.time)
             {
                 var commandStr = string.Format(
                     "INSERT INTO {0} ([ID], [Instrument_ID], [SellPrice], [BuyPrice]) values({1}, {2}, {3}, {4});",
-                    priceAtBioDataTickTableName, data.psychophysiological_Session_Data_ID, 1, priceDataBottom.Value.sellPrice, priceDataBottom.Value.buyPrice);
+                    priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.Value.sellPrice, priceDataBottom.Value.buyPrice);
                 var cmd = new OleDbCommand(commandStr, conn);
                 cmd.ExecuteNonQuery();
             }

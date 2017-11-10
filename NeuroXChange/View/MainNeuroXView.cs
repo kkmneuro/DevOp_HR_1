@@ -215,8 +215,19 @@ namespace NeuroXChange.View
 
         private DateTime previousBioTickTime = DateTime.Now;
 
-        public void OnNext(BioData data)
+        public void OnNext(BioDataEvent bioDataEvent, object data)
         {
+            if (bioDataEvent == BioDataEvent.EmulationModeBioDataFinished)
+            {
+                breathPacerWindow.breathPacerControl.Stop();
+            }
+
+            if (bioDataEvent != BioDataEvent.NewBioDataTick)
+            {
+                return;
+            }
+            var bioData = (BioData)data;
+
             // optimize view on emulation mode with extra-small ticks
             if (model.emulationOnHistory && (DateTime.Now - previousBioTickTime) < TimeSpan.FromMilliseconds(20))
             {
@@ -231,20 +242,20 @@ namespace NeuroXChange.View
                 {
                     // update biodata information
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("Psychophysiological_Session_Data_ID: " + data.psychophysiological_Session_Data_ID + "\r\n");
-                    builder.Append("Time: " + data.time + "\r\n");
-                    builder.Append("Temperature: " + data.temperature.ToString("0.##") + "\r\n");
-                    builder.Append("HartRate: " + data.hartRate.ToString("0.##") + "\r\n");
-                    builder.Append("SkinConductance: " + data.skinConductance.ToString("0.##") + "\r\n");
-                    builder.Append("AccX: " + data.accX.ToString("0.##") + "\r\n");
-                    builder.Append("AccY: " + data.accY.ToString("0.##") + "\r\n");
-                    builder.Append("AccZ: " + data.accZ.ToString("0.##") + "\r\n");
-                    builder.Append("Session_Component_ID: " + data.session_Component_ID + "\r\n");
-                    builder.Append("Sub_Component_ID: " + data.sub_Component_ID + "\r\n");
-                    builder.Append("Sub_Component_Protocol_ID: " + data.sub_Component_Protocol_ID + "\r\n");
-                    builder.Append("Sub_Protocol_ID: " + data.sub_Protocol_ID + "\r\n");
-                    builder.Append("Participant_ID: " + data.participant_ID + "\r\n");
-                    builder.Append("Data: " + data.data);
+                    builder.Append("Psychophysiological_Session_Data_ID: " + bioData.psychophysiological_Session_Data_ID + "\r\n");
+                    builder.Append("Time: " + bioData.time + "\r\n");
+                    builder.Append("Temperature: " + bioData.temperature.ToString("0.##") + "\r\n");
+                    builder.Append("HartRate: " + bioData.hartRate.ToString("0.##") + "\r\n");
+                    builder.Append("SkinConductance: " + bioData.skinConductance.ToString("0.##") + "\r\n");
+                    builder.Append("AccX: " + bioData.accX.ToString("0.##") + "\r\n");
+                    builder.Append("AccY: " + bioData.accY.ToString("0.##") + "\r\n");
+                    builder.Append("AccZ: " + bioData.accZ.ToString("0.##") + "\r\n");
+                    builder.Append("Session_Component_ID: " + bioData.session_Component_ID + "\r\n");
+                    builder.Append("Sub_Component_ID: " + bioData.sub_Component_ID + "\r\n");
+                    builder.Append("Sub_Component_Protocol_ID: " + bioData.sub_Component_Protocol_ID + "\r\n");
+                    builder.Append("Sub_Protocol_ID: " + bioData.sub_Protocol_ID + "\r\n");
+                    builder.Append("Participant_ID: " + bioData.participant_ID + "\r\n");
+                    builder.Append("Data: " + bioData.data);
 
                     rawInformationWindow.bioDataRTB.Text = builder.ToString();
                     var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
@@ -254,7 +265,7 @@ namespace NeuroXChange.View
                     {
                         double point = temperaturePoints[temperaturePoints.Count - 1].XValue;
                         DateTime pointTime = DateTime.FromOADate(point);
-                        DateTime dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                        DateTime dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, bioData.time.Hour, bioData.time.Minute, bioData.time.Second, bioData.time.Millisecond);
                         if (dataTime - pointTime > TimeSpan.FromHours(1) || dataTime < pointTime)
                         {
                             temperaturePoints.Clear();
@@ -271,7 +282,7 @@ namespace NeuroXChange.View
                         {
                             point = temperaturePoints[0].XValue;
                             pointTime = DateTime.FromOADate(point);
-                            dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                            dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, bioData.time.Hour, bioData.time.Minute, bioData.time.Second, bioData.time.Millisecond);
                             if (dataTime - pointTime > TimeSpan.FromMinutes(5))
                             {
                                 temperaturePoints.RemoveAt(0);
@@ -284,9 +295,9 @@ namespace NeuroXChange.View
                         }
                     }
 
-                    temperaturePoints.AddXY(data.time, data.temperature);
-                    hrPoints.AddXY(data.time, data.hartRate);
-                    skinCondPoints.AddXY(data.time, data.skinConductance);
+                    temperaturePoints.AddXY(bioData.time, bioData.temperature);
+                    hrPoints.AddXY(bioData.time, bioData.hartRate);
+                    skinCondPoints.AddXY(bioData.time, bioData.skinConductance);
 
                     // update HR oscillations info
                     builder = new StringBuilder();
@@ -368,7 +379,7 @@ namespace NeuroXChange.View
                     {
                         var point = bMColorCodedWithPriceWindow.chart.Series[0].Points.Last().XValue;
                         var pointTime = DateTime.FromOADate(point);
-                        var dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, data.time.Hour, data.time.Minute, data.time.Second, data.time.Millisecond);
+                        var dataTime = new DateTime(pointTime.Year, pointTime.Month, pointTime.Day, bioData.time.Hour, bioData.time.Minute, bioData.time.Second, bioData.time.Millisecond);
                         addBmPoints = dataTime - pointTime > TimeSpan.FromSeconds(2);
 
                         var pointFirst = bMColorCodedWithPriceWindow.chart.Series[0].Points[0].XValue;
@@ -430,11 +441,11 @@ namespace NeuroXChange.View
                             }
                         if (addBmPoints)
                         {
-                            bMColorCodedWithPriceWindow.chart.Series[i].Points.AddXY(data.time, value);
+                            bMColorCodedWithPriceWindow.chart.Series[i].Points.AddXY(bioData.time, value);
                         }
                         else
                         {
-                            //bMColorCodedWithPriceWindow.chart.Series[i].Points.Last().SetValueXY(data.time, value);
+                            //bMColorCodedWithPriceWindow.chart.Series[i].Points.Last().SetValueXY(bioData.time, value);
                         }
                         //int pointCount = bMColorCodedWithPriceWindow.chart.Series.Select(s => s.Points.Count).Sum();
                         //bMColorCodedWithPriceWindow.Text = pointCount.ToString();

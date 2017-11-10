@@ -62,12 +62,13 @@ namespace NeuroXChange.Model.BioData
                 while (!NeedStop && reader.Read())
                 {
                     var data = BioData.FromOleDbDataReader(reader, true);
-                    NotifyObservers(data);
+                    NotifyObservers(BioDataEvent.NewBioDataTick, data);
                     Thread.Sleep(tickInterval);
                 }
                 reader.Close();
                 cmd.Dispose();
                 conn.Close();
+                NotifyObservers(BioDataEvent.EmulationModeBioDataFinished, null);
             }
             catch (Exception e)
             {

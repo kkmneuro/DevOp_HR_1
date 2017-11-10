@@ -7,7 +7,7 @@ namespace NeuroXChange.Model.FixApi
     {
         private List<IFixApiObserver> observers = new List<IFixApiObserver>();
 
-        public abstract void OnNext(BioData.BioData data);
+        public abstract void OnNext(BioDataEvent bioDataEvent, object data);
 
         public abstract void StartProcessing();
         public abstract void StopProcessing();

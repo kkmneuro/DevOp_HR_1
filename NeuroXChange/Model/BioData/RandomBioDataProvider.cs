@@ -38,7 +38,7 @@ namespace NeuroXChange.Model.BioData
                 data.sub_Component_Protocol_ID = random.Next(70,80);
                 data.sub_Protocol_ID = random.Next(10, 400);
                 data.participant_ID = 1;
-                NotifyObservers(data);
+                NotifyObservers(BioDataEvent.NewBioDataTick, data);
             }
         }
 

@@ -23,10 +23,10 @@ namespace NeuroXChange.Model.BioData
                 observers.Remove(observer);
         }
 
-        protected void NotifyObservers(BioData data)
+        protected void NotifyObservers(BioDataEvent bioDataEvent, object data)
         {
             foreach (var observer in observers)
-                observer.OnNext(data);
+                observer.OnNext(bioDataEvent, data);
         }
 
         // ---- other methods that need to be implemented

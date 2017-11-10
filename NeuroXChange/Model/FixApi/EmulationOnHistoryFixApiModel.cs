@@ -11,16 +11,23 @@ namespace NeuroXChange.Model.FixApi
 {
     public class EmulationOnHistoryFixApiModel : AbstractFixApiModel
     {
-        public override void OnNext(BioData.BioData data)
+        public override void OnNext(BioDataEvent bioDataEvent, object data)
         {
-            // treat payload as price information
-            if ((data.payload != null) && (data.payload is string[]))
+            if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
-                var payload = (string[])data.payload;
+                return;
+            }
+
+            var bioData = (BioData.BioData)data;
+
+            // treat payload as price information
+            if ((bioData.payload != null) && (bioData.payload is string[]))
+            {
+                var payload = (string[])bioData.payload;
                 var tickPrice = new TickPrice();
                 tickPrice.buy = payload[0];
                 tickPrice.sell = payload[1];
-                tickPrice.time = data.time;
+                tickPrice.time = bioData.time;
                 NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);
             }
         }
