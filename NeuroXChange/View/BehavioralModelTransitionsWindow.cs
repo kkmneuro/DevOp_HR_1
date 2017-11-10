@@ -31,7 +31,7 @@ namespace NeuroXChange.View
 
         private void BehavioralModelTransitionsWindow_Load(object sender, System.EventArgs e)
         {
-            modelCB.SelectedIndex = 0;
+            modelCB.SelectedIndex = 12;
         }
 
         private void BehavioralModelTransitionsWindow_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
