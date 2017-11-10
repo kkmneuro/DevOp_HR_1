@@ -55,11 +55,17 @@
             // chart
             // 
             chartArea1.AxisX.IsStartedFromZero = false;
+            chartArea1.AxisX.LabelAutoFitMaxFontSize = 8;
+            chartArea1.AxisX.LabelAutoFitMinFontSize = 5;
             chartArea1.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
             chartArea1.AxisX2.IsStartedFromZero = false;
             chartArea1.AxisY.IsStartedFromZero = false;
+            chartArea1.AxisY.LabelAutoFitMaxFontSize = 8;
+            chartArea1.AxisY.LabelAutoFitMinFontSize = 5;
             chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
             chartArea1.AxisY2.IsStartedFromZero = false;
+            chartArea1.AxisY2.LabelAutoFitMaxFontSize = 8;
+            chartArea1.AxisY2.LabelAutoFitMinFontSize = 5;
             chartArea1.AxisY2.Minimum = 1.176D;
             chartArea1.Name = "ChartArea1";
             chartArea1.Position.Auto = false;

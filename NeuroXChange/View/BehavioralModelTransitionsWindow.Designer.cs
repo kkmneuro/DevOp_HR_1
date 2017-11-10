@@ -134,6 +134,8 @@
             // preactivationCB
             // 
             this.preactivationCB.AutoSize = true;
+            this.preactivationCB.Checked = true;
+            this.preactivationCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.preactivationCB.Location = new System.Drawing.Point(187, 3);
             this.preactivationCB.Name = "preactivationCB";
             this.preactivationCB.Size = new System.Drawing.Size(88, 17);
@@ -146,6 +148,8 @@
             // readyToTradeCB
             // 
             this.readyToTradeCB.AutoSize = true;
+            this.readyToTradeCB.Checked = true;
+            this.readyToTradeCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.readyToTradeCB.Location = new System.Drawing.Point(85, 3);
             this.readyToTradeCB.Name = "readyToTradeCB";
             this.readyToTradeCB.Size = new System.Drawing.Size(96, 17);
@@ -158,6 +162,8 @@
             // initialStateCB
             // 
             this.initialStateCB.AutoSize = true;
+            this.initialStateCB.Checked = true;
+            this.initialStateCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.initialStateCB.Location = new System.Drawing.Point(3, 3);
             this.initialStateCB.Name = "initialStateCB";
             this.initialStateCB.Size = new System.Drawing.Size(76, 17);
