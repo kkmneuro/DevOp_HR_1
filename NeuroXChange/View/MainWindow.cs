@@ -47,7 +47,10 @@ namespace NeuroXChange
             else if (persistString == typeof(BehavioralModelTransitionsWindow).ToString())
                 return mainNeuroXView.behavioralModelTransitionsWindow;
             else if (persistString == typeof(BMColorCodedWithPriceWindow).ToString())
-                return mainNeuroXView.bMColorCodedWithPriceWindow; return null;
+                return mainNeuroXView.bMColorCodedWithPriceWindow;
+            else if (persistString == typeof(EmulationModeControlWindow).ToString())
+                return mainNeuroXView.emulationModeControlWindow;
+            return null;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -74,6 +77,8 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.behavioralModelTransitionsWindow;
             else if (sender == bMColorCodedWithPriceToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.bMColorCodedWithPriceWindow;
+            else if (sender == emulationModeControlToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.emulationModeControlWindow;
 
             dockContentWindow.Show();
             if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
@@ -94,6 +99,7 @@ namespace NeuroXChange
             iniFileReader.Write("MainWindowY", Location.Y.ToString(), "Interface");
             iniFileReader.Write("MainWindowWidth", Size.Width.ToString(), "Interface");
             iniFileReader.Write("MainWindowHeight", Size.Height.ToString(), "Interface");
+            iniFileReader.Write("TickInterval", mainNeuroXView.emulationModeControlWindow.tickSizeUpDown.Value.ToString(), "EmulationOnHistory");
         }
 
         void dockStateChangedAction(object sender, EventArgs e)
@@ -122,6 +128,7 @@ namespace NeuroXChange
             mainNeuroXView.behavioralModelWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.behavioralModelTransitionsWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.bMColorCodedWithPriceWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.emulationModeControlWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
@@ -134,6 +141,7 @@ namespace NeuroXChange
             mainNeuroXView.behavioralModelWindow.DockPanel = dockPanel;
             mainNeuroXView.behavioralModelTransitionsWindow.DockPanel = dockPanel;
             mainNeuroXView.bMColorCodedWithPriceWindow.DockPanel = dockPanel;
+            mainNeuroXView.emulationModeControlWindow.DockPanel = dockPanel;
         }
     }
 }

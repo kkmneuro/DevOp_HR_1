@@ -16,7 +16,7 @@ namespace NeuroXChange.Model
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
-        public bool emulationOnHistory { get; private set; }
+        public bool emulationOnHistoryMode { get; private set; }
         public bool isStateGood { get; private set; }
 
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
@@ -58,9 +58,9 @@ namespace NeuroXChange.Model
 
                 iniFileReader = new IniFileReader(settingsFileName);
 
-                emulationOnHistory = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory"));
+                emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory"));
 
-                if (!emulationOnHistory)
+                if (!emulationOnHistoryMode)
                 {
                     bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
                     //bioDataProvider = new RandomBioDataProvider();
@@ -72,7 +72,7 @@ namespace NeuroXChange.Model
                 }
                 bioDataProvider.RegisterObserver(this);
 
-                if (!emulationOnHistory)
+                if (!emulationOnHistoryMode)
                 {
                     fixApiModel = new FixApiModel(iniFileReader);
                 }
@@ -84,7 +84,6 @@ namespace NeuroXChange.Model
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
-                //bioDataProvider.RegisterObserver(behavioralModelsContainer);
             }
             catch (Exception e)
             {
@@ -109,6 +108,48 @@ namespace NeuroXChange.Model
                 bioDataProvider.StopProcessing();
             if (fixApiModel != null)
                 fixApiModel.StopProcessing();
+        }
+
+        // Emulation on history mode control
+
+        public void StartEmulation()
+        {
+            if (!emulationOnHistoryMode)
+            {
+                return;
+            }
+            var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
+            emulationOnHistoryProvider.StartEmulation();
+        }
+
+        public void PauseEmulation()
+        {
+            if (!emulationOnHistoryMode)
+            {
+                return;
+            }
+            var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
+            emulationOnHistoryProvider.PauseEmulation();
+        }
+
+        public void NextTickEmulation()
+        {
+            if (!emulationOnHistoryMode)
+            {
+                return;
+            }
+            var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
+            emulationOnHistoryProvider.NextTickEmulation();
+        }
+
+        public void ChangeEmulationModeTickInterval(int tickInterval)
+        {
+            if (!emulationOnHistoryMode)
+            {
+                return;
+            }
+            var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
+            emulationOnHistoryProvider.ChangeEmulationModeTickInterval(tickInterval);
         }
 
         // ---- IBioDataObserver implementation

@@ -10,14 +10,20 @@ namespace NeuroXChange.Model.BioData
     {
         private volatile bool NeedStop = false;
         private OleDbConnection conn;
+        private OleDbDataReader reader;
         private Thread thread;
         private string databaseLocation;
         private string tableName;
         private long startDataRowId;
         private long endDataRowId;
-        private int tickInterval;
+        private volatile int tickInterval;
 
         private string priceAtBioDataTickTable;
+
+        private int totalTicksCount;
+        private int ticksPassed;
+        private volatile bool paused;
+        private volatile bool nextTickEmulation;
 
         public EmulationOnHistoryBioDataProvider(IniFileReader iniFileReader)
         {
@@ -39,6 +45,10 @@ namespace NeuroXChange.Model.BioData
                 throw new Exception("startDataRowId can't be greater than endDataRowId!\n\rCorrect these fields in ini-file");
             }
 
+            totalTicksCount = 0;
+            ticksPassed = 0;
+            paused = false;
+            nextTickEmulation = false;
             thread = new Thread(new ThreadStart(GenerateNewData));
         }
 
@@ -49,6 +59,20 @@ namespace NeuroXChange.Model.BioData
                 conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
                 conn.Open();
 
+                var TotalRowsCountCommandStr = string.Format(
+                    @"SELECT COUNT(*) AS totalTicks FROM {0}
+                WHERE psychophysiological_Session_Data_ID >= {2} AND psychophysiological_Session_Data_ID <= {3}",
+                    tableName, null, startDataRowId, endDataRowId);
+
+                var cmd = new OleDbCommand(TotalRowsCountCommandStr, conn);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    totalTicksCount = Int32.Parse(reader["totalTicks"].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+
                 var commandStr = string.Format(
                     @"SELECT {0}.*, sellPrice, buyPrice FROM {0}
                 LEFT OUTER JOIN {1} ON {0}.psychophysiological_Session_Data_ID = {1}.ID
@@ -56,15 +80,28 @@ namespace NeuroXChange.Model.BioData
                 ORDER BY Psychophysiological_Session_Data_ID",
                     tableName, priceAtBioDataTickTable, startDataRowId, endDataRowId);
 
-                var cmd = new OleDbCommand(commandStr, conn);
+                cmd = new OleDbCommand(commandStr, conn);
 
-                var reader = cmd.ExecuteReader();
-                while (!NeedStop && reader.Read())
+                reader = cmd.ExecuteReader();
+                while (!NeedStop)
                 {
-                    var data = BioData.FromOleDbDataReader(reader, true);
-                    NotifyObservers(BioDataEvent.NewBioDataTick, data);
-                    Thread.Sleep(tickInterval);
+                    if (!paused || nextTickEmulation)
+                    {
+                        GenerateNewTick();
+                        if (nextTickEmulation)
+                        {
+                            nextTickEmulation = false;
+                        }
+                        else
+                        {
+                            Thread.Sleep(tickInterval);
+                        }
+                    } else
+                    {
+                        Thread.Sleep(25);
+                    }
                 }
+                NeedStop = true;
                 reader.Close();
                 cmd.Dispose();
                 conn.Close();
@@ -76,6 +113,24 @@ namespace NeuroXChange.Model.BioData
             }
         }
 
+        private void GenerateNewTick()
+        {
+            if (NeedStop)
+            {
+                return;
+            }
+            NeedStop = !reader.Read();
+            if (NeedStop)
+            {
+                return;
+            }
+
+            ticksPassed++;
+            var data = BioData.FromOleDbDataReader(reader, true);
+            NotifyObservers(BioDataEvent.NewBioDataTick, data);
+            NotifyObservers(BioDataEvent.EmulationModeProgress, new int[] { ticksPassed, totalTicksCount });
+        }
+
         public override void StartProcessing()
         {
             thread.Start();
@@ -84,6 +139,35 @@ namespace NeuroXChange.Model.BioData
         public override void StopProcessing()
         {
             NeedStop = true;
+        }
+
+        // controlling functions
+        public void StartEmulation()
+        {
+            if (paused)
+            {
+                NotifyObservers(BioDataEvent.EmulationModeContinued, null);
+            }
+            paused = false;
+        }
+
+        public void PauseEmulation()
+        {
+            if (!paused)
+            {
+                NotifyObservers(BioDataEvent.EmulationModePaused, null);
+            }
+            paused = true;
+        }
+
+        public void NextTickEmulation()
+        {
+            nextTickEmulation = true;
+        }
+
+        public void ChangeEmulationModeTickInterval(int tickInterval)
+        {
+            this.tickInterval = tickInterval;
         }
     }
 }

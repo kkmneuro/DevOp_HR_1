@@ -163,6 +163,12 @@
       <DependentUpon>BreathPacerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BreathPacer\BreathSettings.cs" />
+    <Compile Include="View\EmulationModeControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\EmulationModeControlWindow.Designer.cs">
+      <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\IndicatorsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BreathPacer\BreathPacerControl.resx">
       <DependentUpon>BreathPacerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\EmulationModeControlWindow.resx">
+      <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\IndicatorsWindow.resx">
       <DependentUpon>IndicatorsWindow.cs</DependentUpon>

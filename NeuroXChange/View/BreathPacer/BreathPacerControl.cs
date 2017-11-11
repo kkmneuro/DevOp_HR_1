@@ -284,6 +284,11 @@ namespace BreathPacer
             tmrPacer.Stop();
         }
 
+        public void Continue()
+        {
+            tmrPacer.Start();
+        }
+
         private void tmrPacer_Tick(object sender, EventArgs e)
         {
             if (step < steps)

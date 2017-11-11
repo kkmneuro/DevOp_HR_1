@@ -34,6 +34,7 @@ namespace NeuroXChange.View
         public BehavioralModelsWindow behavioralModelWindow { get; private set; }
         public BehavioralModelTransitionsWindow behavioralModelTransitionsWindow { get; private set; }
         public BMColorCodedWithPriceWindow bMColorCodedWithPriceWindow { get; private set; }
+        public EmulationModeControlWindow emulationModeControlWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
@@ -49,7 +50,7 @@ namespace NeuroXChange.View
             mainNeuroXViewThread = Thread.CurrentThread;
 
             mainWindow = new MainWindow(this, model.iniFileReader);
-            mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistory ? "emulation on history" : "real-time");
+            mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistoryMode ? "emulation on history" : "real-time");
 
             rawInformationWindow = new RawInformationWindow();
             rawInformationWindow.Owner = mainWindow;
@@ -77,6 +78,10 @@ namespace NeuroXChange.View
 
             bMColorCodedWithPriceWindow = new BMColorCodedWithPriceWindow();
             bMColorCodedWithPriceWindow.Owner = mainWindow;
+
+            emulationModeControlWindow = new EmulationModeControlWindow(model, controller);
+            emulationModeControlWindow.Owner = mainWindow;
+            emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("TickInterval", "EmulationOnHistory"));
 
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
@@ -217,10 +222,35 @@ namespace NeuroXChange.View
 
         public void OnNext(BioDataEvent bioDataEvent, object data)
         {
-            if (bioDataEvent == BioDataEvent.EmulationModeBioDataFinished)
-            {
-                breathPacerWindow.breathPacerControl.Stop();
-            }
+            mainWindow.BeginInvoke(
+               (Action)(() =>
+               {
+                   if (bioDataEvent == BioDataEvent.EmulationModeBioDataFinished)
+                   {
+                       emulationModeControlWindow.pauseButton.Enabled = false;
+                       breathPacerWindow.breathPacerControl.Stop();
+                   }
+                   else if (bioDataEvent == BioDataEvent.EmulationModePaused)
+                   {
+                       emulationModeControlWindow.startButton.Enabled = true;
+                       emulationModeControlWindow.pauseButton.Enabled = false;
+                       emulationModeControlWindow.nextButton.Enabled = true;
+                       breathPacerWindow.breathPacerControl.Stop();
+                   }
+                   else if (bioDataEvent == BioDataEvent.EmulationModeContinued)
+                   {
+                       emulationModeControlWindow.startButton.Enabled = false;
+                       emulationModeControlWindow.pauseButton.Enabled = true;
+                       emulationModeControlWindow.nextButton.Enabled = false;
+                       breathPacerWindow.breathPacerControl.Continue();
+                   }
+                   else if (bioDataEvent == BioDataEvent.EmulationModeProgress)
+                   {
+                       var progress = (int[])data;
+                       emulationModeControlWindow.progressBar.Maximum = progress[1];
+                       emulationModeControlWindow.progressBar.Value = progress[0];
+                   }
+               }));
 
             if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
@@ -229,7 +259,7 @@ namespace NeuroXChange.View
             var bioData = (BioData)data;
 
             // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistory && (DateTime.Now - previousBioTickTime) < TimeSpan.FromMilliseconds(20))
+            if (model.emulationOnHistoryMode && (DateTime.Now - previousBioTickTime) < TimeSpan.FromMilliseconds(20))
             {
                 return;
             }
@@ -458,7 +488,7 @@ namespace NeuroXChange.View
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {
             // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistory && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(100))
+            if (model.emulationOnHistoryMode && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(100))
             {
                 return;
             }

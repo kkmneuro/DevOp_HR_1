@@ -30,15 +30,18 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emulationModeControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breathPacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indicatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.behavioralModelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.behavioralModelTransitonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rawInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -46,7 +49,6 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
-            this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -66,15 +68,23 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emulationModeControlToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // emulationModeControlToolStripMenuItem
+            // 
+            this.emulationModeControlToolStripMenuItem.Name = "emulationModeControlToolStripMenuItem";
+            this.emulationModeControlToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.emulationModeControlToolStripMenuItem.Text = "Emulation mode control";
+            this.emulationModeControlToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -85,6 +95,7 @@
             this.indicatorsToolStripMenuItem,
             this.newOrderToolStripMenuItem,
             this.behavioralModelsToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.behavioralModelTransitonsToolStripMenuItem,
             this.rawInformationToolStripMenuItem,
             this.chartsToolStripMenuItem,
@@ -121,6 +132,11 @@
             this.behavioralModelsToolStripMenuItem.Text = "Behavioral models";
             this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(218, 6);
+            // 
             // behavioralModelTransitonsToolStripMenuItem
             // 
             this.behavioralModelTransitonsToolStripMenuItem.Name = "behavioralModelTransitonsToolStripMenuItem";
@@ -141,6 +157,13 @@
             this.chartsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.chartsToolStripMenuItem.Text = "Charts";
             this.chartsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // bMColorCodedWithPriceToolStripMenuItem
+            // 
+            this.bMColorCodedWithPriceToolStripMenuItem.Name = "bMColorCodedWithPriceToolStripMenuItem";
+            this.bMColorCodedWithPriceToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.bMColorCodedWithPriceToolStripMenuItem.Text = "BM color coded with price";
+            this.bMColorCodedWithPriceToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -194,13 +217,6 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015LightTheme1;
             // 
-            // bMColorCodedWithPriceToolStripMenuItem
-            // 
-            this.bMColorCodedWithPriceToolStripMenuItem.Name = "bMColorCodedWithPriceToolStripMenuItem";
-            this.bMColorCodedWithPriceToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.bMColorCodedWithPriceToolStripMenuItem.Text = "BM color coded with price";
-            this.bMColorCodedWithPriceToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,6 +260,8 @@
         private System.Windows.Forms.ToolStripMenuItem behavioralModelTransitonsToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
         private System.Windows.Forms.ToolStripMenuItem bMColorCodedWithPriceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem emulationModeControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 
