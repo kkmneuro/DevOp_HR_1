@@ -218,10 +218,13 @@ namespace NeuroXChange.View
             }
         }
 
-        private DateTime previousBioTickTime = DateTime.Now;
+        private DateTime previousRealTickTime = DateTime.Now;
+        private DateTime previousBioTickTime;
 
         public void OnNext(BioDataEvent bioDataEvent, object data)
         {
+            if (bioDataEvent != BioDataEvent.NewBioDataTick)
+            {
             mainWindow.BeginInvoke(
                (Action)(() =>
                {
@@ -251,19 +254,16 @@ namespace NeuroXChange.View
                        emulationModeControlWindow.progressBar.Value = progress[0];
                    }
                }));
-
-            if (bioDataEvent != BioDataEvent.NewBioDataTick)
-            {
                 return;
             }
             var bioData = (BioData)data;
 
             // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistoryMode && (DateTime.Now - previousBioTickTime) < TimeSpan.FromMilliseconds(20))
+            if (model.emulationOnHistoryMode && (DateTime.Now - previousRealTickTime) < TimeSpan.FromMilliseconds(20))
             {
                 return;
             }
-            previousBioTickTime = DateTime.Now;
+            previousRealTickTime = DateTime.Now;
 
             HeartRateInfo hrInfo = model.behavioralModelsContainer.heartRateProcessor.heartRateInfo;
 
@@ -288,6 +288,13 @@ namespace NeuroXChange.View
                     builder.Append("Data: " + bioData.data);
 
                     rawInformationWindow.bioDataRTB.Text = builder.ToString();
+
+                    if (previousBioTickTime == bioData.time)
+                    {
+                        return;
+                    }
+                    previousBioTickTime = bioData.time;
+
                     var temperaturePoints = chartsWindow.heartRateChart.Series["Temperature"].Points;
                     var hrPoints = chartsWindow.heartRateChart.Series["Heart Rate"].Points;
                     var skinCondPoints = chartsWindow.heartRateChart.Series["Skin Conductance"].Points;
@@ -483,23 +490,34 @@ namespace NeuroXChange.View
                 }));
         }
 
-        private DateTime previousPriceTickTime = DateTime.FromOADate(0);
+        private DateTime previousPlottedTime = DateTime.FromOADate(0);
+        private DateTime previousBioDataTick;
 
         public void OnNext(FixApiModelEvent modelEvent, object data)
         {
-            // optimize view on emulation mode with extra-small ticks
-            if (model.emulationOnHistoryMode && (DateTime.Now - previousPriceTickTime) < TimeSpan.FromMilliseconds(100))
+            if (modelEvent != FixApiModelEvent.PriceChanged)
             {
                 return;
             }
-            previousPriceTickTime = DateTime.Now;
 
-            if (modelEvent == FixApiModelEvent.PriceChanged)
+            // optimize view on emulation mode with extra-small ticks
+            if (model.emulationOnHistoryMode && (DateTime.Now - previousPlottedTime) < TimeSpan.FromMilliseconds(100))
             {
-                mainWindow.BeginInvoke(
+                return;
+            }
+            previousPlottedTime = DateTime.Now;
+
+            var price = (TickPrice)data;
+            if (price.time == previousBioDataTick)
+            {
+                return;
+            }
+            previousBioDataTick = price.time;
+
+
+            mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   var price = (TickPrice)data;
                                    newOrderWindow.btnBuy.Text = "BUY\n\r    " + price.buy;
                                    newOrderWindow.btnSell.Text = "          SELL\n\r   " + price.sell;
                                    lastPrice = price;
@@ -532,7 +550,6 @@ namespace NeuroXChange.View
                                        }
                                    }
                                }));
-            }
         }
     }
 }
