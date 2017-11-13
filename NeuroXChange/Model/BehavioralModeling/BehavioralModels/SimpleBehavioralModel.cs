@@ -2,6 +2,7 @@
 using NeuroXChange.Model.BehavioralModeling.Transitions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 
 namespace NeuroXChange.Model
@@ -33,19 +34,14 @@ namespace NeuroXChange.Model
         public DateTime previousTransitionToDirectionConfirmed { get; private set; }
         public int lastNot74SubProtocolID { get; set; }
 
-        // transition history
-        public DataTable TransitionHistoryTable { get; private set; }
+        public LinkedList<TransitionHistoryItem> TransitionHistory { get; private set; }
 
         public SimpleBehavioralModel()
         {
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
-            TransitionHistoryTable = new DataTable("TransitionHistory");
-            TransitionHistoryTable.Columns.Add("Time", typeof(string));
-            TransitionHistoryTable.Columns.Add("To state", typeof(string));
-            TransitionHistoryTable.Columns.Add("From state", typeof(string));
-            TransitionHistoryTable.Columns.Add("Transition", typeof(string));
+            TransitionHistory = new LinkedList<TransitionHistoryItem>();
         }
 
         public virtual void OnNext(BioData.BioData data)
@@ -89,12 +85,13 @@ namespace NeuroXChange.Model
                 }
                 UpdateStatistics();
 
-                var row = TransitionHistoryTable.NewRow();
-                row["Time"] = data.time.ToString("MM/dd  HH:mm:ss");
-                row["To state"] = BehavioralModelStateHelper.StateToString(CurrentTickState);
-                row["From state"] = BehavioralModelStateHelper.StateToString(PreviousTickState);
-                row["Transition"] = executedTransition.ToString();
-                TransitionHistoryTable.Rows.Add(row);
+                var inst = new TransitionHistoryItem();
+                inst.ID = TransitionHistory.Count;
+                inst.Time = data.time.ToString("MM/dd  HH:mm:ss");
+                inst.ToState = BehavioralModelStateHelper.StateToString(CurrentTickState);
+                inst.FromState = BehavioralModelStateHelper.StateToString(PreviousTickState);
+                inst.Transition = executedTransition.ToString();
+                TransitionHistory.AddLast(inst);
             }
         }
 

@@ -102,6 +102,7 @@
     <Compile Include="Model\BehavioralModeling\BehavioralModels\SimpleBehavioralModel.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelStateHelper.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\TransitionHistoryItem.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />

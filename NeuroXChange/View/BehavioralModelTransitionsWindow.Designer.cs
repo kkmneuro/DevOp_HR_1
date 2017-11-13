@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.modelCB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,9 +39,12 @@
             this.readyToTradeCB = new System.Windows.Forms.CheckBox();
             this.initialStateCB = new System.Windows.Forms.CheckBox();
             this.behavioralModelTransitionsDGV = new System.Windows.Forms.DataGridView();
+            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.dataUpdaterTimer = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelTransitionsDGV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -178,7 +182,9 @@
             this.behavioralModelTransitionsDGV.AllowUserToAddRows = false;
             this.behavioralModelTransitionsDGV.AllowUserToDeleteRows = false;
             this.behavioralModelTransitionsDGV.AllowUserToOrderColumns = true;
+            this.behavioralModelTransitionsDGV.AutoGenerateColumns = false;
             this.behavioralModelTransitionsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.behavioralModelTransitionsDGV.DataSource = this.bindingSource;
             this.behavioralModelTransitionsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.behavioralModelTransitionsDGV.Location = new System.Drawing.Point(0, 77);
             this.behavioralModelTransitionsDGV.Name = "behavioralModelTransitionsDGV";
@@ -203,6 +209,11 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(588, 46);
             this.flowLayoutPanel1.TabIndex = 8;
             // 
+            // dataUpdaterTimer
+            // 
+            this.dataUpdaterTimer.Enabled = true;
+            this.dataUpdaterTimer.Tick += new System.EventHandler(this.dataUpdaterTimer_Tick);
+            // 
             // BehavioralModelTransitionsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,6 +229,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.behavioralModelTransitionsDGV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -238,5 +250,7 @@
         private System.Windows.Forms.CheckBox confirmationFilledCB;
         private System.Windows.Forms.CheckBox executeOrderCB;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.BindingSource bindingSource;
+        private System.Windows.Forms.Timer dataUpdaterTimer;
     }
 }
