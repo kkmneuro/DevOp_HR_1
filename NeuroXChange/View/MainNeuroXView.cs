@@ -76,7 +76,7 @@ namespace NeuroXChange.View
             behavioralModelTransitionsWindow = new BehavioralModelTransitionsWindow(model);
             behavioralModelTransitionsWindow.Owner = mainWindow;
 
-            bMColorCodedWithPriceWindow = new BMColorCodedWithPriceWindow();
+            bMColorCodedWithPriceWindow = new BMColorCodedWithPriceWindow(model);
             bMColorCodedWithPriceWindow.Owner = mainWindow;
 
             emulationModeControlWindow = new EmulationModeControlWindow(model, controller);

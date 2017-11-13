@@ -49,7 +49,14 @@
             System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.collapseBtn = new System.Windows.Forms.Button();
+            this.BModelsCLB = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart
@@ -174,17 +181,81 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.ChartUpdate);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.BModelsCLB);
+            this.splitContainer1.Panel1Collapsed = true;
+            this.splitContainer1.Panel1MinSize = 80;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.collapseBtn);
+            this.splitContainer1.Panel2.Controls.Add(this.chart);
+            this.splitContainer1.Size = new System.Drawing.Size(565, 438);
+            this.splitContainer1.SplitterDistance = 90;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // collapseBtn
+            // 
+            this.collapseBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.collapseBtn.Location = new System.Drawing.Point(3, 3);
+            this.collapseBtn.Name = "collapseBtn";
+            this.collapseBtn.Size = new System.Drawing.Size(31, 23);
+            this.collapseBtn.TabIndex = 1;
+            this.collapseBtn.Text = ">>";
+            this.collapseBtn.UseVisualStyleBackColor = true;
+            this.collapseBtn.Click += new System.EventHandler(this.collapseBtn_Click);
+            // 
+            // BModelsCLB
+            // 
+            this.BModelsCLB.CheckOnClick = true;
+            this.BModelsCLB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BModelsCLB.FormattingEnabled = true;
+            this.BModelsCLB.Items.AddRange(new object[] {
+            "All",
+            "BM 1",
+            "BM 2",
+            "BM 3",
+            "BM 4",
+            "BM 5",
+            "BM 6",
+            "BM 7",
+            "BM 8",
+            "BM 9",
+            "BM 10",
+            "BM 11",
+            "BM 12",
+            "BM 13",
+            "BM 14",
+            "BM 15",
+            "BM 16"});
+            this.BModelsCLB.Location = new System.Drawing.Point(0, 0);
+            this.BModelsCLB.Name = "BModelsCLB";
+            this.BModelsCLB.Size = new System.Drawing.Size(90, 438);
+            this.BModelsCLB.TabIndex = 0;
+            this.BModelsCLB.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BModelsCLB_ItemCheck);
+            // 
             // BMColorCodedWithPriceWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 438);
-            this.Controls.Add(this.chart);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "BMColorCodedWithPriceWindow";
             this.Text = "Behavioral models with price";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMColorCodedWithPriceWindow_FormClosing);
             this.Load += new System.EventHandler(this.BMColorCodedWithPriceWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -193,5 +264,8 @@
 
         public System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button collapseBtn;
+        private System.Windows.Forms.CheckedListBox BModelsCLB;
     }
 }
