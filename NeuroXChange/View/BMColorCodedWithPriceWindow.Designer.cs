@@ -50,8 +50,8 @@
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.collapseBtn = new System.Windows.Forms.Button();
             this.BModelsCLB = new System.Windows.Forms.CheckedListBox();
+            this.collapseBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,6 +82,25 @@
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
+            this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            this.chart.PaletteCustomColors = new System.Drawing.Color[] {
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))), ((int)(((byte)(100))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(110)))), ((int)(((byte)(30))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(0))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(40))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(240)))), ((int)(((byte)(192))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(128)))), ((int)(((byte)(240)))), ((int)(((byte)(128))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(255))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(90)))), ((int)(((byte)(192))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(250)))), ((int)(((byte)(180)))), ((int)(((byte)(250))))),
+                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))))};
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedArea;
             series1.Name = "BM1";
@@ -201,17 +220,6 @@
             this.splitContainer1.SplitterDistance = 90;
             this.splitContainer1.TabIndex = 1;
             // 
-            // collapseBtn
-            // 
-            this.collapseBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.collapseBtn.Location = new System.Drawing.Point(3, 3);
-            this.collapseBtn.Name = "collapseBtn";
-            this.collapseBtn.Size = new System.Drawing.Size(31, 23);
-            this.collapseBtn.TabIndex = 1;
-            this.collapseBtn.Text = ">>";
-            this.collapseBtn.UseVisualStyleBackColor = true;
-            this.collapseBtn.Click += new System.EventHandler(this.collapseBtn_Click);
-            // 
             // BModelsCLB
             // 
             this.BModelsCLB.CheckOnClick = true;
@@ -237,9 +245,20 @@
             "BM 16"});
             this.BModelsCLB.Location = new System.Drawing.Point(0, 0);
             this.BModelsCLB.Name = "BModelsCLB";
-            this.BModelsCLB.Size = new System.Drawing.Size(90, 438);
+            this.BModelsCLB.Size = new System.Drawing.Size(90, 100);
             this.BModelsCLB.TabIndex = 0;
             this.BModelsCLB.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BModelsCLB_ItemCheck);
+            // 
+            // collapseBtn
+            // 
+            this.collapseBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.collapseBtn.Location = new System.Drawing.Point(3, 3);
+            this.collapseBtn.Name = "collapseBtn";
+            this.collapseBtn.Size = new System.Drawing.Size(31, 23);
+            this.collapseBtn.TabIndex = 1;
+            this.collapseBtn.Text = ">>";
+            this.collapseBtn.UseVisualStyleBackColor = true;
+            this.collapseBtn.Click += new System.EventHandler(this.collapseBtn_Click);
             // 
             // BMColorCodedWithPriceWindow
             // 
