@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labInformation = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
+            this.secondElapsedTimer = new System.Windows.Forms.Timer(this.components);
+            this.secondsRemainLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labInformation
@@ -53,17 +56,33 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // CustomDialog
+            // secondElapsedTimer
+            // 
+            this.secondElapsedTimer.Interval = 1000;
+            this.secondElapsedTimer.Tick += new System.EventHandler(this.secondElapsedTime_Tick);
+            // 
+            // secondsRemainLabel
+            // 
+            this.secondsRemainLabel.AutoSize = true;
+            this.secondsRemainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.secondsRemainLabel.Location = new System.Drawing.Point(7, 104);
+            this.secondsRemainLabel.Name = "secondsRemainLabel";
+            this.secondsRemainLabel.Size = new System.Drawing.Size(178, 13);
+            this.secondsRemainLabel.TabIndex = 2;
+            this.secondsRemainLabel.Text = "Message will be closed in x seconds";
+            // 
+            // CustomDialogWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(251, 105);
+            this.ClientSize = new System.Drawing.Size(251, 122);
+            this.Controls.Add(this.secondsRemainLabel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.labInformation);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CustomDialog";
+            this.Name = "CustomDialogWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Order confirmation";
             this.TopMost = true;
@@ -77,5 +96,7 @@
 
         public System.Windows.Forms.Label labInformation;
         public System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Timer secondElapsedTimer;
+        private System.Windows.Forms.Label secondsRemainLabel;
     }
 }

@@ -172,7 +172,7 @@ namespace NeuroXChange.View
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
-                        customDialogWindow.Show();
+                        customDialogWindow.ShowWithSeconds(3);
                         break;
                     }
                 case BehavioralModelState.ConfirmationFilled:
@@ -180,7 +180,7 @@ namespace NeuroXChange.View
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
-                        customDialogWindow.Show();
+                        customDialogWindow.ShowWithSeconds(3);
                         break;
                     }
             }
@@ -257,6 +257,29 @@ namespace NeuroXChange.View
                 return;
             }
             var bioData = (BioData)data;
+
+
+            // hardcoded conditons!!!
+            if (bioData.psychophysiological_Session_Data_ID == 5678)
+            {
+                customDialogWindow.BeginInvoke(
+                                    (Action)(() =>
+                {
+                    customDialogWindow.labInformation.Text = "Position Closed\r\nContract size: 1";
+                    customDialogWindow.ShowWithSeconds(3);
+                }));
+            }
+            if (bioData.psychophysiological_Session_Data_ID == 94941)
+            {
+                customDialogWindow.BeginInvoke(
+                (Action)(() =>
+                {
+                    customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                        directionName[0], "1.16501");
+                    customDialogWindow.ShowWithSeconds(3);
+                }));
+            }
+
 
             // optimize view on emulation mode with extra-small ticks
             if (model.emulationOnHistoryMode && (DateTime.Now - previousRealTickTime) < TimeSpan.FromMilliseconds(20))
