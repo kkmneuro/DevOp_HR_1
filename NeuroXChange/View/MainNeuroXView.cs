@@ -172,7 +172,7 @@ namespace NeuroXChange.View
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
-                        customDialogWindow.ShowWithSeconds(3);
+                        customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
                 case BehavioralModelState.ConfirmationFilled:
@@ -180,7 +180,7 @@ namespace NeuroXChange.View
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
-                        customDialogWindow.ShowWithSeconds(3);
+                        customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
             }
@@ -260,23 +260,23 @@ namespace NeuroXChange.View
 
 
             // hardcoded conditons!!!
-            if (bioData.psychophysiological_Session_Data_ID == 5678)
-            {
-                customDialogWindow.BeginInvoke(
-                                    (Action)(() =>
-                {
-                    customDialogWindow.labInformation.Text = "Position Closed\r\nContract size: 1";
-                    customDialogWindow.ShowWithSeconds(3);
-                }));
-            }
-            if (bioData.psychophysiological_Session_Data_ID == 94941)
+            if (bioData.psychophysiological_Session_Data_ID == 1621)
             {
                 customDialogWindow.BeginInvoke(
                 (Action)(() =>
                 {
-                    customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                        directionName[0], "1.16501");
-                    customDialogWindow.ShowWithSeconds(3);
+                    customDialogWindow.labInformation.Text = string.Format("Order confirmed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
+                        directionName[0], "1.1654");
+                    customDialogWindow.ShowWithSeconds(2);
+                }));
+            }
+            if (bioData.psychophysiological_Session_Data_ID == 1718)
+            {
+                customDialogWindow.BeginInvoke(
+                                    (Action)(() =>
+                {
+                    customDialogWindow.labInformation.Text = "Position Closed\r\nContract size: 1\r\nPrice: 1.17105";
+                    customDialogWindow.ShowWithSeconds(2);
                 }));
             }
 
