@@ -258,29 +258,6 @@ namespace NeuroXChange.View
             }
             var bioData = (BioData)data;
 
-
-            // hardcoded conditons!!!
-            if (bioData.psychophysiological_Session_Data_ID == 1621)
-            {
-                customDialogWindow.BeginInvoke(
-                (Action)(() =>
-                {
-                    customDialogWindow.labInformation.Text = string.Format("Order confirmed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                        directionName[0], "1.1654");
-                    customDialogWindow.ShowWithSeconds(2);
-                }));
-            }
-            if (bioData.psychophysiological_Session_Data_ID == 1718)
-            {
-                customDialogWindow.BeginInvoke(
-                                    (Action)(() =>
-                {
-                    customDialogWindow.labInformation.Text = "Position Closed\r\nContract size: 1\r\nPrice: 1.17105";
-                    customDialogWindow.ShowWithSeconds(2);
-                }));
-            }
-
-
             // optimize view on emulation mode with extra-small ticks
             if (model.emulationOnHistoryMode && (DateTime.Now - previousRealTickTime) < TimeSpan.FromMilliseconds(20))
             {
