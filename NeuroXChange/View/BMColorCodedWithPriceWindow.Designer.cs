@@ -73,7 +73,7 @@
             chartArea1.AxisY2.IsStartedFromZero = false;
             chartArea1.AxisY2.LabelAutoFitMaxFontSize = 8;
             chartArea1.AxisY2.LabelAutoFitMinFontSize = 5;
-            chartArea1.AxisY2.Minimum = 1.176D;
+            chartArea1.AxisY2.Minimum = 10D;
             chartArea1.Name = "ChartArea1";
             chartArea1.Position.Auto = false;
             chartArea1.Position.Height = 100F;
@@ -84,23 +84,23 @@
             this.chart.Name = "chart";
             this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart.PaletteCustomColors = new System.Drawing.Color[] {
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))), ((int)(((byte)(100))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(110)))), ((int)(((byte)(30))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(0))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(40))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(240)))), ((int)(((byte)(192))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(128)))), ((int)(((byte)(240)))), ((int)(((byte)(128))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(255))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(90)))), ((int)(((byte)(192))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(250)))), ((int)(((byte)(180)))), ((int)(((byte)(250))))),
-                System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))))};
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))), ((int)(((byte)(100))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(110)))), ((int)(((byte)(30))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(40))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(240)))), ((int)(((byte)(192))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(128)))), ((int)(((byte)(240)))), ((int)(((byte)(128))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(255))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(192)))), ((int)(((byte)(90)))), ((int)(((byte)(192))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(250)))), ((int)(((byte)(180)))), ((int)(((byte)(250))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))))};
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedArea;
             series1.Name = "BM1";

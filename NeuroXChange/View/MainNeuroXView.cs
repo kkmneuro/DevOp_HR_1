@@ -12,6 +12,7 @@ using System.Data;
 using System.Threading;
 using WeifenLuo.WinFormsUI.Docking;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+using NeuroXChange.Common;
 
 namespace NeuroXChange.View
 {
@@ -528,7 +529,7 @@ namespace NeuroXChange.View
 
                                    if (price.buy.Length > 0)
                                    {
-                                       var value = Double.Parse(price.buy);
+                                       var value = StringHelpers.ParseDoubleCultureIndependent(price.buy);
                                        if (value < bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum)
                                        {
                                            bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum = value;
