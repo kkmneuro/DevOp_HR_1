@@ -212,6 +212,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\BioData\BioData.cs" />
+    <Compile Include="View\ProfitabilityWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ProfitabilityWindow.Designer.cs">
+      <DependentUpon>ProfitabilityWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\RawInformationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -265,6 +271,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\ProfitabilityWindow.resx">
+      <DependentUpon>ProfitabilityWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\RawInformationWindow.resx">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </EmbeddedResource>

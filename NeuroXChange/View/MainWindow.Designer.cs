@@ -49,6 +49,7 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
+            this.profitabilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -99,7 +100,8 @@
             this.behavioralModelTransitonsToolStripMenuItem,
             this.rawInformationToolStripMenuItem,
             this.chartsToolStripMenuItem,
-            this.bMColorCodedWithPriceToolStripMenuItem});
+            this.bMColorCodedWithPriceToolStripMenuItem,
+            this.profitabilityToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -217,6 +219,13 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015LightTheme1;
             // 
+            // profitabilityToolStripMenuItem
+            // 
+            this.profitabilityToolStripMenuItem.Name = "profitabilityToolStripMenuItem";
+            this.profitabilityToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.profitabilityToolStripMenuItem.Text = "Profitability";
+            this.profitabilityToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,6 +271,7 @@
         private System.Windows.Forms.ToolStripMenuItem bMColorCodedWithPriceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emulationModeControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem profitabilityToolStripMenuItem;
     }
 }
 
