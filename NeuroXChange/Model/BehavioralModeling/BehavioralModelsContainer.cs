@@ -4,6 +4,7 @@ using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BehavioralModeling.Transitions;
 using NeuroXChange.Model.BioData;
+using NeuroXChange.Model.FixApi;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -234,6 +235,8 @@ namespace NeuroXChange.Model.BehavioralModeling
 
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
                 model.transitions.Add(confirmationFilledToInitialStateTransition);
+
+                model.lastPrice = lastPrice;
             }
 
 
@@ -267,6 +270,12 @@ namespace NeuroXChange.Model.BehavioralModeling
             {
                 model.OnNext(data);
             }
+        }
+
+        private TickPrice lastPrice = new TickPrice();
+        public void OnNext(TickPrice price)
+        {
+            lastPrice.UpdateFrom(price);
         }
 
         // update statistics for specific model

@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.Transitions;
+using NeuroXChange.Model.FixApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,8 @@ namespace NeuroXChange.Model
         public int lastNot74SubProtocolID { get; set; }
 
         public LinkedList<TransitionHistoryItem> TransitionHistory { get; private set; }
+
+        public TickPrice lastPrice { get; set; }
 
         public SimpleBehavioralModel()
         {

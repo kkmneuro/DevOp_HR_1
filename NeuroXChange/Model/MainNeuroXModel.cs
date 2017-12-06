@@ -12,7 +12,7 @@ using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 
 namespace NeuroXChange.Model
 {
-    public class MainNeuroXModel : IBioDataObserver
+    public class MainNeuroXModel : IBioDataObserver, IFixApiObserver
     {
         private string settingsFileName = "NeuroXChangeSettings.ini";
 
@@ -174,6 +174,17 @@ namespace NeuroXChange.Model
             }
         }
 
+        // ---- IFixApiObserver implementation
+        public void OnNext(FixApiModelEvent modelEvent, object data)
+        {
+            if (modelEvent != FixApiModelEvent.PriceChanged)
+            {
+                return;
+            }
+
+            behavioralModelsContainer.OnNext((TickPrice)data);
+        }
+
         // ---- Observable pattern implementation
         public void RegisterObserver(IMainNeuroXModelObserver observer)
         {
@@ -192,5 +203,6 @@ namespace NeuroXChange.Model
             foreach (var observer in observers)
                 observer.OnNext(modelEvent, data);
         }
+
     }
 }

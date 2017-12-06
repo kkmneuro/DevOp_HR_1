@@ -176,7 +176,7 @@ namespace NeuroXChange.View
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
+                            directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
@@ -184,7 +184,7 @@ namespace NeuroXChange.View
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], direction == 0 ? lastPrice.buy : lastPrice.sell);
+                            directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
@@ -523,13 +523,13 @@ namespace NeuroXChange.View
             mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + price.buy;
-                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + price.sell;
+                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + price.buyString;
+                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + price.sellString;
                                    lastPrice = price;
 
-                                   if (price.buy.Length > 0)
+                                   if (price.buyString.Length > 0)
                                    {
-                                       var value = StringHelpers.ParseDoubleCultureIndependent(price.buy);
+                                       var value = StringHelpers.ParseDoubleCultureIndependent(price.buyString);
                                        if (value < bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum)
                                        {
                                            bMColorCodedWithPriceWindow.chart.ChartAreas[0].AxisY2.Minimum = value;

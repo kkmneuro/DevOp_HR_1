@@ -24,10 +24,7 @@ namespace NeuroXChange.Model.FixApi
             if ((bioData.payload != null) && (bioData.payload is string[]))
             {
                 var payload = (string[])bioData.payload;
-                var tickPrice = new TickPrice();
-                tickPrice.buy = payload[0];
-                tickPrice.sell = payload[1];
-                tickPrice.time = bioData.time;
+                var tickPrice = new TickPrice(payload[0], payload[1], bioData.time);
                 NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);
             }
         }
