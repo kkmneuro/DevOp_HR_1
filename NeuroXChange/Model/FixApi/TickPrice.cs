@@ -3,13 +3,17 @@ using System;
 
 namespace NeuroXChange.Model.FixApi
 {
-    public struct TickPrice
+    public class TickPrice
     {
         public string buyString;
         public string sellString;
         public double buy;
         public double sell;
         public DateTime time;
+
+        public TickPrice() : this("", "", DateTime.Now)
+        {
+        }
 
         public TickPrice(string buyString, string sellString, DateTime time)
         {

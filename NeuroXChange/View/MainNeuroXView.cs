@@ -85,7 +85,7 @@ namespace NeuroXChange.View
             emulationModeControlWindow.Owner = mainWindow;
             emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("TickInterval", "EmulationOnHistory"));
 
-            profitabilityWindow = new ProfitabilityWindow();
+            profitabilityWindow = new ProfitabilityWindow(model);
             profitabilityWindow.Owner = mainWindow;
 
             logoWindow = new LogoWindow();
@@ -274,6 +274,8 @@ namespace NeuroXChange.View
 
             mainWindow.BeginInvoke(
                 (Action)(() =>
+                {
+                try
                 {
                     // update biodata information
                     StringBuilder builder = new StringBuilder();
@@ -492,6 +494,8 @@ namespace NeuroXChange.View
                         //int pointCount = bMColorCodedWithPriceWindow.chart.Series.Select(s => s.Points.Count).Sum();
                         //bMColorCodedWithPriceWindow.Text = pointCount.ToString();
                     }
+                }
+                catch { }
                 }));
         }
 

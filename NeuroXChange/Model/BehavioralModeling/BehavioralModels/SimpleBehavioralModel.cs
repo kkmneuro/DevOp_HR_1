@@ -39,13 +39,31 @@ namespace NeuroXChange.Model
 
         public TickPrice lastPrice { get; set; }
 
+        public DataTable ProfitabilityHistory;
+
         public SimpleBehavioralModel()
         {
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
             TransitionHistory = new LinkedList<TransitionHistoryItem>();
+
+            ProfitabilityHistory = new DataTable("Profitability History");
+            ProfitabilityHistory.Columns.Add("Time", typeof(string));
+            ProfitabilityHistory.Columns.Add("Order", typeof(string));
+            ProfitabilityHistory.Columns.Add("Price", typeof(string));
+            ProfitabilityHistory.Columns.Add("Value", typeof(string));
+            ProfitabilityHistory.Columns.Add("Lot size", typeof(string));
+            ProfitabilityHistory.Columns.Add("Balance", typeof(string));
+            ProfitabilityHistory.Columns.Add("Profitability", typeof(string));
         }
+
+        // profitability calculation variables
+        private int LotSize = 100000;
+        private double LastPrice = 0.0;
+        private int LastValue = 0;
+        private int TotalValue = 0;
+        private double CurrentBalance = 0;
 
         public virtual void OnNext(BioData.BioData data)
         {
@@ -85,6 +103,60 @@ namespace NeuroXChange.Model
                 {
                     TradesTotal++;
                     TradesToday++;
+
+                    var row = ProfitabilityHistory.NewRow();
+                    row["Time"] = data.time.ToString();
+                    row["Order"] = OrderDirection == 0 ? "Buy" : "Sell";
+                    row["Price"] = OrderDirection == 0 ? lastPrice.buyString : lastPrice.sellString;
+                    var CurrentPrice = OrderDirection == 0 ? lastPrice.buy : lastPrice.sell;
+                    if (LastValue == 0)
+                    {
+                        CurrentBalance = 0;
+                        LastValue = OrderDirection == 0 ? 1 : -1;
+                        TotalValue = LastValue;
+                    } else
+                    {
+                        if (LastValue > 0 && OrderDirection == 0)
+                        {
+                            CurrentBalance += (CurrentPrice - LastPrice) * TotalValue * LotSize;
+                            LastValue = 1;
+                            TotalValue++;
+                        }
+                        else if (LastValue < 0 && OrderDirection == 1)
+                        {
+                            CurrentBalance += (LastPrice - CurrentPrice) * TotalValue * LotSize;
+                            LastValue = -1;
+                            TotalValue--;
+                        }
+                        else
+                        {
+                            if (LastValue > 0)
+                            {
+                                CurrentBalance += (CurrentPrice - LastPrice) * TotalValue * LotSize;
+                            }
+                            else if (LastValue < 0)
+                            {
+                                CurrentBalance += (LastPrice - CurrentPrice) * TotalValue * LotSize;
+                            }
+                            LastValue = -TotalValue;
+                            TotalValue = 0;
+                        }
+                    }
+                    LastPrice = CurrentPrice;
+                    row["Value"] = LastValue.ToString();
+                    row["Lot size"] = LotSize.ToString();
+                    row["Balance"] = CurrentBalance.ToString("0.##");
+                    Profitability += CurrentBalance;
+                    row["Profitability"] = Profitability.ToString("0.##");
+                    ProfitabilityHistory.Rows.Add(row);
+                    ProfitabilityHistory.AcceptChanges();
+
+                    if (TotalValue == 0)
+                    {
+                        CurrentBalance = 0;
+                    }
+
+                    DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
                 }
                 UpdateStatistics();
 
@@ -112,7 +184,7 @@ namespace NeuroXChange.Model
             }
             DataRowInBehavioralModelsWindow["All trades"] = TradesTotal;
             DataRowInBehavioralModelsWindow["Trades today"] = TradesToday;
-            DataRowInBehavioralModelsWindow["Profitability"] = Profitability;
+            DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
         }
     }
 }

@@ -81,6 +81,7 @@ namespace NeuroXChange.Model
                     fixApiModel = new EmulationOnHistoryFixApiModel();
                 }
                 bioDataProvider.RegisterObserver(fixApiModel);
+                fixApiModel.RegisterObserver(this);
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
