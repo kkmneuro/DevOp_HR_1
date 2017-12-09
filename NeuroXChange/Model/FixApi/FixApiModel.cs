@@ -44,14 +44,8 @@ namespace NeuroXChange.Model.FixApi
         private string priceAtBioDataTickTableName;
         private OleDbConnection conn = null;
 
-        struct PriceEntry
-        {
-            public DateTime timestamp;
-            public string sellPrice;
-            public string buyPrice;
-        }
-        private PriceEntry? priceDataBottom = null;
-        private Queue<PriceEntry> priceData = null;
+        private TickPrice priceDataBottom = null;
+        private Queue<TickPrice> priceData = null;
 
         public FixApiModel(IniFileReader iniFileReader)
         {
@@ -130,7 +124,7 @@ namespace NeuroXChange.Model.FixApi
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
-                priceData = new Queue<PriceEntry>();
+                priceData = new Queue<TickPrice>();
             }
 
             threadReader = new Thread(GenerateNewData);
@@ -192,13 +186,13 @@ namespace NeuroXChange.Model.FixApi
                 {
                     var commandStr = string.Format(
 "INSERT INTO {0} ([Instrument_ID], [Time], [SellPrice], [BuyPrice]) values({1}, '{2}', {3}, {4});",
-tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
+tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
                     var cmd = new OleDbCommand(commandStr, conn);
                     cmd.ExecuteNonQueryAsync();
                 }
                 if (savePriceAtBioDataTick)
                 {
-                    priceData.Enqueue(new PriceEntry { timestamp = DateTime.Now, sellPrice = prices[0], buyPrice = prices[1] });
+                    priceData.Enqueue(tickPrice);
                     if (priceData.Count > 1000)
                     {
                         priceDataBottom = priceData.Dequeue();
@@ -262,32 +256,32 @@ tickPriceTableName, 1, DateTime.Now, prices[0], prices[1]);
                 return;
             }
 
-            if (!priceDataBottom.HasValue && priceData.Count == 0)
+            if (priceDataBottom == null && priceData.Count == 0)
             {
                 return;
             }
-            if (!priceDataBottom.HasValue)
+            if (priceDataBottom == null)
             {
                 priceDataBottom = priceData.Dequeue();
             }
 
-            while (priceData.Count > 0 && priceData.Peek().timestamp < biodata.time)
+            while (priceData.Count > 0 && priceData.Peek().time < biodata.time)
             {
                 priceDataBottom = priceData.Dequeue();
             }
 
-            DateTime selectedDateTime = priceDataBottom.Value.timestamp;
+            DateTime selectedDateTime = priceDataBottom.time;
             if (priceData.Count == 0 && biodata.time - selectedDateTime > TimeSpan.FromMinutes(1))
             {
                 priceDataBottom = null;
                 return;
             }
 
-            if (priceDataBottom.HasValue && priceDataBottom.Value.timestamp < biodata.time)
+            if (priceDataBottom != null && priceDataBottom.time < biodata.time)
             {
                 var commandStr = string.Format(
                     "INSERT INTO {0} ([ID], [Instrument_ID], [SellPrice], [BuyPrice]) values({1}, {2}, {3}, {4});",
-                    priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.Value.sellPrice, priceDataBottom.Value.buyPrice);
+                    priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.sellString, priceDataBottom.buyString);
                 var cmd = new OleDbCommand(commandStr, conn);
                 cmd.ExecuteNonQuery();
             }

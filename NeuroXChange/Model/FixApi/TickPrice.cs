@@ -5,8 +5,8 @@ namespace NeuroXChange.Model.FixApi
 {
     public class TickPrice
     {
-        public string buyString;
         public string sellString;
+        public string buyString;
         public double buy;
         public double sell;
         public DateTime time;
@@ -15,20 +15,11 @@ namespace NeuroXChange.Model.FixApi
         {
         }
 
-        public TickPrice(string buyString, string sellString, DateTime time)
+        public TickPrice(string sellString, string buyString, DateTime time)
         {
-            this.buyString = buyString;
             this.sellString = sellString;
+            this.buyString = buyString;
             this.time = time;
-
-            if (!string.IsNullOrEmpty(buyString))
-            {
-                this.buy = StringHelpers.ParseDoubleCultureIndependent(buyString);
-            }
-            else
-            {
-                this.buy = double.NaN;
-            }
 
             if (!string.IsNullOrEmpty(sellString))
             {
@@ -37,6 +28,15 @@ namespace NeuroXChange.Model.FixApi
             else
             {
                 this.sell = double.NaN;
+            }
+
+            if (!string.IsNullOrEmpty(buyString))
+            {
+                this.buy = StringHelpers.ParseDoubleCultureIndependent(buyString);
+            }
+            else
+            {
+                this.buy = double.NaN;
             }
         }
 
