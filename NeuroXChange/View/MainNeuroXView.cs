@@ -527,8 +527,8 @@ namespace NeuroXChange.View
             mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   newOrderWindow.btnBuy.Text = "BUY\n\r    " + price.buyString;
-                                   newOrderWindow.btnSell.Text = "          SELL\n\r   " + price.sellString;
+                                   newOrderWindow.btnSell.Text = "SELL\n\r    " + price.sellString;
+                                   newOrderWindow.btnBuy.Text = "            BUY\n\r    " + price.buyString;
                                    lastPrice = price;
 
                                    if (price.buyString.Length > 0)

@@ -39,7 +39,7 @@
             this.btnBuy.Enabled = false;
             this.btnBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBuy.ForeColor = System.Drawing.Color.White;
-            this.btnBuy.Location = new System.Drawing.Point(12, 38);
+            this.btnBuy.Location = new System.Drawing.Point(135, 38);
             this.btnBuy.Name = "btnBuy";
             this.btnBuy.Size = new System.Drawing.Size(111, 56);
             this.btnBuy.TabIndex = 0;
@@ -53,9 +53,9 @@
             this.btnSell.Enabled = false;
             this.btnSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSell.ForeColor = System.Drawing.Color.White;
-            this.btnSell.Location = new System.Drawing.Point(139, 38);
+            this.btnSell.Location = new System.Drawing.Point(12, 38);
             this.btnSell.Name = "btnSell";
-            this.btnSell.Size = new System.Drawing.Size(107, 56);
+            this.btnSell.Size = new System.Drawing.Size(111, 56);
             this.btnSell.TabIndex = 1;
             this.btnSell.Text = "          SELL\r\n   1.23455";
             this.btnSell.TextAlign = System.Drawing.ContentAlignment.TopLeft;

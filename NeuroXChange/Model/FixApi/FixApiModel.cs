@@ -45,6 +45,7 @@ namespace NeuroXChange.Model.FixApi
         private OleDbConnection conn = null;
 
         private TickPrice priceDataBottom = null;
+        /// TODO: Remove this queue, do we realy nead it?
         private Queue<TickPrice> priceData = null;
 
         public FixApiModel(IniFileReader iniFileReader)
