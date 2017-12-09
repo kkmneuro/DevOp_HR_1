@@ -39,14 +39,5 @@ namespace NeuroXChange.Model.FixApi
                 this.buy = double.NaN;
             }
         }
-
-        public void UpdateFrom(TickPrice other)
-        {
-            buyString = other.buyString;
-            sellString = other.sellString;
-            buy = other.buy;
-            sell = other.sell;
-            time = other.time;
-        }
     }
 }

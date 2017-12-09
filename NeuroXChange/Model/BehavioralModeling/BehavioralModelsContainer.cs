@@ -51,6 +51,9 @@ namespace NeuroXChange.Model.BehavioralModeling
 
         public BehavioralModelsContainer(IniFileReader iniFileReader)
         {
+            // initialize order parameters
+            int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "Orders"));
+
             // initialize dataset to save statistics
             behavioralModelsDataSet = new DataSet("BehavioralModelsDataSet");
             behavioralModelsDataTableName = "BehavioralModels";
@@ -236,7 +239,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
                 model.transitions.Add(confirmationFilledToInitialStateTransition);
 
-                model.lastPrice = lastPrice;
+                model.LotSize = lotSize;
             }
 
 
@@ -275,7 +278,10 @@ namespace NeuroXChange.Model.BehavioralModeling
         private TickPrice lastPrice = new TickPrice();
         public void OnNext(TickPrice price)
         {
-            lastPrice.UpdateFrom(price);
+            foreach (var model in behavioralModels)
+            {
+                model.OnNext(price);
+            }
         }
 
         // update statistics for specific model

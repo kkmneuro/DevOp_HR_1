@@ -24,10 +24,17 @@ namespace NeuroXChange.Model
         // are we buying or selling
         public int OrderDirection { get; set; }  // 0 - buy, 1 - sell
 
-        // other statistics
+        // order variables
+        public int LotSize { get; set; }
+
+        // profitability calculation
         public int TradesToday { get; private set; }
         public int TradesTotal { get; private set; }
         public double Profitability { get; private set; }
+        public double OpenedOrderPrice { get; private set; }
+        public int LastValue { get; private set; }
+        public int TotalValue { get; private set; }
+        public double CurrentBalance { get; private set; }
 
         // some variables
         public int lq1OrderDirection { get; set; }
@@ -37,9 +44,10 @@ namespace NeuroXChange.Model
 
         public LinkedList<TransitionHistoryItem> TransitionHistory { get; private set; }
 
-        public TickPrice lastPrice { get; set; }
-
         public DataTable ProfitabilityHistory;
+
+        // private variables
+        private TickPrice LastPrice;
 
         public SimpleBehavioralModel()
         {
@@ -56,14 +64,12 @@ namespace NeuroXChange.Model
             ProfitabilityHistory.Columns.Add("Lot size", typeof(string));
             ProfitabilityHistory.Columns.Add("Balance", typeof(string));
             ProfitabilityHistory.Columns.Add("Profitability", typeof(string));
-        }
 
-        // profitability calculation variables
-        private int LotSize = 100000;
-        private double LastPrice = 0.0;
-        private int LastValue = 0;
-        private int TotalValue = 0;
-        private double CurrentBalance = 0;
+            OpenedOrderPrice = 0.0;
+            LastValue = 0;
+            TotalValue = 0;
+            CurrentBalance = 0.0;
+        }
 
         public virtual void OnNext(BioData.BioData data)
         {
@@ -104,49 +110,55 @@ namespace NeuroXChange.Model
                     TradesTotal++;
                     TradesToday++;
 
-                    var row = ProfitabilityHistory.NewRow();
-                    row["Time"] = data.time.ToString();
-                    row["Order"] = OrderDirection == 0 ? "Buy" : "Sell";
-                    row["Price"] = OrderDirection == 0 ? lastPrice.buyString : lastPrice.sellString;
-                    var CurrentPrice = OrderDirection == 0 ? lastPrice.buy : lastPrice.sell;
+                    // profitability calculation
+                    var CurrentPrice = OrderDirection == 0 ? LastPrice.buy : LastPrice.sell;
+                    var CurrentDiff = 0.0;
                     if (LastValue == 0)
                     {
                         CurrentBalance = 0;
+                        TotalValue = 0;
                         LastValue = OrderDirection == 0 ? 1 : -1;
-                        TotalValue = LastValue;
                     } else
                     {
                         if (LastValue > 0 && OrderDirection == 0)
                         {
-                            CurrentBalance += (CurrentPrice - LastPrice) * TotalValue * LotSize;
+                            CurrentDiff = (CurrentPrice - OpenedOrderPrice) * TotalValue * LotSize;
+                            CurrentBalance += CurrentDiff;
                             LastValue = 1;
-                            TotalValue++;
                         }
                         else if (LastValue < 0 && OrderDirection == 1)
                         {
-                            CurrentBalance += (LastPrice - CurrentPrice) * TotalValue * LotSize;
+                            CurrentDiff = (OpenedOrderPrice - CurrentPrice) * TotalValue * LotSize;
+                            CurrentBalance += CurrentDiff;
                             LastValue = -1;
-                            TotalValue--;
                         }
                         else
                         {
                             if (LastValue > 0)
                             {
-                                CurrentBalance += (CurrentPrice - LastPrice) * TotalValue * LotSize;
+                                CurrentDiff = (CurrentPrice - OpenedOrderPrice) * TotalValue * LotSize;
+                                CurrentBalance += CurrentDiff;
                             }
                             else if (LastValue < 0)
                             {
-                                CurrentBalance += (LastPrice - CurrentPrice) * TotalValue * LotSize;
+                                CurrentDiff = (OpenedOrderPrice - CurrentPrice) * TotalValue * LotSize;
+                                CurrentBalance += CurrentDiff;
                             }
                             LastValue = -TotalValue;
-                            TotalValue = 0;
                         }
                     }
-                    LastPrice = CurrentPrice;
+                    TotalValue += LastValue;
+                    OpenedOrderPrice = CurrentPrice;
+                    Profitability += CurrentDiff;
+
+                    // add trade to trades history
+                    var row = ProfitabilityHistory.NewRow();
+                    row["Time"] = data.time.ToString();
+                    row["Order"] = OrderDirection == 0 ? "Buy" : "Sell";
+                    row["Price"] = OrderDirection == 0 ? LastPrice.buyString : LastPrice.sellString;
                     row["Value"] = LastValue.ToString();
                     row["Lot size"] = LotSize.ToString();
                     row["Balance"] = CurrentBalance.ToString("0.##");
-                    Profitability += CurrentBalance;
                     row["Profitability"] = Profitability.ToString("0.##");
                     ProfitabilityHistory.Rows.Add(row);
                     ProfitabilityHistory.AcceptChanges();
@@ -158,6 +170,7 @@ namespace NeuroXChange.Model
 
                     DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
                 }
+
                 UpdateStatistics();
 
                 var inst = new TransitionHistoryItem();
@@ -168,6 +181,11 @@ namespace NeuroXChange.Model
                 inst.Transition = executedTransition.ToString();
                 TransitionHistory.AddLast(inst);
             }
+        }
+
+        public virtual void OnNext(TickPrice price)
+        {
+            LastPrice = price;
         }
 
         public virtual void UpdateStatistics()
