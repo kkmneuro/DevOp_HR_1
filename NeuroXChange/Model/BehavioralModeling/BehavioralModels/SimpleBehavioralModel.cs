@@ -26,6 +26,9 @@ namespace NeuroXChange.Model
 
         // order variables
         public int LotSize { get; set; }
+        public int StopLossPips { get; set; }
+        public int TakeProfitPips { get; set; }
+        public double PipSize { get; set; }
 
         // profitability calculation
         public int TradesToday { get; private set; }
@@ -113,42 +116,39 @@ namespace NeuroXChange.Model
                     // profitability calculation
                     var CurrentPrice = OrderDirection == 0 ? LastPrice.buy : LastPrice.sell;
                     var CurrentDiff = 0.0;
-                    if (LastValue == 0)
+                    if (TotalValue == 0)
                     {
                         CurrentBalance = 0;
                         TotalValue = 0;
                         LastValue = OrderDirection == 0 ? 1 : -1;
                     } else
                     {
-                        if (LastValue > 0 && OrderDirection == 0)
+                        if (TotalValue > 0 && OrderDirection == 0)
                         {
                             CurrentDiff = (CurrentPrice - OpenedOrderPrice) * TotalValue * LotSize;
-                            CurrentBalance += CurrentDiff;
                             LastValue = 1;
                         }
-                        else if (LastValue < 0 && OrderDirection == 1)
+                        else if (TotalValue < 0 && OrderDirection == 1)
                         {
                             CurrentDiff = (OpenedOrderPrice - CurrentPrice) * TotalValue * LotSize;
-                            CurrentBalance += CurrentDiff;
                             LastValue = -1;
                         }
                         else
                         {
-                            if (LastValue > 0)
+                            if (TotalValue > 0)
                             {
                                 CurrentDiff = (CurrentPrice - OpenedOrderPrice) * TotalValue * LotSize;
-                                CurrentBalance += CurrentDiff;
                             }
-                            else if (LastValue < 0)
+                            else if (TotalValue < 0)
                             {
                                 CurrentDiff = (OpenedOrderPrice - CurrentPrice) * TotalValue * LotSize;
-                                CurrentBalance += CurrentDiff;
                             }
                             LastValue = -TotalValue;
                         }
                     }
                     TotalValue += LastValue;
                     OpenedOrderPrice = CurrentPrice;
+                    CurrentBalance += CurrentDiff;
                     Profitability += CurrentDiff;
 
                     // add trade to trades history
@@ -186,6 +186,60 @@ namespace NeuroXChange.Model
         public virtual void OnNext(TickPrice price)
         {
             LastPrice = price;
+
+            if (TotalValue == 0)
+            {
+                return;
+            }
+
+            int closeDirection;
+            double CurrentPrice;
+            double priceDiff;
+            if (TotalValue > 0)
+            {
+                closeDirection = 1;
+                CurrentPrice = LastPrice.sell;
+                priceDiff = CurrentPrice - OpenedOrderPrice;
+            }
+            else
+            {
+                closeDirection = 0;
+                CurrentPrice = LastPrice.buy;
+                priceDiff = OpenedOrderPrice - CurrentPrice;
+            }
+
+            int pipDifference = (int)(priceDiff / PipSize);
+
+            if (pipDifference > -StopLossPips && pipDifference < TakeProfitPips)
+            {
+                return;
+            }
+
+            var CurrentDiff = priceDiff * TotalValue * LotSize;
+
+            // closing open orders
+            LastValue = -TotalValue;
+            TotalValue += LastValue;
+            OpenedOrderPrice = CurrentPrice;
+            CurrentBalance += CurrentDiff;
+            Profitability += CurrentDiff;
+
+            // add trade to trades history
+            var row = ProfitabilityHistory.NewRow();
+            row["Time"] = price.time.ToString();
+            row["Order"] = closeDirection == 0 ? "Buy" : "Sell";
+            row["Price"] = closeDirection == 0 ? LastPrice.buyString : LastPrice.sellString;
+            row["Value"] = LastValue.ToString();
+            row["Lot size"] = LotSize.ToString();
+            row["Balance"] = CurrentBalance.ToString("0.##");
+            row["Profitability"] = Profitability.ToString("0.##");
+            ProfitabilityHistory.Rows.Add(row);
+            ProfitabilityHistory.AcceptChanges();
+
+            if (TotalValue == 0)
+            {
+                CurrentBalance = 0;
+            }
         }
 
         public virtual void UpdateStatistics()
