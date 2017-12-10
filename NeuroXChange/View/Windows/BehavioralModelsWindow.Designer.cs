@@ -56,9 +56,9 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(305, 108);
             this.Controls.Add(this.dataGridView);
+            this.HideOnClose = true;
             this.Name = "BehavioralModelsWindow";
             this.Text = "Behavioral models";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BehavioralModelsWindow_FormClosing);
             this.Load += new System.EventHandler(this.BehavioralModelsWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);

@@ -45,6 +45,7 @@
             this.breathPacerControl.Name = "breathPacerControl";
             this.breathPacerControl.Size = new System.Drawing.Size(281, 133);
             this.breathPacerControl.TabIndex = 0;
+            this.breathPacerControl.TestMode = false;
             // 
             // BreathPacerWindow
             // 
@@ -54,9 +55,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(281, 133);
             this.Controls.Add(this.breathPacerControl);
+            this.HideOnClose = true;
             this.Name = "BreathPacerWindow";
             this.Text = "Breath pacer";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BreathPacerWindow_FormClosing);
             this.ResumeLayout(false);
 
         }

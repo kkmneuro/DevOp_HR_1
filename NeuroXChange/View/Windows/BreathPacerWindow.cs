@@ -17,14 +17,5 @@ namespace NeuroXChange.View
             InitializeComponent();
             breathPacerControl.Start();
         }
-
-        private void BreathPacerWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
-        }
     }
 }

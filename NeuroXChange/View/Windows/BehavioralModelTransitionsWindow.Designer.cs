@@ -222,9 +222,9 @@
             this.Controls.Add(this.behavioralModelTransitionsDGV);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.panel1);
+            this.HideOnClose = true;
             this.Name = "BehavioralModelTransitionsWindow";
             this.Text = "BehavioralModelTransitionsWindow";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BehavioralModelTransitionsWindow_FormClosing);
             this.Load += new System.EventHandler(this.BehavioralModelTransitionsWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

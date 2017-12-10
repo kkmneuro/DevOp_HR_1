@@ -179,9 +179,9 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(207, 166);
             this.Controls.Add(this.peakPerformanceGauge);
+            this.HideOnClose = true;
             this.Name = "IndicatorsWindow";
             this.Text = "Indicators";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndicatorsWindow_FormClosing);
             this.ResumeLayout(false);
 
         }

@@ -266,9 +266,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 438);
             this.Controls.Add(this.splitContainer1);
+            this.HideOnClose = true;
             this.Name = "BMColorCodedWithPriceWindow";
             this.Text = "Behavioral models with price";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMColorCodedWithPriceWindow_FormClosing);
             this.Load += new System.EventHandler(this.BMColorCodedWithPriceWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);

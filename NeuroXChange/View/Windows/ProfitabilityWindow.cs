@@ -25,15 +25,6 @@ namespace NeuroXChange.View
             profitabilityDGV.AutoGenerateColumns = true;
         }
 
-        private void ProfitabilityWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
-        }
-
         private void modelCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedIndex = modelCB.SelectedIndex;

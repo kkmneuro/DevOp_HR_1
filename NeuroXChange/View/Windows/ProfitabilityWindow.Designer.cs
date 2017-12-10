@@ -109,9 +109,9 @@
             this.ClientSize = new System.Drawing.Size(352, 262);
             this.Controls.Add(this.profitabilityDGV);
             this.Controls.Add(this.panel1);
+            this.HideOnClose = true;
             this.Name = "ProfitabilityWindow";
             this.Text = "Profitability";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProfitabilityWindow_FormClosing);
             this.Load += new System.EventHandler(this.ProfitabilityWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

@@ -17,15 +17,6 @@ namespace NeuroXChange.View
             InitializeComponent();
         }
 
-        private void IndicatorsWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
-        }
-
         private void peakPerformanceGauge_Resize(object sender, EventArgs e)
         {
             var center = peakPerformanceGauge.Center;

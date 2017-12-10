@@ -24,15 +24,6 @@ namespace NeuroXChange.View
             InitializeComponent();
         }
 
-        private void EmulationModeControlWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
-        }
-
         private void startButton_Click(object sender, EventArgs e)
         {
             controller.StartEmulation();

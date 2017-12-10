@@ -124,7 +124,6 @@
             this.heartRateChart.Size = new System.Drawing.Size(598, 337);
             this.heartRateChart.TabIndex = 5;
             this.heartRateChart.Text = "chart1";
-            this.heartRateChart.Click += new System.EventHandler(this.heartRateChart_Click);
             this.heartRateChart.MouseLeave += new System.EventHandler(this.heartRateChart_MouseLeave);
             this.heartRateChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.heartRateChart_MouseMove);
             // 
@@ -150,11 +149,11 @@
             this.ClientSize = new System.Drawing.Size(598, 359);
             this.Controls.Add(this.heartRateChart);
             this.Controls.Add(this.statusStrip);
+            this.HideOnClose = true;
             this.MinimizeBox = false;
             this.Name = "ChartsWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Charts";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChartsWindow_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.ChartsWindow_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.heartRateChart)).EndInit();
             this.statusStrip.ResumeLayout(false);

@@ -108,10 +108,10 @@
             this.ClientSize = new System.Drawing.Size(293, 346);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HideOnClose = true;
             this.MaximizeBox = false;
             this.Name = "RawInformationWindow";
             this.Text = "Raw information";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RawInformationWindow_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

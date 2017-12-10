@@ -23,11 +23,6 @@ namespace NeuroXChange.View
 
         private void BehavioralModelsWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
         }
 
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

@@ -17,15 +17,6 @@ namespace NeuroXChange.View
             InitializeComponent();
         }
 
-        private void ChartsWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Hide();
-                e.Cancel = true;
-            }
-        }
-
         private void heartRateChart_MouseMove(object sender, MouseEventArgs e)
         {
             var pos = e.Location;
@@ -58,11 +49,6 @@ namespace NeuroXChange.View
             {
                 heartRateChart.Series.SuspendUpdates();
             }
-        }
-
-        private void heartRateChart_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

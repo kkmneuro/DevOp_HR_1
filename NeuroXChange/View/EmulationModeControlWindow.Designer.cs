@@ -129,10 +129,10 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.progressBar);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HideOnClose = true;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "EmulationModeControlWindow";
             this.Text = "Emulation mode control";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EmulationModeControlWindow_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tickSizeUpDown)).EndInit();
             this.ResumeLayout(false);

@@ -80,13 +80,13 @@
             this.Controls.Add(this.btnSell);
             this.Controls.Add(this.btnBuy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.HideOnClose = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewOrderWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New order";
             this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuySellWindow_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
