@@ -13,6 +13,7 @@ using System.Threading;
 using WeifenLuo.WinFormsUI.Docking;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Common;
+using NeuroXChange.View.Training;
 
 namespace NeuroXChange.View
 {
@@ -25,6 +26,9 @@ namespace NeuroXChange.View
         // main application window
         public MainWindow mainWindow { get; private set; }
         public bool allWindowsOnTop { get; private set; }
+
+        // training windows
+        public CompDayWindow compDayWindow { get; private set; }
 
         // working application windows
         public RawInformationWindow rawInformationWindow { get; private set; }
@@ -54,6 +58,11 @@ namespace NeuroXChange.View
             mainWindow = new MainWindow(this, model.iniFileReader);
             mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistoryMode ? "emulation on history" : "real-time");
 
+            // training windows creation
+            compDayWindow = new CompDayWindow();
+            compDayWindow.Owner = mainWindow;
+
+            // application windows creation
             rawInformationWindow = new RawInformationWindow();
             rawInformationWindow.Owner = mainWindow;
 

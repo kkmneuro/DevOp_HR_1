@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Common;
 using NeuroXChange.View;
+using NeuroXChange.View.Training;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,6 +53,8 @@ namespace NeuroXChange
                 return mainNeuroXView.emulationModeControlWindow;
             else if (persistString == typeof(ProfitabilityWindow).ToString())
                 return mainNeuroXView.profitabilityWindow;
+            else if (persistString == typeof(CompDayWindow).ToString())
+                return mainNeuroXView.compDayWindow;
             return null;
         }
 
@@ -83,6 +86,8 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.emulationModeControlWindow;
             else if (sender == profitabilityToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.profitabilityWindow;
+            else if (sender == compDayToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.compDayWindow;
 
             dockContentWindow.Show();
             if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
@@ -134,6 +139,7 @@ namespace NeuroXChange
             mainNeuroXView.bMColorCodedWithPriceWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.emulationModeControlWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.profitabilityWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.compDayWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
@@ -148,6 +154,7 @@ namespace NeuroXChange
             mainNeuroXView.bMColorCodedWithPriceWindow.DockPanel = dockPanel;
             mainNeuroXView.emulationModeControlWindow.DockPanel = dockPanel;
             mainNeuroXView.profitabilityWindow.DockPanel = dockPanel;
+            mainNeuroXView.compDayWindow.DockPanel = dockPanel;
         }
     }
 }

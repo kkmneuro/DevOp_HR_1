@@ -134,6 +134,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\AGauge\AGauge.Designer.cs" />
+    <Compile Include="View\Training\CompDayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Training\CompDayWindow.Designer.cs">
+      <DependentUpon>CompDayWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Windows\BehavioralModelsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\ControlPaintUtils.cs" />
+    <EmbeddedResource Include="View\Training\CompDayWindow.resx">
+      <DependentUpon>CompDayWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Windows\BehavioralModelsWindow.resx">
       <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
     </EmbeddedResource>
