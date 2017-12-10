@@ -134,28 +134,28 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\AGauge\AGauge.Designer.cs" />
-    <Compile Include="View\BehavioralModelsWindow.cs">
+    <Compile Include="View\Windows\BehavioralModelsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\BehavioralModelsWindow.Designer.cs">
+    <Compile Include="View\Windows\BehavioralModelsWindow.Designer.cs">
       <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\BehavioralModelTransitionsWindow.cs">
+    <Compile Include="View\Windows\BehavioralModelTransitionsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\BehavioralModelTransitionsWindow.Designer.cs">
+    <Compile Include="View\Windows\BehavioralModelTransitionsWindow.Designer.cs">
       <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\BMColorCodedWithPriceWindow.cs">
+    <Compile Include="View\Windows\BMColorCodedWithPriceWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\BMColorCodedWithPriceWindow.Designer.cs">
+    <Compile Include="View\Windows\BMColorCodedWithPriceWindow.Designer.cs">
       <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\BreathPacerWindow.cs">
+    <Compile Include="View\Windows\BreathPacerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\BreathPacerWindow.Designer.cs">
+    <Compile Include="View\Windows\BreathPacerWindow.Designer.cs">
       <DependentUpon>BreathPacerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BreathPacer\BreathPacerControl.cs">
@@ -171,22 +171,22 @@
     <Compile Include="View\EmulationModeControlWindow.Designer.cs">
       <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\IndicatorsWindow.cs">
+    <Compile Include="View\Windows\IndicatorsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\IndicatorsWindow.Designer.cs">
+    <Compile Include="View\Windows\IndicatorsWindow.Designer.cs">
       <DependentUpon>IndicatorsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\NewOrderWindow.cs">
+    <Compile Include="View\Windows\NewOrderWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\NewOrderWindow.Designer.cs">
+    <Compile Include="View\Windows\NewOrderWindow.Designer.cs">
       <DependentUpon>NewOrderWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ChartsWindow.cs">
+    <Compile Include="View\Windows\ChartsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\ChartsWindow.Designer.cs">
+    <Compile Include="View\Windows\ChartsWindow.Designer.cs">
       <DependentUpon>ChartsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\CustomDialogWindow.cs">
@@ -213,29 +213,29 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\BioData\BioData.cs" />
-    <Compile Include="View\ProfitabilityWindow.cs">
+    <Compile Include="View\Windows\ProfitabilityWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\ProfitabilityWindow.Designer.cs">
+    <Compile Include="View\Windows\ProfitabilityWindow.Designer.cs">
       <DependentUpon>ProfitabilityWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\RawInformationWindow.cs">
+    <Compile Include="View\Windows\RawInformationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\RawInformationWindow.Designer.cs">
+    <Compile Include="View\Windows\RawInformationWindow.Designer.cs">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\ControlPaintUtils.cs" />
-    <EmbeddedResource Include="View\BehavioralModelsWindow.resx">
+    <EmbeddedResource Include="View\Windows\BehavioralModelsWindow.resx">
       <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\BehavioralModelTransitionsWindow.resx">
+    <EmbeddedResource Include="View\Windows\BehavioralModelTransitionsWindow.resx">
       <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\BMColorCodedWithPriceWindow.resx">
+    <EmbeddedResource Include="View\Windows\BMColorCodedWithPriceWindow.resx">
       <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\BreathPacerWindow.resx">
+    <EmbeddedResource Include="View\Windows\BreathPacerWindow.resx">
       <DependentUpon>BreathPacerWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BreathPacer\BreathPacerControl.resx">
@@ -244,13 +244,13 @@
     <EmbeddedResource Include="View\EmulationModeControlWindow.resx">
       <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\IndicatorsWindow.resx">
+    <EmbeddedResource Include="View\Windows\IndicatorsWindow.resx">
       <DependentUpon>IndicatorsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\NewOrderWindow.resx">
+    <EmbeddedResource Include="View\Windows\NewOrderWindow.resx">
       <DependentUpon>NewOrderWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\ChartsWindow.resx">
+    <EmbeddedResource Include="View\Windows\ChartsWindow.resx">
       <DependentUpon>ChartsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\CustomDialogWindow.resx">
@@ -272,10 +272,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="View\ProfitabilityWindow.resx">
+    <EmbeddedResource Include="View\Windows\ProfitabilityWindow.resx">
       <DependentUpon>ProfitabilityWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\RawInformationWindow.resx">
+    <EmbeddedResource Include="View\Windows\RawInformationWindow.resx">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="NeuroXChangeSettings.ini" />
