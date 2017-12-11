@@ -32,6 +32,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulationModeControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breathPacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indicatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,9 +51,7 @@
             this.modeNameSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
-            this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +91,21 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // trainingToolStripMenuItem
+            // 
+            this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.compDayToolStripMenuItem});
+            this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
+            this.trainingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.trainingToolStripMenuItem.Text = "Training";
+            // 
+            // compDayToolStripMenuItem
+            // 
+            this.compDayToolStripMenuItem.Name = "compDayToolStripMenuItem";
+            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.compDayToolStripMenuItem.Text = "Comp day";
+            this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // windowsToolStripMenuItem
             // 
@@ -220,29 +235,14 @@
             // dockPanel
             // 
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
+            this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(57)))), ((int)(((byte)(85)))));
             this.dockPanel.Location = new System.Drawing.Point(0, 24);
             this.dockPanel.Name = "dockPanel";
             this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel.ShowAutoHideContentOnHover = false;
             this.dockPanel.Size = new System.Drawing.Size(397, 296);
             this.dockPanel.TabIndex = 7;
-            this.dockPanel.Theme = this.vS2015LightTheme1;
-            // 
-            // trainingToolStripMenuItem
-            // 
-            this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.compDayToolStripMenuItem});
-            this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
-            this.trainingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.trainingToolStripMenuItem.Text = "Training";
-            // 
-            // compDayToolStripMenuItem
-            // 
-            this.compDayToolStripMenuItem.Name = "compDayToolStripMenuItem";
-            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.compDayToolStripMenuItem.Text = "Comp day";
-            this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
             // MainWindow
             // 
@@ -285,13 +285,13 @@
         private System.Windows.Forms.ToolStripMenuItem behavioralModelsToolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel behavioralModelSL;
         private System.Windows.Forms.ToolStripMenuItem behavioralModelTransitonsToolStripMenuItem;
-        private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
         private System.Windows.Forms.ToolStripMenuItem bMColorCodedWithPriceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emulationModeControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem profitabilityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compDayToolStripMenuItem;
+        private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
     }
 }
 

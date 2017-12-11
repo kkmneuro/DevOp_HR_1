@@ -326,9 +326,15 @@
   <ItemGroup>
     <None Include="Resources\NT_Logo.jpg" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\Training\CompDay.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)NeuroXChangeSettings.ini" "$(TargetDir)" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)NeuroXChangeSettings.ini" "$(TargetDir)" /Y /D
+mkdir "$(TargetDir)Data"
+xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /Y /D /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

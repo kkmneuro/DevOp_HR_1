@@ -59,7 +59,7 @@ namespace NeuroXChange.View
             mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistoryMode ? "emulation on history" : "real-time");
 
             // training windows creation
-            compDayWindow = new CompDayWindow();
+            compDayWindow = new CompDayWindow(model, this);
             compDayWindow.Owner = mainWindow;
 
             // application windows creation
@@ -93,6 +93,7 @@ namespace NeuroXChange.View
             emulationModeControlWindow = new EmulationModeControlWindow(model, controller);
             emulationModeControlWindow.Owner = mainWindow;
             emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("TickInterval", "EmulationOnHistory"));
+            emulationModeControlWindow.Enabled = model.emulationOnHistoryMode;
 
             profitabilityWindow = new ProfitabilityWindow(model);
             profitabilityWindow.Owner = mainWindow;
