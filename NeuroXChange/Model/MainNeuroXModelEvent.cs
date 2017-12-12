@@ -3,7 +3,7 @@
     public enum MainNeuroXModelEvent
     {
         ActiveModelChanged,
-        AvtiveModelStateChanged,
+        ActiveModelStateChanged,
 
         // inner model event
         LogicQueryDirection

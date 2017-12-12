@@ -210,7 +210,7 @@ namespace NeuroXChange.View
                 {
                     mainWindow.behavioralModelSL.Text = "Behavioral model: " + (model.behavioralModelsContainer.ActiveBehavioralModelIndex + 1);
                 }
-                else if (modelEvent == MainNeuroXModelEvent.AvtiveModelStateChanged)
+                else if (modelEvent == MainNeuroXModelEvent.ActiveModelStateChanged)
                 {
                     UpdateInterfaceFromModelState(model.getActiveBehavioralModel().CurrentTickState);
                 }

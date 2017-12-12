@@ -35,6 +35,8 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         private LinkedList<DateTime>[] higherHRElements;
         private LinkedList<DateTime>[] lowerHRElements;
 
+        private int previousSubProtocol;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -64,6 +66,14 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
             }
 
             isConditionMet = false;
+
+            // prevent firing conditions several times in a row
+            if (previousSubProtocol == data.sub_Protocol_ID &&
+                data.sub_Protocol_ID == subProtocolFire)
+            {
+                return;
+            }
+            previousSubProtocol = data.sub_Protocol_ID;
 
             if (subProtocolIdLeftBorder <= data.sub_Protocol_ID
                 && data.sub_Protocol_ID <= subProtocolIdRigtBorder)

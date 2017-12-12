@@ -9,6 +9,7 @@ using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.BehavioralModeling;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 
 namespace NeuroXChange.Model
 {
@@ -26,6 +27,10 @@ namespace NeuroXChange.Model
 
         // Behavioral Models
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
+
+        // Query condition only for showing popup message purpose
+        // TODO: need to move this to anoter place or to remove completely
+        private LogicQuery1Condition logicQuery1Condition;
 
         public SimpleBehavioralModel getActiveBehavioralModel()
         {
@@ -85,6 +90,7 @@ namespace NeuroXChange.Model
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
+                logicQuery1Condition = new LogicQuery1Condition(100, 60);
             }
             catch (Exception e)
             {
@@ -166,12 +172,19 @@ namespace NeuroXChange.Model
             var activeModel = getActiveBehavioralModel();
             if (activeModel.PreviousTickState != activeModel.CurrentTickState)
             {
-                NotifyObservers(MainNeuroXModelEvent.AvtiveModelStateChanged, null);
+                NotifyObservers(MainNeuroXModelEvent.ActiveModelStateChanged, null);
 
-                if (activeModel.CurrentTickState == BehavioralModelState.DirectionConfirmed)
-                {
-                    NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, getActiveBehavioralModel().lastNot74SubProtocolID);
-                }
+                // TODO: this is temporal code disabling. Need to understand do we need this functionality or not
+                //if (activeModel.CurrentTickState == BehavioralModelState.DirectionConfirmed)
+                //{
+                //    NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, getActiveBehavioralModel().lastNot74SubProtocolID);
+                //}
+            }
+
+            logicQuery1Condition.OnNext((BioData.BioData)data);
+            if (logicQuery1Condition.isConditionMet)
+            {
+                NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQuery1Condition.lastNot74SubProtocolID);
             }
         }
 
