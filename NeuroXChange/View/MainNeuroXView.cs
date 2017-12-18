@@ -59,7 +59,7 @@ namespace NeuroXChange.View
             mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistoryMode ? "emulation on history" : "real-time");
 
             // training windows creation
-            compDayWindow = new CompDayWindow(model, this);
+            compDayWindow = new CompDayWindow(controller, this);
             compDayWindow.Owner = mainWindow;
 
             // application windows creation

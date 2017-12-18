@@ -45,8 +45,6 @@ namespace NeuroXChange.Model.FixApi
         private OleDbConnection conn = null;
 
         private TickPrice priceDataBottom = null;
-        /// TODO: Remove this queue, do we realy nead it?
-        private Queue<TickPrice> priceData = null;
 
         public FixApiModel(IniFileReader iniFileReader)
         {
@@ -125,7 +123,6 @@ namespace NeuroXChange.Model.FixApi
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
-                priceData = new Queue<TickPrice>();
             }
 
             threadReader = new Thread(GenerateNewData);
@@ -193,11 +190,7 @@ tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
                 }
                 if (savePriceAtBioDataTick)
                 {
-                    priceData.Enqueue(tickPrice);
-                    if (priceData.Count > 1000)
-                    {
-                        priceDataBottom = priceData.Dequeue();
-                    }
+                    priceDataBottom = tickPrice;
                 }
             }
         }
@@ -257,35 +250,17 @@ tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
                 return;
             }
 
-            if (priceDataBottom == null && priceData.Count == 0)
+            // current biodata tick was not saved
+            if (biodata.psychophysiological_Session_Data_ID < 1)
             {
                 return;
             }
-            if (priceDataBottom == null)
-            {
-                priceDataBottom = priceData.Dequeue();
-            }
 
-            while (priceData.Count > 0 && priceData.Peek().time < biodata.time)
-            {
-                priceDataBottom = priceData.Dequeue();
-            }
-
-            DateTime selectedDateTime = priceDataBottom.time;
-            if (priceData.Count == 0 && biodata.time - selectedDateTime > TimeSpan.FromMinutes(1))
-            {
-                priceDataBottom = null;
-                return;
-            }
-
-            if (priceDataBottom != null && priceDataBottom.time < biodata.time)
-            {
-                var commandStr = string.Format(
-                    "INSERT INTO {0} ([ID], [Instrument_ID], [SellPrice], [BuyPrice]) values({1}, {2}, {3}, {4});",
-                    priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.sellString, priceDataBottom.buyString);
-                var cmd = new OleDbCommand(commandStr, conn);
-                cmd.ExecuteNonQuery();
-            }
+            var commandStr = string.Format(
+                "INSERT INTO {0} ([ID], [Instrument_ID], [SellPrice], [BuyPrice]) values({1}, {2}, {3}, {4});",
+                priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.sellString, priceDataBottom.buyString);
+            var cmd = new OleDbCommand(commandStr, conn);
+            cmd.ExecuteNonQuery();
         }
     }
 }

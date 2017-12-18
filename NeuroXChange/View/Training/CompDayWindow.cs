@@ -1,21 +1,16 @@
 ﻿using BreathPacer;
+using NeuroXChange.Controller;
 using NeuroXChange.Model;
+using NeuroXChange.Model.Training;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static BreathPacer.BreathPacerControl;
 
 namespace NeuroXChange.View.Training
 {
     public partial class CompDayWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-        private MainNeuroXModel model;
+        private MainNeuroXController controller;
         private MainNeuroXView view;
 
         EventHandler<PacerEventArgs> bpCycleFinishedHandler;
@@ -26,11 +21,11 @@ namespace NeuroXChange.View.Training
         private int currentStep = -1;
         private int lastCyclesToFinish = 0;
 
-        public CompDayWindow(MainNeuroXModel model, MainNeuroXView view)
+        public CompDayWindow(MainNeuroXController controller, MainNeuroXView view)
         {
             InitializeComponent();
 
-            this.model = model;
+            this.controller = controller;
             this.view = view;
 
             bpCycleFinishedHandler = new EventHandler<PacerEventArgs>(GetNextCycle);
@@ -59,6 +54,8 @@ namespace NeuroXChange.View.Training
             }
             isRunning = true;
 
+            controller.SetTraining(TrainingType.CompDay);
+
             view.breathPacerWindow.breathPacerControl.CycleElapsed += bpCycleFinishedHandler;
             currentStep = -1;
             lastCyclesToFinish = 0;
@@ -74,6 +71,8 @@ namespace NeuroXChange.View.Training
                 return;
             }
             isRunning = false;
+
+            controller.SetTraining(TrainingType.NoTraining);
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed -= bpCycleFinishedHandler;
             textLabel.Text = string.Empty;
@@ -103,6 +102,8 @@ namespace NeuroXChange.View.Training
             double breathsPerMinute = double.Parse(stepsData[currentStep][4]);
             lastCyclesToFinish = int.Parse(stepsData[currentStep][5]);
 
+            controller.SetTrainingSubProtocolId(sub_Protocol_ID);
+
             ShowContent(type, text, imagePath);
         }
 
@@ -122,7 +123,7 @@ namespace NeuroXChange.View.Training
 
         private void CompDayWindow_VisibleChanged(object sender, EventArgs e)
         {
-            if (this.Visible)
+            if (Visible)
             {
                 StartCompDay();
             }

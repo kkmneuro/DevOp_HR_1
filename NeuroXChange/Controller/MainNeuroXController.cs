@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeuroXChange.Model;
+using NeuroXChange.Model.Training;
 
 namespace NeuroXChange.Controller
 {
@@ -50,6 +51,18 @@ namespace NeuroXChange.Controller
         public void ChangeEmulationModeTickInterval(int tickInterval)
         {
             model.ChangeEmulationModeTickInterval(tickInterval);
+        }
+
+
+        // controlling training windows
+        public void SetTraining(TrainingType trainingType)
+        {
+            model.SetTraining(trainingType);
+        }
+
+        public void SetTrainingSubProtocolId(int id)
+        {
+            model.SetTrainingSubProtocolId(id);
         }
     }
 }

@@ -10,6 +10,7 @@ using NeuroXChange.Model.BehavioralModeling;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+using NeuroXChange.Model.Training;
 
 namespace NeuroXChange.Model
 {
@@ -67,7 +68,8 @@ namespace NeuroXChange.Model
 
                 if (!emulationOnHistoryMode)
                 {
-                    bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
+                    bioDataProvider = new TTLApiBioDataProvider(iniFileReader);
+                    //bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
                     //bioDataProvider = new RandomBioDataProvider();
                     //bioDataProvider = new UdpBioDataProvider(14321);
                 }
@@ -117,8 +119,8 @@ namespace NeuroXChange.Model
                 fixApiModel.StopProcessing();
         }
 
-        // Emulation on history mode control
 
+        // Emulation on history mode control
         public void StartEmulation()
         {
             if (!emulationOnHistoryMode)
@@ -158,6 +160,34 @@ namespace NeuroXChange.Model
             var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
             emulationOnHistoryProvider.ChangeEmulationModeTickInterval(tickInterval);
         }
+
+
+        // controlling training windows
+        public void SetTraining(TrainingType trainingType)
+        {
+            if (emulationOnHistoryMode)
+            {
+                return;
+            }
+
+            var provider = (TTLApiBioDataProvider)bioDataProvider;
+            provider.Sub_Component_Protocol_ID = (int)trainingType;
+
+            if (trainingType == TrainingType.NoTraining)
+            {
+                provider.Sub_Protocol_ID = 0;
+            }
+        }
+
+        public void SetTrainingSubProtocolId(int id)
+        {
+            if (emulationOnHistoryMode)
+            {
+                return;
+            }
+            ((TTLApiBioDataProvider)bioDataProvider).Sub_Protocol_ID = (int)id;
+        }
+
 
         // ---- IBioDataObserver implementation
         public void OnNext(BioData.BioDataEvent bioDataEvent, object data)

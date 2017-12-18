@@ -12,6 +12,21 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,6 +91,15 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>3dparty\AxInterop.TTLLiveCtrlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>3dparty\Interop.TTLLiveCtrlLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -119,6 +143,7 @@
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
+    <Compile Include="Model\BioData\TTLApiBioDataProvider.cs" />
     <Compile Include="Model\BioData\UdpBioDataProvider.cs" />
     <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
@@ -130,6 +155,7 @@
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="Model\Training\TrainingType.cs" />
     <Compile Include="View\AGauge\AGauge.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -316,6 +342,10 @@
       <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
       <Name>WinFormsUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EZScan\EZScan.csproj">
+      <Project>{6e9dde6f-db1b-4cff-90ff-42ebb2786ac1}</Project>
+      <Name>EZScan</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BreathPacer.png" />
@@ -326,14 +356,32 @@
   <ItemGroup>
     <None Include="Resources\NT_Logo.jpg" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Content Include="3dparty\AxInterop.TTLLiveCtrlLib.dll" />
+    <Content Include="3dparty\Interop.TTLLiveCtrlLib.dll" />
     <Content Include="Data\Training\CompDay.txt" />
+    <Content Include="3dparty\TTLLiveCtrl.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)NeuroXChangeSettings.ini" "$(TargetDir)" /Y /D
+
 mkdir "$(TargetDir)Data"
+
 xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /Y /D /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
