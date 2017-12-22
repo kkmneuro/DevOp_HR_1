@@ -20,7 +20,7 @@ namespace NeuroXChange.Model.BioData
             IniFileReader iniFileReader)
             :base(localDatabaseConnector)
         {
-            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData"));
+            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData", "500"));
 
             thread = new Thread(new ThreadStart(GenerateNewData));
             random = new Random();

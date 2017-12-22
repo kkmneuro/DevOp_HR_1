@@ -52,7 +52,7 @@ namespace NeuroXChange.View
 
         private void BehavioralModelTransitionsWindow_Load(object sender, System.EventArgs e)
         {
-            modelCB.SelectedIndex = Int32.Parse(model.iniFileReader.Read("ActiveModel", "BehavioralModels")) - 1;
+            modelCB.SelectedIndex = Int32.Parse(model.iniFileReader.Read("ActiveModel", "BehavioralModels", "13")) - 1;
         }
 
         private void stateCheckbox_CheckedChanged(object sender, System.EventArgs e)

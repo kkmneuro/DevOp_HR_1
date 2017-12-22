@@ -31,18 +31,18 @@ namespace NeuroXChange.Model.BioData
             IniFileReader iniFileReader)
             : base(localDatabaseConnector)
         {
-            databaseLocation = iniFileReader.Read("Location", "Database");
-            tableName = iniFileReader.Read("BioDataTable", "Database");
-            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database");
+            databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
+            tableName = iniFileReader.Read("BioDataTable", "Database", "BioData");
+            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database", "PriceAtBioDataTick");
 
             if (!File.Exists(this.databaseLocation))
             {
                 throw new Exception("Can't find database \"" + this.databaseLocation + "\"");
             }
 
-            startDataRowId = Int64.Parse(iniFileReader.Read("StartDataRowId", "EmulationOnHistory"));
-            endDataRowId = Int64.Parse(iniFileReader.Read("EndDataRowId", "EmulationOnHistory"));
-            tickInterval = Int32.Parse(iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory"));
+            startDataRowId = Int64.Parse(iniFileReader.Read("StartDataRowId", "EmulationOnHistory", "250000"));
+            endDataRowId = Int64.Parse(iniFileReader.Read("EndDataRowId", "EmulationOnHistory", "550000"));
+            tickInterval = Int32.Parse(iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory", "100"));
 
             if (startDataRowId > endDataRowId)
             {

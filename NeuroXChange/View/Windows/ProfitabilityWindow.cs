@@ -35,7 +35,7 @@ namespace NeuroXChange.View
 
         private void ProfitabilityWindow_Load(object sender, EventArgs e)
         {
-            modelCB.SelectedIndex = Int32.Parse(model.iniFileReader.Read("ActiveModel", "BehavioralModels")) - 1;
+            modelCB.SelectedIndex = Int32.Parse(model.iniFileReader.Read("ActiveModel", "BehavioralModels", "13")) - 1;
         }
     }
 }

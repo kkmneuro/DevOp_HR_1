@@ -29,7 +29,7 @@ namespace NeuroXChange.View
 
         private void BMColorCodedWithPriceWindow_Load(object sender, EventArgs e)
         {
-            var allChecked = Boolean.Parse(model.iniFileReader.Read("BMcoloredAllChecked", "Interface"));
+            var allChecked = Boolean.Parse(model.iniFileReader.Read("BMcoloredAllChecked", "Interface", "true"));
             inCheckingState = true;
             BModelsCLB.SetItemChecked(0, allChecked);
             inCheckingState = false;

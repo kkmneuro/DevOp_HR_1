@@ -92,7 +92,7 @@ namespace NeuroXChange.View
 
             emulationModeControlWindow = new EmulationModeControlWindow(model, controller);
             emulationModeControlWindow.Owner = mainWindow;
-            emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory"));
+            emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory", "100"));
             emulationModeControlWindow.Enabled = model.emulationOnHistoryMode;
 
             profitabilityWindow = new ProfitabilityWindow(model);
@@ -109,7 +109,7 @@ namespace NeuroXChange.View
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
 
-            allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface"));
+            allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface", "true"));
             if (allWindowsOnTop)
             {
                 mainWindow.TopMost = true;

@@ -25,8 +25,8 @@ namespace NeuroXChange.Model.BioData
         public TTLApiBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
             IniFileReader iniFileReader) : base(localDatabaseConnector)
         {
-            usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData");
-            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData"));
+            usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData", "\\\\.\\COM5");
+            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData", "500"));
 
             try
             {

@@ -25,16 +25,16 @@ namespace NeuroXChange.Common
             Path = new FileInfo(IniPath ?? EXE + ".ini").FullName.ToString();
         }
 
-        public string Read(string Key, string Section = null)
+        public string Read(string Key, string Section, string DefaultValue = "" )
         {
             var RetVal = new StringBuilder(255);
-            GetPrivateProfileString(Section ?? EXE, Key, "", RetVal, 255, Path);
+            GetPrivateProfileString(Section, Key, DefaultValue, RetVal, 255, Path);
             return RetVal.ToString();
         }
 
-        public void Write(string Key, string Value, string Section = null)
+        public void Write(string Key, string Value, string Section)
         {
-            WritePrivateProfileString(Section ?? EXE, Key, Value, Path);
+            WritePrivateProfileString(Section, Key, Value, Path);
         }
 
         public void DeleteKey(string Key, string Section = null)

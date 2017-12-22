@@ -67,7 +67,7 @@ namespace NeuroXChange.Model
 
                 iniFileReader = new IniFileReader(settingsFileName);
 
-                emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory"));
+                emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory", "false"));
 
                 localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
 

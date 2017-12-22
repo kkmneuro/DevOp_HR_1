@@ -33,18 +33,18 @@ namespace NeuroXChange.Model.Database
         {
             DatabaseConnected = false;
 
-            databaseLocation = iniFileReader.Read("Location", "Database");
+            databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
 
-            saveBioData = bool.Parse(iniFileReader.Read("SaveBioData", "Database"));
-            bioDataTable = iniFileReader.Read("BioDataTable", "Database");
+            saveBioData = bool.Parse(iniFileReader.Read("SaveBioData", "Database", "true"));
+            bioDataTable = iniFileReader.Read("BioDataTable", "Database", "BioData");
 
-            saveTickPrice = bool.Parse(iniFileReader.Read("SaveTickPrice", "Database"));
-            tickPriceTable = iniFileReader.Read("TickPriceTable", "Database");
+            saveTickPrice = bool.Parse(iniFileReader.Read("SaveTickPrice", "Database", "false"));
+            tickPriceTable = iniFileReader.Read("TickPriceTable", "Database", "TickPrice");
 
-            savePriceAtBioDataTick = bool.Parse(iniFileReader.Read("SavePriceAtBioDataTick", "Database"));
-            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database");
+            savePriceAtBioDataTick = bool.Parse(iniFileReader.Read("SavePriceAtBioDataTick", "Database", "true"));
+            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database", "PriceAtBioDataTick");
 
-            instrumentTable = iniFileReader.Read("InstrumentTable", "Database");
+            instrumentTable = iniFileReader.Read("InstrumentTable", "Database", "Instrument");
 
             if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick)
             {

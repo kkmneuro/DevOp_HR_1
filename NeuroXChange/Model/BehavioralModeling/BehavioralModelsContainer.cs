@@ -52,10 +52,10 @@ namespace NeuroXChange.Model.BehavioralModeling
         public BehavioralModelsContainer(IniFileReader iniFileReader)
         {
             // initialize order parameters
-            int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "MarketOrders"));
-            int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders"));
-            int takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders"));
-            double pipSize = double.Parse(iniFileReader.Read("PipSize", "MarketOrders"));
+            int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "MarketOrders", "100000"));
+            int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders", "200"));
+            int takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "200"));
+            double pipSize = double.Parse(iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             // initialize dataset to save statistics
             behavioralModelsDataSet = new DataSet("BehavioralModelsDataSet");
@@ -74,11 +74,11 @@ namespace NeuroXChange.Model.BehavioralModeling
             heartRateProcessor = new HeartRateProcessor();
 
             // initialize conditions
-            var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions"));
-            var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions"));
+            var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions", "-60"));
+            var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions", "-20"));
             //var accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
-            double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions"));
-            double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions"));
+            double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions", "5"));
+            double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions", "6.5"));
             var hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
             var hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
             var logicQuery1Condition = new LogicQuery1Condition(100, 60);
@@ -259,7 +259,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 behavioralModels[i].UpdateStatistics();
             }
 
-            ActiveBehavioralModelIndex = Int32.Parse(iniFileReader.Read("ActiveModel", "BehavioralModels")) - 1;
+            ActiveBehavioralModelIndex = Int32.Parse(iniFileReader.Read("ActiveModel", "BehavioralModels", "13")) - 1;
             UpdateActiveTag(ActiveBehavioralModelIndex);
         }
 

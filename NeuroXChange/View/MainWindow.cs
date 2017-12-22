@@ -123,11 +123,11 @@ namespace NeuroXChange
         private void MainWindow_Load(object sender, EventArgs e)
         {
             Location = new Point(
-                Int32.Parse(iniFileReader.Read("MainWindowX", "Interface")),
-                Int32.Parse(iniFileReader.Read("MainWindowY", "Interface")));
+                Int32.Parse(iniFileReader.Read("MainWindowX", "Interface", "258")),
+                Int32.Parse(iniFileReader.Read("MainWindowY", "Interface", "80")));
             Size = new Size(
-                Int32.Parse(iniFileReader.Read("MainWindowWidth", "Interface")),
-                Int32.Parse(iniFileReader.Read("MainWindowHeight", "Interface")));
+                Int32.Parse(iniFileReader.Read("MainWindowWidth", "Interface", "1100")),
+                Int32.Parse(iniFileReader.Read("MainWindowHeight", "Interface", "800")));
 
             mainNeuroXView.rawInformationWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.chartsWindow.DockStateChanged += dockStateChangedAction;
