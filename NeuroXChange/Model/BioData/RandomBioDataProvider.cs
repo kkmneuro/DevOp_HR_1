@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuroXChange.Model.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,8 @@ namespace NeuroXChange.Model.BioData
         private Thread thread;
         private Random random;
 
-        public RandomBioDataProvider()
+        public RandomBioDataProvider(LocalDatabaseConnector localDatabaseConnector)
+            :base(localDatabaseConnector)
         {
             thread = new Thread(new ThreadStart(GenerateNewData));
             random = new Random();
@@ -23,9 +25,8 @@ namespace NeuroXChange.Model.BioData
         {
             while (!NeedStop)
             {
-                Thread.Sleep(250);
                 var data = new BioData();
-                data.psychophysiological_Session_Data_ID = random.Next();
+
                 data.time = DateTime.Now;
                 data.temperature = 20 + random.NextDouble() * 20;
                 data.hartRate = 40 + random.NextDouble() * 30;
@@ -38,7 +39,12 @@ namespace NeuroXChange.Model.BioData
                 data.sub_Component_Protocol_ID = random.Next(70,80);
                 data.sub_Protocol_ID = random.Next(10, 400);
                 data.participant_ID = 1;
+
+                data.psychophysiological_Session_Data_ID = localDatabaseConnector.WriteBioData(data);
+
                 NotifyObservers(BioDataEvent.NewBioDataTick, data);
+
+                Thread.Sleep(250);
             }
         }
 

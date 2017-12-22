@@ -11,6 +11,7 @@ using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.Training;
+using NeuroXChange.Model.Database;
 
 namespace NeuroXChange.Model
 {
@@ -25,6 +26,8 @@ namespace NeuroXChange.Model
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public AbstractFixApiModel fixApiModel;
         public IniFileReader iniFileReader { get; private set; }
+
+        public LocalDatabaseConnector localDatabaseConnector { get; private set; }
 
         // Behavioral Models
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
@@ -66,26 +69,26 @@ namespace NeuroXChange.Model
 
                 emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory"));
 
+                localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
+
                 if (!emulationOnHistoryMode)
                 {
-                    bioDataProvider = new TTLApiBioDataProvider(iniFileReader);
-                    //bioDataProvider = new RealTimeMSAccessBioDataProvider(iniFileReader);
-                    //bioDataProvider = new RandomBioDataProvider();
-                    //bioDataProvider = new UdpBioDataProvider(14321);
+                    //bioDataProvider = new TTLApiBioDataProvider(localDatabaseConnector, iniFileReader);
+                    bioDataProvider = new RandomBioDataProvider(localDatabaseConnector);
                 }
                 else
                 {
-                    bioDataProvider = new EmulationOnHistoryBioDataProvider(iniFileReader);
+                    bioDataProvider = new EmulationOnHistoryBioDataProvider(localDatabaseConnector, iniFileReader);
                 }
                 bioDataProvider.RegisterObserver(this);
 
                 if (!emulationOnHistoryMode)
                 {
-                    fixApiModel = new FixApiModel(iniFileReader);
+                    fixApiModel = new FixApiModel(localDatabaseConnector, iniFileReader);
                 }
                 else
                 {
-                    fixApiModel = new EmulationOnHistoryFixApiModel();
+                    fixApiModel = new EmulationOnHistoryFixApiModel(localDatabaseConnector);
                 }
                 bioDataProvider.RegisterObserver(fixApiModel);
                 fixApiModel.RegisterObserver(this);
@@ -170,12 +173,11 @@ namespace NeuroXChange.Model
                 return;
             }
 
-            var provider = (TTLApiBioDataProvider)bioDataProvider;
-            provider.Sub_Component_Protocol_ID = (int)trainingType;
+            bioDataProvider.Sub_Component_Protocol_ID = (int)trainingType;
 
             if (trainingType == TrainingType.NoTraining)
             {
-                provider.Sub_Protocol_ID = 0;
+                bioDataProvider.Sub_Protocol_ID = 0;
             }
         }
 
@@ -185,7 +187,7 @@ namespace NeuroXChange.Model
             {
                 return;
             }
-            ((TTLApiBioDataProvider)bioDataProvider).Sub_Protocol_ID = (int)id;
+            bioDataProvider.Sub_Protocol_ID = (int)id;
         }
 
 

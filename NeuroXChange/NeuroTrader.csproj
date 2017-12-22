@@ -138,13 +138,12 @@
     <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery2Transition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\DirectionConfirmedExpirationTransition.cs" />
     <Compile Include="Model\BioData\BioDataEvent.cs" />
-    <Compile Include="Model\BioData\RealTimeMSAccessBioDataProvider.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
     <Compile Include="Model\BioData\TTLApiBioDataProvider.cs" />
-    <Compile Include="Model\BioData\UdpBioDataProvider.cs" />
+    <Compile Include="Model\Database\LocalDatabaseConnector.cs" />
     <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
     <Compile Include="Model\FixApi\AbstractFixApiModel.cs" />
@@ -375,6 +374,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADOX">
+      <Guid>{00000600-0000-0010-8000-00AA006D2EA4}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

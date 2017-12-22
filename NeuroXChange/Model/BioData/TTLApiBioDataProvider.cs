@@ -1,5 +1,6 @@
 ﻿using AxTTLLiveCtrlLib;
 using NeuroXChange.Common;
+using NeuroXChange.Model.Database;
 using System;
 using System.Data;
 using System.Data.OleDb;
@@ -15,35 +16,15 @@ namespace NeuroXChange.Model.BioData
     {
         private string usbConnectionStr;
 
-        private string databaseLocation;
-        private string tableName;
-        private bool saveBioData;
-        private OleDbConnection myconn;
-        private OleDbCommand cmd;
-
         private AxTTLLive axTTLLive;
         private TPSForNeuroTrader.TPSForNeuroTrader tpsr;
 
         public Timer timer1;
 
-        public int Session_Component_ID { get; set;}
-
-        public int Sub_Component_ID { get; set; }
-
-        public int Sub_Component_Protocol_ID { get; set; }
-
-        public int Sub_Protocol_ID { get; set; }
-
-        public int Participant_ID { get; set; }
-
-        public string AdditionalData { get; set; }
-
-        public TTLApiBioDataProvider(IniFileReader iniFileReader)
+        public TTLApiBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
+            IniFileReader iniFileReader) : base(localDatabaseConnector)
         {
             usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData");
-            databaseLocation = iniFileReader.Read("Location", "Database");
-            tableName = iniFileReader.Read("Table", "Database");
-            saveBioData = bool.Parse(iniFileReader.Read("SaveBioData", "Database"));
 
             try
             {
@@ -87,19 +68,6 @@ namespace NeuroXChange.Model.BioData
             Sub_Protocol_ID = 0;
             Participant_ID = 1;
             AdditionalData = "";
-
-            myconn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + databaseLocation);
-            try
-            {
-                myconn.Open();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Was not able to establish a connection with local database. \r\n" + e.Message);
-            }
-            cmd = new OleDbCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = myconn;
 
             timer1 = new Timer();
             timer1.Tick += new EventHandler(timer1_Tick);
@@ -168,20 +136,8 @@ namespace NeuroXChange.Model.BioData
                 return;
             }
 
-            // TODO: temporary, remove later
-            // tpsData.dt = DateTime.Now;
-
-            int id = -1;
-            if (saveBioData
-                && Sub_Component_Protocol_ID != 0   // Sub_Component_Protocol_ID (as TrainingType) should exists
-                )
-            {
-                id = writeData(tpsData);
-            }
-
             // send signal that new data come
             var bioData = new BioData();
-            bioData.psychophysiological_Session_Data_ID = id;
             bioData.time = tpsData.dt;
             bioData.temperature = tpsData.Temp;
             bioData.hartRate = tpsData.HR;
@@ -195,58 +151,10 @@ namespace NeuroXChange.Model.BioData
             bioData.sub_Protocol_ID = Sub_Protocol_ID;
             bioData.participant_ID = Participant_ID;
             bioData.data = AdditionalData;
+
+            bioData.psychophysiological_Session_Data_ID = localDatabaseConnector.WriteBioData(bioData);
+
             NotifyObservers(BioDataEvent.NewBioDataTick, bioData);
-        }
-
-        // writes biodata and returns id in database table
-        private int writeData(TPSData data)
-        {
-            if (data.Gesture == double.NaN)
-            {
-                data.Gesture = 0.0;
-            }
-            cmd.CommandText = string.Concat(new object[]
-            {
-                "insert into " + tableName + "\r\n                          ([Time], Temperature, HartRate, SkinConductance, AccX, AccY, AccZ, Session_Component_ID, Sub_Component_ID, Sub_Component_Protocol_ID, Sub_Protocol_ID, Participant_ID, Data) \r\n                   values ('",
-                data.dt,
-                "','",
-                data.Temp,
-                "','",
-                data.HR,
-                "','",
-                data.SC,
-                "', '",
-                data.AccX,
-                "','",
-                data.AccY,
-                "','",
-                data.AccZ,
-                "',",
-                Session_Component_ID,
-                ", ",
-                Sub_Component_ID,
-                ", ",
-                Sub_Component_Protocol_ID,
-                ", ",
-                Sub_Protocol_ID,
-                ", ",
-                Participant_ID,
-                ", '",
-                AdditionalData,
-                "')"
-            });
-
-            cmd.ExecuteNonQuery();
-
-            if (AdditionalData != "")
-            {
-                AdditionalData = "";
-            }
-
-            cmd.CommandText = "Select @@Identity";
-            int id = (int)cmd.ExecuteScalar();
-
-            return id;
         }
     }
 

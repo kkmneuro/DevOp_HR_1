@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Common;
 using NeuroXChange.Model.BioData;
+using NeuroXChange.Model.Database;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -35,18 +36,11 @@ namespace NeuroXChange.Model.FixApi
         private Thread threadReader;
         private Thread threadWriter;
 
-        // database
-        private bool saveTickPrice = false;
-        private bool savePriceAtBioDataTick = false;
-        private string databaseLocation;
-        private string tickPriceTableName;
-        private string instrumentTableName;
-        private string priceAtBioDataTickTableName;
-        private OleDbConnection conn = null;
-
         private TickPrice priceDataBottom = null;
 
-        public FixApiModel(IniFileReader iniFileReader)
+        public FixApiModel(LocalDatabaseConnector localDatabaseConnector,
+            IniFileReader iniFileReader)
+            :base(localDatabaseConnector)
         {
             pricePort = Int32.Parse(iniFileReader.Read("pricePort", "FixApi"));
             tradePort = Int32.Parse(iniFileReader.Read("tradePort", "FixApi"));
@@ -64,66 +58,6 @@ namespace NeuroXChange.Model.FixApi
             priceStreamSSL = new SslStream(priceClient.GetStream(), false,
                         new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
             priceStreamSSL.AuthenticateAsClient(host);
-
-            saveTickPrice = Boolean.Parse(iniFileReader.Read("SaveTickPrice", "Database"));
-            savePriceAtBioDataTick = Boolean.Parse(iniFileReader.Read("SavePriceAtBioDataTick", "Database"));
-            if (saveTickPrice || savePriceAtBioDataTick)
-            {
-                databaseLocation = iniFileReader.Read("Location", "Database");
-                tickPriceTableName = iniFileReader.Read("TickPriceTable", "Database");
-                instrumentTableName = iniFileReader.Read("InstrumentTable", "Database");
-                priceAtBioDataTickTableName = iniFileReader.Read("PriceAtBioDataTickTable", "Database");
-
-                if (File.Exists(databaseLocation))
-                {
-                    // try to create tables, skip if tables exists
-                    conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + this.databaseLocation);
-                    conn.Open();
-                    try
-                    {
-                        var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Title] VARCHAR(40) NOT NULL);",
-                        instrumentTableName);
-                        var cmd = new OleDbCommand(commandStr, conn);
-                        cmd.ExecuteNonQuery();
-
-                        commandStr = string.Format(
-                            "INSERT INTO {0} ([ID], [Title]) values(1, 'EURUSD');",
-                            instrumentTableName);
-                        cmd = new OleDbCommand(commandStr, conn);
-                        cmd.ExecuteNonQuery();
-                    } catch { }
-                }
-                else
-                {
-                    saveTickPrice = false;
-                    savePriceAtBioDataTick = false;
-                }
-            }
-            if (saveTickPrice)
-            {
-                try
-                {
-                    var commandStr = string.Format(
-                    "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Instrument_ID] NUMBER NOT NULL, [Time] DATETIME NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
-                    tickPriceTableName);
-                    var cmd = new OleDbCommand(commandStr, conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
-            if (savePriceAtBioDataTick)
-            {
-                try
-                {
-                    var commandStr = string.Format(
-                    "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Instrument_ID] NUMBER NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
-                    priceAtBioDataTickTableName);
-                    var cmd = new OleDbCommand(commandStr, conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
 
             threadReader = new Thread(GenerateNewData);
             threadWriter = new Thread(SendRequests);
@@ -179,19 +113,9 @@ namespace NeuroXChange.Model.FixApi
             if (prices.Count == 2)
             {
                 var tickPrice = new TickPrice(prices[0], prices[1], DateTime.Now);
+                localDatabaseConnector.WriteTickPrice(tickPrice);
                 NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);
-                if (saveTickPrice)
-                {
-                    var commandStr = string.Format(
-"INSERT INTO {0} ([Instrument_ID], [Time], [SellPrice], [BuyPrice]) values({1}, '{2}', {3}, {4});",
-tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
-                    var cmd = new OleDbCommand(commandStr, conn);
-                    cmd.ExecuteNonQueryAsync();
-                }
-                if (savePriceAtBioDataTick)
-                {
-                    priceDataBottom = tickPrice;
-                }
+                priceDataBottom = tickPrice;
             }
         }
 
@@ -230,25 +154,17 @@ tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
         public override void StopProcessing()
         {
             NeedStop = true;
-            if (conn != null)
-            {
-                conn.Close();
-            }
         }
 
         public override void OnNext(BioDataEvent bioDataEvent, object data)
         {
-            if (bioDataEvent != BioDataEvent.NewBioDataTick)
+            if (bioDataEvent != BioDataEvent.NewBioDataTick ||
+                priceDataBottom == null)
             {
                 return;
             }
 
             var biodata = (BioData.BioData)data;
-
-            if (!savePriceAtBioDataTick)
-            {
-                return;
-            }
 
             // current biodata tick was not saved
             if (biodata.psychophysiological_Session_Data_ID < 1)
@@ -256,11 +172,7 @@ tickPriceTableName, 1, DateTime.Now, tickPrice.sellString, tickPrice.buyString);
                 return;
             }
 
-            var commandStr = string.Format(
-                "INSERT INTO {0} ([ID], [Instrument_ID], [SellPrice], [BuyPrice]) values({1}, {2}, {3}, {4});",
-                priceAtBioDataTickTableName, biodata.psychophysiological_Session_Data_ID, 1, priceDataBottom.sellString, priceDataBottom.buyString);
-            var cmd = new OleDbCommand(commandStr, conn);
-            cmd.ExecuteNonQuery();
+            localDatabaseConnector.WritePriceAtBioDataTick(priceDataBottom, biodata.psychophysiological_Session_Data_ID);
         }
     }
 }

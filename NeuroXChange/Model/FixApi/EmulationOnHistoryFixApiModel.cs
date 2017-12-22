@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Common;
 using System.Data.OleDb;
+using NeuroXChange.Model.Database;
 
 namespace NeuroXChange.Model.FixApi
 {
     public class EmulationOnHistoryFixApiModel : AbstractFixApiModel
     {
+        public EmulationOnHistoryFixApiModel(LocalDatabaseConnector localDatabaseConnector)
+            :base(localDatabaseConnector)
+        {
+        }
+
         public override void OnNext(BioDataEvent bioDataEvent, object data)
         {
             if (bioDataEvent != BioDataEvent.NewBioDataTick)

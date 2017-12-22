@@ -240,6 +240,8 @@ namespace NeuroXChange.View
         {
             if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
+                if (!mainWindow.IsHandleCreated)
+                    return;
             mainWindow.BeginInvoke(
                (Action)(() =>
                {

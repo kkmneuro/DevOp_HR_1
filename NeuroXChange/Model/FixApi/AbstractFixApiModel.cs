@@ -1,16 +1,23 @@
 ﻿using System.Collections.Generic;
 using NeuroXChange.Model.BioData;
+using NeuroXChange.Model.Database;
 
 namespace NeuroXChange.Model.FixApi
 {
     public abstract class AbstractFixApiModel : IBioDataObserver
     {
-        private List<IFixApiObserver> observers = new List<IFixApiObserver>();
-
         public abstract void OnNext(BioDataEvent bioDataEvent, object data);
 
         public abstract void StartProcessing();
         public abstract void StopProcessing();
+
+        private List<IFixApiObserver> observers = new List<IFixApiObserver>();
+        protected LocalDatabaseConnector localDatabaseConnector;
+
+        public AbstractFixApiModel(LocalDatabaseConnector localDatabaseConnector)
+        {
+            this.localDatabaseConnector = localDatabaseConnector;
+        }
 
         // ---- Observable pattern implementation
         public void RegisterObserver(IFixApiObserver observer)

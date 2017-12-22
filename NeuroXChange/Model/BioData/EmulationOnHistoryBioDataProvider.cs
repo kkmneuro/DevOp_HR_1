@@ -3,6 +3,8 @@ using System.Data.OleDb;
 using System.IO;
 using System.Threading;
 using NeuroXChange.Common;
+using NeuroXChange.Model.Database;
+using System.Windows.Forms;
 
 namespace NeuroXChange.Model.BioData
 {
@@ -25,10 +27,12 @@ namespace NeuroXChange.Model.BioData
         private volatile bool paused;
         private volatile bool nextTickEmulation;
 
-        public EmulationOnHistoryBioDataProvider(IniFileReader iniFileReader)
+        public EmulationOnHistoryBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
+            IniFileReader iniFileReader)
+            : base(localDatabaseConnector)
         {
             databaseLocation = iniFileReader.Read("Location", "Database");
-            tableName = iniFileReader.Read("Table", "Database");
+            tableName = iniFileReader.Read("BioDataTable", "Database");
             priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database");
 
             if (!File.Exists(this.databaseLocation))
@@ -109,7 +113,7 @@ namespace NeuroXChange.Model.BioData
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine(e);
+                MessageBox.Show("Error in connection to database:\r\n" + e.Message);
             }
         }
 
