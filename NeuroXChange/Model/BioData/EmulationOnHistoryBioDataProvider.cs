@@ -42,7 +42,7 @@ namespace NeuroXChange.Model.BioData
 
             startDataRowId = Int64.Parse(iniFileReader.Read("StartDataRowId", "EmulationOnHistory"));
             endDataRowId = Int64.Parse(iniFileReader.Read("EndDataRowId", "EmulationOnHistory"));
-            tickInterval = Int32.Parse(iniFileReader.Read("TickInterval", "EmulationOnHistory"));
+            tickInterval = Int32.Parse(iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory"));
 
             if (startDataRowId > endDataRowId)
             {

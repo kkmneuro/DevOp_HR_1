@@ -1,4 +1,5 @@
-﻿using NeuroXChange.Model.Database;
+﻿using NeuroXChange.Common;
+using NeuroXChange.Model.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace NeuroXChange.Model.BioData
         private volatile bool NeedStop = false;
         private Thread thread;
         private Random random;
+        private int bioDataTickInterval;
 
-        public RandomBioDataProvider(LocalDatabaseConnector localDatabaseConnector)
+        public RandomBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
+            IniFileReader iniFileReader)
             :base(localDatabaseConnector)
         {
+            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData"));
+
             thread = new Thread(new ThreadStart(GenerateNewData));
             random = new Random();
         }
@@ -44,7 +49,7 @@ namespace NeuroXChange.Model.BioData
 
                 NotifyObservers(BioDataEvent.NewBioDataTick, data);
 
-                Thread.Sleep(250);
+                Thread.Sleep(bioDataTickInterval);
             }
         }
 

@@ -92,7 +92,7 @@ namespace NeuroXChange.View
 
             emulationModeControlWindow = new EmulationModeControlWindow(model, controller);
             emulationModeControlWindow.Owner = mainWindow;
-            emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("TickInterval", "EmulationOnHistory"));
+            emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory"));
             emulationModeControlWindow.Enabled = model.emulationOnHistoryMode;
 
             profitabilityWindow = new ProfitabilityWindow(model);

@@ -15,6 +15,7 @@ namespace NeuroXChange.Model.BioData
     public class TTLApiBioDataProvider : AbstractBioDataProvider
     {
         private string usbConnectionStr;
+        private int bioDataTickInterval;
 
         private AxTTLLive axTTLLive;
         private TPSForNeuroTrader.TPSForNeuroTrader tpsr;
@@ -25,6 +26,7 @@ namespace NeuroXChange.Model.BioData
             IniFileReader iniFileReader) : base(localDatabaseConnector)
         {
             usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData");
+            bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData"));
 
             try
             {
@@ -70,6 +72,7 @@ namespace NeuroXChange.Model.BioData
             AdditionalData = "";
 
             timer1 = new Timer();
+            timer1.Interval = bioDataTickInterval;
             timer1.Tick += new EventHandler(timer1_Tick);
 
             if (tpsr.getState() != e_cs.STARTED)

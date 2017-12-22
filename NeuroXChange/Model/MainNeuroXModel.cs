@@ -74,7 +74,7 @@ namespace NeuroXChange.Model
                 if (!emulationOnHistoryMode)
                 {
                     bioDataProvider = new TTLApiBioDataProvider(localDatabaseConnector, iniFileReader);
-                    //bioDataProvider = new RandomBioDataProvider(localDatabaseConnector);
+                    //bioDataProvider = new RandomBioDataProvider(localDatabaseConnector, iniFileReader);
                 }
                 else
                 {
