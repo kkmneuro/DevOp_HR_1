@@ -66,7 +66,7 @@ namespace NeuroXChange.Model.BioData
                 }
                 catch (Exception etps)
                 {
-                    MessageBox.Show("Something went wrong.\r\n" + etps.Message);
+                    MessageBox.Show(etps.Message);
                 }
 
                 if (tpsr.getState() != e_cs.CONNECTED)
@@ -155,6 +155,8 @@ namespace NeuroXChange.Model.BioData
                 axTTLLive.OcxState = (AxHost.State)deserealized;
             }
             axTTLLive.EndInit();
+
+            axTTLLive.CreateControl();
         }
 
         private void timer1_Tick(object sender, EventArgs e)

@@ -27,7 +27,7 @@ namespace TPSForNeuroTrader
 			}
 			catch (Exception eee)
 			{
-				throw new Exception("Connection to device was not succsessful. Check device and try again", eee);
+				throw new Exception("Connection to device was not succsessful. Check device and try again\r\n" + eee.Message);
 			}
 			bool flag = this.tpsr1.cxnState == TPSReader.e_cs.DISCONNECTED;
 			bool result;
