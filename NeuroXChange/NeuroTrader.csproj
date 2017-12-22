@@ -312,7 +312,9 @@
     <EmbeddedResource Include="View\Windows\RawInformationWindow.resx">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="NeuroXChangeSettings.ini" />
+    <None Include="NeuroXChangeSettings.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -388,9 +390,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)NeuroXChangeSettings.ini" "$(TargetDir)" /Y /D
+    <PostBuildEvent>
 
 mkdir "$(TargetDir)Data"
+
 
 xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /Y /D /E</PostBuildEvent>
   </PropertyGroup>

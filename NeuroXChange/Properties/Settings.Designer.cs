@@ -22,16 +22,5 @@ namespace NeuroXChange.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\tmp\\neurotrader\\Neuro-Xchange_Psy" +
-            "chophysiology1.mdb")]
-        public string Neuro_Xchange_Psychophysiology1ConnectionString {
-            get {
-                return ((string)(this["Neuro_Xchange_Psychophysiology1ConnectionString"]));
-            }
-        }
     }
 }
