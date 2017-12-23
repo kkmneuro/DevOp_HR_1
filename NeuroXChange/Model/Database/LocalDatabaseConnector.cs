@@ -98,12 +98,8 @@ namespace NeuroXChange.Model.Database
                             [AccX] DOUBLE,
                             [AccY] DOUBLE,
                             [AccZ] DOUBLE,
-                            [Session_Component_ID] INTEGER,
-                            [Sub_Component_ID] INTEGER,
                             [Sub_Component_Protocol_ID] INTEGER,
-                            [Sub_Protocol_ID] INTEGER,
-                            [Participant_ID] INTEGER,
-                            [Data] TEXT(255)
+                            [Sub_Protocol_ID] INTEGER
                         )",
                         bioDataTable);
                     generalCmd = new OleDbCommand();
@@ -183,8 +179,8 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(@"
-                INSERT INTO {0} ([Time], Temperature, HartRate, SkinConductance, AccX, AccY, AccZ, Session_Component_ID, Sub_Component_ID, Sub_Component_Protocol_ID, Sub_Protocol_ID, Participant_ID, Data)
-                    VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9}, {10}, {11}, {12}, '{13}')",
+                INSERT INTO {0} ([Time], Temperature, HartRate, SkinConductance, AccX, AccY, AccZ, Sub_Component_Protocol_ID, Sub_Protocol_ID)
+                    VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9})",
                 bioDataTable,
                 data.time,
                 data.temperature,
@@ -193,12 +189,8 @@ namespace NeuroXChange.Model.Database
                 data.accX,
                 data.accY,
                 data.accZ,
-                data.session_Component_ID,
-                data.sub_Component_ID,
                 data.sub_Component_Protocol_ID,
-                data.sub_Protocol_ID,
-                data.participant_ID,
-                data.data
+                data.sub_Protocol_ID
                 );
 
             biodataCmd.CommandText = commandText;

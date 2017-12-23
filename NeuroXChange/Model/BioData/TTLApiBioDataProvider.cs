@@ -63,13 +63,8 @@ namespace NeuroXChange.Model.BioData
             }
 
             // -- initialize logic
-            Session_Component_ID = 2;
-            Sub_Component_ID = 4;
             Sub_Component_Protocol_ID = 0;
-            //Sub_Component_Protocol_ID = 71;   // manually set "comp day" training
             Sub_Protocol_ID = 0;
-            Participant_ID = 1;
-            AdditionalData = "";
 
             timer1 = new Timer();
             timer1.Interval = bioDataTickInterval;
@@ -148,12 +143,8 @@ namespace NeuroXChange.Model.BioData
             bioData.accX = tpsData.AccX;
             bioData.accY = tpsData.AccY;
             bioData.accZ = tpsData.AccZ;
-            bioData.session_Component_ID = Session_Component_ID;
-            bioData.sub_Component_ID = Sub_Component_ID;
             bioData.sub_Component_Protocol_ID = Sub_Component_Protocol_ID;
             bioData.sub_Protocol_ID = Sub_Protocol_ID;
-            bioData.participant_ID = Participant_ID;
-            bioData.data = AdditionalData;
 
             bioData.psychophysiological_Session_Data_ID = localDatabaseConnector.WriteBioData(bioData);
 

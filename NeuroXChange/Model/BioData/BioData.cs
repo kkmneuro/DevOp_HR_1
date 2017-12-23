@@ -17,12 +17,8 @@ namespace NeuroXChange.Model.BioData
         public double accX;
         public double accY;
         public double accZ;
-        public int session_Component_ID;
-        public int sub_Component_ID;
         public int sub_Component_Protocol_ID;
         public int sub_Protocol_ID;
-        public int participant_ID;
-        public string data;
 
         // implementation dependent payload
         public object payload;
@@ -38,12 +34,8 @@ namespace NeuroXChange.Model.BioData
             data.accX = Double.Parse(reader["AccX"].ToString());
             data.accY = Double.Parse(reader["AccY"].ToString());
             data.accZ = Double.Parse(reader["AccZ"].ToString());
-            data.session_Component_ID = Int32.Parse(reader["Session_Component_ID"].ToString());
-            data.sub_Component_ID = Int32.Parse(reader["Sub_Component_ID"].ToString());
             data.sub_Component_Protocol_ID = Int32.Parse(reader["Sub_Component_Protocol_ID"].ToString());
             data.sub_Protocol_ID = Int32.Parse(reader["Sub_Protocol_ID"].ToString());
-            data.participant_ID = Int32.Parse(reader["Participant_ID"].ToString());
-            data.data = reader["Data"].ToString();
             if (hasPrice)
             {
                 data.payload = new string[] {reader["SellPrice"].ToString(), reader["BuyPrice"].ToString() };

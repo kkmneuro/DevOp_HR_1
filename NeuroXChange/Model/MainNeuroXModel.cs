@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NeuroXChange.Model.BioData;
 using System.Windows.Forms;
 using NeuroXChange.Common;
 using System.IO;
 using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.BehavioralModeling;
-using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
-using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.Training;
 using NeuroXChange.Model.Database;
@@ -73,8 +70,8 @@ namespace NeuroXChange.Model
 
                 if (!emulationOnHistoryMode)
                 {
-                    bioDataProvider = new TTLApiBioDataProvider(localDatabaseConnector, iniFileReader);
-                    //bioDataProvider = new RandomBioDataProvider(localDatabaseConnector, iniFileReader);
+                    //bioDataProvider = new TTLApiBioDataProvider(localDatabaseConnector, iniFileReader);
+                    bioDataProvider = new RandomBioDataProvider(localDatabaseConnector, iniFileReader);
                 }
                 else
                 {

@@ -299,12 +299,8 @@ namespace NeuroXChange.View
                     builder.Append("AccX: " + bioData.accX.ToString("0.##") + "\r\n");
                     builder.Append("AccY: " + bioData.accY.ToString("0.##") + "\r\n");
                     builder.Append("AccZ: " + bioData.accZ.ToString("0.##") + "\r\n");
-                    builder.Append("Session_Component_ID: " + bioData.session_Component_ID + "\r\n");
-                    builder.Append("Sub_Component_ID: " + bioData.sub_Component_ID + "\r\n");
                     builder.Append("Sub_Component_Protocol_ID: " + bioData.sub_Component_Protocol_ID + "\r\n");
                     builder.Append("Sub_Protocol_ID: " + bioData.sub_Protocol_ID + "\r\n");
-                    builder.Append("Participant_ID: " + bioData.participant_ID + "\r\n");
-                    builder.Append("Data: " + bioData.data);
 
                     rawInformationWindow.bioDataRTB.Text = builder.ToString();
 
