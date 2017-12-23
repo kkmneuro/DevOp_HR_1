@@ -103,6 +103,9 @@ namespace NeuroXChange
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // manually close comp day training if it was opened
+            mainNeuroXView.compDayWindow.Hide();
+
             dockPanel.SaveAsXml(dockPanelConfigFile);
             iniFileReader.Write("MainWindowX", Location.X.ToString(), "Interface");
             iniFileReader.Write("MainWindowY", Location.Y.ToString(), "Interface");
