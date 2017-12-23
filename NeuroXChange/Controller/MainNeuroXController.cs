@@ -55,14 +55,14 @@ namespace NeuroXChange.Controller
 
 
         // controlling training windows
-        public void SetTraining(TrainingType trainingType)
+        public void SetTrainingType(TrainingType trainingType)
         {
-            model.SetTraining(trainingType);
+            model.SetTrainingType(trainingType);
         }
 
-        public void SetTrainingSubProtocolId(int id)
+        public void SetTrainingStep(int trainingStep)
         {
-            model.SetTrainingSubProtocolId(id);
+            model.SetTrainingStep(trainingStep);
         }
     }
 }

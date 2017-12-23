@@ -1,4 +1,4 @@
-;Sub_Protocol_ID	Type	Text	ImagePath	BreathsPerMinute	CyclesToFinish	Session_Component_ID	Sub_Component_ID	Sub_Component_Protocol_ID
+;TrainingStep	Type	Text	ImagePath	BreathsPerMinute	CyclesToFinish	Session_Component_ID	Sub_Component_ID	TrainingType
 49	Text	Center Yourself		5.5	2	2	4	71
 50	Text_Image	Ideal Trader	Data\Training\Ideal_Trader_Broad_Internal_Analysis.png	5.5	2	2	4	71
 51	Text_Image	Ideal Trader	Data\Training\IdealTrader.jpg	5.5	2	2	4	71

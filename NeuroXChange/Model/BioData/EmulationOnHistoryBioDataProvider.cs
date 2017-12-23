@@ -65,7 +65,7 @@ namespace NeuroXChange.Model.BioData
 
                 var TotalRowsCountCommandStr = string.Format(
                     @"SELECT COUNT(*) AS totalTicks FROM {0}
-                WHERE psychophysiological_Session_Data_ID >= {2} AND psychophysiological_Session_Data_ID <= {3}",
+                WHERE ID >= {2} AND ID <= {3}",
                     tableName, null, startDataRowId, endDataRowId);
 
                 var cmd = new OleDbCommand(TotalRowsCountCommandStr, conn);
@@ -79,9 +79,9 @@ namespace NeuroXChange.Model.BioData
 
                 var commandStr = string.Format(
                     @"SELECT {0}.*, sellPrice, buyPrice FROM {0}
-                LEFT OUTER JOIN {1} ON {0}.psychophysiological_Session_Data_ID = {1}.ID
-                WHERE psychophysiological_Session_Data_ID >= {2} AND psychophysiological_Session_Data_ID <= {3}
-                ORDER BY Psychophysiological_Session_Data_ID",
+                LEFT OUTER JOIN {1} ON {0}.ID = {1}.ID
+                WHERE ID >= {2} AND ID <= {3}
+                ORDER BY ID",
                     tableName, priceAtBioDataTickTable, startDataRowId, endDataRowId);
 
                 cmd = new OleDbCommand(commandStr, conn);

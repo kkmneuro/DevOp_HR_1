@@ -216,9 +216,9 @@ namespace NeuroXChange.View
                 }
                 else if (modelEvent == MainNeuroXModelEvent.LogicQueryDirection)
                 {
-                    int sub_Protocol_ID = (int)data;
+                    int trainingStep = (int)data;
                     string[] messages = { "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
-                    string message = 66 <= sub_Protocol_ID && sub_Protocol_ID <= 73 ? messages[sub_Protocol_ID - 66] : "No direction confirmed!";
+                    string message = 66 <= trainingStep && trainingStep <= 73 ? messages[trainingStep - 66] : "No direction confirmed!";
                     MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             });
@@ -291,7 +291,7 @@ namespace NeuroXChange.View
                 {
                     // update biodata information
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("Psychophysiological_Session_Data_ID: " + bioData.psychophysiological_Session_Data_ID + "\r\n");
+                    builder.Append("ID: " + bioData.id + "\r\n");
                     builder.Append("Time: " + bioData.time + "\r\n");
                     builder.Append("Temperature: " + bioData.temperature.ToString("0.##") + "\r\n");
                     builder.Append("HeartRate: " + bioData.heartRate.ToString("0.##") + "\r\n");
@@ -299,8 +299,8 @@ namespace NeuroXChange.View
                     builder.Append("AccX: " + bioData.accX.ToString("0.##") + "\r\n");
                     builder.Append("AccY: " + bioData.accY.ToString("0.##") + "\r\n");
                     builder.Append("AccZ: " + bioData.accZ.ToString("0.##") + "\r\n");
-                    builder.Append("Sub_Component_Protocol_ID: " + bioData.sub_Component_Protocol_ID + "\r\n");
-                    builder.Append("Sub_Protocol_ID: " + bioData.sub_Protocol_ID + "\r\n");
+                    builder.Append("TrainingType: " + bioData.trainingType + "\r\n");
+                    builder.Append("TrainingStep: " + bioData.trainingStep + "\r\n");
 
                     rawInformationWindow.bioDataRTB.Text = builder.ToString();
 

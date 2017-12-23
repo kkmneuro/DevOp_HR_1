@@ -163,28 +163,28 @@ namespace NeuroXChange.Model
 
 
         // controlling training windows
-        public void SetTraining(TrainingType trainingType)
+        public void SetTrainingType(TrainingType trainingType)
         {
             if (emulationOnHistoryMode)
             {
                 return;
             }
 
-            bioDataProvider.Sub_Component_Protocol_ID = (int)trainingType;
+            bioDataProvider.TrainingType = trainingType;
 
             if (trainingType == TrainingType.NoTraining)
             {
-                bioDataProvider.Sub_Protocol_ID = 0;
+                bioDataProvider.TrainingStep = 0;
             }
         }
 
-        public void SetTrainingSubProtocolId(int id)
+        public void SetTrainingStep(int trainingStep)
         {
             if (emulationOnHistoryMode)
             {
                 return;
             }
-            bioDataProvider.Sub_Protocol_ID = (int)id;
+            bioDataProvider.TrainingStep = trainingStep;
         }
 
 

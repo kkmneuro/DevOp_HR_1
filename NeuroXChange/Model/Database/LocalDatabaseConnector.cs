@@ -90,7 +90,7 @@ namespace NeuroXChange.Model.Database
                 try
                 {
                     var commandText = string.Format(
-                        @"CREATE TABLE {0} ([Psychophysiological_Session_Data_ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                        @"CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                             [Time] DATETIME NOT NULL,
                             [Temperature] DOUBLE,
                             [HeartRate] DOUBLE,
@@ -98,8 +98,8 @@ namespace NeuroXChange.Model.Database
                             [AccX] DOUBLE,
                             [AccY] DOUBLE,
                             [AccZ] DOUBLE,
-                            [Sub_Component_Protocol_ID] INTEGER,
-                            [Sub_Protocol_ID] INTEGER
+                            [TrainingType] INTEGER,
+                            [TrainingStep] INTEGER
                         )",
                         bioDataTable);
                     generalCmd = new OleDbCommand();
@@ -179,7 +179,7 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(@"
-                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, Sub_Component_Protocol_ID, Sub_Protocol_ID)
+                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep)
                     VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9})",
                 bioDataTable,
                 data.time,
@@ -189,8 +189,8 @@ namespace NeuroXChange.Model.Database
                 data.accX,
                 data.accY,
                 data.accZ,
-                data.sub_Component_Protocol_ID,
-                data.sub_Protocol_ID
+                data.trainingType,
+                data.trainingStep
                 );
 
             biodataCmd.CommandText = commandText;
@@ -223,7 +223,7 @@ namespace NeuroXChange.Model.Database
             priceCmd.ExecuteNonQueryAsync();
         }
 
-        public void WritePriceAtBioDataTick(TickPrice tickPrice, int biodataId)
+        public void WritePriceAtBioDataTick(TickPrice tickPrice, long biodataId)
         {
             if (!DatabaseConnected || !savePriceAtBioDataTick)
             {

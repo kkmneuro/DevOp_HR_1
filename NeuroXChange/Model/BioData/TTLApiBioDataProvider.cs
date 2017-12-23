@@ -63,8 +63,8 @@ namespace NeuroXChange.Model.BioData
             }
 
             // -- initialize logic
-            Sub_Component_Protocol_ID = 0;
-            Sub_Protocol_ID = 0;
+            TrainingType = Training.TrainingType.NoTraining;
+            TrainingStep = 0;
 
             timer1 = new Timer();
             timer1.Interval = bioDataTickInterval;
@@ -143,10 +143,10 @@ namespace NeuroXChange.Model.BioData
             bioData.accX = tpsData.AccX;
             bioData.accY = tpsData.AccY;
             bioData.accZ = tpsData.AccZ;
-            bioData.sub_Component_Protocol_ID = Sub_Component_Protocol_ID;
-            bioData.sub_Protocol_ID = Sub_Protocol_ID;
+            bioData.trainingType = (int)TrainingType;
+            bioData.trainingStep = TrainingStep;
 
-            bioData.psychophysiological_Session_Data_ID = localDatabaseConnector.WriteBioData(bioData);
+            bioData.id = localDatabaseConnector.WriteBioData(bioData);
 
             NotifyObservers(BioDataEvent.NewBioDataTick, bioData);
         }

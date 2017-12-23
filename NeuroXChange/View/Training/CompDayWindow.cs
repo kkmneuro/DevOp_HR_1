@@ -54,7 +54,7 @@ namespace NeuroXChange.View.Training
             }
             isRunning = true;
 
-            controller.SetTraining(TrainingType.CompDay);
+            controller.SetTrainingType(TrainingType.CompDay);
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed += bpCycleFinishedHandler;
             currentStep = -1;
@@ -72,7 +72,7 @@ namespace NeuroXChange.View.Training
             }
             isRunning = false;
 
-            controller.SetTraining(TrainingType.NoTraining);
+            controller.SetTrainingType(TrainingType.NoTraining);
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed -= bpCycleFinishedHandler;
             textLabel.Text = string.Empty;
@@ -97,14 +97,14 @@ namespace NeuroXChange.View.Training
             currentStep++;
             view.breathPacerWindow.breathPacerControl.ElapsedCycleCount = 0;
 
-            var sub_Protocol_ID = int.Parse(stepsData[currentStep][0]);
+            var trainingStep = int.Parse(stepsData[currentStep][0]);
             var type = stepsData[currentStep][1];
             var text = stepsData[currentStep][2];
             var imagePath = stepsData[currentStep][3];
             double breathsPerMinute = double.Parse(stepsData[currentStep][4]);
             lastCyclesToFinish = int.Parse(stepsData[currentStep][5]);
 
-            controller.SetTrainingSubProtocolId(sub_Protocol_ID);
+            controller.SetTrainingStep(trainingStep);
 
             ShowContent(type, text, imagePath);
         }

@@ -167,12 +167,12 @@ namespace NeuroXChange.Model.FixApi
             var biodata = (BioData.BioData)data;
 
             // current biodata tick was not saved
-            if (biodata.psychophysiological_Session_Data_ID < 1)
+            if (biodata.id < 1)
             {
                 return;
             }
 
-            localDatabaseConnector.WritePriceAtBioDataTick(priceDataBottom, biodata.psychophysiological_Session_Data_ID);
+            localDatabaseConnector.WritePriceAtBioDataTick(priceDataBottom, biodata.id);
         }
     }
 }

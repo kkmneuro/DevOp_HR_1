@@ -6,7 +6,7 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
 {
     public class LogicQuery1Condition : AbstractBehavioralModelCondition
     {
-        // we will look at sub_protocol_id in the range [66,73]
+        // we will look at trainingStep in the range [66,73]
         private const int subProtocolIdLeftBorder = 66;
         private const int subProtocolIdRigtBorder = 73;
         private const int subProtocolIdRangeCount = subProtocolIdRigtBorder - subProtocolIdLeftBorder + 1;
@@ -68,17 +68,17 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
             isConditionMet = false;
 
             // prevent firing conditions several times in a row
-            if (previousSubProtocol == data.sub_Protocol_ID &&
-                data.sub_Protocol_ID == subProtocolFire)
+            if (previousSubProtocol == data.trainingStep &&
+                data.trainingStep == subProtocolFire)
             {
                 return;
             }
-            previousSubProtocol = data.sub_Protocol_ID;
+            previousSubProtocol = data.trainingStep;
 
-            if (subProtocolIdLeftBorder <= data.sub_Protocol_ID
-                && data.sub_Protocol_ID <= subProtocolIdRigtBorder)
+            if (subProtocolIdLeftBorder <= data.trainingStep
+                && data.trainingStep <= subProtocolIdRigtBorder)
             {
-                int id = data.sub_Protocol_ID - subProtocolIdLeftBorder;
+                int id = data.trainingStep - subProtocolIdLeftBorder;
                 if (heartRateUp == -1 || data.heartRate > heartRateUp)
                 {
                     higherHRElements[id].AddLast(data.time);
@@ -90,7 +90,7 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                     UpdateExpired(lowerHRElements[id], data.time);
                 }
             }
-            else if (data.sub_Protocol_ID == subProtocolFire)
+            else if (data.trainingStep == subProtocolFire)
             {
                 int bestId = -1;
                 DateTime bestTime = DateTime.FromOADate(0);
