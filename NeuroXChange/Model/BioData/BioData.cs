@@ -12,7 +12,7 @@ namespace NeuroXChange.Model.BioData
         public int psychophysiological_Session_Data_ID;
         public DateTime time;
         public double temperature;
-        public double hartRate;
+        public double heartRate;
         public double skinConductance;
         public double accX;
         public double accY;
@@ -29,7 +29,7 @@ namespace NeuroXChange.Model.BioData
             data.psychophysiological_Session_Data_ID = Int32.Parse(reader["Psychophysiological_Session_Data_ID"].ToString());
             data.time = DateTime.Parse(reader["Time"].ToString());
             data.temperature = Double.Parse(reader["Temperature"].ToString());
-            data.hartRate = Double.Parse(reader["HartRate"].ToString());
+            data.heartRate = Double.Parse(reader["HeartRate"].ToString());
             data.skinConductance = Double.Parse(reader["SkinConductance"].ToString());
             data.accX = Double.Parse(reader["AccX"].ToString());
             data.accY = Double.Parse(reader["AccY"].ToString());

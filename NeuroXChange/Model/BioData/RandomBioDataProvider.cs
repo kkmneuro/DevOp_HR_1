@@ -34,7 +34,7 @@ namespace NeuroXChange.Model.BioData
 
                 data.time = DateTime.Now;
                 data.temperature = 20 + random.NextDouble() * 20;
-                data.hartRate = 40 + random.NextDouble() * 30;
+                data.heartRate = 40 + random.NextDouble() * 30;
                 data.skinConductance = 1 + random.NextDouble();
                 data.accX = -20 - random.NextDouble() * 40;
                 data.accY = -20 - random.NextDouble() * 40;

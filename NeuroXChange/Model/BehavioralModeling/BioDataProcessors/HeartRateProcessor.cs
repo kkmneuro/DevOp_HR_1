@@ -48,21 +48,21 @@ namespace NeuroXChange.Model.BehavioralModeling.BioDataProcessors
         {
             HeartRateInfo heartRateInfo = this.heartRateInfo;
 
-            double heartRateNow = data.hartRate;
+            double heartRateNow = data.heartRate;
 
             // update HR average for the last 2 minutes
             while (lastBioData.Count > 0 && (data.time - lastBioData.Peek().time) > heartRateAverageTime)
             {
                 lastBioData2minReached = true;
                 BioData.BioData oldData = lastBioData.Dequeue();
-                heartRateSum -= oldData.hartRate;
+                heartRateSum -= oldData.heartRate;
             }
 
             if (lastBioData.Count < 200)
             {
                 lastBioData2minReached = false;
             }
-            heartRateSum += data.hartRate;
+            heartRateSum += data.heartRate;
             lastBioData.Enqueue(data);
 
             // remove obsolete elements of lastStatesChanges

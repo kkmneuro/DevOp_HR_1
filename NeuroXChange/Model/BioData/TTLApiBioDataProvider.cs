@@ -138,7 +138,7 @@ namespace NeuroXChange.Model.BioData
             var bioData = new BioData();
             bioData.time = tpsData.dt;
             bioData.temperature = tpsData.Temp;
-            bioData.hartRate = tpsData.HR;
+            bioData.heartRate = tpsData.HR;
             bioData.skinConductance = tpsData.SC;
             bioData.accX = tpsData.AccX;
             bioData.accY = tpsData.AccY;

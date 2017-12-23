@@ -18,11 +18,11 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
         private int[] buyIDs = { 66, 68, 71, 72 };
         private int[] sellIDs = { 67, 69, 70, 73 };
 
-        // hart rate should be less than heartRateDown
+        // heart rate should be less than heartRateDown
         // or doesn't matter if heartRateDown == -1
         private int heartRateDown = 60;
 
-        // hart rate should be less than heartRateDown
+        // heart rate should be less than heartRateDown
         // or doesn't matter if heartRateUp == -1
         private int heartRateUp = 100;
 
@@ -79,12 +79,12 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                 && data.sub_Protocol_ID <= subProtocolIdRigtBorder)
             {
                 int id = data.sub_Protocol_ID - subProtocolIdLeftBorder;
-                if (heartRateUp == -1 || data.hartRate > heartRateUp)
+                if (heartRateUp == -1 || data.heartRate > heartRateUp)
                 {
                     higherHRElements[id].AddLast(data.time);
                     UpdateExpired(higherHRElements[id], data.time);
                 }
-                if (heartRateDown == -1 || data.hartRate < heartRateDown)
+                if (heartRateDown == -1 || data.heartRate < heartRateDown)
                 {
                     lowerHRElements[id].AddLast(data.time);
                     UpdateExpired(lowerHRElements[id], data.time);

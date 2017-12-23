@@ -93,7 +93,7 @@ namespace NeuroXChange.Model.Database
                         @"CREATE TABLE {0} ([Psychophysiological_Session_Data_ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                             [Time] DATETIME NOT NULL,
                             [Temperature] DOUBLE,
-                            [HartRate] DOUBLE,
+                            [HeartRate] DOUBLE,
                             [SkinConductance] DOUBLE,
                             [AccX] DOUBLE,
                             [AccY] DOUBLE,
@@ -179,12 +179,12 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(@"
-                INSERT INTO {0} ([Time], Temperature, HartRate, SkinConductance, AccX, AccY, AccZ, Sub_Component_Protocol_ID, Sub_Protocol_ID)
+                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, Sub_Component_Protocol_ID, Sub_Protocol_ID)
                     VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9})",
                 bioDataTable,
                 data.time,
                 data.temperature,
-                data.hartRate,
+                data.heartRate,
                 data.skinConductance,
                 data.accX,
                 data.accY,

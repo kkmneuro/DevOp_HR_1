@@ -294,7 +294,7 @@ namespace NeuroXChange.View
                     builder.Append("Psychophysiological_Session_Data_ID: " + bioData.psychophysiological_Session_Data_ID + "\r\n");
                     builder.Append("Time: " + bioData.time + "\r\n");
                     builder.Append("Temperature: " + bioData.temperature.ToString("0.##") + "\r\n");
-                    builder.Append("HartRate: " + bioData.hartRate.ToString("0.##") + "\r\n");
+                    builder.Append("HeartRate: " + bioData.heartRate.ToString("0.##") + "\r\n");
                     builder.Append("SkinConductance: " + bioData.skinConductance.ToString("0.##") + "\r\n");
                     builder.Append("AccX: " + bioData.accX.ToString("0.##") + "\r\n");
                     builder.Append("AccY: " + bioData.accY.ToString("0.##") + "\r\n");
@@ -348,7 +348,7 @@ namespace NeuroXChange.View
                     }
 
                     temperaturePoints.AddXY(bioData.time, bioData.temperature);
-                    hrPoints.AddXY(bioData.time, bioData.hartRate);
+                    hrPoints.AddXY(bioData.time, bioData.heartRate);
                     skinCondPoints.AddXY(bioData.time, bioData.skinConductance);
 
                     // update HR oscillations info

@@ -7,42 +7,42 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
     {
         private TimeSpan minuteSpan = TimeSpan.FromMinutes(1);
 
-        private DateTime? lq2LastHartRateBigger100 = null;
-        private DateTime? lq2LastHartRateSmaller60 = null;
+        private DateTime? lq2LastHeartRateBigger100 = null;
+        private DateTime? lq2LastHeartRateSmaller60 = null;
 
         public override void OnNext(BioData.BioData data)
         {
             isConditionMet = false;
 
-            if (lq2LastHartRateBigger100.HasValue && (data.time - lq2LastHartRateBigger100.Value) > minuteSpan)
+            if (lq2LastHeartRateBigger100.HasValue && (data.time - lq2LastHeartRateBigger100.Value) > minuteSpan)
             {
-                lq2LastHartRateBigger100 = null;
+                lq2LastHeartRateBigger100 = null;
             }
-            if (lq2LastHartRateSmaller60.HasValue && (data.time - lq2LastHartRateSmaller60.Value) > minuteSpan)
+            if (lq2LastHeartRateSmaller60.HasValue && (data.time - lq2LastHeartRateSmaller60.Value) > minuteSpan)
             {
-                lq2LastHartRateSmaller60 = null;
+                lq2LastHeartRateSmaller60 = null;
             }
 
-            if (lq2LastHartRateBigger100.HasValue && data.hartRate < 60)
+            if (lq2LastHeartRateBigger100.HasValue && data.heartRate < 60)
             {
-                lq2LastHartRateBigger100 = null;
+                lq2LastHeartRateBigger100 = null;
                 isConditionMet = true;
                 detailsData = 0;
             }
-            if (lq2LastHartRateSmaller60.HasValue && data.hartRate > 100)
+            if (lq2LastHeartRateSmaller60.HasValue && data.heartRate > 100)
             {
-                lq2LastHartRateSmaller60 = null;
+                lq2LastHeartRateSmaller60 = null;
                 isConditionMet = true;
                 detailsData = 1;
             }
 
-            if (data.hartRate < 60)
+            if (data.heartRate < 60)
             {
-                lq2LastHartRateSmaller60 = data.time;
+                lq2LastHeartRateSmaller60 = data.time;
             }
-            if (data.hartRate > 100)
+            if (data.heartRate > 100)
             {
-                lq2LastHartRateBigger100 = data.time;
+                lq2LastHeartRateBigger100 = data.time;
             }
         }
     }
