@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NeuroXChange.Model.BioData
 {
-    public struct BioData
+    public class BioData
     {
         public long id;
         public DateTime time;

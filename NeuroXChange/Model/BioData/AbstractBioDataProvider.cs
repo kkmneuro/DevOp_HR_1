@@ -9,13 +9,8 @@ namespace NeuroXChange.Model.BioData
 {
     abstract public class AbstractBioDataProvider
     {
-        public Training.TrainingType TrainingType { get; set; }
-
-        public int TrainingStep { get; set; }
-
         private List<IBioDataObserver> observers = new List<IBioDataObserver>();
         protected LocalDatabaseConnector localDatabaseConnector;
-
 
         public AbstractBioDataProvider(LocalDatabaseConnector localDatabaseConnector)
         {

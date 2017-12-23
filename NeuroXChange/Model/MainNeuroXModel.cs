@@ -14,24 +14,51 @@ namespace NeuroXChange.Model
 {
     public class MainNeuroXModel : IBioDataObserver, IFixApiObserver
     {
-        private string settingsFileName = "NeuroXChangeSettings.ini";
+        private const string settingsFileName = "NeuroXChangeSettings.ini";
 
-        public bool emulationOnHistoryMode { get; private set; }
+        // Was application loaded correctly or not
         public bool isStateGood { get; private set; }
 
-        private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
-        public AbstractBioDataProvider bioDataProvider { get; private set; }
-        public AbstractFixApiModel fixApiModel;
+
+        // unique objects for application
         public IniFileReader iniFileReader { get; private set; }
-
+        public AbstractBioDataProvider bioDataProvider { get; private set; }
+        public AbstractFixApiModel fixApiModel { get; private set; }
         public LocalDatabaseConnector localDatabaseConnector { get; private set; }
-
-        // Behavioral Models
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
+
+
+        // ---- Observable pattern implementation
+        private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
+
+
+        // fields that determine state of application, but won't be logged
+        public bool emulationOnHistoryMode { get; private set; }
+
+        // application states that will be logged to database
+        private Training.TrainingType trainingType;
+        public Training.TrainingType TrainingType
+        {
+            get {
+                return trainingType;
+            }
+
+            set {
+                trainingType = value;
+
+                if (trainingType == TrainingType.NoTraining)
+                {
+                    TrainingStep = 0;
+                }
+            }
+        }
+        public int TrainingStep { get; set; }
+
 
         // Query condition only for showing popup message purpose
         // TODO: need to move this to anoter place or to remove completely
         private LogicQuery1Condition logicQuery1Condition;
+
 
         public SimpleBehavioralModel getActiveBehavioralModel()
         {
@@ -66,7 +93,7 @@ namespace NeuroXChange.Model
 
                 emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory", "false"));
 
-                localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
+                localDatabaseConnector = new LocalDatabaseConnector(this, iniFileReader);
 
                 if (!emulationOnHistoryMode)
                 {
@@ -159,32 +186,6 @@ namespace NeuroXChange.Model
             }
             var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
             emulationOnHistoryProvider.ChangeEmulationModeTickInterval(tickInterval);
-        }
-
-
-        // controlling training windows
-        public void SetTrainingType(TrainingType trainingType)
-        {
-            if (emulationOnHistoryMode)
-            {
-                return;
-            }
-
-            bioDataProvider.TrainingType = trainingType;
-
-            if (trainingType == TrainingType.NoTraining)
-            {
-                bioDataProvider.TrainingStep = 0;
-            }
-        }
-
-        public void SetTrainingStep(int trainingStep)
-        {
-            if (emulationOnHistoryMode)
-            {
-                return;
-            }
-            bioDataProvider.TrainingStep = trainingStep;
         }
 
 

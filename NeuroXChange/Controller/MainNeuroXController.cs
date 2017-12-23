@@ -57,12 +57,12 @@ namespace NeuroXChange.Controller
         // controlling training windows
         public void SetTrainingType(TrainingType trainingType)
         {
-            model.SetTrainingType(trainingType);
+            model.TrainingType = trainingType;
         }
 
         public void SetTrainingStep(int trainingStep)
         {
-            model.SetTrainingStep(trainingStep);
+            model.TrainingStep = trainingStep;
         }
     }
 }

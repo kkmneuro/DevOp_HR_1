@@ -63,9 +63,6 @@ namespace NeuroXChange.Model.BioData
             }
 
             // -- initialize logic
-            TrainingType = Training.TrainingType.NoTraining;
-            TrainingStep = 0;
-
             timer1 = new Timer();
             timer1.Interval = bioDataTickInterval;
             timer1.Tick += new EventHandler(timer1_Tick);
@@ -143,8 +140,6 @@ namespace NeuroXChange.Model.BioData
             bioData.accX = tpsData.AccX;
             bioData.accY = tpsData.AccY;
             bioData.accZ = tpsData.AccZ;
-            bioData.trainingType = (int)TrainingType;
-            bioData.trainingStep = TrainingStep;
 
             bioData.id = localDatabaseConnector.WriteBioData(bioData);
 

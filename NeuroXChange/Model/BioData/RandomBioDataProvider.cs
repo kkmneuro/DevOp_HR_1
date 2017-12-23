@@ -39,8 +39,6 @@ namespace NeuroXChange.Model.BioData
                 data.accX = -20 - random.NextDouble() * 40;
                 data.accY = -20 - random.NextDouble() * 40;
                 data.accZ = -20 - random.NextDouble() * 40;
-                data.trainingType = (int)TrainingType;
-                data.trainingStep = TrainingStep;
 
                 data.id = localDatabaseConnector.WriteBioData(data);
 

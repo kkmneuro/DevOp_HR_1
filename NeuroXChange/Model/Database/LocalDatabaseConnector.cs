@@ -9,6 +9,8 @@ namespace NeuroXChange.Model.Database
 {
     public class LocalDatabaseConnector
     {
+        private MainNeuroXModel model;
+
         public bool DatabaseConnected { get; private set; }
 
         private string databaseLocation;
@@ -29,8 +31,10 @@ namespace NeuroXChange.Model.Database
         private OleDbCommand biodataCmd = null;
         private OleDbCommand priceCmd = null;
 
-        public LocalDatabaseConnector(IniFileReader iniFileReader)
+        public LocalDatabaseConnector(MainNeuroXModel model, IniFileReader iniFileReader)
         {
+            this.model = model;
+
             DatabaseConnected = false;
 
             databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
@@ -173,6 +177,10 @@ namespace NeuroXChange.Model.Database
         // returns id of added row in the database table
         public int WriteBioData(BioData.BioData data)
         {
+            // update data with model state fields
+            data.trainingType = (int)model.TrainingType;
+            data.trainingStep = model.TrainingStep;
+
             if (!DatabaseConnected || !saveBioData)
             {
                 return -1;
