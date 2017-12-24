@@ -93,16 +93,16 @@ namespace NeuroXChange.Model
 
                 emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory", "false"));
 
-                localDatabaseConnector = new LocalDatabaseConnector(this, iniFileReader);
+                localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
 
                 if (!emulationOnHistoryMode)
                 {
-                    //bioDataProvider = new TTLApiBioDataProvider(localDatabaseConnector, iniFileReader);
-                    bioDataProvider = new RandomBioDataProvider(localDatabaseConnector, iniFileReader);
+                    bioDataProvider = new TTLApiBioDataProvider(this, localDatabaseConnector, iniFileReader);
+                    //bioDataProvider = new RandomBioDataProvider(this, localDatabaseConnector, iniFileReader);
                 }
                 else
                 {
-                    bioDataProvider = new EmulationOnHistoryBioDataProvider(localDatabaseConnector, iniFileReader);
+                    bioDataProvider = new EmulationOnHistoryBioDataProvider(this, localDatabaseConnector, iniFileReader);
                 }
                 bioDataProvider.RegisterObserver(this);
 

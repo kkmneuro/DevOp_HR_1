@@ -9,12 +9,20 @@ namespace NeuroXChange.Model.BioData
 {
     abstract public class AbstractBioDataProvider
     {
+        protected MainNeuroXModel model;
         private List<IBioDataObserver> observers = new List<IBioDataObserver>();
         protected LocalDatabaseConnector localDatabaseConnector;
 
-        public AbstractBioDataProvider(LocalDatabaseConnector localDatabaseConnector)
+        public AbstractBioDataProvider(MainNeuroXModel model, LocalDatabaseConnector localDatabaseConnector)
         {
+            this.model = model;
             this.localDatabaseConnector = localDatabaseConnector;
+        }
+
+        protected void FillApplicaitonStates(BioData data)
+        {
+            data.trainingType = (int)model.TrainingType;
+            data.trainingStep = model.TrainingStep;
         }
 
         // ---- Observable pattern implementation

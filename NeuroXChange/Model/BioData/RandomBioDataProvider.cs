@@ -16,9 +16,10 @@ namespace NeuroXChange.Model.BioData
         private Random random;
         private int bioDataTickInterval;
 
-        public RandomBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
+        public RandomBioDataProvider(MainNeuroXModel model,
+            LocalDatabaseConnector localDatabaseConnector,
             IniFileReader iniFileReader)
-            :base(localDatabaseConnector)
+            :base(model, localDatabaseConnector)
         {
             bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData", "500"));
 
@@ -39,6 +40,7 @@ namespace NeuroXChange.Model.BioData
                 data.accX = -20 - random.NextDouble() * 40;
                 data.accY = -20 - random.NextDouble() * 40;
                 data.accZ = -20 - random.NextDouble() * 40;
+                FillApplicaitonStates(data);
 
                 data.id = localDatabaseConnector.WriteBioData(data);
 

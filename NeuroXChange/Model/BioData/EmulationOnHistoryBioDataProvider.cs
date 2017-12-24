@@ -27,9 +27,10 @@ namespace NeuroXChange.Model.BioData
         private volatile bool paused;
         private volatile bool nextTickEmulation;
 
-        public EmulationOnHistoryBioDataProvider(LocalDatabaseConnector localDatabaseConnector,
+        public EmulationOnHistoryBioDataProvider(MainNeuroXModel model, 
+            LocalDatabaseConnector localDatabaseConnector,
             IniFileReader iniFileReader)
-            : base(localDatabaseConnector)
+            : base(model, localDatabaseConnector)
         {
             databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
             tableName = iniFileReader.Read("BioDataTable", "Database", "BioData");
