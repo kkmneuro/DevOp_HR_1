@@ -55,6 +55,7 @@ namespace NeuroXChange.View.Training
             isRunning = true;
 
             controller.SetTrainingType(TrainingType.CompDay);
+            controller.WriteUserAction(UserAction.TrainingStarted, "Comp day");
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed += bpCycleFinishedHandler;
             currentStep = -1;
@@ -64,7 +65,7 @@ namespace NeuroXChange.View.Training
             GetNextCycle(null, null);
         }
 
-        public void StopCompDay()
+        public void StopCompDay(bool manualStop)
         {
             if (!isRunning)
             {
@@ -73,6 +74,7 @@ namespace NeuroXChange.View.Training
             isRunning = false;
 
             controller.SetTrainingType(TrainingType.NoTraining);
+            controller.WriteUserAction(manualStop ? UserAction.TrainingManuallyStopped : UserAction.TrainingFinished);
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed -= bpCycleFinishedHandler;
             textLabel.Text = string.Empty;
@@ -93,7 +95,7 @@ namespace NeuroXChange.View.Training
 
             if (currentStep >= stepsData.Count -1)
             {
-                StopCompDay();
+                StopCompDay(false);
                 return;
             }
 
@@ -134,7 +136,7 @@ namespace NeuroXChange.View.Training
             }
             else
             {
-                StopCompDay();
+                StopCompDay(true);
                 view.breathPacerWindow.breathPacerControl.Continue();
                 controller.ResumeTraining();
             }
@@ -142,15 +144,26 @@ namespace NeuroXChange.View.Training
 
         private void startButton_Click(object sender, EventArgs e)
         {
+            bool newRun;
             if (!isRunning)
             {
                 StartCompDay();
+                newRun = true;
+            }
+            else
+            {
+                newRun = false;
             }
 
             view.breathPacerWindow.breathPacerControl.Continue();
             pauseButton.Enabled = true;
             startButton.Enabled = false;
             controller.ResumeTraining();
+
+            if (!newRun)
+            {
+                controller.WriteUserAction(UserAction.TrainingResumed);
+            }
         }
 
         private void pauseButton_Click(object sender, EventArgs e)
@@ -159,6 +172,7 @@ namespace NeuroXChange.View.Training
             pauseButton.Enabled = false;
             startButton.Enabled = true;
             controller.PauseTraining();
+            controller.WriteUserAction(UserAction.TrainingPaused);
         }
     }
 }

@@ -17,6 +17,11 @@ namespace NeuroXChange.Controller
             this.model = model;
         }
 
+        public void WriteUserAction(UserAction action, string data = null)
+        {
+            model.localDatabaseConnector.WriteUserAction(action, data);
+        }
+
         public void ChangeActiveModel(int modelInd)
         {
             model.setActiveBehavioralModelIndex(modelInd);

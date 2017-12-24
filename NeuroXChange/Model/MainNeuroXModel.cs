@@ -140,6 +140,7 @@ namespace NeuroXChange.Model
 
         public void StartProcessing()
         {
+            localDatabaseConnector.WriteUserAction(UserAction.ApplicationStarted);
             bioDataProvider.StartProcessing();
             fixApiModel.StartProcessing();
         }
@@ -153,6 +154,7 @@ namespace NeuroXChange.Model
                 bioDataProvider.StopProcessing();
             if (fixApiModel != null)
                 fixApiModel.StopProcessing();
+            localDatabaseConnector.WriteUserAction(UserAction.ApplicationClosed);
         }
 
 

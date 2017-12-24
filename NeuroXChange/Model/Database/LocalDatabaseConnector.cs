@@ -23,11 +23,11 @@ namespace NeuroXChange.Model.Database
         private string priceAtBioDataTickTable;
 
         private string instrumentTable;
+        public bool saveUserActions { get; private set; }
+        private string userActionsTable;
+        private string userActionsDescriptionTable;
 
         private OleDbConnection connection = null;
-        private OleDbCommand generalCmd = null;
-        private OleDbCommand biodataCmd = null;
-        private OleDbCommand priceCmd = null;
 
         public LocalDatabaseConnector(IniFileReader iniFileReader)
         {
@@ -46,7 +46,11 @@ namespace NeuroXChange.Model.Database
 
             instrumentTable = iniFileReader.Read("InstrumentTable", "Database", "Instrument");
 
-            if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick)
+            saveUserActions = bool.Parse(iniFileReader.Read("SaveUserActions", "Database", "true"));
+            userActionsTable = iniFileReader.Read("UserActionsTable", "Database", "UserActions");
+            userActionsDescriptionTable = iniFileReader.Read("UserActionsDescription", "Database", "UserActionsDescription");
+
+            if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick && !saveUserActions)
             {
                 return;
             }
@@ -69,13 +73,15 @@ namespace NeuroXChange.Model.Database
                 return;
             }
 
+            OleDbCommand cmd;
+
             // try to open database
             try
             {
                 connection = new OleDbConnection(connectionString);
                 connection.Open();
-                generalCmd = new OleDbCommand();
-                generalCmd.Connection = connection;
+                cmd = new OleDbCommand();
+                cmd.Connection = connection;
             }
             catch (Exception e)
             {
@@ -103,15 +109,12 @@ namespace NeuroXChange.Model.Database
                             [ApplicationStates] INTEGER
                         )",
                         bioDataTable);
-                    generalCmd = new OleDbCommand();
-                    generalCmd.Connection = connection;
-                    generalCmd.CommandText = commandText;
-                    generalCmd.ExecuteNonQuery();
+                    cmd = new OleDbCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandText = commandText;
+                    cmd.ExecuteNonQuery();
                 }
                 catch { }
-
-                biodataCmd = new OleDbCommand();
-                biodataCmd.Connection = connection;
             }
 
             // can't save PriceAtBioDataTick without BioData
@@ -125,16 +128,16 @@ namespace NeuroXChange.Model.Database
                         @"CREATE TABLE {0}
                         ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Title] VARCHAR(40) NOT NULL);",
                         instrumentTable);
-                    generalCmd.CommandText = commandText;
-                    generalCmd.ExecuteNonQuery();
+                    cmd.CommandText = commandText;
+                    cmd.ExecuteNonQuery();
 
                     commandText = string.Format(
                         @"INSERT INTO {0}
                         ([ID], [Title])
                         VALUES (1, 'EURUSD');",
                         instrumentTable);
-                    generalCmd.CommandText = commandText;
-                    generalCmd.ExecuteNonQuery();
+                    cmd.CommandText = commandText;
+                    cmd.ExecuteNonQuery();
                 }
                 catch { }
             }
@@ -144,15 +147,12 @@ namespace NeuroXChange.Model.Database
                 try
                 {
                     var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Instrument_ID] NUMBER NOT NULL, [Time] DATETIME NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
+                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [InstrumentID] NUMBER NOT NULL, [Time] DATETIME NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
                         tickPriceTable);
-                    generalCmd.CommandText = commandStr;
-                    generalCmd.ExecuteNonQuery();
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
                 }
                 catch { }
-
-                priceCmd = new OleDbCommand();
-                priceCmd.Connection = connection;
             }
 
             if (savePriceAtBioDataTick)
@@ -160,10 +160,53 @@ namespace NeuroXChange.Model.Database
                 try
                 {
                     var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Instrument_ID] NUMBER NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
+                        "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [InstrumentID] NUMBER NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
                         priceAtBioDataTickTable);
-                    generalCmd.CommandText = commandStr;
-                    generalCmd.ExecuteNonQuery();
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
+                }
+                catch { }
+            }
+
+            if (saveUserActions)
+            {
+                try
+                {
+                    var commandStr = string.Format(
+                        "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Description] TEXT NOT NULL);",
+                        userActionsDescriptionTable);
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
+
+                    foreach (var action in Enum.GetValues(typeof(UserAction)))
+                    {
+                        commandStr = string.Format(
+                            @"INSERT INTO {0}
+                            ([ID], [Description])
+                            VALUES ({1}, '{2}')",
+                            userActionsDescriptionTable, (int)action, action);
+                        cmd.CommandText = commandStr;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    commandStr = string.Format(
+                        @"CREATE TABLE {0}
+                        ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                        [ActionID] NUMBER NOT NULL,
+                        [Time] DATETIME NOT NULL,
+                        [Data] TEXT,
+                        CONSTRAINT FK_Action FOREIGN KEY (ActionID)
+                        REFERENCES {1}(ID));",
+                        userActionsTable, userActionsDescriptionTable);
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
+
+                    commandStr = string.Format(
+                        @"CREATE INDEX FK_Action_IDX
+                        ON {0} (ActionID);",
+                        userActionsTable);
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
                 }
                 catch { }
             }
@@ -195,11 +238,11 @@ namespace NeuroXChange.Model.Database
                 data.applicationStates
                 );
 
-            biodataCmd.CommandText = commandText;
-            biodataCmd.ExecuteNonQuery();
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQuery();
 
-            biodataCmd.CommandText = "Select @@Identity";
-            int id = (int)biodataCmd.ExecuteScalar();
+            cmd.CommandText = "Select @@Identity";
+            int id = (int)cmd.ExecuteScalar();
 
             return id;
         }
@@ -213,7 +256,7 @@ namespace NeuroXChange.Model.Database
 
             var commandText = string.Format(
                 @"INSERT INTO {0} 
-                ([Instrument_ID], [Time], [SellPrice], [BuyPrice])
+                ([InstrumentID], [Time], [SellPrice], [BuyPrice])
                 VALUES ({1}, '{2}', {3}, {4});",
                 tickPriceTable,
                 1,
@@ -221,8 +264,8 @@ namespace NeuroXChange.Model.Database
                 tickPrice.sellString,
                 tickPrice.buyString);
 
-            priceCmd.CommandText = commandText;
-            priceCmd.ExecuteNonQueryAsync();
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQueryAsync();
         }
 
         public void WritePriceAtBioDataTick(TickPrice tickPrice, long biodataId)
@@ -234,7 +277,7 @@ namespace NeuroXChange.Model.Database
 
             var commandText = string.Format(
                 @"INSERT INTO {0}
-                ([ID], [Instrument_ID], [SellPrice], [BuyPrice])
+                ([ID], [InstrumentID], [SellPrice], [BuyPrice])
                 VALUES ({1}, {2}, {3}, {4});",
                 priceAtBioDataTickTable,
                 biodataId,
@@ -242,9 +285,33 @@ namespace NeuroXChange.Model.Database
                 tickPrice.sellString,
                 tickPrice.buyString);
 
-            // use biodataCmd because it is in the same thread
-            biodataCmd.CommandText = commandText;
-            biodataCmd.ExecuteNonQueryAsync();
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQueryAsync();
+        }
+
+        public void WriteUserAction(UserAction action, string data = null)
+        {
+            WriteUserAction(action, DateTime.Now, data);
+        }
+
+        public void WriteUserAction(UserAction action, DateTime time, string data = null)
+        {
+            if (!DatabaseConnected || !saveUserActions)
+            {
+                return;
+            }
+
+            var commandText = string.Format(
+                @"INSERT INTO {0} 
+                ([ActionID], [Time], [Data])
+                VALUES ({1}, '{2}', '{3}');",
+                userActionsTable,
+                (int)action,
+                time,
+                data);
+
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQueryAsync();
         }
     }
 }
