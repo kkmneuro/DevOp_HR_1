@@ -77,6 +77,11 @@ namespace NeuroXChange.View.Training
             view.breathPacerWindow.breathPacerControl.CycleElapsed -= bpCycleFinishedHandler;
             textLabel.Text = string.Empty;
             pictureBox.ImageLocation = null;
+
+            // make start button available
+            view.breathPacerWindow.breathPacerControl.Stop();
+            pauseButton.Enabled = false;
+            startButton.Enabled = true;
         }
 
         private void GetNextCycle(object sender, PacerEventArgs e)
