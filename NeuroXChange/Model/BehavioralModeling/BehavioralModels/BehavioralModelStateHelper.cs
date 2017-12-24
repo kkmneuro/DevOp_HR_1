@@ -8,6 +8,8 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModels
 {
     public static class BehavioralModelStateHelper
     {
+        public static readonly string[] directionName = { "Buy", "Sell", "No direction" };
+
         public static string StateToString(BehavioralModelState state)
         {
             string result = string.Empty;

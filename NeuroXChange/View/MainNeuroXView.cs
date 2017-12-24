@@ -47,7 +47,6 @@ namespace NeuroXChange.View
         public LogoWindow logoWindow { get; private set; }
 
         private TickPrice lastPrice = new TickPrice();
-        private string[] directionName = { "Buy", "Sell", "No direction" };
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
@@ -66,7 +65,7 @@ namespace NeuroXChange.View
             rawInformationWindow = new RawInformationWindow();
             rawInformationWindow.Owner = mainWindow;
 
-            newOrderWindow = new NewOrderWindow();
+            newOrderWindow = new NewOrderWindow(model, controller);
             newOrderWindow.Owner = mainWindow;
 
             chartsWindow = new ChartsWindow();
@@ -133,60 +132,17 @@ namespace NeuroXChange.View
             switch (state)
             {
                 case BehavioralModelState.InitialState:
-                    {
-                        newOrderWindow.btnBuy.Enabled = false;
-                        newOrderWindow.btnSell.Enabled = false;
-                        newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                        newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                        break;
-                    }
                 case BehavioralModelState.ReadyToTrade:
-                    {
-                        newOrderWindow.Show();
-                        newOrderWindow.btnBuy.Enabled = false;
-                        newOrderWindow.btnSell.Enabled = false;
-                        newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                        newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                        break;
-                    }
                 case BehavioralModelState.Preactivation:
-                    {
-                        newOrderWindow.Show();
-                        newOrderWindow.btnBuy.Enabled = true;
-                        newOrderWindow.btnSell.Enabled = true;
-                        newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
-                        newOrderWindow.btnSell.BackColor = Color.Red;
-                        break;
-                    }
                 case BehavioralModelState.DirectionConfirmed:
                     {
-                        int direction = activeModel.OrderDirection;
-                        newOrderWindow.Show();
-                        newOrderWindow.labStepName.Text = string.Format("Direction confirmed ({0})", directionName[direction]);
-                        newOrderWindow.btnBuy.Enabled = direction == 0;
-                        newOrderWindow.btnSell.Enabled = direction == 1;
-                        if (direction == 0)
-                        {
-                            newOrderWindow.btnBuy.BackColor = Color.RoyalBlue;
-                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                        }
-                        else if (direction == 1)
-                        {
-                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                            newOrderWindow.btnSell.BackColor = Color.Red;
-                        }
-                        else
-                        {
-                            newOrderWindow.btnBuy.BackColor = SystemColors.Control;
-                            newOrderWindow.btnSell.BackColor = SystemColors.Control;
-                        }
                         break;
                     }
                 case BehavioralModelState.ExecuteOrder:
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
+                            BehavioralModelStateHelper.directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
@@ -194,12 +150,13 @@ namespace NeuroXChange.View
                     {
                         int direction = activeModel.OrderDirection;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
-                            directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
+                            BehavioralModelStateHelper.directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);
                         break;
                     }
             }
 
+            newOrderWindow.UpdateInterfaceFromModelState(state);
         }
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
