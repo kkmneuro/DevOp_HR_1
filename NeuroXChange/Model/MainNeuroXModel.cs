@@ -53,6 +53,7 @@ namespace NeuroXChange.Model
             }
         }
         public int TrainingStep { get; set; }
+        public ApplicationState ApplicationStates { get; set; }
 
 
         // Query condition only for showing popup message purpose
@@ -126,6 +127,8 @@ namespace NeuroXChange.Model
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
                 logicQuery1Condition = new LogicQuery1Condition(100, 60);
+
+                ApplicationStates = ApplicationState.UsualState;
             }
             catch (Exception e)
             {

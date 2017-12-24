@@ -301,6 +301,7 @@ namespace NeuroXChange.View
                     builder.Append("AccZ: " + bioData.accZ.ToString("0.##") + "\r\n");
                     builder.Append("TrainingType: " + bioData.trainingType + "\r\n");
                     builder.Append("TrainingStep: " + bioData.trainingStep + "\r\n");
+                    builder.Append("ApplicationStates: " + bioData.applicationStates + "\r\n");
 
                     rawInformationWindow.bioDataRTB.Text = builder.ToString();
 

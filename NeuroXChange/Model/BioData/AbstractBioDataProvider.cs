@@ -23,6 +23,7 @@ namespace NeuroXChange.Model.BioData
         {
             data.trainingType = (int)model.TrainingType;
             data.trainingStep = model.TrainingStep;
+            data.applicationStates = (int)model.ApplicationStates;
         }
 
         // ---- Observable pattern implementation

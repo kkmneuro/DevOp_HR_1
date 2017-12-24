@@ -64,5 +64,15 @@ namespace NeuroXChange.Controller
         {
             model.TrainingStep = trainingStep;
         }
+
+        public void PauseTraining()
+        {
+            model.ApplicationStates |= ApplicationState.LiveModePaused;
+        }
+
+        public void ResumeTraining()
+        {
+            model.ApplicationStates &= ~ApplicationState.LiveModePaused;
+        }
     }
 }

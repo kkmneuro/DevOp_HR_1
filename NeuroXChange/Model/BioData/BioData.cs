@@ -19,6 +19,7 @@ namespace NeuroXChange.Model.BioData
         public double accZ;
         public int trainingType;
         public int trainingStep;
+        public int applicationStates;
 
         // implementation dependent payload
         public object payload;
@@ -36,6 +37,7 @@ namespace NeuroXChange.Model.BioData
             data.accZ = Double.Parse(reader["AccZ"].ToString());
             data.trainingType = Int32.Parse(reader["TrainingType"].ToString());
             data.trainingStep = Int32.Parse(reader["TrainingStep"].ToString());
+            data.applicationStates = Int32.Parse(reader["ApplicationStates"].ToString());
             if (hasPrice)
             {
                 data.payload = new string[] {reader["SellPrice"].ToString(), reader["BuyPrice"].ToString() };

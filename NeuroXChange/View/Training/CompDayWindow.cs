@@ -77,8 +77,6 @@ namespace NeuroXChange.View.Training
             view.breathPacerWindow.breathPacerControl.CycleElapsed -= bpCycleFinishedHandler;
             textLabel.Text = string.Empty;
             pictureBox.ImageLocation = null;
-
-            pauseButton_Click(null, null);
         }
 
         private void GetNextCycle(object sender, PacerEventArgs e)
@@ -127,13 +125,13 @@ namespace NeuroXChange.View.Training
         {
             if (Visible)
             {
-                StartCompDay();
                 startButton_Click(null, null);
             }
             else
             {
                 StopCompDay();
                 view.breathPacerWindow.breathPacerControl.Continue();
+                controller.ResumeTraining();
             }
         }
 
@@ -147,6 +145,7 @@ namespace NeuroXChange.View.Training
             view.breathPacerWindow.breathPacerControl.Continue();
             pauseButton.Enabled = true;
             startButton.Enabled = false;
+            controller.ResumeTraining();
         }
 
         private void pauseButton_Click(object sender, EventArgs e)
@@ -154,6 +153,7 @@ namespace NeuroXChange.View.Training
             view.breathPacerWindow.breathPacerControl.Stop();
             pauseButton.Enabled = false;
             startButton.Enabled = true;
+            controller.PauseTraining();
         }
     }
 }

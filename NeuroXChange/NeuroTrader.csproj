@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Common\IniFileReader.cs" />
     <Compile Include="Common\StringHelpers.cs" />
+    <Compile Include="Model\ApplicationState.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AccYCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AbstractBehavioralModelCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRReadyToTradeCondition.cs" />

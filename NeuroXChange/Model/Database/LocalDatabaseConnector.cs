@@ -99,7 +99,8 @@ namespace NeuroXChange.Model.Database
                             [AccY] DOUBLE,
                             [AccZ] DOUBLE,
                             [TrainingType] INTEGER,
-                            [TrainingStep] INTEGER
+                            [TrainingStep] INTEGER,
+                            [ApplicationStates] INTEGER
                         )",
                         bioDataTable);
                     generalCmd = new OleDbCommand();
@@ -179,8 +180,8 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(@"
-                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep)
-                    VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9})",
+                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep, ApplicationStates)
+                    VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9}, {10})",
                 bioDataTable,
                 data.time,
                 data.temperature,
@@ -190,7 +191,8 @@ namespace NeuroXChange.Model.Database
                 data.accY,
                 data.accZ,
                 data.trainingType,
-                data.trainingStep
+                data.trainingStep,
+                data.applicationStates
                 );
 
             biodataCmd.CommandText = commandText;
