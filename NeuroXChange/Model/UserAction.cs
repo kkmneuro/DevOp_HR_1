@@ -11,6 +11,7 @@
         TrainingManuallyStopped,
         TrainingPaused,
         TrainingResumed,
-        TrainingFinished
+        TrainingFinished,
+        ManualPositionChosen
     }
 }

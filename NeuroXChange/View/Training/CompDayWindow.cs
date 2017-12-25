@@ -122,9 +122,19 @@ namespace NeuroXChange.View.Training
             {
                 pictureBox.ImageLocation = imagePath;
                 pictureBox.Load();
-            } else
+            }
+            else
             {
                 pictureBox.ImageLocation = null;
+            }
+
+            if (type == "Selection_Manual_Position_Chose")
+            {
+                selectManualPosChoseTLP1.Visible = true;
+            }
+            else
+            {
+                selectManualPosChoseTLP1.Visible = false;
             }
         }
 
@@ -173,6 +183,32 @@ namespace NeuroXChange.View.Training
             startButton.Enabled = true;
             controller.PauseTraining();
             controller.WriteUserAction(UserAction.TrainingPaused);
+        }
+
+        private static readonly string[] manualPositionChoseStrings =
+            { "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
+
+        private void variantBtnClicked(object sender, EventArgs e)
+        {
+            int variant = 0;
+            if (sender == variant1btn)
+                variant = 1;
+            else if (sender == variant2btn)
+                variant = 2;
+            else if (sender == variant3btn)
+                variant = 3;
+            else if (sender == variant4btn)
+                variant = 4;
+            else if (sender == variant5btn)
+                variant = 5;
+            else if (sender == variant6btn)
+                variant = 6;
+
+            var data = manualPositionChoseStrings[variant];
+            controller.WriteUserAction(UserAction.ManualPositionChosen, data);
+
+            view.breathPacerWindow.breathPacerControl.ElapsedCycleCount = lastCyclesToFinish;
+            GetNextCycle(null, null);
         }
     }
 }

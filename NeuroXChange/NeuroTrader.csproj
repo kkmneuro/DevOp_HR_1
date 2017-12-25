@@ -366,6 +366,12 @@
     <Content Include="3dparty\TTLLiveCtrl.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\CompDaySelectionButtons\Singular_Short_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Singular_Long_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Short_Long_2_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Short_Long_1_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Long_Short_2_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Long_Short_1_small_15.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

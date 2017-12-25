@@ -8,7 +8,7 @@
 55	Text	Ideal Account Value = 20 pips		5.5	2
 56	Text_Image	Security Name	Data\Training\Security_Name_Broad_Internal_Analysis.png	5.5	2
 57	Text	Security Name		5.5	2
-58	Selection	SELECTION		5.5	2
+58	Selection?	SELECTION		5.5	2
 59	Text_Image	Ideal Strategic Chart	Data\Training\Ideal_Strategic_Chart_Broad_Internal_Analysis.png	5.5	2
 60	Text_Image	Ideal Strategic Chart - Long	Data\Training\Maximum_Reversal_Long_Broad_Internal.png	5.5	2
 61	Text_Image	Ideal Strategic Chart - Short	Data\Training\Maimum_Reversal_Short_Broad_Internal.png	5.5	2
@@ -24,7 +24,7 @@
 71	Text_Image	Multi_Short-Long_2	Data\Training\Multi_Short_Long_2.png	5.5	2
 72	Text_Image	Singular_Long	Data\Training\Singular_Long.png	5.5	2
 73	Text_Image	Singular_Short	Data\Training\Singular_Short.png	5.5	2
-74	Text	SELECTION		5.5	2
+74	Selection_Manual_Position_Chose	Make your selection for the direction		5.5	2
 81	Text_Image	Profit Target	Data\Training\Profit_Target_Broad_Internal_Analysis.png	5.5	2
 82	Text_Image	Profit Target	Data\Training\ProfitTarget.png	5.5	2
 83	Text	SELECTION		5.5	3

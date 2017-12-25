@@ -83,9 +83,39 @@ namespace NeuroXChange.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Neuro_Xchange_logo {
+        internal static System.Drawing.Bitmap Multi_Long_Short_1_small_15 {
             get {
-                object obj = ResourceManager.GetObject("Neuro_Xchange_logo", resourceCulture);
+                object obj = ResourceManager.GetObject("Multi_Long_Short_1_small_15", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Multi_Long_Short_2_small_15 {
+            get {
+                object obj = ResourceManager.GetObject("Multi_Long_Short_2_small_15", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Multi_Short_Long_1_small_15 {
+            get {
+                object obj = ResourceManager.GetObject("Multi_Short_Long_1_small_15", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Multi_Short_Long_2_small_15 {
+            get {
+                object obj = ResourceManager.GetObject("Multi_Short_Long_2_small_15", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -96,6 +126,26 @@ namespace NeuroXChange.Properties {
         internal static System.Drawing.Bitmap NT_Logo {
             get {
                 object obj = ResourceManager.GetObject("NT_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Singular_Long_small_15 {
+            get {
+                object obj = ResourceManager.GetObject("Singular_Long_small_15", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Singular_Short_small_15 {
+            get {
+                object obj = ResourceManager.GetObject("Singular_Short_small_15", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

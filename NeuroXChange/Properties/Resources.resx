@@ -124,10 +124,25 @@
   <data name="Indicator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Indicator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Neuro_Xchange_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Neuro-Xchange_logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="NT_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NT_Logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Multi_Long_Short_1_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Multi_Long_Short_1_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Multi_Long_Short_2_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Multi_Long_Short_2_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Multi_Short_Long_1_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Multi_Short_Long_1_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Multi_Short_Long_2_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Multi_Short_Long_2_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Singular_Long_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Singular_Long_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Singular_Short_small_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompDaySelectionButtons\Singular_Short_small_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
