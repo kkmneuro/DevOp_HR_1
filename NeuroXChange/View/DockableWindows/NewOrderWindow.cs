@@ -16,14 +16,16 @@ namespace NeuroXChange.View
     public partial class NewOrderWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
         private MainNeuroXModel model;
-        MainNeuroXController controller;
+        private MainNeuroXController controller;
+        private MainNeuroXView view;
 
-        public NewOrderWindow(MainNeuroXModel model, MainNeuroXController controller)
+        public NewOrderWindow(MainNeuroXModel model, MainNeuroXController controller, MainNeuroXView view)
         {
             InitializeComponent();
 
             this.model = model;
             this.controller = controller;
+            this.view = view;
         }
 
         public void UpdateInterfaceFromModelState(BehavioralModelState state)
@@ -103,14 +105,10 @@ namespace NeuroXChange.View
             }
         }
 
-        private void btnSell_Click(object sender, EventArgs e)
+        private void buysell_button_Click(object sender, EventArgs e)
         {
-            //
-        }
-
-        private void btnBuy_Click(object sender, EventArgs e)
-        {
-            //
+            int direction = sender == btnBuy ? 0 : 1;
+            view.manualOrderConfirmationWindow.ShowDialog(direction);
         }
 
         private void CBlinkButtonsToActiveBM_CheckedChanged(object sender, EventArgs e)

@@ -48,7 +48,7 @@
             this.btnBuy.Text = "BUY\r\n    1.23435";
             this.btnBuy.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnBuy.UseVisualStyleBackColor = false;
-            this.btnBuy.Click += new System.EventHandler(this.btnBuy_Click);
+            this.btnBuy.Click += new System.EventHandler(this.buysell_button_Click);
             // 
             // btnSell
             // 
@@ -64,7 +64,7 @@
             this.btnSell.Text = "          SELL\r\n   1.23455";
             this.btnSell.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnSell.UseVisualStyleBackColor = false;
-            this.btnSell.Click += new System.EventHandler(this.btnSell_Click);
+            this.btnSell.Click += new System.EventHandler(this.buysell_button_Click);
             // 
             // labStepName
             // 

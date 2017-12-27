@@ -14,6 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Common;
 using NeuroXChange.View.Training;
+using NeuroXChange.View.DialogWindows;
 
 namespace NeuroXChange.View
 {
@@ -45,6 +46,7 @@ namespace NeuroXChange.View
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
         public LogoWindow logoWindow { get; private set; }
+        public ManualOrderConfirmationWindow manualOrderConfirmationWindow { get; private set; }
 
         private TickPrice lastPrice = new TickPrice();
 
@@ -65,7 +67,7 @@ namespace NeuroXChange.View
             rawInformationWindow = new RawInformationWindow();
             rawInformationWindow.Owner = mainWindow;
 
-            newOrderWindow = new NewOrderWindow(model, controller);
+            newOrderWindow = new NewOrderWindow(model, controller, this);
             newOrderWindow.Owner = mainWindow;
 
             chartsWindow = new ChartsWindow();
@@ -97,6 +99,8 @@ namespace NeuroXChange.View
             profitabilityWindow = new ProfitabilityWindow(model);
             profitabilityWindow.Owner = mainWindow;
 
+            // dialog windows creation
+
             logoWindow = new LogoWindow();
             logoWindow.ShowDialog(mainWindow);
 
@@ -104,9 +108,15 @@ namespace NeuroXChange.View
             customDialogWindow.Show();
             customDialogWindow.Hide();
 
+            manualOrderConfirmationWindow = new ManualOrderConfirmationWindow();
+
+            // events registering
+
             model.RegisterObserver(this);
             model.bioDataProvider.RegisterObserver(this);
             model.fixApiModel.RegisterObserver(this);
+
+            // other stuff
 
             allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface", "true"));
             if (allWindowsOnTop)
