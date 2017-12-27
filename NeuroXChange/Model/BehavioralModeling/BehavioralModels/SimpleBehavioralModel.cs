@@ -108,7 +108,13 @@ namespace NeuroXChange.Model
                 {
                     previousTransitionToDirectionConfirmed = data.time;
                 }
-                if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
+                if (PreviousTickState == BehavioralModelState.ConfirmationFilled
+
+                    // TODO: update code to have several opened orders
+                    // this is a temporal limitation to have only one opened order
+                    && (TotalValue == 0 ||
+                        (TotalValue < 0 && OrderDirection == 0) ||
+                        (TotalValue > 0 && OrderDirection == 1)))
                 {
                     TradesTotal++;
                     TradesToday++;
