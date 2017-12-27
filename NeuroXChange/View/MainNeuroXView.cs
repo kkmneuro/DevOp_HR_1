@@ -108,7 +108,7 @@ namespace NeuroXChange.View
             customDialogWindow.Show();
             customDialogWindow.Hide();
 
-            manualOrderConfirmationWindow = new ManualOrderConfirmationWindow();
+            manualOrderConfirmationWindow = new ManualOrderConfirmationWindow(model);
 
             // events registering
 
@@ -503,6 +503,8 @@ namespace NeuroXChange.View
             mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
+                                   manualOrderConfirmationWindow.UpdateStopLossTakeProfit(price);
+
                                    newOrderWindow.btnSell.Text = "SELL\n\r    " + price.sellString;
                                    newOrderWindow.btnBuy.Text = "            BUY\n\r    " + price.buyString;
                                    lastPrice = price;
