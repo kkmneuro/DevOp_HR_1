@@ -503,7 +503,7 @@ namespace NeuroXChange.View
             mainWindow.BeginInvoke(
                                 (Action)(() =>
                                {
-                                   manualOrderConfirmationWindow.UpdateStopLossTakeProfit(price);
+                                   manualOrderConfirmationWindow.OnNext(price);
 
                                    newOrderWindow.btnSell.Text = "SELL\n\r    " + price.sellString;
                                    newOrderWindow.btnBuy.Text = "            BUY\n\r    " + price.buyString;

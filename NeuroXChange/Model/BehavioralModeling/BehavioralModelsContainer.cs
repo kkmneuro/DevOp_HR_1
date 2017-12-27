@@ -53,8 +53,8 @@ namespace NeuroXChange.Model.BehavioralModeling
         {
             // initialize order parameters
             int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "MarketOrders", "100000"));
-            int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders", "200"));
-            int takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "200"));
+            int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders", "60"));
+            int takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
             double pipSize = double.Parse(iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             // initialize dataset to save statistics

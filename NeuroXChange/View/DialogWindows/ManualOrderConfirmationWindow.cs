@@ -27,8 +27,8 @@ namespace NeuroXChange.View.DialogWindows
 
             this.model = model;
 
-            stopLossPips = Int32.Parse(model.iniFileReader.Read("StopLossPips", "MarketOrders", "200"));
-            takeProfitPips = Int32.Parse(model.iniFileReader.Read("TakeProfitPips", "MarketOrders", "200"));
+            stopLossPips = Int32.Parse(model.iniFileReader.Read("StopLossPips", "MarketOrders", "60"));
+            takeProfitPips = Int32.Parse(model.iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
             pipSize = double.Parse(model.iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             currentDirection = 0;
@@ -51,7 +51,7 @@ namespace NeuroXChange.View.DialogWindows
                 tbOrderDirection.BackColor = Color.Red;
             }
             tbOrderDirection.Select(0, 0);
-            UpdateStopLossTakeProfit(lastPrice, true);
+            UpdateStopLossTakeProfit();
             var dialogResult = ShowDialog();
 
             if (dialogResult == DialogResult.OK)
@@ -62,25 +62,28 @@ namespace NeuroXChange.View.DialogWindows
             return dialogResult;
         }
 
-        public void UpdateStopLossTakeProfit(TickPrice price, bool forceUpdate = false)
+        public void OnNext(TickPrice price)
         {
             lastPrice = price;
 
-            if (!forceUpdate && !Visible)
+            if (Visible)
             {
-                return;
+                UpdateStopLossTakeProfit();
             }
+        }
 
+        private void UpdateStopLossTakeProfit()
+        {
             if (rbPTSystemDefault.Checked)
             {
                 double takeProfit;
                 if (currentDirection == 0)
                 {
-                    takeProfit = price.buy + takeProfitPips * pipSize;
+                    takeProfit = lastPrice.buy + takeProfitPips * pipSize;
                 }
                 else
                 {
-                    takeProfit = price.sell - takeProfitPips * pipSize;
+                    takeProfit = lastPrice.sell - takeProfitPips * pipSize;
                 }
                 tbProfitTarget.Text = takeProfit.ToString();
             }
@@ -90,11 +93,11 @@ namespace NeuroXChange.View.DialogWindows
                 double stopLoss;
                 if (currentDirection == 0)
                 {
-                    stopLoss = price.buy - stopLossPips * pipSize;
+                    stopLoss = lastPrice.buy - stopLossPips * pipSize;
                 }
                 else
                 {
-                    stopLoss = price.sell + stopLossPips * pipSize;
+                    stopLoss = lastPrice.sell + stopLossPips * pipSize;
                 }
                 tbStopLoss.Text = stopLoss.ToString();
             }
@@ -103,7 +106,7 @@ namespace NeuroXChange.View.DialogWindows
         private void rbSystemDefault_CheckedChanged(object sender, EventArgs e)
         {
             tbProfitTarget.Enabled = !rbPTSystemDefault.Checked;
-            UpdateStopLossTakeProfit(lastPrice);
+            UpdateStopLossTakeProfit();
         }
 
         private void tbProfitTarget_KeyPress(object sender, KeyPressEventArgs e)
