@@ -12,6 +12,12 @@
         TrainingPaused,
         TrainingResumed,
         TrainingFinished,
-        ManualPositionChosen
+        ManualPositionChosen,
+
+        // manual traiding
+        PositionManuallyOpened = 100,
+        PositionManuallyClosed,
+        TakeProfitTriggered,
+        StopLossTriggered
     }
 }

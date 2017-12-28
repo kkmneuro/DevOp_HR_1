@@ -108,7 +108,7 @@ namespace NeuroXChange.View
             customDialogWindow.Show();
             customDialogWindow.Hide();
 
-            manualOrderConfirmationWindow = new ManualOrderConfirmationWindow(model);
+            manualOrderConfirmationWindow = new ManualOrderConfirmationWindow(model, controller);
 
             // events registering
 

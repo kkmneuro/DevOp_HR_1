@@ -77,7 +77,8 @@
             "Behavioral model 13",
             "Behavioral model 14",
             "Behavioral model 15",
-            "Behavioral model 16"});
+            "Behavioral model 16",
+            "Manual trade model"});
             this.modelCB.Location = new System.Drawing.Point(41, 4);
             this.modelCB.Name = "modelCB";
             this.modelCB.Size = new System.Drawing.Size(124, 21);

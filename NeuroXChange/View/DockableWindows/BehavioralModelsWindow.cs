@@ -21,10 +21,6 @@ namespace NeuroXChange.View
             InitializeComponent();
         }
 
-        private void BehavioralModelsWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-        }
-
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             switch (e.ColumnIndex)

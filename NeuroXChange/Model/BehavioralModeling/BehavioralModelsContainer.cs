@@ -13,6 +13,8 @@ namespace NeuroXChange.Model.BehavioralModeling
 {
     public class BehavioralModelsContainer
     {
+        private MainNeuroXModel mainNeuroXModel;
+
         // statistics that could be used for representation in UI
         public DataSet behavioralModelsDataSet { get; private set; }
         public string behavioralModelsDataTableName { get; private set; }
@@ -42,6 +44,11 @@ namespace NeuroXChange.Model.BehavioralModeling
                 {
                     return;
                 }
+                // TODO: refactor working with manual trading model
+                if (value == 16)
+                {
+                    return;
+                }
                 int oldActiveIndex = activeBehavioralModelIndex;
                 activeBehavioralModelIndex = value;
                 UpdateActiveTag(oldActiveIndex);
@@ -49,8 +56,10 @@ namespace NeuroXChange.Model.BehavioralModeling
             }
         }
 
-        public BehavioralModelsContainer(IniFileReader iniFileReader)
+        public BehavioralModelsContainer(MainNeuroXModel mainNeuroXModel, IniFileReader iniFileReader)
         {
+            this.mainNeuroXModel = mainNeuroXModel;
+
             // initialize order parameters
             int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "MarketOrders", "100000"));
             int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders", "60"));
@@ -169,7 +178,7 @@ namespace NeuroXChange.Model.BehavioralModeling
 
 
             // initialize behavioral models
-            BehavioralModelsCount = 16;
+            BehavioralModelsCount = 17;
             behavioralModels = new SimpleBehavioralModel[BehavioralModelsCount];
 
    
@@ -178,6 +187,20 @@ namespace NeuroXChange.Model.BehavioralModeling
             {
                 var model = new SimpleBehavioralModel();
                 behavioralModels[i] = model;
+                model.localDatabaseConnector = mainNeuroXModel.localDatabaseConnector;
+
+                // set constants
+                model.LotSize = lotSize;
+                model.StopLossPips = stopLossPips;
+                model.TakeProfitPips = takeProfitPips;
+                model.PipSize = pipSize;
+
+                // model 16 (17th if numerated from 1) is manual trading model
+                // TODO: refactor
+                if (i == 16)
+                {
+                    break;
+                }
 
                 if (i <= 5 || i == 12 || i == 13)
                 {
@@ -241,11 +264,6 @@ namespace NeuroXChange.Model.BehavioralModeling
 
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
                 model.transitions.Add(confirmationFilledToInitialStateTransition);
-
-                model.LotSize = lotSize;
-                model.StopLossPips = stopLossPips;
-                model.TakeProfitPips = takeProfitPips;
-                model.PipSize = pipSize;
             }
 
 
@@ -253,7 +271,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
                 var row = behavioralModelsDataTable.NewRow();
-                row["Model"] = i + 1;
+                row["Model"] = i < 16 ? (i + 1).ToString() : "Manual";
                 behavioralModels[i].DataRowInBehavioralModelsWindow = row;
                 behavioralModelsDataTable.Rows.Add(row);
                 behavioralModels[i].UpdateStatistics();
@@ -293,6 +311,12 @@ namespace NeuroXChange.Model.BehavioralModeling
         // update statistics for specific model
         private void UpdateActiveTag(int modelInd)
         {
+            // TODO: refactor working with manual trade model
+            if (modelInd >= 16)
+            {
+                return;
+            }
+
             var modelIndStr = (modelInd + 1).ToString();
             if (modelInd == ActiveBehavioralModelIndex)
             {

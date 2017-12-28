@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NeuroXChange.Model;
 using NeuroXChange.Model.Training;
+using NeuroXChange.Model.FixApi;
 
 namespace NeuroXChange.Controller
 {
@@ -78,6 +79,14 @@ namespace NeuroXChange.Controller
         public void ResumeTraining()
         {
             model.ApplicationStates &= ~ApplicationState.LiveModePaused;
+        }
+
+        public bool ManualTrade(
+            int direction, TickPrice price, double takeProfit, double stopLoss)
+        {
+            // TODO: generalise manual trade model number
+            return model.behavioralModelsContainer.behavioralModels[16].ManualTrade(
+                direction, price, takeProfit, stopLoss);
         }
     }
 }

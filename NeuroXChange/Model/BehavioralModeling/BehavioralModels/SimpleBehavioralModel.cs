@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.Transitions;
+using NeuroXChange.Model.Database;
 using NeuroXChange.Model.FixApi;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace NeuroXChange.Model
         public int lastNot74SubProtocolID { get; set; }
 
         public LinkedList<TransitionHistoryItem> TransitionHistory { get; private set; }
+        public LocalDatabaseConnector localDatabaseConnector { get; set;}
 
         public DataTable ProfitabilityHistory;
 
@@ -211,7 +213,7 @@ namespace NeuroXChange.Model
             {
                 closeDirection = 0;
                 CurrentPrice = LastPrice.buy;
-                priceDiff = OpenedOrderPrice - CurrentPrice;
+                priceDiff = CurrentPrice - OpenedOrderPrice;
             }
 
             int pipDifference = (int)(priceDiff / PipSize);
@@ -222,6 +224,20 @@ namespace NeuroXChange.Model
             }
 
             var CurrentDiff = priceDiff * TotalValue * LotSize;
+
+            if (pipDifference <= -StopLossPips)
+            {
+                localDatabaseConnector.WriteUserAction(
+                    UserAction.StopLossTriggered,
+                    string.Format("opened_direction:{0}, balance:{1}", TotalValue > 0 ? "buy" : "sell", CurrentDiff));
+            }
+            else
+            {
+                localDatabaseConnector.WriteUserAction(
+                    UserAction.TakeProfitTriggered,
+                    string.Format("opened_direction:{0}, balance:{1}", TotalValue > 0 ? "buy" : "sell", CurrentDiff));
+            }
+
 
             // closing open orders
             LastValue = -TotalValue;
@@ -263,6 +279,84 @@ namespace NeuroXChange.Model
             DataRowInBehavioralModelsWindow["All trades"] = TradesTotal;
             DataRowInBehavioralModelsWindow["Trades today"] = TradesToday;
             DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
+        }
+
+        public bool ManualTrade(
+            int direction, TickPrice price, double takeProfit, double stopLoss)
+        {
+            // TODO: this is copy-paste, need to move to separate method
+
+            // TODO: update code to have several opened orders
+            // this is a temporal limitation to have only one opened order
+            if (!(TotalValue == 0 ||
+                (TotalValue < 0 && direction == 0) ||
+                (TotalValue > 0 && direction == 1)))
+            {
+                return false;
+            }
+
+            // setup takeProfit and stopLoss
+            if (TotalValue == 0)
+            {
+                if (direction == 0)
+                {
+                    TakeProfitPips = (int) ((takeProfit - price.sell) / PipSize);
+                    StopLossPips = (int)((price.sell - stopLoss) / PipSize);
+                }
+                else
+                {
+                    TakeProfitPips = (int)((price.buy - takeProfit) / PipSize);
+                    StopLossPips = (int)((stopLoss - price.buy) / PipSize);
+                }
+                localDatabaseConnector.WriteUserAction(
+                    UserAction.PositionManuallyOpened,
+                    string.Format("direction:{0}, tp:{1}, sl:{2}", direction == 0 ? "buy" : "sell", TakeProfitPips, StopLossPips));
+            }
+
+            TradesTotal++;
+            TradesToday++;
+
+            // profitability calculation
+            var CurrentPrice = direction == 0 ? price.buy : price.sell;
+            var CurrentDiff = 0.0;
+            if (TotalValue == 0)
+            {
+                CurrentBalance = 0;
+                TotalValue = 0;
+                LastValue = direction == 0 ? 1 : -1;
+            }
+            else
+            {
+                CurrentDiff = (CurrentPrice - OpenedOrderPrice) * TotalValue * LotSize;
+                LastValue = -TotalValue;
+                localDatabaseConnector.WriteUserAction(
+                    UserAction.PositionManuallyClosed,
+                    string.Format("opened_direction:{0}, balance:{1}", direction == 0 ? "sell" : "buy", CurrentDiff));
+            }
+            TotalValue += LastValue;
+            OpenedOrderPrice = CurrentPrice;
+            CurrentBalance += CurrentDiff;
+            Profitability += CurrentDiff;
+
+            // add trade to trades history
+            var row = ProfitabilityHistory.NewRow();
+            row["Time"] = DateTime.Now.ToString();
+            row["Order"] = direction == 0 ? "Buy" : "Sell";
+            row["Price"] = direction == 0 ? price.buyString : price.sellString;
+            row["Value"] = LastValue.ToString();
+            row["Lot size"] = LotSize.ToString();
+            row["Balance"] = CurrentBalance.ToString("0.##");
+            row["Profitability"] = Profitability.ToString("0.##");
+            ProfitabilityHistory.Rows.Add(row);
+            ProfitabilityHistory.AcceptChanges();
+
+            if (TotalValue == 0)
+            {
+                CurrentBalance = 0;
+            }
+
+            DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
+            return true;
         }
     }
 }

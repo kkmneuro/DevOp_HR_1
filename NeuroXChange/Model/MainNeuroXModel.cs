@@ -125,7 +125,7 @@ namespace NeuroXChange.Model
                 fixApiModel.RegisterObserver(this);
 
                 // initialization of behavioral models
-                behavioralModelsContainer = new BehavioralModelsContainer(iniFileReader);
+                behavioralModelsContainer = new BehavioralModelsContainer(this, iniFileReader);
                 logicQuery1Condition = new LogicQuery1Condition(100, 60);
 
                 ApplicationStates = ApplicationState.UsualState;
@@ -198,7 +198,6 @@ namespace NeuroXChange.Model
             var emulationOnHistoryProvider = (EmulationOnHistoryBioDataProvider)bioDataProvider;
             emulationOnHistoryProvider.ChangeEmulationModeTickInterval(tickInterval);
         }
-
 
         // ---- IBioDataObserver implementation
         public void OnNext(BioData.BioDataEvent bioDataEvent, object data)
