@@ -1,4 +1,5 @@
-﻿using NeuroXChange.Controller;
+﻿using NeuroXChange.Common;
+using NeuroXChange.Controller;
 using NeuroXChange.Model;
 using NeuroXChange.Model.FixApi;
 using System;
@@ -80,7 +81,7 @@ namespace NeuroXChange.View.DialogWindows
         {
             // parse tp and sl and check for corectness
             double takeProfit;
-            if (!Double.TryParse(tbProfitTarget.Text, out takeProfit))
+            if (!StringHelpers.TryParseDoubleCultureIndependent(tbProfitTarget.Text, out takeProfit))
             {
                 MessageBox.Show("Take profit value is in incorrect format!");
                 return;
@@ -97,7 +98,7 @@ namespace NeuroXChange.View.DialogWindows
             }
 
             double stopLoss;
-            if (!Double.TryParse(tbStopLoss.Text, out stopLoss))
+            if (!StringHelpers.TryParseDoubleCultureIndependent(tbStopLoss.Text, out stopLoss))
             {
                 MessageBox.Show("Stop loss value is in incorrect format!");
                 return;
@@ -166,7 +167,7 @@ namespace NeuroXChange.View.DialogWindows
 
         private void tbProfitTarget_TextChanged(object sender, EventArgs e)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(tbProfitTarget.Text, "^[0-9.]+$"))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(tbProfitTarget.Text, "^[0-9.,]+$"))
             {
                 tbProfitTarget.Text = "";
             }
