@@ -81,7 +81,6 @@ namespace NeuroXChange.View.Training
             pictureBox.ImageLocation = null;
 
             // make start button available
-            view.breathPacerWindow.breathPacerControl.Stop();
             pauseButton.Enabled = false;
             startButton.Enabled = true;
         }
