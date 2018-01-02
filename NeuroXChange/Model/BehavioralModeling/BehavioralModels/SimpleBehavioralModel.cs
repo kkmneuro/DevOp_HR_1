@@ -310,7 +310,11 @@ namespace NeuroXChange.Model
                 }
                 localDatabaseConnector.WriteUserAction(
                     UserAction.PositionManuallyOpened,
-                    string.Format("direction:{0}, tp:{1}, sl:{2}", direction == 0 ? "buy" : "sell", TakeProfitPips, StopLossPips));
+                    string.Format("direction:{0}, price:{1}, tp:{2}, sl:{3}",
+                                direction == 0 ? "buy" : "sell",
+                                direction == 0 ? price.buy : price.sell,
+                                TakeProfitPips,
+                                StopLossPips));
             }
 
             TradesTotal++;
@@ -331,7 +335,7 @@ namespace NeuroXChange.Model
                 LastValue = -TotalValue;
                 localDatabaseConnector.WriteUserAction(
                     UserAction.PositionManuallyClosed,
-                    string.Format("opened_direction:{0}, balance:{1}", direction == 0 ? "sell" : "buy", CurrentDiff));
+                    string.Format("opened_direction:{0}, balance:{1:0.#####}", direction == 0 ? "sell" : "buy", CurrentDiff));
             }
             TotalValue += LastValue;
             OpenedOrderPrice = CurrentPrice;
