@@ -115,7 +115,14 @@ namespace NeuroXChange.Model
 
                 if (!emulationOnHistoryMode)
                 {
-                    fixApiModel = new FixApiModel(localDatabaseConnector, iniFileReader);
+                    if (!Boolean.Parse(iniFileReader.Read("EmulateFixApi", "FixApi", "false")))
+                    {
+                        fixApiModel = new FixApiModel(localDatabaseConnector, iniFileReader);
+                    }
+                    else
+                    {
+                        fixApiModel = new RandomFixApiModel(localDatabaseConnector, iniFileReader);
+                    }
                 }
                 else
                 {

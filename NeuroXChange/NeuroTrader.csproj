@@ -151,6 +151,7 @@
     <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
     <Compile Include="Model\FixApi\IFixApiObserver.cs" />
     <Compile Include="Model\FixApi\MessageConstructor.cs" />
+    <Compile Include="Model\FixApi\RandomFixApiModel.cs" />
     <Compile Include="Model\FixApi\TickPrice.cs" />
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
