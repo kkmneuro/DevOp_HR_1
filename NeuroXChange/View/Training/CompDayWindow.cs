@@ -58,6 +58,7 @@ namespace NeuroXChange.View.Training
             controller.WriteUserAction(UserAction.TrainingStarted, "Comp day");
 
             view.breathPacerWindow.breathPacerControl.CycleElapsed += bpCycleFinishedHandler;
+            view.breathPacerWindow.breathPacerControl.Restart();
             currentStep = -1;
             lastCyclesToFinish = 0;
             textLabel.Text = string.Empty;

@@ -226,6 +226,7 @@ namespace BreathPacer
 
         public void Start()
         {
+            directionSwitched = false;
             peakX = InhalePrecentage / 100.0;
             setStartPosition();
             totalTime = (double)minuteInMs / BreathsPerMinute * (double)InhalePrecentage / 100.0;
@@ -252,6 +253,12 @@ namespace BreathPacer
         {
             this.formToOpen = formToOpen;
             cyclesToOpenClose = cycleCount;
+            Start();
+        }
+
+        public void Restart()
+        {
+            stopWatch.Restart();
             Start();
         }
 
@@ -357,6 +364,7 @@ namespace BreathPacer
                     stopWatch.Restart();
                 }
             }
+
             pbBall.Left = (int)(x * Width) - pbBall.Width / 2;
             pbBall.Top = (int)(y * Height) - pbBall.Height / 2;
         }
