@@ -81,8 +81,8 @@ namespace NeuroXChange.Model.BioData
                 var commandStr = string.Format(
                     @"SELECT {0}.*, sellPrice, buyPrice FROM {0}
                 LEFT OUTER JOIN {1} ON {0}.ID = {1}.ID
-                WHERE ID >= {2} AND ID <= {3}
-                ORDER BY ID",
+                WHERE {0}.ID >= {2} AND {0}.ID <= {3}
+                ORDER BY {0}.ID",
                     tableName, priceAtBioDataTickTable, startDataRowId, endDataRowId);
 
                 cmd = new OleDbCommand(commandStr, conn);

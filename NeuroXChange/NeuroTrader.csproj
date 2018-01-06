@@ -156,6 +156,9 @@
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="Model\Portfolio\CloseReason.cs" />
+    <Compile Include="Model\Portfolio\Order.cs" />
+    <Compile Include="Model\Portfolio\Portfolio.cs" />
     <Compile Include="Model\Training\TrainingType.cs" />
     <Compile Include="Model\UserAction.cs" />
     <Compile Include="View\AGauge\AGauge.cs">
@@ -406,6 +409,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
