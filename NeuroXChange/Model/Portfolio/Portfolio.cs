@@ -8,7 +8,8 @@ namespace NeuroXChange.Model.Portfolio
     {
         // portfolio management variables
         public int DefaultLotSize { get; set; }
-        public int? DefaultStopLossPips { get; set; }
+        public int? DefaultHardStopLossPips { get; set; }
+        public int? DefaultTrailingStopLossPips { get; set; }
         public int? DefaultTakeProfitPips { get; set; }
         public double DefaultPipSize { get; set; }
 
@@ -66,6 +67,7 @@ namespace NeuroXChange.Model.Portfolio
         public bool OpenOrder(
             int direction,
             TickPrice price,
+            OpenReason openReason,
             out Order order)
         {
             order = null;
@@ -85,8 +87,9 @@ namespace NeuroXChange.Model.Portfolio
             }
 
             OrderCounter++;
-            order = new Order(OrderCounter, DateTime.Now, direction, price, 1, DefaultLotSize);
-            order.StopLossPips = DefaultStopLossPips;
+            order = new Order(OrderCounter, DateTime.Now, DateTime.Now, price, direction, 1, DefaultLotSize, openReason);
+            order.HardStopLossPips = DefaultHardStopLossPips;
+            order.TrailingStopLossPips = DefaultTrailingStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
             RunningOrders.Add(order);
 
@@ -131,15 +134,15 @@ namespace NeuroXChange.Model.Portfolio
             }
         }
 
-        public int StopLossValueToPips(int direction, TickPrice price, double stopLossValue)
+        public int HardStopLossValueToPips(int direction, TickPrice price, double hardStopLossValue)
         {
             if (direction == 0)
             {
-                return (int)Math.Round((price.sell - stopLossValue) / DefaultPipSize);
+                return (int)Math.Round((price.sell - hardStopLossValue) / DefaultPipSize);
             }
             else
             {
-                return (int)Math.Round((stopLossValue - price.buy) / DefaultPipSize);
+                return (int)Math.Round((hardStopLossValue - price.buy) / DefaultPipSize);
             }
         }
 

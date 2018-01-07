@@ -80,7 +80,8 @@ namespace NeuroXChange.Model
                 if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
                 {
                     Order order;
-                    portfolio.OpenOrder(OrderDirection, LastPrice, out order);
+                    // TODO: determine correct reason for opening positions (SingularLong, SingularShort, MLS1, etc...)
+                    portfolio.OpenOrder(OrderDirection, LastPrice, OpenReason.UnknownReason, out order);
                 }
 
                 UpdateStatistics();
@@ -119,14 +120,14 @@ namespace NeuroXChange.Model
         }
 
         public bool ManualTrade(
-            int direction, TickPrice price, double takeProfitValue, double stopLossValue)
+            int direction, TickPrice price, double takeProfitValue, double hardStopLossValue)
         {
             Order order;
-            var result = portfolio.OpenOrder(direction, price, out order);
+            var result = portfolio.OpenOrder(direction, price, OpenReason.ManualOpen, out order);
             if (order != null)
             {
                 order.TakeProfitPips = portfolio.TakeProfitValueToPips(direction, price, takeProfitValue);
-                order.StopLossPips = portfolio.StopLossValueToPips(direction, price, stopLossValue);
+                order.HardStopLossPips = portfolio.HardStopLossValueToPips(direction, price, hardStopLossValue);
             }
             return result;
         }

@@ -62,8 +62,13 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             // initialize order parameters
             int lotSize = Int32.Parse(iniFileReader.Read("LotSize", "MarketOrders", "100000"));
-            int stopLossPips = Int32.Parse(iniFileReader.Read("StopLossPips", "MarketOrders", "60"));
-            int takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
+            int? hardStopLossPips = Int32.Parse(iniFileReader.Read("HardStopLossPips", "MarketOrders", "60"));
+            int? trailingStopLossPips = Int32.Parse(iniFileReader.Read("TrailingStopLossPips", "MarketOrders", "-1"));
+            if (trailingStopLossPips <=0)
+            {
+                trailingStopLossPips = null;
+            }
+            int? takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
             double pipSize = double.Parse(iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             // initialize dataset to save statistics
@@ -191,7 +196,8 @@ namespace NeuroXChange.Model.BehavioralModeling
 
                 // set constants
                 model.portfolio.DefaultLotSize = lotSize;
-                model.portfolio.DefaultStopLossPips = stopLossPips;
+                model.portfolio.DefaultHardStopLossPips = hardStopLossPips;
+                model.portfolio.DefaultTrailingStopLossPips = trailingStopLossPips;
                 model.portfolio.DefaultTakeProfitPips = takeProfitPips;
                 model.portfolio.DefaultPipSize = pipSize;
 

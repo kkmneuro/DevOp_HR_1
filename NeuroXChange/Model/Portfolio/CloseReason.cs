@@ -4,7 +4,8 @@
     {
         ShouldntBeClosed,
         ManuallyClosed,
-        StopLossExecuted,
+        HardStopLossExecuted,
+        TrailingStopLossExecuted,
         TakeProfitExecuted,
         ReverseOrderRequested,
         NotEnoughFunds

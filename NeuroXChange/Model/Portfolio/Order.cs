@@ -8,11 +8,13 @@ namespace NeuroXChange.Model.Portfolio
         public bool OrderWasClosed { get; private set; }
 
         public int OrderID { get; private set; }
+        public DateTime PlaceTime { get; private set; }
         public DateTime OpenTime {get; private set;}
         public double OpenPrice { get; private set; }
         public int Direction { get; private set; }
         public int Value { get; private set; }
         public int LotSize { get; private set; }
+        public OpenReason openReason { get; private set; }
 
         // for closed orders
         public DateTime? CloseTime { get; private set; }
@@ -23,20 +25,25 @@ namespace NeuroXChange.Model.Portfolio
         // account balance on close moment, doesn't need to be set
         public int? AccountBalance { get; set; }
 
-        // StopLoss and TakeProfit values in pips
-        public int? StopLossPips { get; set; }
+        // HardStopLoss and TakeProfit values in pips
+        public int? HardStopLossPips { get; set; }
         public int? TakeProfitPips { get; set; }
+        public int? TrailingStopLossPips { get; set; }
+        public double? TrailingPriceCloseOn { get; set; }
 
         // create new running order
         public Order(
             int orderID,
+            DateTime placeTime,
             DateTime openTime,
-            int direction,
             double openPrice,
+            int direction,
             int value,
-            int lotSize)
+            int lotSize,
+            OpenReason openReason)
         {
             this.OrderID = orderID;
+            this.PlaceTime = placeTime;
             this.OpenTime = openTime;
             this.OrderWasClosed = false;
             this.Direction = direction;
@@ -47,12 +54,14 @@ namespace NeuroXChange.Model.Portfolio
 
         public Order(
             int orderID,
+            DateTime placeTime,
             DateTime openTime,
+            TickPrice openPrice,
             int direction,
-            TickPrice price,
             int value,
-            int lotSize) : 
-            this(orderID, openTime, direction, direction == 0 ? price.buy : price.sell, value, lotSize)
+            int lotSize,
+            OpenReason openReason) : 
+            this(orderID, placeTime, openTime, direction == 0 ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
         {
         }
 
@@ -101,15 +110,17 @@ namespace NeuroXChange.Model.Portfolio
             var priceDiff = Direction == 0 ? currentPrice - OpenPrice : OpenPrice - currentPrice;
             int pipDifference = (int)(priceDiff / PipSize);
 
-            if (StopLossPips.HasValue && pipDifference <= -StopLossPips.Value)
+            if (HardStopLossPips.HasValue && pipDifference <= -HardStopLossPips.Value)
             {
-                return CloseReason.StopLossExecuted;
+                return CloseReason.HardStopLossExecuted;
             }
 
             if (TakeProfitPips.HasValue && pipDifference >= TakeProfitPips.Value)
             {
                 return CloseReason.TakeProfitExecuted;
             }
+
+            // TODO: implement trailing stops!
 
             return CloseReason.ShouldntBeClosed;
         }

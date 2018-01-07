@@ -31,7 +31,7 @@ namespace NeuroXChange.Model.FixApi
             while (!NeedStop)
             {
                 sell = priceDataBottom.sell + (random.NextDouble() - 0.5) / 1000.0;
-                buy = sell + 0.0005;
+                buy = sell + 0.00025;
 
                 var tickPrice = new TickPrice(sell.ToString("0.#####"), buy.ToString("0.#####"), DateTime.Now);
                 NotifyObservers(FixApiModelEvent.PriceChanged, tickPrice);

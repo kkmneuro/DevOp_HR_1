@@ -16,8 +16,6 @@
 
         // manual traiding
         PositionManuallyOpened = 100,
-        PositionManuallyClosed,
-        TakeProfitTriggered,
-        StopLossTriggered
+        PositionManuallyClosed
     }
 }
