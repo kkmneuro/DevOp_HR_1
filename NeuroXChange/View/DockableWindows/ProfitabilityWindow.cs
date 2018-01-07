@@ -15,16 +15,24 @@ namespace NeuroXChange.View
             InitializeComponent();
 
             this.model = model;
-            profitabilityDGV.AutoGenerateColumns = true;
+            openOrdersDGV.AutoGenerateColumns = true;
+            closedOrdersDGV.AutoGenerateColumns = true;
         }
 
         private void modelCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedIndex = modelCB.SelectedIndex;
-            var tableToShow = model.behavioralModelsContainer.behavioralModels[selectedIndex].portfolio.ClosedOrders;
-            tableToShow.SynchronizationContext = SynchronizationContext.Current;
-            bindingSource.DataSource = tableToShow;
-            profitabilityDGV.AutoResizeColumns();
+            var portfolio = model.behavioralModelsContainer.behavioralModels[selectedIndex].portfolio;
+
+            var openOrdersList = portfolio.RunningOrders;
+            openOrdersList.SynchronizationContext = SynchronizationContext.Current;
+            openOrdersBS.DataSource = openOrdersList;
+            openOrdersDGV.AutoResizeColumns();
+
+            var closedOrdersList = portfolio.ClosedOrders;
+            closedOrdersList.SynchronizationContext = SynchronizationContext.Current;
+            closedOrdersBS.DataSource = closedOrdersList;
+            closedOrdersDGV.AutoResizeColumns();
         }
 
         private void ProfitabilityWindow_Load(object sender, EventArgs e)

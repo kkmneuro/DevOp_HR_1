@@ -123,8 +123,11 @@ namespace NeuroXChange.Model
         {
             Order order;
             var result = portfolio.OpenOrder(direction, price, out order);
-            order.TakeProfitPips = portfolio.TakeProfitValueToPips(direction, price, takeProfitValue);
-            order.StopLossPips = portfolio.StopLossValueToPips(direction, price, stopLossValue);
+            if (order != null)
+            {
+                order.TakeProfitPips = portfolio.TakeProfitValueToPips(direction, price, takeProfitValue);
+                order.StopLossPips = portfolio.StopLossValueToPips(direction, price, stopLossValue);
+            }
             return result;
         }
     }

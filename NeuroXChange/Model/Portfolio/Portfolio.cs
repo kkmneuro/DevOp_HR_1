@@ -95,9 +95,11 @@ namespace NeuroXChange.Model.Portfolio
 
         public void CloseAllOrders(TickPrice price, CloseReason closeReason)
         {
-            foreach (var order in RunningOrders)
+            for (int orderInd = 0; orderInd < RunningOrders.Count; orderInd++)
             {
+                var order = RunningOrders[orderInd];
                 CloseOrder(order, price, closeReason);
+                orderInd--;
             }
         }
 
