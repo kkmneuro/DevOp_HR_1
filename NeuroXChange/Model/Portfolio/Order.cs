@@ -9,23 +9,23 @@ namespace NeuroXChange.Model.Portfolio
 
         public int OrderID { get; private set; }
         public DateTime OpenTime {get; private set;}
-        public int Direction { get; private set; }
         public double OpenPrice { get; private set; }
+        public int Direction { get; private set; }
         public int Value { get; private set; }
         public int LotSize { get; private set; }
-
-        // StopLoss and TakeProfit values in pips
-        public int? StopLossPips { get; set; }
-        public int? TakeProfitPips { get; set; }
 
         // for closed orders
         public DateTime? CloseTime { get; private set; }
         public double? ClosePrice { get; private set; }
         public CloseReason? closeReason { get; private set; }
-        private int profitabilityOnClosing;
+        public int? Profitability { get; private set; }
 
         // account balance on close moment, doesn't need to be set
-        public int? Balance { get; set; }
+        public int? AccountBalance { get; set; }
+
+        // StopLoss and TakeProfit values in pips
+        public int? StopLossPips { get; set; }
+        public int? TakeProfitPips { get; set; }
 
         // create new running order
         public Order(
@@ -60,16 +60,17 @@ namespace NeuroXChange.Model.Portfolio
         // price argument should be not null
         // If order was closed, returns profitability on close moment
         // price argument is not used
-        public int Profitability(TickPrice price = null)
+        public int GeneralizedProfitability(TickPrice price = null)
         {
             if (!OrderWasClosed)
             {
                 var currentPrice = Direction == 0 ? price.sell : price.buy;
-                return (int)(currentPrice * Value * LotSize);
+                var priceDifference = Direction == 0 ? currentPrice - OpenPrice : OpenPrice - currentPrice;
+                return (int)(priceDifference * Value * LotSize);
             }
             else
             {
-                return profitabilityOnClosing;
+                return Profitability.Value;
             }
         }
 
@@ -77,7 +78,7 @@ namespace NeuroXChange.Model.Portfolio
             DateTime closeTime,
             TickPrice closePrice,
             CloseReason closeReason,
-            int? balance = null)
+            int? accountBalance = null)
         {
             if (OrderWasClosed)
             {
@@ -88,8 +89,9 @@ namespace NeuroXChange.Model.Portfolio
             this.CloseTime = closeTime;
             this.ClosePrice = Direction == 0 ? closePrice.sell : closePrice.buy;
             this.closeReason = closeReason;
-            Balance = balance;
-            profitabilityOnClosing = (int)(ClosePrice * Value * LotSize);
+            AccountBalance = accountBalance;
+            var priceDifference = Direction == 0 ? ClosePrice - OpenPrice : OpenPrice - ClosePrice;
+            Profitability = (int)(priceDifference * Value * LotSize);
         }
 
         // TODO: should PipSize will be class field?

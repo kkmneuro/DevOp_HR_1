@@ -190,10 +190,10 @@ namespace NeuroXChange.Model.BehavioralModeling
                 model.localDatabaseConnector = mainNeuroXModel.localDatabaseConnector;
 
                 // set constants
-                model.LotSize = lotSize;
-                model.StopLossPips = stopLossPips;
-                model.TakeProfitPips = takeProfitPips;
-                model.PipSize = pipSize;
+                model.portfolio.DefaultLotSize = lotSize;
+                model.portfolio.DefaultStopLossPips = stopLossPips;
+                model.portfolio.DefaultTakeProfitPips = takeProfitPips;
+                model.portfolio.DefaultPipSize = pipSize;
 
                 // model 16 (17th if numerated from 1) is manual trading model
                 // TODO: refactor

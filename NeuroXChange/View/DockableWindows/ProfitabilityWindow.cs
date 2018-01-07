@@ -1,13 +1,6 @@
 ﻿using NeuroXChange.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Threading;
 
 namespace NeuroXChange.View
 {
@@ -28,7 +21,8 @@ namespace NeuroXChange.View
         private void modelCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedIndex = modelCB.SelectedIndex;
-            var tableToShow = model.behavioralModelsContainer.behavioralModels[selectedIndex].ProfitabilityHistory;
+            var tableToShow = model.behavioralModelsContainer.behavioralModels[selectedIndex].portfolio.ClosedOrders;
+            tableToShow.SynchronizationContext = SynchronizationContext.Current;
             bindingSource.DataSource = tableToShow;
             profitabilityDGV.AutoResizeColumns();
         }

@@ -1,20 +1,21 @@
-﻿using NeuroXChange.Model.FixApi;
+﻿using NeuroXChange.Common;
+using NeuroXChange.Model.FixApi;
 using System;
-using System.ComponentModel;
 
 namespace NeuroXChange.Model.Portfolio
 {
     public class Portfolio
     {
         // portfolio management variables
-        public int LotSize { get; set; }
-        public int StopLossPips { get; set; }
-        public int TakeProfitPips { get; set; }
-        public double PipSize { get; set; }
+        public int DefaultLotSize { get; set; }
+        public int? DefaultStopLossPips { get; set; }
+        public int? DefaultTakeProfitPips { get; set; }
+        public double DefaultPipSize { get; set; }
 
         public int OrderCounter { get; private set; }
-        public BindingList<Order> RunningOrders { get; private set; }
-        public BindingList<Order> ClosedOrders { get; private set; }
+        public ThreadedBindingList<Order> RunningOrders { get; private set; }
+        public ThreadedBindingList<Order> ClosedOrders { get; private set; }
+        public int ClosedProfitability {get; private set;}
 
         // TODO: move setings to ini file
         public const bool CanOpenMultipleOrdersOneDirection = false;
@@ -22,17 +23,18 @@ namespace NeuroXChange.Model.Portfolio
 
         public Portfolio()
         {
-            RunningOrders = new BindingList<Order>();
-            ClosedOrders = new BindingList<Order>();
+            RunningOrders = new ThreadedBindingList<Order>();
+            ClosedOrders = new ThreadedBindingList<Order>();
             OrderCounter = 0;
+            ClosedProfitability = 0;
         }
 
-        public int Profitability(TickPrice price)
+        public int RunningProfitability(TickPrice price)
         {
             int result = 0;
             foreach (var order in RunningOrders)
             {
-                result += order.Profitability(price);
+                result += order.GeneralizedProfitability(price);
             }
             return result;
         }
@@ -60,27 +62,35 @@ namespace NeuroXChange.Model.Portfolio
             return false;
         }
 
-        public void OpenOrder(
+        // returns if order was open or reverse orders was closed
+        public bool OpenOrder(
             int direction,
-            TickPrice price)
+            TickPrice price,
+            out Order order)
         {
+            order = null;
+
             // TODO: implement different behaviour depends on
             // CanOpenMultipleOrdersOneDirection and CanOpenReverseOrders
 
             if (HasOrdersByDirection(direction))
             {
-                return;
+                return false;
             }
 
             if (HasOrdersByDirection(1 - direction))
             {
                 CloseAllOrders(price, CloseReason.ReverseOrderRequested);
-                return;
+                return true;
             }
 
             OrderCounter++;
-            var order = new Order(OrderCounter, DateTime.Now, direction, price, 1, LotSize);
+            order = new Order(OrderCounter, DateTime.Now, direction, price, 1, DefaultLotSize);
+            order.StopLossPips = DefaultStopLossPips;
+            order.TakeProfitPips = DefaultTakeProfitPips;
             RunningOrders.Add(order);
+
+            return true;
         }
 
         public void CloseAllOrders(TickPrice price, CloseReason closeReason)
@@ -93,21 +103,49 @@ namespace NeuroXChange.Model.Portfolio
 
         public void OnNext(TickPrice price)
         {
-            foreach(var order in RunningOrders)
+            for(int orderInd = 0; orderInd < RunningOrders.Count; orderInd++)
             {
-                var closeReason = order.NeedToBeClosedAccordingToSLorTP(price, PipSize);
+                var order = RunningOrders[orderInd];
+                var closeReason = order.NeedToBeClosedAccordingToSLorTP(price, DefaultPipSize);
                 if (closeReason == CloseReason.ShouldntBeClosed)
                 {
                     continue;
                 }
 
                 CloseOrder(order, price, closeReason);
+                orderInd--;
+            }
+        }
+
+        public int TakeProfitValueToPips(int direction, TickPrice price, double takeProfitValue)
+        {
+            if (direction == 0)
+            {
+                return (int)Math.Round((takeProfitValue - price.sell) / DefaultPipSize);
+            }
+            else
+            {
+                return (int)Math.Round((price.buy - takeProfitValue) / DefaultPipSize);
+            }
+        }
+
+        public int StopLossValueToPips(int direction, TickPrice price, double stopLossValue)
+        {
+            if (direction == 0)
+            {
+                return (int)Math.Round((price.sell - stopLossValue) / DefaultPipSize);
+            }
+            else
+            {
+                return (int)Math.Round((stopLossValue - price.buy) / DefaultPipSize);
             }
         }
 
         private void CloseOrder(Order order, TickPrice price, CloseReason closeReason)
         {
-            order.Close(DateTime.Now, price, closeReason, Profitability(price));
+            var balance = ClosedProfitability + RunningProfitability(price);
+            order.Close(DateTime.Now, price, closeReason, balance);
+            ClosedProfitability += order.Profitability.Value;
             ClosedOrders.Add(order);
             RunningOrders.Remove(order);
         }

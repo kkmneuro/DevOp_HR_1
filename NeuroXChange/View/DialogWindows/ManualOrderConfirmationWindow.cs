@@ -127,11 +127,11 @@ namespace NeuroXChange.View.DialogWindows
                 double takeProfit;
                 if (currentDirection == 0)
                 {
-                    takeProfit = lastPrice.buy + takeProfitPips * pipSize;
+                    takeProfit = lastPrice.sell + takeProfitPips * pipSize;
                 }
                 else
                 {
-                    takeProfit = lastPrice.sell - takeProfitPips * pipSize;
+                    takeProfit = lastPrice.buy - takeProfitPips * pipSize;
                 }
                 tbProfitTarget.Text = takeProfit.ToString();
             }
@@ -141,11 +141,11 @@ namespace NeuroXChange.View.DialogWindows
                 double stopLoss;
                 if (currentDirection == 0)
                 {
-                    stopLoss = lastPrice.buy - stopLossPips * pipSize;
+                    stopLoss = lastPrice.sell - stopLossPips * pipSize;
                 }
                 else
                 {
-                    stopLoss = lastPrice.sell + stopLossPips * pipSize;
+                    stopLoss = lastPrice.buy + stopLossPips * pipSize;
                 }
                 tbStopLoss.Text = stopLoss.ToString();
             }
