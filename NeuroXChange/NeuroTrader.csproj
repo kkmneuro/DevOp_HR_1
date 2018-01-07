@@ -158,8 +158,10 @@
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
     <Compile Include="Model\Portfolio\CloseReason.cs" />
+    <Compile Include="Model\Portfolio\Direction.cs" />
     <Compile Include="Model\Portfolio\OpenReason.cs" />
     <Compile Include="Model\Portfolio\Order.cs" />
+    <Compile Include="Model\Portfolio\OrderState.cs" />
     <Compile Include="Model\Portfolio\Portfolio.cs" />
     <Compile Include="Model\Training\TrainingType.cs" />
     <Compile Include="Model\UserAction.cs" />

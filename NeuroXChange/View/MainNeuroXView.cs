@@ -150,7 +150,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.ExecuteOrder:
                     {
-                        int direction = activeModel.OrderDirection;
+                        int direction = activeModel.Direction;
                         customDialogWindow.labInformation.Text = string.Format("Order executed\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             BehavioralModelStateHelper.directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);
@@ -158,7 +158,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.ConfirmationFilled:
                     {
-                        int direction = activeModel.OrderDirection;
+                        int direction = activeModel.Direction;
                         customDialogWindow.labInformation.Text = string.Format("Order filled\r\nDirection: {0}\r\nContract size: 1\r\nPrice: {1}",
                             BehavioralModelStateHelper.directionName[direction], direction == 0 ? lastPrice.buyString : lastPrice.sellString);
                         customDialogWindow.ShowWithSeconds(2);

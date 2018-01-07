@@ -37,7 +37,7 @@ namespace NeuroXChange.View
             // check it before switch
             if (state == BehavioralModelState.DirectionConfirmed)
             {
-                int direction = activeModel.OrderDirection;
+                int direction = activeModel.Direction;
                 Show();
                 labStepName.Text = string.Format("Direction confirmed ({0})", BehavioralModelStateHelper.directionName[direction]);
             }
@@ -77,7 +77,7 @@ namespace NeuroXChange.View
                     }
                 case BehavioralModelState.DirectionConfirmed:
                     {
-                        int direction = activeModel.OrderDirection;
+                        int direction = activeModel.Direction;
                         btnBuy.Enabled = direction == 0;
                         btnSell.Enabled = direction == 1;
                         if (direction == 0)

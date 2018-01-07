@@ -26,7 +26,7 @@ namespace NeuroXChange.Model.BehavioralModeling.Transitions
                 model.lq2OrderDirection = (int)logicQuery2Condition.detailsData;
                 if (!checkLQ1Direction || model.lq1OrderDirection == model.lq2OrderDirection)
                 {
-                    model.OrderDirection = model.lq2OrderDirection;
+                    model.Direction = model.lq2OrderDirection;
                     return toState;
                 }
             }

@@ -5,63 +5,113 @@ namespace NeuroXChange.Model.Portfolio
 {
     public class Order
     {
-        public bool OrderWasClosed { get; private set; }
+        [System.ComponentModel.DisplayName("Order state")]
+        public OrderState orderState { get; private set; }
 
+
+        [System.ComponentModel.DisplayName("Order ID")]
         public int OrderID { get; private set; }
+
+        [System.ComponentModel.DisplayName("Order group")]
+        public int OrderGroup { get; private set; }
+
+        [System.ComponentModel.DisplayName("BM Model ID")]
+        public int BMModelID { get; private set; }
+
+        [System.ComponentModel.DisplayName("Place time")]
         public DateTime PlaceTime { get; private set; }
+
+        [System.ComponentModel.DisplayName("Open time")]
         public DateTime OpenTime {get; private set;}
+
+        [System.ComponentModel.DisplayName("Open price")]
         public double OpenPrice { get; private set; }
-        public int Direction { get; private set; }
+
+        [System.ComponentModel.DisplayName("Direction")]
+        public OrderDirection Direction { get; private set; }
+
+        [System.ComponentModel.DisplayName("Value")]
         public int Value { get; private set; }
+
+        [System.ComponentModel.DisplayName("Lot size")]
         public int LotSize { get; private set; }
+
+        [System.ComponentModel.DisplayName("Open reason")]
         public OpenReason openReason { get; private set; }
 
+
         // for closed orders
+
+        [System.ComponentModel.DisplayName("Close time")]
         public DateTime? CloseTime { get; private set; }
+
+        [System.ComponentModel.DisplayName("Close price")]
         public double? ClosePrice { get; private set; }
+
+        [System.ComponentModel.DisplayName("Close reason")]
         public CloseReason? closeReason { get; private set; }
+
+        [System.ComponentModel.DisplayName("Profitability")]
         public int? Profitability { get; private set; }
 
+
         // account balance on close moment, doesn't need to be set
-        public int? AccountBalance { get; set; }
+        [System.ComponentModel.DisplayName("Cumulative balance")]
+        public int? CumulativeBalance { get; set; }
+
 
         // HardStopLoss and TakeProfit values in pips
+
+        [System.ComponentModel.DisplayName("Hard stop loss pips")]
         public int? HardStopLossPips { get; set; }
+
+        [System.ComponentModel.DisplayName("Take profit pips")]
         public int? TakeProfitPips { get; set; }
+
+        [System.ComponentModel.DisplayName("Trailing stop loss pips")]
         public int? TrailingStopLossPips { get; set; }
-        public double? TrailingPriceCloseOn { get; set; }
+
+        [System.ComponentModel.DisplayName("Trailing price to close on")]
+        public double? TrailingPriceToCloseOn { get; set; }
 
         // create new running order
         public Order(
             int orderID,
+            int orderGroup,
+            int bmModelID,
             DateTime placeTime,
             DateTime openTime,
             double openPrice,
-            int direction,
+            OrderDirection direction,
             int value,
             int lotSize,
             OpenReason openReason)
         {
             this.OrderID = orderID;
+            this.OrderGroup = orderID;
+            this.BMModelID = bmModelID;
             this.PlaceTime = placeTime;
             this.OpenTime = openTime;
-            this.OrderWasClosed = false;
+            this.orderState = OrderState.Running;
             this.Direction = direction;
             this.OpenPrice = openPrice;
             this.Value = value;
             this.LotSize = lotSize;
+            this.openReason = openReason;
         }
 
         public Order(
             int orderID,
+            int orderGroup,
+            int bmModelID,
             DateTime placeTime,
             DateTime openTime,
             TickPrice openPrice,
-            int direction,
+            OrderDirection direction,
             int value,
             int lotSize,
             OpenReason openReason) : 
-            this(orderID, placeTime, openTime, direction == 0 ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
+            this(orderID, orderGroup, bmModelID, placeTime, openTime, direction == OrderDirection.Buy ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
         {
         }
 
@@ -71,15 +121,18 @@ namespace NeuroXChange.Model.Portfolio
         // price argument is not used
         public int GeneralizedProfitability(TickPrice price = null)
         {
-            if (!OrderWasClosed)
+            if (orderState == OrderState.Running)
             {
-                var currentPrice = Direction == 0 ? price.sell : price.buy;
-                var priceDifference = Direction == 0 ? currentPrice - OpenPrice : OpenPrice - currentPrice;
+                var currentPrice = Direction == OrderDirection.Buy ? price.sell : price.buy;
+                var priceDifference = Direction == OrderDirection.Buy ? currentPrice - OpenPrice : OpenPrice - currentPrice;
                 return (int)(priceDifference * Value * LotSize);
             }
-            else
+            else if (orderState == OrderState.Closed)
             {
                 return Profitability.Value;
+            } else
+            {
+                throw new Exception("Can't calculate profitability for pending orders!");
             }
         }
 
@@ -89,25 +142,29 @@ namespace NeuroXChange.Model.Portfolio
             CloseReason closeReason,
             int? accountBalance = null)
         {
-            if (OrderWasClosed)
+            if (orderState == OrderState.Pending)
+            {
+                throw new Exception("Order is in pending state!");
+            }
+            if (orderState == OrderState.Closed)
             {
                 throw new Exception("Order was already closed!");
             }
 
-            OrderWasClosed = true;
+            orderState = OrderState.Closed;
             this.CloseTime = closeTime;
-            this.ClosePrice = Direction == 0 ? closePrice.sell : closePrice.buy;
+            this.ClosePrice = Direction == OrderDirection.Buy ? closePrice.sell : closePrice.buy;
             this.closeReason = closeReason;
-            AccountBalance = accountBalance;
-            var priceDifference = Direction == 0 ? ClosePrice - OpenPrice : OpenPrice - ClosePrice;
+            CumulativeBalance = accountBalance;
+            var priceDifference = Direction == OrderDirection.Buy ? ClosePrice - OpenPrice : OpenPrice - ClosePrice;
             Profitability = (int)(priceDifference * Value * LotSize);
         }
 
         // TODO: should PipSize will be class field?
         public CloseReason NeedToBeClosedAccordingToSLorTP(TickPrice price, double PipSize)
         {
-            var currentPrice = Direction == 0 ? price.sell : price.buy;
-            var priceDiff = Direction == 0 ? currentPrice - OpenPrice : OpenPrice - currentPrice;
+            var currentPrice = Direction == OrderDirection.Buy ? price.sell : price.buy;
+            var priceDiff = Direction == OrderDirection.Buy ? currentPrice - OpenPrice : OpenPrice - currentPrice;
             int pipDifference = (int)(priceDiff / PipSize);
 
             if (HardStopLossPips.HasValue && pipDifference <= -HardStopLossPips.Value)

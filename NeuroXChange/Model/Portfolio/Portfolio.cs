@@ -14,6 +14,7 @@ namespace NeuroXChange.Model.Portfolio
         public double DefaultPipSize { get; set; }
 
         public int OrderCounter { get; private set; }
+        public int OrderGroupCounter { get; private set; }
         public ThreadedBindingList<Order> RunningOrders { get; private set; }
         public ThreadedBindingList<Order> ClosedOrders { get; private set; }
         public int ClosedProfitability {get; private set;}
@@ -27,6 +28,7 @@ namespace NeuroXChange.Model.Portfolio
             RunningOrders = new ThreadedBindingList<Order>();
             ClosedOrders = new ThreadedBindingList<Order>();
             OrderCounter = 0;
+            OrderGroupCounter = 0;
             ClosedProfitability = 0;
         }
 
@@ -45,7 +47,7 @@ namespace NeuroXChange.Model.Portfolio
             return RunningOrders.Count != 0;
         }
 
-        public bool HasOrdersByDirection(int direction)
+        public bool HasOrdersByDirection(OrderDirection direction)
         {
             if (RunningOrders.Count == 0)
             {
@@ -65,7 +67,8 @@ namespace NeuroXChange.Model.Portfolio
 
         // returns if order was open or reverse orders was closed
         public bool OpenOrder(
-            int direction,
+            int bmModelID,
+            OrderDirection direction,
             TickPrice price,
             OpenReason openReason,
             out Order order)
@@ -80,14 +83,15 @@ namespace NeuroXChange.Model.Portfolio
                 return false;
             }
 
-            if (HasOrdersByDirection(1 - direction))
+            if (HasOrdersByDirection(direction == OrderDirection.Buy ? OrderDirection.Sell : OrderDirection.Buy))
             {
                 CloseAllOrders(price, CloseReason.ReverseOrderRequested);
                 return true;
             }
 
             OrderCounter++;
-            order = new Order(OrderCounter, DateTime.Now, DateTime.Now, price, direction, 1, DefaultLotSize, openReason);
+            OrderGroupCounter++;
+            order = new Order(OrderCounter, OrderGroupCounter, bmModelID, DateTime.Now, DateTime.Now, price, direction, 1, DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
             order.TrailingStopLossPips = DefaultTrailingStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
@@ -122,9 +126,9 @@ namespace NeuroXChange.Model.Portfolio
             }
         }
 
-        public int TakeProfitValueToPips(int direction, TickPrice price, double takeProfitValue)
+        public int TakeProfitValueToPips(OrderDirection direction, TickPrice price, double takeProfitValue)
         {
-            if (direction == 0)
+            if (direction == OrderDirection.Buy)
             {
                 return (int)Math.Round((takeProfitValue - price.sell) / DefaultPipSize);
             }
@@ -134,9 +138,9 @@ namespace NeuroXChange.Model.Portfolio
             }
         }
 
-        public int HardStopLossValueToPips(int direction, TickPrice price, double hardStopLossValue)
+        public int HardStopLossValueToPips(OrderDirection direction, TickPrice price, double hardStopLossValue)
         {
-            if (direction == 0)
+            if (direction == OrderDirection.Buy)
             {
                 return (int)Math.Round((price.sell - hardStopLossValue) / DefaultPipSize);
             }

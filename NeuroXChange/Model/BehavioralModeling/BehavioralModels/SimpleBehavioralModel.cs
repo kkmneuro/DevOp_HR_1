@@ -12,6 +12,8 @@ namespace NeuroXChange.Model
 {
     public class SimpleBehavioralModel
     {
+        public int ModelID { get; set; }
+
         // transitions
         public List<AbstractTransition> transitions { get; set; }
 
@@ -24,7 +26,7 @@ namespace NeuroXChange.Model
         private DateTime previousTickTime;
 
         // are we buying or selling
-        public int OrderDirection { get; set; }  // 0 - buy, 1 - sell
+        public int Direction { get; set; }  // 0 - buy, 1 - sell
 
         public Portfolio.Portfolio portfolio;
 
@@ -40,8 +42,10 @@ namespace NeuroXChange.Model
         // private variables
         private TickPrice LastPrice;
 
-        public SimpleBehavioralModel()
+        public SimpleBehavioralModel(int modelID)
         {
+            this.ModelID = modelID;
+
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
@@ -81,7 +85,7 @@ namespace NeuroXChange.Model
                 {
                     Order order;
                     // TODO: determine correct reason for opening positions (SingularLong, SingularShort, MLS1, etc...)
-                    portfolio.OpenOrder(OrderDirection, LastPrice, OpenReason.UnknownReason, out order);
+                    portfolio.OpenOrder(ModelID, (OrderDirection)Direction, LastPrice, OpenReason.UnknownReason, out order);
                 }
 
                 UpdateStatistics();
@@ -108,7 +112,7 @@ namespace NeuroXChange.Model
             if (CurrentTickState == BehavioralModelState.DirectionConfirmed ||
                 CurrentTickState == BehavioralModelState.ExecuteOrder)
             {
-                DataRowInBehavioralModelsWindow["In position"] = OrderDirection == 0 ? "LONG" : OrderDirection == 1 ? "SHORT" : "NO DIRECTION";
+                DataRowInBehavioralModelsWindow["In position"] = Direction == 0 ? "LONG" : Direction == 1 ? "SHORT" : "NO DIRECTION";
             }
             else
             {
@@ -123,11 +127,11 @@ namespace NeuroXChange.Model
             int direction, TickPrice price, double takeProfitValue, double hardStopLossValue)
         {
             Order order;
-            var result = portfolio.OpenOrder(direction, price, OpenReason.ManualOpen, out order);
+            var result = portfolio.OpenOrder(ModelID, (OrderDirection)direction, price, OpenReason.ManualOrder, out order);
             if (order != null)
             {
-                order.TakeProfitPips = portfolio.TakeProfitValueToPips(direction, price, takeProfitValue);
-                order.HardStopLossPips = portfolio.HardStopLossValueToPips(direction, price, hardStopLossValue);
+                order.TakeProfitPips = portfolio.TakeProfitValueToPips((OrderDirection)direction, price, takeProfitValue);
+                order.HardStopLossPips = portfolio.HardStopLossValueToPips((OrderDirection)direction, price, hardStopLossValue);
             }
             return result;
         }

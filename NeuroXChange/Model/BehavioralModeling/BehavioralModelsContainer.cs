@@ -190,7 +190,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             // initialize all models with same conditions
             for (int i = 0; i < BehavioralModelsCount; i++)
             {
-                var model = new SimpleBehavioralModel();
+                var model = new SimpleBehavioralModel(i+1);
                 behavioralModels[i] = model;
                 model.localDatabaseConnector = mainNeuroXModel.localDatabaseConnector;
 

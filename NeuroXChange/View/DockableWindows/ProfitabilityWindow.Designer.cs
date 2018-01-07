@@ -37,16 +37,16 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.closedOrdersBS = new System.Windows.Forms.BindingSource(this.components);
             this.closedOrdersDGV = new System.Windows.Forms.DataGridView();
+            this.closedOrdersBS = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersBS)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersDGV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -112,6 +112,7 @@
             this.openOrdersDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.openOrdersDGV.Size = new System.Drawing.Size(438, 317);
             this.openOrdersDGV.TabIndex = 2;
+            this.openOrdersDGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.openOrdersDGV_CellFormatting);
             // 
             // tabControl1
             // 
@@ -163,6 +164,7 @@
             this.closedOrdersDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.closedOrdersDGV.Size = new System.Drawing.Size(438, 317);
             this.closedOrdersDGV.TabIndex = 0;
+            this.closedOrdersDGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.closedOrdersDGV_CellFormatting);
             // 
             // ProfitabilityWindow
             // 
@@ -182,8 +184,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersDGV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).EndInit();
             this.ResumeLayout(false);
 
         }

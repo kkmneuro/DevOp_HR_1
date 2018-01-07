@@ -3,7 +3,7 @@
     public enum OpenReason
     {
         UnknownReason,
-        ManualOpen,
+        ManualOrder,
         SingularLong,
         SingularShort,
         MLS1,
