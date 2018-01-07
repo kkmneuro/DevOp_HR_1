@@ -1,6 +1,6 @@
 ﻿namespace NeuroXChange.View
 {
-    partial class ProfitabilityWindow
+    partial class OrdersWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -34,19 +34,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.openOrdersDGV = new System.Windows.Forms.DataGridView();
             this.openOrdersBS = new System.Windows.Forms.BindingSource(this.components);
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.closedOrdersDGV = new System.Windows.Forms.DataGridView();
             this.closedOrdersBS = new System.Windows.Forms.BindingSource(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersBS)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -56,7 +55,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(452, 31);
+            this.panel1.Size = new System.Drawing.Size(464, 31);
             this.panel1.TabIndex = 1;
             // 
             // modelCB
@@ -105,47 +104,14 @@
             this.openOrdersDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.openOrdersDGV.DataSource = this.openOrdersBS;
             this.openOrdersDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.openOrdersDGV.Location = new System.Drawing.Point(3, 3);
+            this.openOrdersDGV.Location = new System.Drawing.Point(0, 0);
             this.openOrdersDGV.Name = "openOrdersDGV";
             this.openOrdersDGV.ReadOnly = true;
             this.openOrdersDGV.RowHeadersVisible = false;
             this.openOrdersDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.openOrdersDGV.Size = new System.Drawing.Size(438, 317);
+            this.openOrdersDGV.Size = new System.Drawing.Size(464, 60);
             this.openOrdersDGV.TabIndex = 2;
             this.openOrdersDGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.openOrdersDGV_CellFormatting);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 31);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(452, 349);
-            this.tabControl1.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.openOrdersDGV);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(444, 323);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Running orders";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.closedOrdersDGV);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(444, 323);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Closed orders";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // closedOrdersDGV
             // 
@@ -157,35 +123,54 @@
             this.closedOrdersDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.closedOrdersDGV.DataSource = this.closedOrdersBS;
             this.closedOrdersDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.closedOrdersDGV.Location = new System.Drawing.Point(3, 3);
+            this.closedOrdersDGV.Location = new System.Drawing.Point(0, 0);
             this.closedOrdersDGV.Name = "closedOrdersDGV";
             this.closedOrdersDGV.ReadOnly = true;
             this.closedOrdersDGV.RowHeadersVisible = false;
             this.closedOrdersDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.closedOrdersDGV.Size = new System.Drawing.Size(438, 317);
+            this.closedOrdersDGV.Size = new System.Drawing.Size(464, 171);
             this.closedOrdersDGV.TabIndex = 0;
             this.closedOrdersDGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.closedOrdersDGV_CellFormatting);
             // 
-            // ProfitabilityWindow
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.openOrdersDGV);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.closedOrdersDGV);
+            this.splitContainer1.Size = new System.Drawing.Size(464, 235);
+            this.splitContainer1.SplitterDistance = 60;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // OrdersWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(452, 380);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(464, 266);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.HideOnClose = true;
-            this.Name = "ProfitabilityWindow";
-            this.Text = "Profitability";
+            this.Name = "OrdersWindow";
+            this.Text = "Orders";
             this.Load += new System.EventHandler(this.ProfitabilityWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersDGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.openOrdersBS)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersDGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closedOrdersBS)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -197,10 +182,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView openOrdersDGV;
         private System.Windows.Forms.BindingSource openOrdersBS;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView closedOrdersDGV;
         private System.Windows.Forms.BindingSource closedOrdersBS;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

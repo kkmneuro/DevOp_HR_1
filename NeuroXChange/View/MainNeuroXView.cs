@@ -41,7 +41,7 @@ namespace NeuroXChange.View
         public BehavioralModelTransitionsWindow behavioralModelTransitionsWindow { get; private set; }
         public BMColorCodedWithPriceWindow bMColorCodedWithPriceWindow { get; private set; }
         public EmulationModeControlWindow emulationModeControlWindow { get; private set; }
-        public ProfitabilityWindow profitabilityWindow { get; private set; }
+        public OrdersWindow ordersWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
@@ -96,8 +96,8 @@ namespace NeuroXChange.View
             emulationModeControlWindow.tickSizeUpDown.Value = Int32.Parse(model.iniFileReader.Read("HistoryTickInterval", "EmulationOnHistory", "100"));
             emulationModeControlWindow.Enabled = model.emulationOnHistoryMode;
 
-            profitabilityWindow = new ProfitabilityWindow(model);
-            profitabilityWindow.Owner = mainWindow;
+            ordersWindow = new OrdersWindow(model);
+            ordersWindow.Owner = mainWindow;
 
             // dialog windows creation
 

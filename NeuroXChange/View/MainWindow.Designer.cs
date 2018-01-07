@@ -44,7 +44,7 @@
             this.rawInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.profitabilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -103,7 +103,7 @@
             // compDayToolStripMenuItem
             // 
             this.compDayToolStripMenuItem.Name = "compDayToolStripMenuItem";
-            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.compDayToolStripMenuItem.Text = "Comp day";
             this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
@@ -119,7 +119,7 @@
             this.rawInformationToolStripMenuItem,
             this.chartsToolStripMenuItem,
             this.bMColorCodedWithPriceToolStripMenuItem,
-            this.profitabilityToolStripMenuItem});
+            this.ordersToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -185,12 +185,12 @@
             this.bMColorCodedWithPriceToolStripMenuItem.Text = "BM color coded with price";
             this.bMColorCodedWithPriceToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
-            // profitabilityToolStripMenuItem
+            // ordersToolStripMenuItem
             // 
-            this.profitabilityToolStripMenuItem.Name = "profitabilityToolStripMenuItem";
-            this.profitabilityToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.profitabilityToolStripMenuItem.Text = "Profitability";
-            this.profitabilityToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
+            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.ordersToolStripMenuItem.Text = "Orders";
+            this.ordersToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -288,7 +288,7 @@
         private System.Windows.Forms.ToolStripMenuItem bMColorCodedWithPriceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emulationModeControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem profitabilityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compDayToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;

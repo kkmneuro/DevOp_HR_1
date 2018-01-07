@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace NeuroXChange.View
 {
-    public partial class ProfitabilityWindow : WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class OrdersWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
         private MainNeuroXModel model;
 
         private int selectedIndex = -1;
 
-        public ProfitabilityWindow(MainNeuroXModel model)
+        public OrdersWindow(MainNeuroXModel model)
         {
             InitializeComponent();
 
