@@ -36,5 +36,10 @@ namespace NeuroXChange.Common
 
             return true;
         }
+
+        public static string NullableToString<T> (T? a) where T : struct
+        {
+            return a.HasValue ? a.ToString() : "NULL";
+        }
     }
 }

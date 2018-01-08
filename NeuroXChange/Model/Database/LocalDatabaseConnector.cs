@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Common;
 using NeuroXChange.Model.FixApi;
+using NeuroXChange.Model.Portfolio;
 using System;
 using System.Data.OleDb;
 using System.IO;
@@ -25,7 +26,6 @@ namespace NeuroXChange.Model.Database
         private string instrumentTable;
         public bool saveUserActions { get; private set; }
         private string userActionsTable;
-        private string userActionsDescriptionTable;
 
         private OleDbConnection connection = null;
 
@@ -48,7 +48,6 @@ namespace NeuroXChange.Model.Database
 
             saveUserActions = bool.Parse(iniFileReader.Read("SaveUserActions", "Database", "true"));
             userActionsTable = iniFileReader.Read("UserActionsTable", "Database", "UserActions");
-            userActionsDescriptionTable = iniFileReader.Read("UserActionsDescription", "Database", "UserActionsDescription");
 
             if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick && !saveUserActions)
             {
@@ -88,6 +87,14 @@ namespace NeuroXChange.Model.Database
                 MessageBox.Show("Was not able to establish a connection with local database. \r\n" + e.Message);
                 return;
             }
+
+
+            // creating tables from enumerations
+            CreateTableFromEnum(cmd, typeof(UserAction));
+            CreateTableFromEnum(cmd, typeof(OrderDirection));
+            CreateTableFromEnum(cmd, typeof(OpenReason));
+            CreateTableFromEnum(cmd, typeof(Portfolio.CloseReason));
+
 
             // create tables if they are not exists yet
 
@@ -173,23 +180,6 @@ namespace NeuroXChange.Model.Database
                 try
                 {
                     var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Description] TEXT NOT NULL);",
-                        userActionsDescriptionTable);
-                    cmd.CommandText = commandStr;
-                    cmd.ExecuteNonQuery();
-
-                    foreach (var action in Enum.GetValues(typeof(UserAction)))
-                    {
-                        commandStr = string.Format(
-                            @"INSERT INTO {0}
-                            ([ID], [Description])
-                            VALUES ({1}, '{2}')",
-                            userActionsDescriptionTable, (int)action, action);
-                        cmd.CommandText = commandStr;
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    commandStr = string.Format(
                         @"CREATE TABLE {0}
                         ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                         [ActionID] NUMBER NOT NULL,
@@ -197,7 +187,7 @@ namespace NeuroXChange.Model.Database
                         [Data] TEXT,
                         CONSTRAINT FK_Action FOREIGN KEY (ActionID)
                         REFERENCES {1}(ID));",
-                        userActionsTable, userActionsDescriptionTable);
+                        userActionsTable, "UserAction");
                     cmd.CommandText = commandStr;
                     cmd.ExecuteNonQuery();
 
@@ -210,6 +200,39 @@ namespace NeuroXChange.Model.Database
                 }
                 catch { }
             }
+
+
+            // saving trades history
+            try
+            {
+                var commandStr = string.Format(
+                    @"CREATE TABLE {0}
+                        ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                        [OrderGroup] NUMBER NOT NULL,
+                        [BMModelID] NUMBER NOT NULL,
+                        [PlaceTime] DATETIME NOT NULL,
+                        [OpenTime] DATETIME NOT NULL,
+                        [OpenPrice] NUMBER NOT NULL,
+                        [Direction] NUMBER NOT NULL,
+                        [Value] NUMBER NOT NULL,
+                        [LotSize] NUMBER NOT NULL,
+                        [OpenReason] NUMBER NOT NULL,
+                        [CloseTime] DATETIME NOT NULL,
+                        [ClosePrice] NUMBER NOT NULL,
+                        [CloseReason] NUMBER NOT NULL,
+                        [Profitability] NUMBER NOT NULL,
+                        [HardStopLossPips] NUMBER,
+                        [TakeProfitPips] NUMBER,
+                        [TrailingStopLossPips] NUMBER,
+                        CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
+                        CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
+                        CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
+                    );",
+                    "OrdersHistory");
+                cmd.CommandText = commandStr;
+                cmd.ExecuteNonQuery();
+            }
+            catch {}
 
             DatabaseConnected = true;
         }
@@ -312,6 +335,74 @@ namespace NeuroXChange.Model.Database
 
             var cmd = new OleDbCommand(commandText, connection);
             cmd.ExecuteNonQueryAsync();
+        }
+
+        public void WriteClosedOrder(Order order)
+        {
+            var commandText = string.Format(
+                @"INSERT INTO {0} 
+                        ([OrderGroup],
+                        [BMModelID],
+                        [PlaceTime],
+                        [OpenTime],
+                        [OpenPrice],
+                        [Direction],
+                        [Value],
+                        [LotSize],
+                        [OpenReason],
+                        [CloseTime],
+                        [ClosePrice],
+                        [CloseReason],
+                        [Profitability],
+                        [HardStopLossPips],
+                        [TakeProfitPips],
+                        [TrailingStopLossPips])
+                VALUES ({1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15}, {16});",
+                "OrdersHistory",
+                order.OrderGroup,
+                order.BMModelID,
+                order.PlaceTime,
+                order.OpenTime,
+                order.OpenPrice,
+                (int)order.Direction,
+                order.Value,
+                order.LotSize,
+                (int)order.openReason,
+                order.CloseTime,
+                order.ClosePrice,
+                (int?)order.closeReason,
+                order.Profitability,
+                order.HardStopLossPips,
+                order.TakeProfitPips,
+                StringHelpers.NullableToString(order.TrailingStopLossPips)
+                );
+
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQuery();
+        }
+
+        private void CreateTableFromEnum(OleDbCommand cmd, Type type)
+        {
+            try
+            {
+                var commandStr = string.Format(
+                   "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Description] TEXT NOT NULL);",
+                   type.Name);
+                cmd.CommandText = commandStr;
+                cmd.ExecuteNonQuery();
+
+                foreach (var value in type.GetEnumValues())
+                {
+                    commandStr = string.Format(
+                        @"INSERT INTO {0}
+                            ([ID], [Description])
+                            VALUES ({1}, '{2}')",
+                        type.Name, (int)value, value);
+                    cmd.CommandText = commandStr;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch {}
         }
     }
 }

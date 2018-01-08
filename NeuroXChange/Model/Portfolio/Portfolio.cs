@@ -1,4 +1,5 @@
 ﻿using NeuroXChange.Common;
+using NeuroXChange.Model.Database;
 using NeuroXChange.Model.FixApi;
 using System;
 
@@ -6,6 +7,8 @@ namespace NeuroXChange.Model.Portfolio
 {
     public class Portfolio
     {
+        private LocalDatabaseConnector localDatabaseConnector;
+
         // portfolio management variables
         public int DefaultLotSize { get; set; }
         public int? DefaultHardStopLossPips { get; set; }
@@ -23,8 +26,10 @@ namespace NeuroXChange.Model.Portfolio
         public const bool CanOpenMultipleOrdersOneDirection = false;
         public const bool CanOpenReverseOrders = false;
 
-        public Portfolio()
+        public Portfolio(LocalDatabaseConnector localDatabaseConnector)
         {
+            this.localDatabaseConnector = localDatabaseConnector;
+
             RunningOrders = new ThreadedBindingList<Order>();
             ClosedOrders = new ThreadedBindingList<Order>();
             OrderCounter = 0;
@@ -157,6 +162,8 @@ namespace NeuroXChange.Model.Portfolio
             ClosedProfitability += order.Profitability.Value;
             ClosedOrders.Add(order);
             RunningOrders.Remove(order);
+
+            localDatabaseConnector.WriteClosedOrder(order);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace NeuroXChange.Model
 {
     public class SimpleBehavioralModel
     {
+        private LocalDatabaseConnector localDatabaseConnector;
+
         public int ModelID { get; set; }
 
         // transitions
@@ -37,21 +39,21 @@ namespace NeuroXChange.Model
         public int lastNot74SubProtocolID { get; set; }
 
         public LinkedList<TransitionHistoryItem> TransitionHistory { get; private set; }
-        public LocalDatabaseConnector localDatabaseConnector { get; set;}
 
         // private variables
         private TickPrice LastPrice;
 
-        public SimpleBehavioralModel(int modelID)
+        public SimpleBehavioralModel(int modelID, LocalDatabaseConnector localDatabaseConnector)
         {
             this.ModelID = modelID;
+            this.localDatabaseConnector = localDatabaseConnector;
 
             PreviousTickState = BehavioralModelState.InitialState;
             CurrentTickState = BehavioralModelState.InitialState;
             transitions = new List<AbstractTransition>();
             TransitionHistory = new LinkedList<TransitionHistoryItem>();
 
-            portfolio = new Portfolio.Portfolio();
+            portfolio = new Portfolio.Portfolio(localDatabaseConnector);
         }
 
         public virtual void OnNext(BioData.BioData data)

@@ -14,6 +14,8 @@ namespace NeuroXChange
         [STAThread]
         static void Main()
         {
+            int? a = null;
+            string s = string.Format("{0}", a);
             try
             {
                 Application.EnableVisualStyles();

@@ -144,11 +144,11 @@ namespace NeuroXChange.Model.Portfolio
         {
             if (orderState == OrderState.Pending)
             {
-                throw new Exception("Order is in pending state!");
+                return;
             }
             if (orderState == OrderState.Closed)
             {
-                throw new Exception("Order was already closed!");
+                return;
             }
 
             orderState = OrderState.Closed;
