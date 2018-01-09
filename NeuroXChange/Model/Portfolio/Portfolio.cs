@@ -76,7 +76,8 @@ namespace NeuroXChange.Model.Portfolio
             OrderDirection direction,
             TickPrice price,
             OpenReason openReason,
-            out Order order)
+            out Order order,
+            DateTime openTime)
         {
             order = null;
 
@@ -90,13 +91,13 @@ namespace NeuroXChange.Model.Portfolio
 
             if (HasOrdersByDirection(direction == OrderDirection.Buy ? OrderDirection.Sell : OrderDirection.Buy))
             {
-                CloseAllOrders(price, CloseReason.ReverseOrderRequested);
+                CloseAllOrders(price, CloseReason.ReverseOrderRequested, openTime);
                 return true;
             }
 
             OrderCounter++;
             OrderGroupCounter++;
-            order = new Order(OrderCounter, OrderGroupCounter, bmModelID, DateTime.Now, DateTime.Now, price, direction, 1, DefaultLotSize, openReason);
+            order = new Order(OrderCounter, OrderGroupCounter, bmModelID, openTime, openTime, price, direction, 1, DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
             order.TrailingStopLossPips = DefaultTrailingStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
@@ -105,12 +106,12 @@ namespace NeuroXChange.Model.Portfolio
             return true;
         }
 
-        public void CloseAllOrders(TickPrice price, CloseReason closeReason)
+        public void CloseAllOrders(TickPrice price, CloseReason closeReason, DateTime closeTime)
         {
             for (int orderInd = 0; orderInd < RunningOrders.Count; orderInd++)
             {
                 var order = RunningOrders[orderInd];
-                CloseOrder(order, price, closeReason);
+                CloseOrder(order, price, closeReason, closeTime);
                 orderInd--;
             }
         }
@@ -126,7 +127,7 @@ namespace NeuroXChange.Model.Portfolio
                     continue;
                 }
 
-                CloseOrder(order, price, closeReason);
+                CloseOrder(order, price, closeReason, price.time);
                 orderInd--;
             }
         }
@@ -155,10 +156,10 @@ namespace NeuroXChange.Model.Portfolio
             }
         }
 
-        private void CloseOrder(Order order, TickPrice price, CloseReason closeReason)
+        private void CloseOrder(Order order, TickPrice price, CloseReason closeReason, DateTime closeTime)
         {
             var balance = ClosedProfitability + RunningProfitability(price);
-            order.Close(DateTime.Now, price, closeReason, balance);
+            order.Close(closeTime, price, closeReason, balance);
             ClosedProfitability += order.Profitability.Value;
             ClosedOrders.Add(order);
             RunningOrders.Remove(order);
