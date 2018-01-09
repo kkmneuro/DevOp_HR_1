@@ -204,7 +204,7 @@ namespace NeuroXChange.View.Training
             else if (sender == variant6btn)
                 variant = 6;
 
-            var data = manualPositionChoseStrings[variant];
+            var data = manualPositionChoseStrings[variant-1];
             controller.WriteUserAction(UserAction.ManualPositionChosen, data);
 
             view.breathPacerWindow.breathPacerControl.ElapsedCycleCount = lastCyclesToFinish;
