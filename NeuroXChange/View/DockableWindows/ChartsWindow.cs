@@ -39,6 +39,11 @@ namespace NeuroXChange.View
 
         private void ChartsWindow_VisibleChanged(object sender, EventArgs e)
         {
+            if(!heartRateChart.Created)
+            {
+                return;
+            }
+
             if (this.Visible)
             {
                 heartRateChart.Series.ResumeUpdates();
