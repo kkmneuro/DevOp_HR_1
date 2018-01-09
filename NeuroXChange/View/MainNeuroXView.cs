@@ -205,6 +205,11 @@ namespace NeuroXChange.View
 
         public void OnNext(BioDataEvent bioDataEvent, object data)
         {
+            if(!mainWindow.Created)
+            {
+                return;
+            }
+
             if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
                 if (!mainWindow.IsHandleCreated)

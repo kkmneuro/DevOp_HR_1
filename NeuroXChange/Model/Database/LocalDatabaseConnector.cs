@@ -10,9 +10,10 @@ namespace NeuroXChange.Model.Database
 {
     public class LocalDatabaseConnector
     {
-        public bool DatabaseConnected { get; private set; }
-
         private string databaseLocation;
+        private bool emulationOnHistoryMode;
+
+        public bool DatabaseConnected { get; private set; }
 
         public bool saveBioData { get; private set; }
         private string bioDataTable;
@@ -33,6 +34,7 @@ namespace NeuroXChange.Model.Database
         {
             DatabaseConnected = false;
 
+            emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory", "false"));
             databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
 
             saveBioData = bool.Parse(iniFileReader.Read("SaveBioData", "Database", "true"));
@@ -120,8 +122,17 @@ namespace NeuroXChange.Model.Database
                     cmd.Connection = connection;
                     cmd.CommandText = commandText;
                     cmd.ExecuteNonQuery();
+
+                    commandText = string.Format(
+                        @"CREATE INDEX Time_IDX
+                        ON {0} ([Time])",
+                        bioDataTable);
+                    cmd.CommandText = commandText;
+                    cmd.ExecuteNonQuery();
                 }
-                catch { }
+                catch (Exception ex) {
+                    var str = ex.Message;
+                }
             }
 
             // can't save PriceAtBioDataTick without BioData
@@ -192,8 +203,8 @@ namespace NeuroXChange.Model.Database
                     cmd.ExecuteNonQuery();
 
                     commandStr = string.Format(
-                        @"CREATE INDEX FK_Action_IDX
-                        ON {0} (ActionID);",
+                        @"CREATE INDEX Time_IDX
+                        ON {0} ([Time])",
                         userActionsTable);
                     cmd.CommandText = commandStr;
                     cmd.ExecuteNonQuery();
@@ -231,6 +242,13 @@ namespace NeuroXChange.Model.Database
                     "OrdersHistory");
                 cmd.CommandText = commandStr;
                 cmd.ExecuteNonQuery();
+
+                cmd.CommandText = @"CREATE INDEX PlaceTime_IDX ON OrdersHistory ([PlaceTime])";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = @"CREATE INDEX OpenTime_IDX ON OrdersHistory ([OpenTime])";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = @"CREATE INDEX CloseTime_IDX ON OrdersHistory ([CloseTime])";
+                cmd.ExecuteNonQuery();
             }
             catch {}
 
@@ -240,7 +258,7 @@ namespace NeuroXChange.Model.Database
         // returns id of added row in the database table
         public int WriteBioData(BioData.BioData data)
         {
-            if (!DatabaseConnected || !saveBioData)
+            if (!DatabaseConnected || !saveBioData || emulationOnHistoryMode)
             {
                 return -1;
             }
@@ -272,7 +290,7 @@ namespace NeuroXChange.Model.Database
 
         public void WriteTickPrice(TickPrice tickPrice)
         {
-            if (!DatabaseConnected || !saveTickPrice)
+            if (!DatabaseConnected || !saveTickPrice || emulationOnHistoryMode)
             {
                 return;
             }
@@ -293,7 +311,7 @@ namespace NeuroXChange.Model.Database
 
         public void WritePriceAtBioDataTick(TickPrice tickPrice, long biodataId)
         {
-            if (!DatabaseConnected || !savePriceAtBioDataTick)
+            if (!DatabaseConnected || !savePriceAtBioDataTick || emulationOnHistoryMode)
             {
                 return;
             }
@@ -319,7 +337,7 @@ namespace NeuroXChange.Model.Database
 
         public void WriteUserAction(UserAction action, DateTime time, string data = null)
         {
-            if (!DatabaseConnected || !saveUserActions)
+            if (!DatabaseConnected || !saveUserActions || emulationOnHistoryMode)
             {
                 return;
             }
@@ -339,6 +357,11 @@ namespace NeuroXChange.Model.Database
 
         public void WriteClosedOrder(Order order)
         {
+            if (!DatabaseConnected || emulationOnHistoryMode)
+            {
+                return;
+            }
+
             var commandText = string.Format(
                 @"INSERT INTO {0} 
                         ([OrderGroup],
