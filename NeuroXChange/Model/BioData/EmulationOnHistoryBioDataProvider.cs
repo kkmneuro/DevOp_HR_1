@@ -15,12 +15,9 @@ namespace NeuroXChange.Model.BioData
         private OleDbDataReader reader;
         private Thread thread;
         private string databaseLocation;
-        private string tableName;
         private long startDataRowId;
         private long endDataRowId;
         private volatile int tickInterval;
-
-        private string priceAtBioDataTickTable;
 
         private int totalTicksCount;
         private int ticksPassed;
@@ -33,8 +30,6 @@ namespace NeuroXChange.Model.BioData
             : base(model, localDatabaseConnector)
         {
             databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
-            tableName = iniFileReader.Read("BioDataTable", "Database", "BioData");
-            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database", "PriceAtBioDataTick");
 
             if (!File.Exists(this.databaseLocation))
             {
@@ -65,9 +60,9 @@ namespace NeuroXChange.Model.BioData
                 conn.Open();
 
                 var TotalRowsCountCommandStr = string.Format(
-                    @"SELECT COUNT(*) AS totalTicks FROM {0}
-                WHERE ID >= {2} AND ID <= {3}",
-                    tableName, null, startDataRowId, endDataRowId);
+                    @"SELECT COUNT(*) AS totalTicks FROM BioData
+                WHERE ID >= {0} AND ID <= {1}",
+                    startDataRowId, endDataRowId);
 
                 var cmd = new OleDbCommand(TotalRowsCountCommandStr, conn);
                 reader = cmd.ExecuteReader();
@@ -79,11 +74,11 @@ namespace NeuroXChange.Model.BioData
                 cmd.Dispose();
 
                 var commandStr = string.Format(
-                    @"SELECT {0}.*, sellPrice, buyPrice FROM {0}
-                LEFT OUTER JOIN {1} ON {0}.ID = {1}.ID
-                WHERE {0}.ID >= {2} AND {0}.ID <= {3}
-                ORDER BY {0}.ID",
-                    tableName, priceAtBioDataTickTable, startDataRowId, endDataRowId);
+                    @"SELECT BioData.*, sellPrice, buyPrice FROM BioData
+                LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID
+                WHERE BioData.ID >= {0} AND BioData.ID <= {1}
+                ORDER BY BioData.ID",
+                    startDataRowId, endDataRowId);
 
                 cmd = new OleDbCommand(commandStr, conn);
 

@@ -16,17 +16,9 @@ namespace NeuroXChange.Model.Database
         public bool DatabaseConnected { get; private set; }
 
         public bool saveBioData { get; private set; }
-        private string bioDataTable;
-
         public bool saveTickPrice { get; private set; }
-        private string tickPriceTable;
-
         public bool savePriceAtBioDataTick { get; private set; }
-        private string priceAtBioDataTickTable;
-
-        private string instrumentTable;
         public bool saveUserActions { get; private set; }
-        private string userActionsTable;
 
         private OleDbConnection connection = null;
 
@@ -38,18 +30,9 @@ namespace NeuroXChange.Model.Database
             databaseLocation = iniFileReader.Read("Location", "Database", "Data\\PsychophysiologyDatabase.mdb");
 
             saveBioData = bool.Parse(iniFileReader.Read("SaveBioData", "Database", "true"));
-            bioDataTable = iniFileReader.Read("BioDataTable", "Database", "BioData");
-
             saveTickPrice = bool.Parse(iniFileReader.Read("SaveTickPrice", "Database", "false"));
-            tickPriceTable = iniFileReader.Read("TickPriceTable", "Database", "TickPrice");
-
             savePriceAtBioDataTick = bool.Parse(iniFileReader.Read("SavePriceAtBioDataTick", "Database", "true"));
-            priceAtBioDataTickTable = iniFileReader.Read("PriceAtBioDataTickTable", "Database", "PriceAtBioDataTick");
-
-            instrumentTable = iniFileReader.Read("InstrumentTable", "Database", "Instrument");
-
             saveUserActions = bool.Parse(iniFileReader.Read("SaveUserActions", "Database", "true"));
-            userActionsTable = iniFileReader.Read("UserActionsTable", "Database", "UserActions");
 
             if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick && !saveUserActions)
             {
@@ -104,8 +87,9 @@ namespace NeuroXChange.Model.Database
             {
                 try
                 {
-                    var commandText = string.Format(
-                        @"CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                    cmd.CommandText = 
+                        @"CREATE TABLE BioData (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                             [Time] DATETIME NOT NULL,
                             [Temperature] DOUBLE,
                             [HeartRate] DOUBLE,
@@ -116,18 +100,10 @@ namespace NeuroXChange.Model.Database
                             [TrainingType] INTEGER,
                             [TrainingStep] INTEGER,
                             [ApplicationStates] INTEGER
-                        )",
-                        bioDataTable);
-                    cmd = new OleDbCommand();
-                    cmd.Connection = connection;
-                    cmd.CommandText = commandText;
+                        )";
                     cmd.ExecuteNonQuery();
 
-                    commandText = string.Format(
-                        @"CREATE INDEX Time_IDX
-                        ON {0} ([Time])",
-                        bioDataTable);
-                    cmd.CommandText = commandText;
+                    cmd.CommandText = @"CREATE INDEX Time_IDX ON BioData ([Time])";
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex) {
@@ -142,19 +118,16 @@ namespace NeuroXChange.Model.Database
             {
                 try
                 {
-                    var commandText = string.Format(
-                        @"CREATE TABLE {0}
-                        ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [Title] VARCHAR(40) NOT NULL);",
-                        instrumentTable);
-                    cmd.CommandText = commandText;
+                    cmd.CommandText =
+                        @"CREATE TABLE InstrumentTable (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [Title] VARCHAR(40) NOT NULL);";
                     cmd.ExecuteNonQuery();
 
-                    commandText = string.Format(
-                        @"INSERT INTO {0}
-                        ([ID], [Title])
-                        VALUES (1, 'EURUSD');",
-                        instrumentTable);
-                    cmd.CommandText = commandText;
+                    cmd.CommandText =
+                        @"INSERT INTO InstrumentTable
+                            ([ID], [Title])
+                            VALUES (1, 'EURUSD');";
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
@@ -164,10 +137,14 @@ namespace NeuroXChange.Model.Database
             {
                 try
                 {
-                    var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY, [InstrumentID] NUMBER NOT NULL, [Time] DATETIME NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
-                        tickPriceTable);
-                    cmd.CommandText = commandStr;
+                    cmd.CommandText = 
+                        @"CREATE TABLE TickPrice (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [InstrumentID] NUMBER NOT NULL,
+                            [Time] DATETIME NOT NULL,
+                            [SellPrice] DOUBLE NOT NULL,
+                            [BuyPrice] DOUBLE NOT NULL
+                        );";
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
@@ -177,10 +154,12 @@ namespace NeuroXChange.Model.Database
             {
                 try
                 {
-                    var commandStr = string.Format(
-                        "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [InstrumentID] NUMBER NOT NULL, [SellPrice] DOUBLE NOT NULL, [BuyPrice] DOUBLE NOT NULL);",
-                        priceAtBioDataTickTable);
-                    cmd.CommandText = commandStr;
+                    cmd.CommandText =
+                        @"CREATE TABLE PriceAtBioDataTick (
+                            [ID] NUMBER NOT NULL PRIMARY KEY,
+                            [InstrumentID] NUMBER NOT NULL,
+                            [SellPrice] DOUBLE NOT NULL,
+                            [BuyPrice] DOUBLE NOT NULL);";
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
@@ -190,23 +169,19 @@ namespace NeuroXChange.Model.Database
             {
                 try
                 {
-                    var commandStr = string.Format(
-                        @"CREATE TABLE {0}
-                        ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                        [ActionID] NUMBER NOT NULL,
-                        [Time] DATETIME NOT NULL,
-                        [Data] TEXT,
-                        CONSTRAINT FK_Action FOREIGN KEY (ActionID)
-                        REFERENCES {1}(ID));",
-                        userActionsTable, "UserAction");
-                    cmd.CommandText = commandStr;
+                    cmd.CommandText =
+                        @"CREATE TABLE UserActions (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [ActionID] NUMBER NOT NULL,
+                            [Time] DATETIME NOT NULL,
+                            [Data] TEXT,
+                            CONSTRAINT FK_Action FOREIGN KEY (ActionID)
+                            REFERENCES UserAction(ID));";
                     cmd.ExecuteNonQuery();
 
-                    commandStr = string.Format(
+                    cmd.CommandText =
                         @"CREATE INDEX Time_IDX
-                        ON {0} ([Time])",
-                        userActionsTable);
-                    cmd.CommandText = commandStr;
+                        ON UserActions ([Time])";
                     cmd.ExecuteNonQuery();
                 }
                 catch { }
@@ -217,8 +192,8 @@ namespace NeuroXChange.Model.Database
             try
             {
                 var commandStr = string.Format(
-                    @"CREATE TABLE {0}
-                        ([ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                    @"CREATE TABLE {0} (
+                        [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                         [OrderGroup] NUMBER NOT NULL,
                         [BMModelID] NUMBER NOT NULL,
                         [PlaceTime] DATETIME NOT NULL,
@@ -264,9 +239,8 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(@"
-                INSERT INTO {0} ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep, ApplicationStates)
-                    VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9}, {10})",
-                bioDataTable,
+                INSERT INTO BioData ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep, ApplicationStates)
+                    VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', {7}, {8}, {9})",
                 data.time,
                 data.temperature,
                 data.heartRate,
@@ -296,10 +270,9 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(
-                @"INSERT INTO {0} 
+                @"INSERT INTO TickPrice 
                 ([InstrumentID], [Time], [SellPrice], [BuyPrice])
-                VALUES ({1}, '{2}', {3}, {4});",
-                tickPriceTable,
+                VALUES ({0}, '{1}', {2}, {3});",
                 1,
                 DateTime.Now,
                 tickPrice.sellString,
@@ -317,10 +290,9 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(
-                @"INSERT INTO {0}
-                ([ID], [InstrumentID], [SellPrice], [BuyPrice])
-                VALUES ({1}, {2}, {3}, {4});",
-                priceAtBioDataTickTable,
+                @"INSERT INTO PriceAtBioDataTick
+                    ([ID], [InstrumentID], [SellPrice], [BuyPrice])
+                    VALUES ({0}, {1}, {2}, {3} );",
                 biodataId,
                 1,
                 tickPrice.sellString,
@@ -343,10 +315,9 @@ namespace NeuroXChange.Model.Database
             }
 
             var commandText = string.Format(
-                @"INSERT INTO {0} 
-                ([ActionID], [Time], [Data])
-                VALUES ({1}, '{2}', '{3}');",
-                userActionsTable,
+                @"INSERT INTO UserActions
+                    ([ActionID], [Time], [Data])
+                    VALUES ({0}, '{1}', '{2}');",
                 (int)action,
                 time,
                 data);
