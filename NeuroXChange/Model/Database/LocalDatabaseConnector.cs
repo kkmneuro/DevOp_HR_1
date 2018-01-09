@@ -10,7 +10,10 @@ namespace NeuroXChange.Model.Database
 {
     public class LocalDatabaseConnector
     {
+        public const int CurrentDBVersion = 1;
+
         private string databaseLocation;
+        private string connectionString;
         private bool emulationOnHistoryMode;
 
         public bool DatabaseConnected { get; private set; }
@@ -34,27 +37,26 @@ namespace NeuroXChange.Model.Database
             savePriceAtBioDataTick = bool.Parse(iniFileReader.Read("SavePriceAtBioDataTick", "Database", "true"));
             saveUserActions = bool.Parse(iniFileReader.Read("SaveUserActions", "Database", "true"));
 
-            if (!saveBioData && !saveTickPrice && !savePriceAtBioDataTick && !saveUserActions)
-            {
-                return;
-            }
+            connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\"{0}\"", databaseLocation);
 
-            var connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + databaseLocation;
+            bool needToCreateDBStructure = false;
 
-            // create empty MS Access database file if there are no such file 
-            try
+            if (!File.Exists(databaseLocation))
             {
-                if (!File.Exists(databaseLocation))
+                needToCreateDBStructure = true;
+
+                // create empty MS Access database file if there are no such file 
+                try
                 {
                     MessageBox.Show("File \"" + databaseLocation + "\" doesn't exist. It will be created");
                     var cat = new ADOX.Catalog();
                     cat.Create(connectionString);
                 }
-            } 
-            catch (Exception e)
-            {
-                MessageBox.Show("Error in creation of \"" + databaseLocation + "\" file: " + e.Message);
-                return;
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error in creating of \"" + databaseLocation + "\" file:\r\n" + e.Message);
+                    return;
+                }
             }
 
             OleDbCommand cmd;
@@ -73,159 +75,40 @@ namespace NeuroXChange.Model.Database
                 return;
             }
 
-
-            // creating tables from enumerations
-            CreateTableFromEnum(cmd, typeof(UserAction));
-            CreateTableFromEnum(cmd, typeof(OrderDirection));
-            CreateTableFromEnum(cmd, typeof(OpenReason));
-            CreateTableFromEnum(cmd, typeof(Portfolio.CloseReason));
-
-
-            // create tables if they are not exists yet
-
-            if (saveBioData)
+            if (needToCreateDBStructure)
             {
                 try
                 {
-                    cmd.CommandText = 
-                        @"CREATE TABLE BioData (
-                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [Time] DATETIME NOT NULL,
-                            [Temperature] DOUBLE,
-                            [HeartRate] DOUBLE,
-                            [SkinConductance] DOUBLE,
-                            [AccX] DOUBLE,
-                            [AccY] DOUBLE,
-                            [AccZ] DOUBLE,
-                            [TrainingType] INTEGER,
-                            [TrainingStep] INTEGER,
-                            [ApplicationStates] INTEGER
-                        )";
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = @"CREATE INDEX Time_IDX ON BioData ([Time])";
-                    cmd.ExecuteNonQuery();
+                    CreateDatabaseStructure(cmd);
                 }
-                catch (Exception ex) {
-                    var str = ex.Message;
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error in creating database structure:\r\n" + e.Message);
+                    return;
+                }
+            }
+
+            int dbVersion = GetDatabaseVersion(cmd);
+
+            // updating database structure if needed
+            if (dbVersion < CurrentDBVersion)
+            {
+                try
+                {
+                    MessageBox.Show(
+                        string.Format("Database structure need to be updated\r\nCurrent version: {0}\r\nLatest version: {1}",
+                        dbVersion, CurrentDBVersion));
+                    UpdateDatabaseStructure(cmd, dbVersion);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error in updating structure:\r\n" + e.Message);
+                    return;
                 }
             }
 
             // can't save PriceAtBioDataTick without BioData
             savePriceAtBioDataTick &= saveBioData;
-
-            if (saveTickPrice || savePriceAtBioDataTick)
-            {
-                try
-                {
-                    cmd.CommandText =
-                        @"CREATE TABLE InstrumentTable (
-                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [Title] VARCHAR(40) NOT NULL);";
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText =
-                        @"INSERT INTO InstrumentTable
-                            ([ID], [Title])
-                            VALUES (1, 'EURUSD');";
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
-
-            if (saveTickPrice)
-            {
-                try
-                {
-                    cmd.CommandText = 
-                        @"CREATE TABLE TickPrice (
-                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [InstrumentID] NUMBER NOT NULL,
-                            [Time] DATETIME NOT NULL,
-                            [SellPrice] DOUBLE NOT NULL,
-                            [BuyPrice] DOUBLE NOT NULL
-                        );";
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
-
-            if (savePriceAtBioDataTick)
-            {
-                try
-                {
-                    cmd.CommandText =
-                        @"CREATE TABLE PriceAtBioDataTick (
-                            [ID] NUMBER NOT NULL PRIMARY KEY,
-                            [InstrumentID] NUMBER NOT NULL,
-                            [SellPrice] DOUBLE NOT NULL,
-                            [BuyPrice] DOUBLE NOT NULL);";
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
-
-            if (saveUserActions)
-            {
-                try
-                {
-                    cmd.CommandText =
-                        @"CREATE TABLE UserActions (
-                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [ActionID] NUMBER NOT NULL,
-                            [Time] DATETIME NOT NULL,
-                            [Data] TEXT,
-                            CONSTRAINT FK_Action FOREIGN KEY (ActionID)
-                            REFERENCES UserAction(ID));";
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText =
-                        @"CREATE INDEX Time_IDX
-                        ON UserActions ([Time])";
-                    cmd.ExecuteNonQuery();
-                }
-                catch { }
-            }
-
-
-            // saving trades history
-            try
-            {
-                var commandStr = string.Format(
-                    @"CREATE TABLE {0} (
-                        [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                        [OrderGroup] NUMBER NOT NULL,
-                        [BMModelID] NUMBER NOT NULL,
-                        [PlaceTime] DATETIME NOT NULL,
-                        [OpenTime] DATETIME NOT NULL,
-                        [OpenPrice] NUMBER NOT NULL,
-                        [Direction] NUMBER NOT NULL,
-                        [Value] NUMBER NOT NULL,
-                        [LotSize] NUMBER NOT NULL,
-                        [OpenReason] NUMBER NOT NULL,
-                        [CloseTime] DATETIME NOT NULL,
-                        [ClosePrice] NUMBER NOT NULL,
-                        [CloseReason] NUMBER NOT NULL,
-                        [Profitability] NUMBER NOT NULL,
-                        [HardStopLossPips] NUMBER,
-                        [TakeProfitPips] NUMBER,
-                        [TrailingStopLossPips] NUMBER,
-                        CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
-                        CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
-                        CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
-                    );",
-                    "OrdersHistory");
-                cmd.CommandText = commandStr;
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = @"CREATE INDEX PlaceTime_IDX ON OrdersHistory ([PlaceTime])";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = @"CREATE INDEX OpenTime_IDX ON OrdersHistory ([OpenTime])";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = @"CREATE INDEX CloseTime_IDX ON OrdersHistory ([CloseTime])";
-                cmd.ExecuteNonQuery();
-            }
-            catch {}
 
             DatabaseConnected = true;
         }
@@ -375,6 +258,157 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQuery();
         }
 
+        private void CreateDatabaseStructure(OleDbCommand cmd)
+        {
+            // DBSettings table
+            cmd.CommandText =
+                @"CREATE TABLE DBSettings (
+                            [Key] TEXT NOT NULL PRIMARY KEY,
+                            [Value] TEXT);";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = string.Format(
+                @"INSERT INTO DBSettings
+                            ([Key], [Value])
+                            VALUES ('Version', {0});",
+                CurrentDBVersion);
+            cmd.ExecuteNonQuery();
+
+            // creating tables from enumerations
+            CreateTableFromEnum(cmd, typeof(UserAction));
+            CreateTableFromEnum(cmd, typeof(OrderDirection));
+            CreateTableFromEnum(cmd, typeof(OpenReason));
+            CreateTableFromEnum(cmd, typeof(Portfolio.CloseReason));
+
+            // BioData table
+            cmd.CommandText =
+                @"CREATE TABLE BioData (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [Time] DATETIME NOT NULL,
+                            [Temperature] DOUBLE,
+                            [HeartRate] DOUBLE,
+                            [SkinConductance] DOUBLE,
+                            [AccX] DOUBLE,
+                            [AccY] DOUBLE,
+                            [AccZ] DOUBLE,
+                            [TrainingType] INTEGER,
+                            [TrainingStep] INTEGER,
+                            [ApplicationStates] INTEGER
+                        )";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = @"CREATE INDEX Time_IDX ON BioData ([Time])";
+            cmd.ExecuteNonQuery();
+
+            // Instrument table
+            cmd.CommandText =
+                @"CREATE TABLE Instrument (
+                    [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                    [Title] VARCHAR(40) NOT NULL);";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText =
+                @"INSERT INTO Instrument
+                    ([ID], [Title])
+                    VALUES (1, 'EURUSD');";
+            cmd.ExecuteNonQuery();
+
+            // TickPrice table
+            cmd.CommandText =
+                @"CREATE TABLE TickPrice (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [InstrumentID] NUMBER NOT NULL,
+                            [Time] DATETIME NOT NULL,
+                            [SellPrice] DOUBLE NOT NULL,
+                            [BuyPrice] DOUBLE NOT NULL
+                        );";
+            cmd.ExecuteNonQuery();
+
+            // PriceAtBioDataTick table
+            cmd.CommandText =
+                @"CREATE TABLE PriceAtBioDataTick (
+                            [ID] NUMBER NOT NULL PRIMARY KEY,
+                            [InstrumentID] NUMBER NOT NULL,
+                            [SellPrice] DOUBLE NOT NULL,
+                            [BuyPrice] DOUBLE NOT NULL);";
+            cmd.ExecuteNonQuery();
+
+            // UserActions table
+            cmd.CommandText =
+                @"CREATE TABLE UserActions (
+                            [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                            [ActionID] NUMBER NOT NULL,
+                            [Time] DATETIME NOT NULL,
+                            [Data] TEXT,
+                            CONSTRAINT FK_Action FOREIGN KEY (ActionID)
+                            REFERENCES UserAction(ID));";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText =
+                @"CREATE INDEX Time_IDX
+                        ON UserActions ([Time])";
+            cmd.ExecuteNonQuery();
+
+            // OrdersHistory table
+            cmd.CommandText =
+                @"CREATE TABLE OrdersHistory (
+                        [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                        [OrderGroup] NUMBER NOT NULL,
+                        [BMModelID] NUMBER NOT NULL,
+                        [PlaceTime] DATETIME NOT NULL,
+                        [OpenTime] DATETIME NOT NULL,
+                        [OpenPrice] NUMBER NOT NULL,
+                        [Direction] NUMBER NOT NULL,
+                        [Value] NUMBER NOT NULL,
+                        [LotSize] NUMBER NOT NULL,
+                        [OpenReason] NUMBER NOT NULL,
+                        [CloseTime] DATETIME NOT NULL,
+                        [ClosePrice] NUMBER NOT NULL,
+                        [CloseReason] NUMBER NOT NULL,
+                        [Profitability] NUMBER NOT NULL,
+                        [HardStopLossPips] NUMBER,
+                        [TakeProfitPips] NUMBER,
+                        [TrailingStopLossPips] NUMBER,
+                        CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
+                        CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
+                        CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
+                    );";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = @"CREATE INDEX PlaceTime_IDX ON OrdersHistory ([PlaceTime])";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"CREATE INDEX OpenTime_IDX ON OrdersHistory ([OpenTime])";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"CREATE INDEX CloseTime_IDX ON OrdersHistory ([CloseTime])";
+            cmd.ExecuteNonQuery();
+        }
+
+        private int GetDatabaseVersion(OleDbCommand cmd)
+        {
+            int version = 0;
+
+            try
+            {
+                cmd.CommandText = @"SELECT [Value] FROM DBSettings WHERE [Key] = 'Version'";
+
+                var reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    version = Int32.Parse(reader["Value"].ToString());
+                }
+                else
+                {
+                    return 0;
+                }
+                reader.Close();
+            } catch
+            {
+                return 0;
+            }
+
+            return version;
+        }
+
         private void CreateTableFromEnum(OleDbCommand cmd, Type type)
         {
             try
@@ -397,6 +431,26 @@ namespace NeuroXChange.Model.Database
                 }
             }
             catch {}
+        }
+
+        private void UpdateDatabaseStructure(OleDbCommand cmd, int fromVersion)
+        {
+            if (fromVersion == 0)
+            {
+                // DBSettings table
+                cmd.CommandText =
+                    @"CREATE TABLE DBSettings (
+                            [Key] TEXT NOT NULL PRIMARY KEY,
+                            [Value] TEXT);";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = string.Format(
+                    @"INSERT INTO DBSettings
+                            ([Key], [Value])
+                            VALUES ('Version', {0});",
+                    1);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
