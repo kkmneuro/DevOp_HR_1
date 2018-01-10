@@ -273,6 +273,12 @@
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\ControlPaintUtils.cs" />
+    <Compile Include="View\Training\MarketSentimentSurveyWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Training\MarketSentimentSurveyWindow.Designer.cs">
+      <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\DialogWindows\ManualOrderConfirmationWindow.resx">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -330,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\DockableWindows\RawInformationWindow.resx">
       <DependentUpon>RawInformationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Training\MarketSentimentSurveyWindow.resx">
+      <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="NeuroXChangeSettings.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

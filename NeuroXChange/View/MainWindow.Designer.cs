@@ -52,6 +52,8 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.marketSentimentSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -95,7 +97,9 @@
             // trainingToolStripMenuItem
             // 
             this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.compDayToolStripMenuItem});
+            this.compDayToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.marketSentimentSurveyToolStripMenuItem});
             this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
             this.trainingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.trainingToolStripMenuItem.Text = "Training";
@@ -103,7 +107,7 @@
             // compDayToolStripMenuItem
             // 
             this.compDayToolStripMenuItem.Name = "compDayToolStripMenuItem";
-            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.compDayToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.compDayToolStripMenuItem.Text = "Comp day";
             this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
@@ -244,6 +248,18 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 6);
+            // 
+            // marketSentimentSurveyToolStripMenuItem
+            // 
+            this.marketSentimentSurveyToolStripMenuItem.Name = "marketSentimentSurveyToolStripMenuItem";
+            this.marketSentimentSurveyToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.marketSentimentSurveyToolStripMenuItem.Text = "Market sentiment - survey";
+            this.marketSentimentSurveyToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -292,6 +308,8 @@
         private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compDayToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem marketSentimentSurveyToolStripMenuItem;
     }
 }
 

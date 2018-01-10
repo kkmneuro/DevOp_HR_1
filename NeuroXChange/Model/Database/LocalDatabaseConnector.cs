@@ -450,6 +450,13 @@ namespace NeuroXChange.Model.Database
                             VALUES ('Version', {0});",
                     1);
                 cmd.ExecuteNonQuery();
+
+                cmd.CommandText = string.Format(
+                    @"INSERT INTO UserAction
+                            ([ID], [Description])
+                            VALUES ({0}, 'MarketSentimentSurveyPressed');",
+                    (int)UserAction.MarketSentimentSurveyPressed);
+                cmd.ExecuteNonQuery();
             }
         }
     }

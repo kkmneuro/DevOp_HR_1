@@ -1,5 +1,6 @@
 ﻿namespace NeuroXChange.Model
 {
+    // DO NOT FORGET TO ADD VALUE TO DATABASE ALSO WHEN NEW ADDED!
     public enum UserAction
     {
         // application events
@@ -13,6 +14,7 @@
         TrainingResumed,
         TrainingFinished,
         ManualPositionChosen,
+        MarketSentimentSurveyPressed = 50,
 
         // manual traiding
         PositionManuallyOpened = 100,

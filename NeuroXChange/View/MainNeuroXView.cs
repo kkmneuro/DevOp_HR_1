@@ -42,6 +42,7 @@ namespace NeuroXChange.View
         public BMColorCodedWithPriceWindow bMColorCodedWithPriceWindow { get; private set; }
         public EmulationModeControlWindow emulationModeControlWindow { get; private set; }
         public OrdersWindow ordersWindow { get; private set; }
+        public MarketSentimentSurveyWindow marketSentimentSurveyWindow { get; private set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
@@ -62,6 +63,9 @@ namespace NeuroXChange.View
             // training windows creation
             compDayWindow = new CompDayWindow(controller, this);
             compDayWindow.Owner = mainWindow;
+
+            marketSentimentSurveyWindow = new MarketSentimentSurveyWindow(model.localDatabaseConnector);
+            marketSentimentSurveyWindow.Owner = mainWindow;
 
             // application windows creation
             rawInformationWindow = new RawInformationWindow();

@@ -55,6 +55,8 @@ namespace NeuroXChange
                 return mainNeuroXView.ordersWindow;
             else if (persistString == typeof(CompDayWindow).ToString())
                 return mainNeuroXView.compDayWindow;
+            else if (persistString == typeof(MarketSentimentSurveyWindow).ToString())
+                return mainNeuroXView.marketSentimentSurveyWindow;
             return null;
         }
 
@@ -88,6 +90,8 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.ordersWindow;
             else if (sender == compDayToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.compDayWindow;
+            else if (sender == marketSentimentSurveyToolStripMenuItem)
+                dockContentWindow = mainNeuroXView.marketSentimentSurveyWindow;
 
             dockContentWindow.Show();
             if (mainNeuroXView.allWindowsOnTop && dockContentWindow.Pane.IsFloat)
@@ -143,6 +147,7 @@ namespace NeuroXChange
             mainNeuroXView.emulationModeControlWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.ordersWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.compDayWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.marketSentimentSurveyWindow.DockStateChanged += dockStateChangedAction;
 
             if (File.Exists(dockPanelConfigFile))
                 dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
@@ -158,6 +163,7 @@ namespace NeuroXChange
             mainNeuroXView.emulationModeControlWindow.DockPanel = dockPanel;
             mainNeuroXView.ordersWindow.DockPanel = dockPanel;
             mainNeuroXView.compDayWindow.DockPanel = dockPanel;
+            mainNeuroXView.marketSentimentSurveyWindow.DockPanel = dockPanel;
         }
     }
 }
