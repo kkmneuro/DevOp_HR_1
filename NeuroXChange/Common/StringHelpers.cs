@@ -14,7 +14,9 @@ namespace NeuroXChange.Common
                 //Then in neutral language
                 double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out result) ||
                 //Then in french language
-                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("fr-FR"), out result))
+                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("fr-FR"), out result) ||
+                //Then in english language
+                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-EN"), out result))
             {
                 return result;
             }

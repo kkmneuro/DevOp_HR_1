@@ -13,14 +13,22 @@ namespace NeuroXChange.View.Training
             InitializeComponent();
         }
 
-        private void btnVariant1_Click(object sender, System.EventArgs e)
+        private void btnVariant_Click(object sender, System.EventArgs e)
         {
-            localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, "Afraid");
-        }
-
-        private void btnVariant2_Click(object sender, System.EventArgs e)
-        {
-            localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, "Excited");
+            string variantString = null;
+            if (sender == btnVariant1)
+                variantString = "High";
+            else if (sender == btnVariant2)
+                variantString = "Low";
+            else if (sender == btnVariant3)
+                variantString = "Against";
+            else if (sender == btnVariant4)
+                variantString = "Favor";
+            else if (sender == btnVariant5)
+                variantString = "Exit";
+            else if (sender == btnVariant6)
+                variantString = "Enter";
+            localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, variantString);
         }
     }
 }
