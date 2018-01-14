@@ -5,18 +5,22 @@ namespace NeuroXChange.Common
 {
     public static class StringHelpers
     {
-        public static double ParseDoubleCultureIndependent(string value)
+        public static double ParseDoubleCultureIndependent(string value, bool allowSign = false)
         {
             double result;
 
+            NumberStyles style = NumberStyles.AllowDecimalPoint;
+            if (allowSign)
+            {
+                style |= NumberStyles.AllowLeadingSign;
+            }
+
             //Try parsing in the current culture
-            if (double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out result) ||
+            if (double.TryParse(value, style, CultureInfo.CurrentCulture, out result) ||
                 //Then in neutral language
-                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out result) ||
+                double.TryParse(value, style, CultureInfo.InvariantCulture, out result) ||
                 //Then in french language
-                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("fr-FR"), out result) ||
-                //Then in english language
-                double.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-EN"), out result))
+                double.TryParse(value, style, CultureInfo.GetCultureInfo("fr-FR"), out result))
             {
                 return result;
             }

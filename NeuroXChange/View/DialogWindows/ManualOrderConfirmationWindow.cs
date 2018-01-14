@@ -34,7 +34,7 @@ namespace NeuroXChange.View.DialogWindows
 
             hardStopLossPips = Int32.Parse(model.iniFileReader.Read("HardStopLossPips", "MarketOrders", "60"));
             takeProfitPips = Int32.Parse(model.iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
-            pipSize = double.Parse(model.iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
+            pipSize = StringHelpers.ParseDoubleCultureIndependent(model.iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             currentDirection = 0;
         }

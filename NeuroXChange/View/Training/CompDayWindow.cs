@@ -1,4 +1,5 @@
 ﻿using BreathPacer;
+using NeuroXChange.Common;
 using NeuroXChange.Controller;
 using NeuroXChange.Model;
 using NeuroXChange.Model.Training;
@@ -106,7 +107,7 @@ namespace NeuroXChange.View.Training
             var type = stepsData[currentStep][1];
             var text = stepsData[currentStep][2];
             var imagePath = stepsData[currentStep][3];
-            double breathsPerMinute = double.Parse(stepsData[currentStep][4]);
+            double breathsPerMinute = StringHelpers.ParseDoubleCultureIndependent(stepsData[currentStep][4]);
             lastCyclesToFinish = int.Parse(stepsData[currentStep][5]);
 
             controller.SetTrainingStep(trainingStep);

@@ -69,7 +69,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 trailingStopLossPips = null;
             }
             int? takeProfitPips = Int32.Parse(iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
-            double pipSize = double.Parse(iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
+            double pipSize = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
             // initialize dataset to save statistics
             behavioralModelsDataSet = new DataSet("BehavioralModelsDataSet");
@@ -88,11 +88,11 @@ namespace NeuroXChange.Model.BehavioralModeling
             heartRateProcessor = new HeartRateProcessor();
 
             // initialize conditions
-            var stepChangeStart = Double.Parse(iniFileReader.Read("StepChangeStart", "LogicConditions", "-60"));
-            var stepChangeEnd = Double.Parse(iniFileReader.Read("StepChangeEnd", "LogicConditions", "-20"));
+            var stepChangeStart = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("StepChangeStart", "LogicConditions", "-60"), true);
+            var stepChangeEnd = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("StepChangeEnd", "LogicConditions", "-20"), true);
             //var accYCondition = new AccYCondition(stepChangeStart, stepChangeEnd);
-            double MinOscillationsCount = Double.Parse(iniFileReader.Read("MinOscillationsCount", "LogicConditions", "5"));
-            double MaxOscillationsCount = Double.Parse(iniFileReader.Read("MaxOscillationsCount", "LogicConditions", "6.5"));
+            double MinOscillationsCount = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("MinOscillationsCount", "LogicConditions", "5"));
+            double MaxOscillationsCount = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("MaxOscillationsCount", "LogicConditions", "6.5"));
             var hrReadyToTradeCondition = new HRReadyToTradeCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
             var hrPreactivationCondition = new HRPreactivationCondition(heartRateProcessor, MinOscillationsCount, MaxOscillationsCount);
             var logicQuery1Condition = new LogicQuery1Condition(100, 60);
