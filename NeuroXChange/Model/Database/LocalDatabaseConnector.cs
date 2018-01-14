@@ -266,6 +266,7 @@ namespace NeuroXChange.Model.Database
                 @"INSERT INTO {0} 
                         ([ID],
                         [OrderGroup],
+                        [OrderInGroupID],
                         [BMModelID],
                         [PlaceTime],
                         [OpenTime],
@@ -280,7 +281,7 @@ namespace NeuroXChange.Model.Database
                         [Profitability],
                         [HardStopLossPips],
                         [TakeProfitPips])
-                VALUES ({16}, {1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15});",
+                VALUES ({16}, {1}, {17}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15});",
                 "OrdersHistory",
                 order.OrderGroup,
                 order.BMModelID,
@@ -297,7 +298,8 @@ namespace NeuroXChange.Model.Database
                 order.Profitability,
                 order.HardStopLossPips,
                 order.TakeProfitPips,
-                order.OrderID
+                order.OrderID,
+                order.OrderInGroupID
                 );
 
             var cmd = new OleDbCommand(commandText, connection);
@@ -403,6 +405,7 @@ namespace NeuroXChange.Model.Database
                 @"CREATE TABLE OrdersHistory (
                         [ID] LONG NOT NULL PRIMARY KEY,
                         [OrderGroup] LONG NOT NULL,
+                        [OrderInGroupID] INTEGER NOT NULL,
                         [BMModelID] LONG NOT NULL,
                         [PlaceTime] DATETIME NOT NULL,
                         [OpenTime] DATETIME NOT NULL,

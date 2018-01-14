@@ -93,7 +93,7 @@ namespace NeuroXChange.Model.Portfolio
             order = new Order(
                 localDatabaseConnector.InitiateNewOrderID(),
                 localDatabaseConnector.InitiateNewGroupID(),
-                bmModelID, openTime, openTime, price, direction, 1,
+                1, bmModelID, openTime, openTime, price, direction, 1,
                 DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;

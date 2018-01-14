@@ -15,6 +15,9 @@ namespace NeuroXChange.Model.Portfolio
         [System.ComponentModel.DisplayName("Order group")]
         public int OrderGroup { get; private set; }
 
+        [System.ComponentModel.DisplayName("Order in group ID")]
+        public int OrderInGroupID { get; private set; }
+
         [System.ComponentModel.DisplayName("BM Model ID")]
         public int BMModelID { get; private set; }
 
@@ -72,6 +75,7 @@ namespace NeuroXChange.Model.Portfolio
         public Order(
             int orderID,
             int orderGroup,
+            int orderInGroupId,
             int bmModelID,
             DateTime placeTime,
             DateTime openTime,
@@ -83,6 +87,7 @@ namespace NeuroXChange.Model.Portfolio
         {
             this.OrderID = orderID;
             this.OrderGroup = orderID;
+            this.OrderInGroupID = orderInGroupId;
             this.BMModelID = bmModelID;
             this.PlaceTime = placeTime;
             this.OpenTime = openTime;
@@ -97,6 +102,7 @@ namespace NeuroXChange.Model.Portfolio
         public Order(
             int orderID,
             int orderGroup,
+            int orderInGroupId,
             int bmModelID,
             DateTime placeTime,
             DateTime openTime,
@@ -105,7 +111,7 @@ namespace NeuroXChange.Model.Portfolio
             int value,
             int lotSize,
             OpenReason openReason) : 
-            this(orderID, orderGroup, bmModelID, placeTime, openTime, direction == OrderDirection.Buy ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
+            this(orderID, orderGroup, orderInGroupId, bmModelID, placeTime, openTime, direction == OrderDirection.Buy ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
         {
         }
 
