@@ -10,7 +10,7 @@ namespace NeuroXChange.Model.Database
 {
     public class LocalDatabaseConnector
     {
-        public const int CurrentDBVersion = 1;
+        public const int CurrentDBVersion = 2;
 
         private string databaseLocation;
         private string connectionString;
@@ -112,6 +112,23 @@ namespace NeuroXChange.Model.Database
 
             DatabaseConnected = true;
         }
+
+
+        // orders manipulation
+        public int LastOrderID { get; private set; }
+        public int InitiateNewOrderID()
+        {
+            LastOrderID++;
+
+            var commandText = string.Format(
+                @"UPDATE DBSettings SET [Value] = '{0}' WHERE [Key] = 'LastOrderID'",
+                LastOrderID);
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQuery();
+
+            return LastOrderID;
+        }
+
 
         // returns id of added row in the database table
         public int WriteBioData(BioData.BioData data)
@@ -258,6 +275,7 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQuery();
         }
 
+
         private void CreateDatabaseStructure(OleDbCommand cmd)
         {
             // DBSettings table
@@ -268,10 +286,12 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = string.Format(
-                @"INSERT INTO DBSettings
-                            ([Key], [Value])
-                            VALUES ('Version', {0});",
+                @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('Version', {0});",
                 CurrentDBVersion);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastOrderID', '1');";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastGroupID', '1');";
             cmd.ExecuteNonQuery();
 
             // creating tables from enumerations
@@ -293,7 +313,7 @@ namespace NeuroXChange.Model.Database
                             [AccZ] DOUBLE,
                             [TrainingType] INTEGER,
                             [TrainingStep] INTEGER,
-                            [ApplicationStates] INTEGER
+                            [ApplicationStates] LONG
                         )";
             cmd.ExecuteNonQuery();
 
@@ -317,7 +337,7 @@ namespace NeuroXChange.Model.Database
             cmd.CommandText =
                 @"CREATE TABLE TickPrice (
                             [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [InstrumentID] NUMBER NOT NULL,
+                            [InstrumentID] LONG NOT NULL,
                             [Time] DATETIME NOT NULL,
                             [SellPrice] DOUBLE NOT NULL,
                             [BuyPrice] DOUBLE NOT NULL
@@ -327,8 +347,8 @@ namespace NeuroXChange.Model.Database
             // PriceAtBioDataTick table
             cmd.CommandText =
                 @"CREATE TABLE PriceAtBioDataTick (
-                            [ID] NUMBER NOT NULL PRIMARY KEY,
-                            [InstrumentID] NUMBER NOT NULL,
+                            [ID] LONG NOT NULL PRIMARY KEY,
+                            [InstrumentID] LONG NOT NULL,
                             [SellPrice] DOUBLE NOT NULL,
                             [BuyPrice] DOUBLE NOT NULL);";
             cmd.ExecuteNonQuery();
@@ -337,7 +357,7 @@ namespace NeuroXChange.Model.Database
             cmd.CommandText =
                 @"CREATE TABLE UserActions (
                             [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                            [ActionID] NUMBER NOT NULL,
+                            [ActionID] INTEGER NOT NULL,
                             [Time] DATETIME NOT NULL,
                             [Data] TEXT,
                             CONSTRAINT FK_Action FOREIGN KEY (ActionID)
@@ -353,22 +373,22 @@ namespace NeuroXChange.Model.Database
             cmd.CommandText =
                 @"CREATE TABLE OrdersHistory (
                         [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
-                        [OrderGroup] NUMBER NOT NULL,
-                        [BMModelID] NUMBER NOT NULL,
+                        [OrderGroup] LONG NOT NULL,
+                        [BMModelID] LONG NOT NULL,
                         [PlaceTime] DATETIME NOT NULL,
                         [OpenTime] DATETIME NOT NULL,
-                        [OpenPrice] NUMBER NOT NULL,
-                        [Direction] NUMBER NOT NULL,
-                        [Value] NUMBER NOT NULL,
-                        [LotSize] NUMBER NOT NULL,
-                        [OpenReason] NUMBER NOT NULL,
+                        [OpenPrice] DOUBLE NOT NULL,
+                        [Direction] INTEGER NOT NULL,
+                        [Value] INTEGER NOT NULL,
+                        [LotSize] INTEGER NOT NULL,
+                        [OpenReason] INTEGER NOT NULL,
                         [CloseTime] DATETIME NOT NULL,
-                        [ClosePrice] NUMBER NOT NULL,
-                        [CloseReason] NUMBER NOT NULL,
-                        [Profitability] NUMBER NOT NULL,
-                        [HardStopLossPips] NUMBER,
-                        [TakeProfitPips] NUMBER,
-                        [TrailingStopLossPips] NUMBER,
+                        [ClosePrice] DOUBLE NOT NULL,
+                        [CloseReason] INTEGER NOT NULL,
+                        [Profitability] LONG NOT NULL,
+                        [HardStopLossPips] INTEGER,
+                        [TakeProfitPips] INTEGER,
+                        [TrailingStopLossPips] INTEGER,
                         CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
                         CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
                         CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
@@ -414,7 +434,7 @@ namespace NeuroXChange.Model.Database
             try
             {
                 var commandStr = string.Format(
-                   "CREATE TABLE {0} ([ID] NUMBER NOT NULL PRIMARY KEY, [Description] TEXT NOT NULL);",
+                   "CREATE TABLE {0} ([ID] INTEGER NOT NULL PRIMARY KEY, [Description] TEXT NOT NULL);",
                    type.Name);
                 cmd.CommandText = commandStr;
                 cmd.ExecuteNonQuery();
@@ -435,28 +455,11 @@ namespace NeuroXChange.Model.Database
 
         private void UpdateDatabaseStructure(OleDbCommand cmd, int fromVersion)
         {
-            if (fromVersion == 0)
+            if (fromVersion != CurrentDBVersion)
             {
-                // DBSettings table
-                cmd.CommandText =
-                    @"CREATE TABLE DBSettings (
-                            [Key] TEXT NOT NULL PRIMARY KEY,
-                            [Value] TEXT);";
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = string.Format(
-                    @"INSERT INTO DBSettings
-                            ([Key], [Value])
-                            VALUES ('Version', {0});",
-                    1);
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = string.Format(
-                    @"INSERT INTO UserAction
-                            ([ID], [Description])
-                            VALUES ({0}, 'MarketSentimentSurveyPressed');",
-                    (int)UserAction.MarketSentimentSurveyPressed);
-                cmd.ExecuteNonQuery();
+                throw new Exception(string.Format(
+                    @"Can't update database from version {0} to version {1}!\r\nYou need to start data colleciton from the scratch",
+                    fromVersion, CurrentDBVersion));
             }
         }
     }
