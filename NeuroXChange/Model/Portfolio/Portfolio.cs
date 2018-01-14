@@ -12,7 +12,6 @@ namespace NeuroXChange.Model.Portfolio
         // portfolio management variables
         public int DefaultLotSize { get; set; }
         public int? DefaultHardStopLossPips { get; set; }
-        public int? DefaultTrailingStopLossPips { get; set; }
         public int? DefaultTakeProfitPips { get; set; }
         public double DefaultPipSize { get; set; }
 
@@ -97,7 +96,6 @@ namespace NeuroXChange.Model.Portfolio
                 bmModelID, openTime, openTime, price, direction, 1,
                 DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
-            order.TrailingStopLossPips = DefaultTrailingStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
             RunningOrders.Add(order);
 

@@ -68,12 +68,6 @@ namespace NeuroXChange.Model.Portfolio
         [System.ComponentModel.DisplayName("Take profit pips")]
         public int? TakeProfitPips { get; set; }
 
-        [System.ComponentModel.DisplayName("Trailing stop loss pips")]
-        public int? TrailingStopLossPips { get; set; }
-
-        [System.ComponentModel.DisplayName("Trailing price to close on")]
-        public double? TrailingPriceToCloseOn { get; set; }
-
         // create new running order
         public Order(
             int orderID,

@@ -279,9 +279,8 @@ namespace NeuroXChange.Model.Database
                         [CloseReason],
                         [Profitability],
                         [HardStopLossPips],
-                        [TakeProfitPips],
-                        [TrailingStopLossPips])
-                VALUES ({17}, {1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15}, {16});",
+                        [TakeProfitPips])
+                VALUES ({16}, {1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15});",
                 "OrdersHistory",
                 order.OrderGroup,
                 order.BMModelID,
@@ -298,7 +297,6 @@ namespace NeuroXChange.Model.Database
                 order.Profitability,
                 order.HardStopLossPips,
                 order.TakeProfitPips,
-                StringHelpers.NullableToString(order.TrailingStopLossPips),
                 order.OrderID
                 );
 
@@ -419,7 +417,6 @@ namespace NeuroXChange.Model.Database
                         [Profitability] LONG NOT NULL,
                         [HardStopLossPips] INTEGER,
                         [TakeProfitPips] INTEGER,
-                        [TrailingStopLossPips] INTEGER,
                         CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
                         CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
                         CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
