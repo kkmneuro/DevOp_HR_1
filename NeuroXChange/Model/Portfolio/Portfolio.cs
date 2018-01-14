@@ -16,8 +16,6 @@ namespace NeuroXChange.Model.Portfolio
         public int? DefaultTakeProfitPips { get; set; }
         public double DefaultPipSize { get; set; }
 
-        public int OrderCounter { get; private set; }
-        public int OrderGroupCounter { get; private set; }
         public ThreadedBindingList<Order> RunningOrders { get; private set; }
         public ThreadedBindingList<Order> ClosedOrders { get; private set; }
         public int ClosedProfitability {get; private set;}
@@ -32,8 +30,6 @@ namespace NeuroXChange.Model.Portfolio
 
             RunningOrders = new ThreadedBindingList<Order>();
             ClosedOrders = new ThreadedBindingList<Order>();
-            OrderCounter = 0;
-            OrderGroupCounter = 0;
             ClosedProfitability = 0;
         }
 
@@ -95,9 +91,11 @@ namespace NeuroXChange.Model.Portfolio
                 return true;
             }
 
-            OrderCounter++;
-            OrderGroupCounter++;
-            order = new Order(OrderCounter, OrderGroupCounter, bmModelID, openTime, openTime, price, direction, 1, DefaultLotSize, openReason);
+            order = new Order(
+                localDatabaseConnector.InitiateNewOrderID(),
+                localDatabaseConnector.InitiateNewGroupID(),
+                bmModelID, openTime, openTime, price, direction, 1,
+                DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
             order.TrailingStopLossPips = DefaultTrailingStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;

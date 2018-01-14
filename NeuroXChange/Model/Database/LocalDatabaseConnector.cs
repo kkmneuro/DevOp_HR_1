@@ -110,11 +110,13 @@ namespace NeuroXChange.Model.Database
             // can't save PriceAtBioDataTick without BioData
             savePriceAtBioDataTick &= saveBioData;
 
+            DownloadOrdersVariables(cmd);
+
             DatabaseConnected = true;
         }
 
 
-        // orders manipulation
+        // persistent orders variables
         public int LastOrderID { get; private set; }
         public int InitiateNewOrderID()
         {
@@ -127,6 +129,33 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQuery();
 
             return LastOrderID;
+        }
+        public int LastGroupID { get; private set; }
+        public int InitiateNewGroupID()
+        {
+            LastGroupID++;
+
+            var commandText = string.Format(
+                @"UPDATE DBSettings SET [Value] = '{0}' WHERE [Key] = 'LastGroupID'",
+                LastGroupID);
+            var cmd = new OleDbCommand(commandText, connection);
+            cmd.ExecuteNonQuery();
+
+            return LastGroupID;
+        }
+        private void DownloadOrdersVariables(OleDbCommand cmd)
+        {
+            cmd.CommandText = @"SELECT [Value] FROM DBSettings WHERE [Key] = 'LastOrderID'";
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            LastOrderID = Int32.Parse(reader["Value"].ToString());
+            reader.Close();
+            
+            cmd.CommandText = @"SELECT [Value] FROM DBSettings WHERE [Key] = 'LastGroupID'";
+            reader = cmd.ExecuteReader();
+            reader.Read();
+            LastGroupID = Int32.Parse(reader["Value"].ToString());
+            reader.Close();
         }
 
 
@@ -235,7 +264,8 @@ namespace NeuroXChange.Model.Database
 
             var commandText = string.Format(
                 @"INSERT INTO {0} 
-                        ([OrderGroup],
+                        ([ID],
+                        [OrderGroup],
                         [BMModelID],
                         [PlaceTime],
                         [OpenTime],
@@ -251,7 +281,7 @@ namespace NeuroXChange.Model.Database
                         [HardStopLossPips],
                         [TakeProfitPips],
                         [TrailingStopLossPips])
-                VALUES ({1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15}, {16});",
+                VALUES ({17}, {1}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15}, {16});",
                 "OrdersHistory",
                 order.OrderGroup,
                 order.BMModelID,
@@ -268,7 +298,8 @@ namespace NeuroXChange.Model.Database
                 order.Profitability,
                 order.HardStopLossPips,
                 order.TakeProfitPips,
-                StringHelpers.NullableToString(order.TrailingStopLossPips)
+                StringHelpers.NullableToString(order.TrailingStopLossPips),
+                order.OrderID
                 );
 
             var cmd = new OleDbCommand(commandText, connection);
@@ -289,9 +320,9 @@ namespace NeuroXChange.Model.Database
                 @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('Version', {0});",
                 CurrentDBVersion);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastOrderID', '1');";
+            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastOrderID', '0');";
             cmd.ExecuteNonQuery();
-            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastGroupID', '1');";
+            cmd.CommandText = @"INSERT INTO DBSettings ([Key], [Value]) VALUES ('LastGroupID', '0');";
             cmd.ExecuteNonQuery();
 
             // creating tables from enumerations
@@ -372,7 +403,7 @@ namespace NeuroXChange.Model.Database
             // OrdersHistory table
             cmd.CommandText =
                 @"CREATE TABLE OrdersHistory (
-                        [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
+                        [ID] LONG NOT NULL PRIMARY KEY,
                         [OrderGroup] LONG NOT NULL,
                         [BMModelID] LONG NOT NULL,
                         [PlaceTime] DATETIME NOT NULL,
