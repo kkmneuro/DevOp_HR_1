@@ -295,7 +295,7 @@ namespace NeuroXChange.Model.Database
                         [ClosePrice],
                         [CloseReason],
                         [Profitability],
-                        [HardStopLossPips],
+                        [StopLossPips],
                         [TakeProfitPips])
                 VALUES ({16}, {1}, {17}, {2}, '{3}', '{4}', {5}, {6}, {7}, {8}, {9}, '{10}', {11}, {12}, {13}, {14}, {15});",
                 "OrdersHistory",
@@ -312,7 +312,7 @@ namespace NeuroXChange.Model.Database
                 order.ClosePrice,
                 (int?)order.closeReason,
                 order.Profitability,
-                order.HardStopLossPips,
+                order.StopLossPips,
                 order.TakeProfitPips,
                 order.OrderID,
                 order.OrderInGroupID
@@ -434,7 +434,7 @@ namespace NeuroXChange.Model.Database
                         [ClosePrice] DOUBLE NOT NULL,
                         [CloseReason] INTEGER NOT NULL,
                         [Profitability] LONG NOT NULL,
-                        [HardStopLossPips] INTEGER,
+                        [StopLossPips] INTEGER,
                         [TakeProfitPips] INTEGER,
                         CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
                         CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),

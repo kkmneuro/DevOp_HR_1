@@ -126,14 +126,14 @@ namespace NeuroXChange.Model
         }
 
         public bool ManualTrade(
-            int direction, TickPrice price, double takeProfitValue, double hardStopLossValue)
+            int direction, TickPrice price, double takeProfitValue, double stopLossValue)
         {
             Order order;
             var result = portfolio.OpenOrder(ModelID, (OrderDirection)direction, price, OpenReason.ManualOrder, out order, DateTime.Now);
             if (order != null)
             {
                 order.TakeProfitPips = portfolio.TakeProfitValueToPips((OrderDirection)direction, price, takeProfitValue);
-                order.HardStopLossPips = portfolio.HardStopLossValueToPips((OrderDirection)direction, price, hardStopLossValue);
+                order.StopLossPips = portfolio.StopLossValueToPips((OrderDirection)direction, price, stopLossValue);
             }
             return result;
         }

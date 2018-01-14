@@ -5,7 +5,7 @@
     {
         ShouldntBeClosed,
         ManuallyClosed,
-        HardStopLossExecuted,
+        StopLossExecuted,
         TrailingStopLossExecuted,
         TakeProfitExecuted,
         ReverseOrderRequested,

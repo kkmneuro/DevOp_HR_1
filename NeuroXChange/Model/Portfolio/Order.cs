@@ -64,10 +64,10 @@ namespace NeuroXChange.Model.Portfolio
         public int? CumulativeBalance { get; set; }
 
 
-        // HardStopLoss and TakeProfit values in pips
+        // StopLoss and TakeProfit values in pips
 
-        [System.ComponentModel.DisplayName("Hard stop loss pips")]
-        public int? HardStopLossPips { get; set; }
+        [System.ComponentModel.DisplayName("Stop loss pips")]
+        public int? StopLossPips { get; set; }
 
         [System.ComponentModel.DisplayName("Take profit pips")]
         public int? TakeProfitPips { get; set; }
@@ -135,7 +135,7 @@ namespace NeuroXChange.Model.Portfolio
             closeReason = (CloseReason)Double.Parse(reader["CloseReason"].ToString());
             Profitability = Int32.Parse(reader["Profitability"].ToString());
             CumulativeBalance = null;
-            HardStopLossPips = Int32.Parse(reader["HardStopLossPips"].ToString());
+            StopLossPips = Int32.Parse(reader["StopLossPips"].ToString());
             TakeProfitPips = Int32.Parse(reader["TakeProfitPips"].ToString());
         }
 
@@ -191,9 +191,9 @@ namespace NeuroXChange.Model.Portfolio
             var priceDiff = Direction == OrderDirection.Buy ? currentPrice - OpenPrice : OpenPrice - currentPrice;
             int pipDifference = (int)(priceDiff / PipSize);
 
-            if (HardStopLossPips.HasValue && pipDifference <= -HardStopLossPips.Value)
+            if (StopLossPips.HasValue && pipDifference <= -StopLossPips.Value)
             {
-                return CloseReason.HardStopLossExecuted;
+                return CloseReason.StopLossExecuted;
             }
 
             if (TakeProfitPips.HasValue && pipDifference >= TakeProfitPips.Value)

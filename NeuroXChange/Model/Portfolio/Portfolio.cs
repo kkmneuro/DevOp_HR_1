@@ -11,7 +11,7 @@ namespace NeuroXChange.Model.Portfolio
 
         // portfolio management variables
         public int DefaultLotSize { get; set; }
-        public int? DefaultHardStopLossPips { get; set; }
+        public int? DefaultStopLossPips { get; set; }
         public int? DefaultTakeProfitPips { get; set; }
         public double DefaultPipSize { get; set; }
 
@@ -102,7 +102,7 @@ namespace NeuroXChange.Model.Portfolio
                 localDatabaseConnector.InitiateNewGroupID(),
                 1, bmModelID, openTime, openTime, price, direction, 1,
                 DefaultLotSize, openReason);
-            order.HardStopLossPips = DefaultHardStopLossPips;
+            order.StopLossPips = DefaultStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
             RunningOrders.Insert(0, order);
 
@@ -147,15 +147,15 @@ namespace NeuroXChange.Model.Portfolio
             }
         }
 
-        public int HardStopLossValueToPips(OrderDirection direction, TickPrice price, double hardStopLossValue)
+        public int StopLossValueToPips(OrderDirection direction, TickPrice price, double stopLossValue)
         {
             if (direction == OrderDirection.Buy)
             {
-                return (int)Math.Round((price.sell - hardStopLossValue) / DefaultPipSize);
+                return (int)Math.Round((price.sell - stopLossValue) / DefaultPipSize);
             }
             else
             {
-                return (int)Math.Round((hardStopLossValue - price.buy) / DefaultPipSize);
+                return (int)Math.Round((stopLossValue - price.buy) / DefaultPipSize);
             }
         }
 

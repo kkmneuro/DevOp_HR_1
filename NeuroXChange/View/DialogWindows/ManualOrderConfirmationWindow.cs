@@ -19,7 +19,7 @@ namespace NeuroXChange.View.DialogWindows
         private MainNeuroXModel model;
         private MainNeuroXController controller;
 
-        private int hardStopLossPips;
+        private int stopLossPips;
         private int takeProfitPips;
         private double pipSize;
         private int currentDirection;
@@ -32,7 +32,7 @@ namespace NeuroXChange.View.DialogWindows
             this.model = model;
             this.controller = controller;
 
-            hardStopLossPips = Int32.Parse(model.iniFileReader.Read("HardStopLossPips", "MarketOrders", "60"));
+            stopLossPips = Int32.Parse(model.iniFileReader.Read("StopLossPips", "MarketOrders", "60"));
             takeProfitPips = Int32.Parse(model.iniFileReader.Read("TakeProfitPips", "MarketOrders", "100"));
             pipSize = StringHelpers.ParseDoubleCultureIndependent(model.iniFileReader.Read("PipSize", "MarketOrders", "0.00001"));
 
@@ -97,24 +97,24 @@ namespace NeuroXChange.View.DialogWindows
                 return;
             }
 
-            double hardStopLoss;
-            if (!StringHelpers.TryParseDoubleCultureIndependent(tbStopLoss.Text, out hardStopLoss))
+            double stopLoss;
+            if (!StringHelpers.TryParseDoubleCultureIndependent(tbStopLoss.Text, out stopLoss))
             {
                 MessageBox.Show("Stop loss value is in incorrect format!");
                 return;
             }
-            if (currentDirection == 0 && hardStopLoss >= lastPrice.sell)
+            if (currentDirection == 0 && stopLoss >= lastPrice.sell)
             {
                 MessageBox.Show("Stop loss can't be greater than current sell price!");
                 return;
             }
-            if (currentDirection == 1 && hardStopLoss <= lastPrice.sell)
+            if (currentDirection == 1 && stopLoss <= lastPrice.sell)
             {
                 MessageBox.Show("Stop loss can't be less than current sell price!");
                 return;
             }
 
-            if (!controller.ManualTrade(currentDirection, lastPrice, takeProfit, hardStopLoss))
+            if (!controller.ManualTrade(currentDirection, lastPrice, takeProfit, stopLoss))
             {
                 MessageBox.Show("You can't go this direction!");
             }
@@ -138,16 +138,16 @@ namespace NeuroXChange.View.DialogWindows
 
             if (rbSLSystemDefault.Checked)
             {
-                double hardStopLoss;
+                double stopLoss;
                 if (currentDirection == 0)
                 {
-                    hardStopLoss = lastPrice.sell - hardStopLossPips * pipSize;
+                    stopLoss = lastPrice.sell - stopLossPips * pipSize;
                 }
                 else
                 {
-                    hardStopLoss = lastPrice.buy + hardStopLossPips * pipSize;
+                    stopLoss = lastPrice.buy + stopLossPips * pipSize;
                 }
-                tbStopLoss.Text = hardStopLoss.ToString();
+                tbStopLoss.Text = stopLoss.ToString();
             }
         }
 

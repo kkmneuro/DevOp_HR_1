@@ -82,11 +82,11 @@ namespace NeuroXChange.Controller
         }
 
         public bool ManualTrade(
-            int direction, TickPrice price, double takeProfit, double hardStopLoss)
+            int direction, TickPrice price, double takeProfit, double stopLoss)
         {
             // TODO: generalise manual trade model number
             return model.behavioralModelsContainer.behavioralModels[16].ManualTrade(
-                direction, price, takeProfit, hardStopLoss);
+                direction, price, takeProfit, stopLoss);
         }
     }
 }
