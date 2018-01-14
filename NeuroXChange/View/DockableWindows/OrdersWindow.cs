@@ -28,19 +28,11 @@ namespace NeuroXChange.View
             var openOrdersList = portfolio.RunningOrders;
             openOrdersList.SynchronizationContext = SynchronizationContext.Current;
             openOrdersBS.DataSource = openOrdersList;
-            foreach (DataGridViewColumn column in openOrdersDGV.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
             openOrdersDGV.AutoResizeColumns();
 
             var closedOrdersList = portfolio.ClosedOrders;
             closedOrdersList.SynchronizationContext = SynchronizationContext.Current;
             closedOrdersBS.DataSource = closedOrdersList;
-            foreach (DataGridViewColumn column in closedOrdersDGV.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
             closedOrdersDGV.AutoResizeColumns();
         }
 

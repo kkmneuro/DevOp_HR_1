@@ -36,7 +36,7 @@ namespace NeuroXChange.Model.Portfolio
         {
             ClosedProfitability += order.Profitability.Value;
             order.CumulativeBalance = ClosedProfitability;
-            ClosedOrders.Add(order);
+            ClosedOrders.Insert(0, order);
         }
 
         public int RunningProfitability(TickPrice price)
@@ -104,7 +104,7 @@ namespace NeuroXChange.Model.Portfolio
                 DefaultLotSize, openReason);
             order.HardStopLossPips = DefaultHardStopLossPips;
             order.TakeProfitPips = DefaultTakeProfitPips;
-            RunningOrders.Add(order);
+            RunningOrders.Insert(0, order);
 
             return true;
         }
@@ -164,7 +164,7 @@ namespace NeuroXChange.Model.Portfolio
             var balance = ClosedProfitability + RunningProfitability(price);
             order.Close(closeTime, price, closeReason, balance);
             ClosedProfitability += order.Profitability.Value;
-            ClosedOrders.Add(order);
+            ClosedOrders.Insert(0,order);
             RunningOrders.Remove(order);
 
             localDatabaseConnector.WriteClosedOrder(order);
