@@ -2,6 +2,7 @@
 using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.Portfolio;
 using System;
+using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
 using System.Windows.Forms;
@@ -158,6 +159,21 @@ namespace NeuroXChange.Model.Database
             reader.Close();
         }
 
+        public List<Order> LoadTradesHistory()
+        {
+            List<Order> result = new List<Order>();
+
+            var commandText = @"SELECT * FROM OrdersHistory ORDER BY ID";
+            var cmd = new OleDbCommand(commandText, connection);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result.Add(new Order(reader));
+            }
+            reader.Close();
+
+            return result;
+        }
 
         // returns id of added row in the database table
         public int WriteBioData(BioData.BioData data)
@@ -489,7 +505,7 @@ namespace NeuroXChange.Model.Database
             if (fromVersion != CurrentDBVersion)
             {
                 throw new Exception(string.Format(
-                    @"Can't update database from version {0} to version {1}!\r\nYou need to start data colleciton from the scratch",
+                    "Can't update database from version {0} to version {1}!\r\nYou need to start data colleciton from the scratch",
                     fromVersion, CurrentDBVersion));
             }
         }

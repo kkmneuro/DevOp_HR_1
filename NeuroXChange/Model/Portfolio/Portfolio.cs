@@ -32,6 +32,13 @@ namespace NeuroXChange.Model.Portfolio
             ClosedProfitability = 0;
         }
 
+        public void AddHistoryOrder(Order order)
+        {
+            ClosedProfitability += order.Profitability.Value;
+            order.CumulativeBalance = ClosedProfitability;
+            ClosedOrders.Add(order);
+        }
+
         public int RunningProfitability(TickPrice price)
         {
             int result = 0;
@@ -162,5 +169,6 @@ namespace NeuroXChange.Model.Portfolio
 
             localDatabaseConnector.WriteClosedOrder(order);
         }
+
     }
 }

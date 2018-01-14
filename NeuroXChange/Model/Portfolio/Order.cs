@@ -1,5 +1,6 @@
 ﻿using NeuroXChange.Model.FixApi;
 using System;
+using System.Data.OleDb;
 
 namespace NeuroXChange.Model.Portfolio
 {
@@ -113,6 +114,29 @@ namespace NeuroXChange.Model.Portfolio
             OpenReason openReason) : 
             this(orderID, orderGroup, orderInGroupId, bmModelID, placeTime, openTime, direction == OrderDirection.Buy ? openPrice.buy : openPrice.sell, direction, value, lotSize, openReason)
         {
+        }
+
+        public Order(OleDbDataReader reader)
+        {
+            orderState = OrderState.Closed;
+            OrderID = Int32.Parse(reader["ID"].ToString());
+            OrderGroup = Int32.Parse(reader["OrderGroup"].ToString());
+            OrderInGroupID = Int32.Parse(reader["OrderInGroupID"].ToString());
+            BMModelID = Int32.Parse(reader["BMModelID"].ToString());
+            PlaceTime = DateTime.Parse(reader["PlaceTime"].ToString());
+            OpenTime = DateTime.Parse(reader["OpenTime"].ToString());
+            OpenPrice = Double.Parse(reader["OpenPrice"].ToString());
+            Direction = (OrderDirection) Int32.Parse(reader["Direction"].ToString());
+            Value = Int32.Parse(reader["Value"].ToString());
+            LotSize = Int32.Parse(reader["LotSize"].ToString());
+            openReason = (OpenReason)Int32.Parse(reader["OpenReason"].ToString());
+            CloseTime = DateTime.Parse(reader["CloseTime"].ToString());
+            ClosePrice = Double.Parse(reader["ClosePrice"].ToString());
+            closeReason = (CloseReason)Double.Parse(reader["CloseReason"].ToString());
+            Profitability = Int32.Parse(reader["Profitability"].ToString());
+            CumulativeBalance = null;
+            HardStopLossPips = Int32.Parse(reader["HardStopLossPips"].ToString());
+            TakeProfitPips = Int32.Parse(reader["TakeProfitPips"].ToString());
         }
 
         // If order wasn't closed, returns current profitability for given price

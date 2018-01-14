@@ -278,6 +278,8 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             ActiveBehavioralModelIndex = Int32.Parse(iniFileReader.Read("ActiveModel", "BehavioralModels", "13")) - 1;
             UpdateActiveTag(ActiveBehavioralModelIndex);
+
+            LoadTradesHistory();
         }
 
         public void OnNext(BioData.BioData data)
@@ -323,6 +325,15 @@ namespace NeuroXChange.Model.BehavioralModeling
             } else
             {
                 behavioralModels[modelInd].DataRowInBehavioralModelsWindow["Model"] = modelIndStr;
+            }
+        }
+
+        private void LoadTradesHistory()
+        {
+            var history = mainNeuroXModel.localDatabaseConnector.LoadTradesHistory();
+            foreach (var order in history)
+            {
+                behavioralModels[order.BMModelID - 1].portfolio.AddHistoryOrder(order);
             }
         }
     }
