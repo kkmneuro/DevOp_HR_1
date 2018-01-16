@@ -12,6 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NeuroXChange.Model.FixApi
 {
@@ -42,25 +43,31 @@ namespace NeuroXChange.Model.FixApi
             IniFileReader iniFileReader)
             :base(localDatabaseConnector)
         {
-            pricePort = Int32.Parse(iniFileReader.Read("pricePort", "FixApi"));
-            tradePort = Int32.Parse(iniFileReader.Read("tradePort", "FixApi"));
-            host = iniFileReader.Read("Host", "FixApi");
-            username = iniFileReader.Read("Username", "FixApi");
-            password = iniFileReader.Read("Password", "FixApi");
-            senderCompID = iniFileReader.Read("SenderCompID", "FixApi");
-            senderSubID = iniFileReader.Read("SenderSubID", "FixApi");
-            targetCompID = iniFileReader.Read("TargetCompID", "FixApi");
+            try
+            {
+                pricePort = Int32.Parse(iniFileReader.Read("pricePort", "FixApi"));
+                tradePort = Int32.Parse(iniFileReader.Read("tradePort", "FixApi"));
+                host = iniFileReader.Read("Host", "FixApi");
+                username = iniFileReader.Read("Username", "FixApi");
+                password = iniFileReader.Read("Password", "FixApi");
+                senderCompID = iniFileReader.Read("SenderCompID", "FixApi");
+                senderSubID = iniFileReader.Read("SenderSubID", "FixApi");
+                targetCompID = iniFileReader.Read("TargetCompID", "FixApi");
 
-            messageConstructor = new MessageConstructor(
-                host, username, password, senderCompID, senderSubID, targetCompID);
+                messageConstructor = new MessageConstructor(
+                    host, username, password, senderCompID, senderSubID, targetCompID);
 
-            priceClient = new TcpClient(host, pricePort);
-            priceStreamSSL = new SslStream(priceClient.GetStream(), false,
-                        new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-            priceStreamSSL.AuthenticateAsClient(host);
+                priceClient = new TcpClient(host, pricePort);
+                priceStreamSSL = new SslStream(priceClient.GetStream(), false,
+                            new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                priceStreamSSL.AuthenticateAsClient(host);
 
-            threadReader = new Thread(GenerateNewData);
-            threadWriter = new Thread(SendRequests);
+                threadReader = new Thread(GenerateNewData);
+                threadWriter = new Thread(SendRequests);
+            } catch (Exception e)
+            {
+                throw new Exception("Can't connect to FixApi:\r\n" + e.Message);
+            }
         }
 
         private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -121,19 +128,25 @@ namespace NeuroXChange.Model.FixApi
 
         private void SendRequests()
         {
-            Thread.Sleep(200);
-            var message = messageConstructor.LogonMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, 30, false);
-            SendMessage(message);
-
-            Thread.Sleep(200);
-            message = messageConstructor.MarketDataRequestMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, "EURUSD:WDqsoT", 1, 1, 0, 1, 1);
-            SendMessage(message);
-
-            while (!NeedStop)
+            try
             {
-                Thread.Sleep(100);
-                message = messageConstructor.HeartbeatMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber);
+                Thread.Sleep(200);
+                var message = messageConstructor.LogonMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, 30, false);
                 SendMessage(message);
+
+                Thread.Sleep(200);
+                message = messageConstructor.MarketDataRequestMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber, "EURUSD:WDqsoT", 1, 1, 0, 1, 1);
+                SendMessage(message);
+
+                while (!NeedStop)
+                {
+                    Thread.Sleep(100);
+                    message = messageConstructor.HeartbeatMessage(MessageConstructor.SessionQualifier.QUOTE, messageSequenceNumber);
+                    SendMessage(message);
+                }
+            } catch (Exception e)
+            {
+                MessageBox.Show("Error in sending heartbeat message to FixApi:\r\n" + e.Message);
             }
         }
 
