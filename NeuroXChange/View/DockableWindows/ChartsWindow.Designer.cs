@@ -44,6 +44,9 @@
             // 
             // heartRateChart
             // 
+            this.heartRateChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.AxisX.IsStartedFromZero = false;
             chartArea1.AxisX.LabelAutoFitMaxFontSize = 8;
             chartArea1.AxisX.LabelAutoFitMinFontSize = 5;
@@ -88,7 +91,6 @@
             this.heartRateChart.ChartAreas.Add(chartArea1);
             this.heartRateChart.ChartAreas.Add(chartArea2);
             this.heartRateChart.ChartAreas.Add(chartArea3);
-            this.heartRateChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.heartRateChart.Location = new System.Drawing.Point(0, 0);
             this.heartRateChart.Name = "heartRateChart";
             series1.ChartArea = "ChartArea1";
