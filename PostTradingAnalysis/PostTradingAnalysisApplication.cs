@@ -122,7 +122,7 @@ namespace PostTradingAnalysis
                 series.Color = OxyColor.FromUInt32((uint)color.ToArgb());
 
                 var model = new PlotModel();
-                model.PlotMargins = new OxyThickness(30, -8, -7, 6);
+                model.PlotMargins = new OxyThickness(28, -8, -7, 6);
                 model.DefaultFontSize = 10;
                 model.Series.Add(series);
 
@@ -135,7 +135,7 @@ namespace PostTradingAnalysis
                 model.Axes.Add(xAxis);
                 var yAxis = new LinearAxis { Position = AxisPosition.Left };
                 yAxis.MajorGridlineStyle = LineStyle.Solid;
-                yAxis.MajorTickSize = 0;
+                yAxis.MajorTickSize = -1;
                 model.Axes.Add(yAxis);
 
                 var controller = new PlotController();

@@ -31,7 +31,7 @@
             this.tbFile = new System.Windows.Forms.TextBox();
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelLoadData = new System.Windows.Forms.Panel();
             this.btnLoad = new System.Windows.Forms.Button();
             this.dtpTo = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
@@ -40,11 +40,13 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.panel1.SuspendLayout();
+            this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,21 +80,21 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Database:";
             // 
-            // panel1
+            // panelLoadData
             // 
-            this.panel1.Controls.Add(this.btnLoad);
-            this.panel1.Controls.Add(this.dtpTo);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.dtpFrom);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.tbFile);
-            this.panel1.Controls.Add(this.btnOpenFile);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1041, 59);
-            this.panel1.TabIndex = 3;
+            this.panelLoadData.Controls.Add(this.btnLoad);
+            this.panelLoadData.Controls.Add(this.dtpTo);
+            this.panelLoadData.Controls.Add(this.label3);
+            this.panelLoadData.Controls.Add(this.label2);
+            this.panelLoadData.Controls.Add(this.dtpFrom);
+            this.panelLoadData.Controls.Add(this.label1);
+            this.panelLoadData.Controls.Add(this.tbFile);
+            this.panelLoadData.Controls.Add(this.btnOpenFile);
+            this.panelLoadData.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelLoadData.Location = new System.Drawing.Point(0, 24);
+            this.panelLoadData.Name = "panelLoadData";
+            this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
+            this.panelLoadData.TabIndex = 3;
             // 
             // btnLoad
             // 
@@ -161,16 +163,19 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.quitToolStripMenuItem});
+            this.loadDataPanelToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // quitToolStripMenuItem
+            // exitToolStripMenuItem
             // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
-            this.quitToolStripMenuItem.Text = "Quit";
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // chartsToolStripMenuItem
             // 
@@ -190,13 +195,28 @@
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
+            // loadDataPanelToolStripMenuItem
+            // 
+            this.loadDataPanelToolStripMenuItem.Checked = true;
+            this.loadDataPanelToolStripMenuItem.CheckOnClick = true;
+            this.loadDataPanelToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.loadDataPanelToolStripMenuItem.Name = "loadDataPanelToolStripMenuItem";
+            this.loadDataPanelToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.loadDataPanelToolStripMenuItem.Text = "Load data panel";
+            this.loadDataPanelToolStripMenuItem.Click += new System.EventHandler(this.loadDataPanelToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 679);
             this.Controls.Add(this.dockPanel);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelLoadData);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
@@ -205,8 +225,8 @@
             this.Text = "Post trading analysis";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panelLoadData.ResumeLayout(false);
+            this.panelLoadData.PerformLayout();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -219,7 +239,7 @@
         private System.Windows.Forms.TextBox tbFile;
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelLoadData;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.DateTimePicker dtpFrom;
         private System.Windows.Forms.Label label2;
@@ -227,11 +247,13 @@
         private System.Windows.Forms.DateTimePicker dtpTo;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
         public System.Windows.Forms.MenuStrip menuStrip;
         public System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItem;
         public WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+        private System.Windows.Forms.ToolStripMenuItem loadDataPanelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

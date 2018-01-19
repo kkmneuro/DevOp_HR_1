@@ -52,10 +52,8 @@ namespace PostTradingAnalysis
             var timeFrom = new DateTime(now.Year, now.Month, now.Day);
             var timeTo = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
-            //dtpFrom.Value = timeFrom;
+            dtpFrom.Value = timeFrom;
             dtpTo.Value = timeTo;
-
-            btnLoad_Click(null, null);
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -79,6 +77,16 @@ namespace PostTradingAnalysis
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             dockPanel.SaveAsXml(dockPanelConfigFile);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void loadDataPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            panelLoadData.Visible = loadDataPanelToolStripMenuItem.Checked;
         }
     }
 }

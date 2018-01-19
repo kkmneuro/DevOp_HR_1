@@ -51,7 +51,7 @@
             // btnHMinus
             // 
             this.btnHMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHMinus.Location = new System.Drawing.Point(31, 2);
+            this.btnHMinus.Location = new System.Drawing.Point(89, 2);
             this.btnHMinus.Name = "btnHMinus";
             this.btnHMinus.Size = new System.Drawing.Size(28, 20);
             this.btnHMinus.TabIndex = 19;
@@ -62,7 +62,7 @@
             // btnHPlus
             // 
             this.btnHPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHPlus.Location = new System.Drawing.Point(2, 2);
+            this.btnHPlus.Location = new System.Drawing.Point(60, 2);
             this.btnHPlus.Name = "btnHPlus";
             this.btnHPlus.Size = new System.Drawing.Size(28, 20);
             this.btnHPlus.TabIndex = 18;
@@ -73,7 +73,7 @@
             // btnVMinus
             // 
             this.btnVMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVMinus.Location = new System.Drawing.Point(89, 2);
+            this.btnVMinus.Location = new System.Drawing.Point(31, 2);
             this.btnVMinus.Name = "btnVMinus";
             this.btnVMinus.Size = new System.Drawing.Size(28, 20);
             this.btnVMinus.TabIndex = 17;
@@ -84,7 +84,7 @@
             // btnVPlus
             // 
             this.btnVPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVPlus.Location = new System.Drawing.Point(60, 2);
+            this.btnVPlus.Location = new System.Drawing.Point(2, 2);
             this.btnVPlus.Name = "btnVPlus";
             this.btnVPlus.Size = new System.Drawing.Size(28, 20);
             this.btnVPlus.TabIndex = 16;
