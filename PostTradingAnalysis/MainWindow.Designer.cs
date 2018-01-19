@@ -39,9 +39,13 @@
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.mainChart = new LiveCharts.WinForms.CartesianChart();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.plotView = new OxyPlot.WindowsForms.PlotView();
+            this.btnVPlus = new System.Windows.Forms.Button();
+            this.btnVMinus = new System.Windows.Forms.Button();
+            this.btnHMinus = new System.Windows.Forms.Button();
+            this.btnHPlus = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -148,7 +152,11 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.mainChart);
+            this.tabPage1.Controls.Add(this.btnHMinus);
+            this.tabPage1.Controls.Add(this.btnHPlus);
+            this.tabPage1.Controls.Add(this.btnVMinus);
+            this.tabPage1.Controls.Add(this.btnVPlus);
+            this.tabPage1.Controls.Add(this.plotView);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -156,15 +164,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Charts";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // mainChart
-            // 
-            this.mainChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainChart.Location = new System.Drawing.Point(3, 3);
-            this.mainChart.Name = "mainChart";
-            this.mainChart.Size = new System.Drawing.Size(929, 351);
-            this.mainChart.TabIndex = 0;
-            this.mainChart.Text = "cartesianChart1";
             // 
             // tabControl1
             // 
@@ -185,6 +184,63 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Statistics";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // plotView
+            // 
+            this.plotView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plotView.Location = new System.Drawing.Point(3, 3);
+            this.plotView.Name = "plotView";
+            this.plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView.Size = new System.Drawing.Size(929, 351);
+            this.plotView.TabIndex = 0;
+            this.plotView.Text = "plotView1";
+            this.plotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
+            // btnVPlus
+            // 
+            this.btnVPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVPlus.Location = new System.Drawing.Point(61, 3);
+            this.btnVPlus.Name = "btnVPlus";
+            this.btnVPlus.Size = new System.Drawing.Size(28, 20);
+            this.btnVPlus.TabIndex = 8;
+            this.btnVPlus.Text = "V+";
+            this.btnVPlus.UseVisualStyleBackColor = true;
+            this.btnVPlus.Click += new System.EventHandler(this.btnZoom_Click);
+            // 
+            // btnVMinus
+            // 
+            this.btnVMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVMinus.Location = new System.Drawing.Point(90, 3);
+            this.btnVMinus.Name = "btnVMinus";
+            this.btnVMinus.Size = new System.Drawing.Size(28, 20);
+            this.btnVMinus.TabIndex = 9;
+            this.btnVMinus.Text = "V-";
+            this.btnVMinus.UseVisualStyleBackColor = true;
+            this.btnVMinus.Click += new System.EventHandler(this.btnZoom_Click);
+            // 
+            // btnHMinus
+            // 
+            this.btnHMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHMinus.Location = new System.Drawing.Point(32, 3);
+            this.btnHMinus.Name = "btnHMinus";
+            this.btnHMinus.Size = new System.Drawing.Size(28, 20);
+            this.btnHMinus.TabIndex = 11;
+            this.btnHMinus.Text = "H-";
+            this.btnHMinus.UseVisualStyleBackColor = true;
+            this.btnHMinus.Click += new System.EventHandler(this.btnZoom_Click);
+            // 
+            // btnHPlus
+            // 
+            this.btnHPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHPlus.Location = new System.Drawing.Point(3, 3);
+            this.btnHPlus.Name = "btnHPlus";
+            this.btnHPlus.Size = new System.Drawing.Size(28, 20);
+            this.btnHPlus.TabIndex = 10;
+            this.btnHPlus.Text = "H+";
+            this.btnHPlus.UseVisualStyleBackColor = true;
+            this.btnHPlus.Click += new System.EventHandler(this.btnZoom_Click);
             // 
             // MainWindow
             // 
@@ -219,7 +275,11 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
-        private LiveCharts.WinForms.CartesianChart mainChart;
+        private OxyPlot.WindowsForms.PlotView plotView;
+        private System.Windows.Forms.Button btnVPlus;
+        private System.Windows.Forms.Button btnVMinus;
+        private System.Windows.Forms.Button btnHMinus;
+        private System.Windows.Forms.Button btnHPlus;
     }
 }
 

@@ -1,16 +1,12 @@
 ﻿using NeuroXChange.Model.BioData;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-
-using LiveCharts; //Core of the library
-using LiveCharts.Wpf; //The WPF controls
-using LiveCharts.WinForms; //the WinForm wrappers
-using System.Windows.Media;
-using LiveCharts.Configurations;
 
 namespace PostTradingAnalysis
 {
@@ -55,7 +51,7 @@ namespace PostTradingAnalysis
             }
         }
 
-        ChartValues<BioData> bioData = new ChartValues<BioData>();
+        List<BioData> bioData = new List<BioData>();
 
         private void LoadData()
         {
@@ -92,52 +88,63 @@ namespace PostTradingAnalysis
             while (reader.Read())
             {
                 var data = BioData.FromOleDbDataReader(reader, true);
-                //if (bioData.Count < 1000)
-                {
-                    bioData.Add(data);
-                }
+                bioData.Add(data);
             }
 
-            var hrValues = bioData;
-
-            //var hrValues = new ChartValues<double>();
-
-            //// biodata charts
-            //foreach (var bioDataPoint in bioData)
-            //{
-            //    hrValues.Add(bioDataPoint.heartRate);
-            //    if(hrValues.Count >= 2000)
-            //    {
-            //        //break;
-            //    }
-            //}
-
-            var mapper = Mappers.Xy<BioData>()
-                .X(point => point.time.ToOADate())
-                .Y(point => point.heartRate);
-
-            var hrSeries = new LineSeries(mapper) {
-                Title = "Heart rate",
-                Values = hrValues
-            };
-            hrSeries.LineSmoothness = 0;
-
-            hrSeries.PointGeometry = null;
+            var hrSeries = new LineSeries();
+            hrSeries.Title = "Heart rate";
             hrSeries.StrokeThickness = 1;
-            hrSeries.Fill = Brushes.Transparent;
-            
-            mainChart.DisableAnimations = true;
-            mainChart.DataTooltip = null;
-            mainChart.Pan = PanningOptions.X;
-            mainChart.Zoom = ZoomingOptions.X;
-            mainChart.Hoverable = false;
-            mainChart.AxisX.Add(new LiveCharts.Wpf.Axis
-            {
-                LabelFormatter = value => DateTime.FromOADate(value).ToString("MM/dd HH:mm:ss")
-            });
 
-            var collection = new LiveCharts.SeriesCollection { hrSeries };
-            mainChart.Series = collection;
+            for (int i = 0; i < bioData.Count && i < 10000; i++)
+            {
+                hrSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].heartRate));
+            }
+
+            var model = new PlotModel();
+            model.Series.Add(hrSeries);
+            var xAxis = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "HH:mm:ss" };
+            xAxis.MajorGridlineColor = OxyColor.FromRgb(200, 200, 200);
+            xAxis.MajorGridlineStyle = LineStyle.Solid;
+            model.Axes.Add(xAxis);
+            var yAxis = new LinearAxis { Position = AxisPosition.Left};
+            yAxis.MajorGridlineColor = OxyColor.FromRgb(200, 200, 200);
+            yAxis.MajorGridlineStyle = LineStyle.Solid;
+            model.Axes.Add(yAxis);
+
+            var controller = new PlotController();
+            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.HoverTrack);
+            //controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.)
+            plotView.Controller = controller;
+
+            plotView.Model = model;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnZoom_Click(object sender, EventArgs e)
+        {
+            var axis = plotView.Model.Axes[0];
+            if (sender == btnVMinus || sender == btnVPlus)
+            {
+                axis = plotView.Model.Axes[1];
+            }
+
+            var mult = 0.5 * 2.0 / 3.0;
+            if (sender == btnHMinus || sender == btnVMinus)
+            {
+                mult = 0.5 * 3.0 / 2.0;
+            }
+
+            var min = axis.ActualMinimum;
+            var max = axis.ActualMaximum;
+            var dist = (max - min) * mult;
+            var mid = (max + min) / 2;
+            axis.Zoom(mid - dist, mid + dist);
+            plotView.Refresh();
         }
     }
 }
