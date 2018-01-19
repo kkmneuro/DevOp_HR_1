@@ -5,6 +5,7 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -25,6 +26,7 @@ namespace PostTradingAnalysis
 
             // registering windows
             chartWindows = new Dictionary<string, ChartWindow>();
+            chartWindows["Temperature"] = new ChartWindow(this);
             chartWindows["Heart rate"] = new ChartWindow(this);
             chartWindows["Skin conductance"] = new ChartWindow(this);
             chartWindows["Price"] = new ChartWindow(this);
@@ -94,41 +96,47 @@ namespace PostTradingAnalysis
                 series.StrokeThickness = 1;
 
                 // chose what data to show
+                if (chartName == "Temperature")
+                    for (int i = 0; i < bioData.Count; i++)
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].temperature));
                 if (chartName == "Heart rate")
-                {
                     for (int i = 0; i < bioData.Count; i++)
-                    {
                         series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].heartRate));
-                    }
-                }
                 if (chartName == "Skin conductance")
-                {
                     for (int i = 0; i < bioData.Count; i++)
-                    {
                         series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].skinConductance));
-                    }
-                }
                 if (chartName == "Price")
-                {
                     for (int i = 0; i < bioData.Count; i++)
-                    {
                         if (bioData[i].buyPrice.HasValue)
-                        {
                             series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].buyPrice.Value));
-                        }
-                    }
-                }
+
+                Color color = Color.Green;
+                if (chartName == "Temperature")
+                    color = Color.Red;
+                if (chartName == "Heart rate")
+                    color = Color.Green;
+                if (chartName == "Skin conductance")
+                    color = Color.Blue;
+                if (chartName == "Price")
+                    color = Color.Brown;
+
+                series.Color = OxyColor.FromUInt32((uint)color.ToArgb());
 
                 var model = new PlotModel();
+                model.PlotMargins = new OxyThickness(30, -8, -7, 6);
+                model.DefaultFontSize = 10;
                 model.Series.Add(series);
-                var xAxis = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "HH:mm:ss" };
-                xAxis.MajorGridlineColor = OxyColor.FromRgb(200, 200, 200);
+
+                var xAxis = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "H:mm:ss" };
                 xAxis.MajorGridlineStyle = LineStyle.Solid;
                 xAxis.AxisChanged += HandleXAxisChanged;
+                xAxis.AxisTickToLabelDistance = 0;
+                xAxis.AxisTitleDistance = 0;
+                xAxis.MajorTickSize = 0;
                 model.Axes.Add(xAxis);
                 var yAxis = new LinearAxis { Position = AxisPosition.Left };
-                yAxis.MajorGridlineColor = OxyColor.FromRgb(200, 200, 200);
                 yAxis.MajorGridlineStyle = LineStyle.Solid;
+                yAxis.MajorTickSize = 0;
                 model.Axes.Add(yAxis);
 
                 var controller = new PlotController();

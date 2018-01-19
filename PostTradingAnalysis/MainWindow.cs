@@ -28,6 +28,8 @@ namespace PostTradingAnalysis
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            vS2015BlueTheme1.Measures.DockPadding = 0;
+
             openFileDialog.InitialDirectory = "Data";
 
             var now = DateTime.Now;
