@@ -21,10 +21,13 @@ namespace NeuroXChange.Model.BioData
         public int trainingStep;
         public int applicationStates;
 
+        public double? sellPrice;
+        public double? buyPrice;
+
         // implementation dependent payload
         public object payload;
 
-        public static BioData FromOleDbDataReader(OleDbDataReader reader, bool hasPrice = false)
+        public static BioData FromOleDbDataReader(OleDbDataReader reader)
         {
             var data = new BioData();
             data.id = Int64.Parse(reader["ID"].ToString());
@@ -38,14 +41,18 @@ namespace NeuroXChange.Model.BioData
             data.trainingType = Int32.Parse(reader["TrainingType"].ToString());
             data.trainingStep = Int32.Parse(reader["TrainingStep"].ToString());
             data.applicationStates = Int32.Parse(reader["ApplicationStates"].ToString());
-            if (hasPrice)
+
+            var sellPrice = reader["SellPrice"].ToString();
+            var buyPrice = reader["BuyPrice"].ToString();
+            if (sellPrice != "")
             {
-                data.payload = new string[] {reader["SellPrice"].ToString(), reader["BuyPrice"].ToString() };
+                data.sellPrice = Double.Parse(sellPrice);
             }
-            else
+            if (buyPrice != "")
             {
-                data.payload = null;
+                data.buyPrice = Double.Parse(buyPrice);
             }
+
             return data;
         }
     }

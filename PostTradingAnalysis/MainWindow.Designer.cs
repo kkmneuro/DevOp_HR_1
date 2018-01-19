@@ -38,17 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.plotView = new OxyPlot.WindowsForms.PlotView();
-            this.btnVPlus = new System.Windows.Forms.Button();
-            this.btnVMinus = new System.Windows.Forms.Button();
-            this.btnHMinus = new System.Windows.Forms.Button();
-            this.btnHPlus = new System.Windows.Forms.Button();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
             this.panel1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbFile
@@ -92,7 +89,7 @@
             this.panel1.Controls.Add(this.tbFile);
             this.panel1.Controls.Add(this.btnOpenFile);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(943, 59);
             this.panel1.TabIndex = 3;
@@ -150,113 +147,68 @@
             // 
             this.openFileDialog.Filter = "MS Access files|*.mdb";
             // 
-            // tabPage1
+            // menuStrip
             // 
-            this.tabPage1.Controls.Add(this.btnHMinus);
-            this.tabPage1.Controls.Add(this.btnHPlus);
-            this.tabPage1.Controls.Add(this.btnVMinus);
-            this.tabPage1.Controls.Add(this.btnVPlus);
-            this.tabPage1.Controls.Add(this.plotView);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(935, 357);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Charts";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.chartsToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(943, 24);
+            this.menuStrip.TabIndex = 4;
+            this.menuStrip.Text = "menuStrip";
             // 
-            // tabControl1
+            // fileToolStripMenuItem
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 59);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(943, 383);
-            this.tabControl1.TabIndex = 4;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // tabPage2
+            // quitToolStripMenuItem
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(935, 357);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Statistics";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
             // 
-            // plotView
+            // chartsToolStripMenuItem
             // 
-            this.plotView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plotView.Location = new System.Drawing.Point(3, 3);
-            this.plotView.Name = "plotView";
-            this.plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView.Size = new System.Drawing.Size(929, 351);
-            this.plotView.TabIndex = 0;
-            this.plotView.Text = "plotView1";
-            this.plotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            this.chartsToolStripMenuItem.Name = "chartsToolStripMenuItem";
+            this.chartsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.chartsToolStripMenuItem.Text = "Charts";
             // 
-            // btnVPlus
+            // dockPanel
             // 
-            this.btnVPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVPlus.Location = new System.Drawing.Point(61, 3);
-            this.btnVPlus.Name = "btnVPlus";
-            this.btnVPlus.Size = new System.Drawing.Size(28, 20);
-            this.btnVPlus.TabIndex = 8;
-            this.btnVPlus.Text = "V+";
-            this.btnVPlus.UseVisualStyleBackColor = true;
-            this.btnVPlus.Click += new System.EventHandler(this.btnZoom_Click);
-            // 
-            // btnVMinus
-            // 
-            this.btnVMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVMinus.Location = new System.Drawing.Point(90, 3);
-            this.btnVMinus.Name = "btnVMinus";
-            this.btnVMinus.Size = new System.Drawing.Size(28, 20);
-            this.btnVMinus.TabIndex = 9;
-            this.btnVMinus.Text = "V-";
-            this.btnVMinus.UseVisualStyleBackColor = true;
-            this.btnVMinus.Click += new System.EventHandler(this.btnZoom_Click);
-            // 
-            // btnHMinus
-            // 
-            this.btnHMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHMinus.Location = new System.Drawing.Point(32, 3);
-            this.btnHMinus.Name = "btnHMinus";
-            this.btnHMinus.Size = new System.Drawing.Size(28, 20);
-            this.btnHMinus.TabIndex = 11;
-            this.btnHMinus.Text = "H-";
-            this.btnHMinus.UseVisualStyleBackColor = true;
-            this.btnHMinus.Click += new System.EventHandler(this.btnZoom_Click);
-            // 
-            // btnHPlus
-            // 
-            this.btnHPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHPlus.Location = new System.Drawing.Point(3, 3);
-            this.btnHPlus.Name = "btnHPlus";
-            this.btnHPlus.Size = new System.Drawing.Size(28, 20);
-            this.btnHPlus.TabIndex = 10;
-            this.btnHPlus.Text = "H+";
-            this.btnHPlus.UseVisualStyleBackColor = true;
-            this.btnHPlus.Click += new System.EventHandler(this.btnZoom_Click);
+            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(57)))), ((int)(((byte)(85)))));
+            this.dockPanel.Location = new System.Drawing.Point(0, 83);
+            this.dockPanel.Name = "dockPanel";
+            this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
+            this.dockPanel.ShowAutoHideContentOnHover = false;
+            this.dockPanel.Size = new System.Drawing.Size(943, 359);
+            this.dockPanel.TabIndex = 5;
+            this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(943, 442);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip);
+            this.IsMdiContainer = true;
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
             this.Text = "Post trading analysis";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -272,14 +224,12 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.DateTimePicker dtpTo;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private OxyPlot.WindowsForms.PlotView plotView;
-        private System.Windows.Forms.Button btnVPlus;
-        private System.Windows.Forms.Button btnVMinus;
-        private System.Windows.Forms.Button btnHMinus;
-        private System.Windows.Forms.Button btnHPlus;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
+        public System.Windows.Forms.MenuStrip menuStrip;
+        public System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItem;
+        public WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
     }
 }
 

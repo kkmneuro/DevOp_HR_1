@@ -14,9 +14,16 @@ namespace PostTradingAnalysis
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                new PostTradingAnalysisApplication();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
