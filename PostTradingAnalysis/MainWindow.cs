@@ -3,24 +3,28 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.IO;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace PostTradingAnalysis
 {
     public partial class MainWindow : Form
     {
         private PostTradingAnalysisApplication application;
+        private DeserializeDockContent m_deserializeDockContent;
+        private const string dockPanelConfigFile = "PTADockPanel.config";
 
         public MainWindow(PostTradingAnalysisApplication application)
         {
             InitializeComponent();
-
             this.application = application;
+            m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
-            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 tbFile.Text = openFileDialog.FileName;
             }
@@ -29,6 +33,18 @@ namespace PostTradingAnalysis
         private void MainWindow_Load(object sender, EventArgs e)
         {
             vS2015BlueTheme1.Measures.DockPadding = 0;
+
+            if (File.Exists(dockPanelConfigFile))
+            {
+                dockPanel.LoadFromXml(dockPanelConfigFile, m_deserializeDockContent);
+            }
+            else
+            {
+                foreach(var kv in application.chartWindows)
+                {
+                    kv.Value.DockPanel = application.mainWindow.dockPanel;
+                }
+            }
 
             openFileDialog.InitialDirectory = "Data";
 
@@ -53,6 +69,16 @@ namespace PostTradingAnalysis
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private IDockContent GetContentFromPersistString(string persistString)
+        {
+            return application.chartWindows[persistString];
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            dockPanel.SaveAsXml(dockPanelConfigFile);
         }
     }
 }

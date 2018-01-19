@@ -38,7 +38,6 @@ namespace PostTradingAnalysis
                 var window = kv.Value;
                 window.Text = chartName;
                 window.Owner = mainWindow;
-                window.DockPanel = mainWindow.dockPanel;
                 ToolStripMenuItem menuItem = new ToolStripMenuItem(kv.Key);
                 mainWindow.chartsToolStripMenuItem.DropDownItems.Add(menuItem);
                 menuItem.Click += new System.EventHandler(

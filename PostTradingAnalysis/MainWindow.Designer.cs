@@ -54,14 +54,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFile.Location = new System.Drawing.Point(61, 7);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(785, 20);
+            this.tbFile.Size = new System.Drawing.Size(883, 20);
             this.tbFile.TabIndex = 0;
             this.tbFile.Text = "C:\\tmp\\neurotrader\\PsychophysiologyDatabase.mdb";
             // 
             // btnOpenFile
             // 
             this.btnOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFile.Location = new System.Drawing.Point(849, 6);
+            this.btnOpenFile.Location = new System.Drawing.Point(947, 6);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(24, 22);
             this.btnOpenFile.TabIndex = 1;
@@ -91,14 +91,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(943, 59);
+            this.panel1.Size = new System.Drawing.Size(1041, 59);
             this.panel1.TabIndex = 3;
             // 
             // btnLoad
             // 
             this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLoad.Location = new System.Drawing.Point(879, 5);
+            this.btnLoad.Location = new System.Drawing.Point(977, 5);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(58, 48);
             this.btnLoad.TabIndex = 7;
@@ -154,7 +154,7 @@
             this.chartsToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(943, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1041, 24);
             this.menuStrip.TabIndex = 4;
             this.menuStrip.Text = "menuStrip";
             // 
@@ -186,7 +186,7 @@
             this.dockPanel.Name = "dockPanel";
             this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel.ShowAutoHideContentOnHover = false;
-            this.dockPanel.Size = new System.Drawing.Size(943, 359);
+            this.dockPanel.Size = new System.Drawing.Size(1041, 596);
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
@@ -194,14 +194,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(943, 442);
+            this.ClientSize = new System.Drawing.Size(1041, 679);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Post trading analysis";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

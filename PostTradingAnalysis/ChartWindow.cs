@@ -35,5 +35,10 @@ namespace PostTradingAnalysis
             axis.Zoom(mid - dist, mid + dist);
             plotView.Refresh();
         }
+
+        protected override string GetPersistString()
+        {
+            return Text;
+        }
     }
 }
