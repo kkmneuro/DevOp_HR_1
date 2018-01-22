@@ -29,6 +29,7 @@ namespace PostTradingAnalysis
             chartWindows["Temperature"] = new ChartWindow(this);
             chartWindows["Heart rate"] = new ChartWindow(this);
             chartWindows["Skin conductance"] = new ChartWindow(this);
+            chartWindows["Training step"] = new ChartWindow(this);
             chartWindows["Price"] = new ChartWindow(this);
 
             // setup windows
@@ -74,7 +75,7 @@ namespace PostTradingAnalysis
             var biodataSQL = string.Format(
                 @"SELECT BioData.*, SellPrice, BuyPrice From BioData
             LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID
-            WHERE BioData.Time BETWEEN #{0:MM/dd/yyyy HH:mm:ss}# AND #{1:MM/dd/yyyy HH:mm:ss}#
+            WHERE BioData.Time BETWEEN #{0:yyyy-MM-dd HH:mm:ss}# AND #{1:yyyy-MM-dd HH:mm:ss}#
             ORDER BY BioData.ID",
                 dateFrom, dateTo);
             cmd.CommandText = biodataSQL;
@@ -104,6 +105,10 @@ namespace PostTradingAnalysis
                 if (chartName == "Skin conductance")
                     for (int i = 0; i < bioData.Count; i++)
                         series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].skinConductance));
+                if (chartName == "Training step")
+                    for (int i = 0; i < bioData.Count; i++)
+                        if (bioData[i].trainingStep != 0)
+                            series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].trainingStep));
                 if (chartName == "Price")
                     for (int i = 0; i < bioData.Count; i++)
                         if (bioData[i].buyPrice.HasValue)
@@ -116,6 +121,8 @@ namespace PostTradingAnalysis
                     color = Color.Green;
                 if (chartName == "Skin conductance")
                     color = Color.Blue;
+                if (chartName == "Training step")
+                    color = Color.Orange;
                 if (chartName == "Price")
                     color = Color.Brown;
 
@@ -128,6 +135,11 @@ namespace PostTradingAnalysis
 
                 var xAxis = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "H:mm:ss" };
                 xAxis.MajorGridlineStyle = LineStyle.Solid;
+                if (bioData.Count > 0)
+                {
+                    xAxis.Minimum = DateTimeAxis.ToDouble(bioData[0].time);
+                    xAxis.Maximum = DateTimeAxis.ToDouble(bioData[bioData.Count - 1].time);
+                }
                 xAxis.AxisChanged += HandleXAxisChanged;
                 xAxis.AxisTickToLabelDistance = 0;
                 xAxis.AxisTitleDistance = 0;
