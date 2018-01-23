@@ -120,9 +120,9 @@ namespace NeuroXChange.Model
             {
                 DataRowInBehavioralModelsWindow["In position"] = "-";
             }
-            //DataRowInBehavioralModelsWindow["All trades"] = TradesTotal;
-            //DataRowInBehavioralModelsWindow["Trades today"] = TradesToday;
-            //DataRowInBehavioralModelsWindow["Profitability"] = Profitability.ToString("0.##");
+            DataRowInBehavioralModelsWindow["All trades"] = portfolio.ClosedOrders.Count;
+            DataRowInBehavioralModelsWindow["Trades today"] = portfolio.ClosedOrders.Count;
+            DataRowInBehavioralModelsWindow["Profitability"] = portfolio.ClosedProfitability;
         }
 
         public bool ManualTrade(
