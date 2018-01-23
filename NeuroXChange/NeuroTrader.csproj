@@ -150,6 +150,7 @@
     <Compile Include="Model\FixApi\FixApiModel.cs" />
     <Compile Include="Model\FixApi\AbstractFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
+    <Compile Include="Model\FixApi\FixApiState.cs" />
     <Compile Include="Model\FixApi\IFixApiObserver.cs" />
     <Compile Include="Model\FixApi\MessageConstructor.cs" />
     <Compile Include="Model\FixApi\RandomFixApiModel.cs" />
