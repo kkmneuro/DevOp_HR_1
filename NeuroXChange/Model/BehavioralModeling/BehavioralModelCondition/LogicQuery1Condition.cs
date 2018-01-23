@@ -59,7 +59,16 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
 
         public override void OnNext(BioData.BioData data)
         {
-            if(isConditionMet)
+            // always true if inverse condition
+            if (inverseCondition)
+            {
+                lastNot74SubProtocolID = -1;
+                detailsData = 2;
+                isConditionMet = true;
+                return;
+            }
+
+            if (isConditionMet)
             {
                 // reset global variables
                 lastNot74SubProtocolID = -1;
@@ -150,14 +159,6 @@ namespace NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition
                         detailsData = 1;
                     }
 
-                    isConditionMet = true;
-                }
-
-                // can't find condition
-                if (inverseCondition && bestId == -1)
-                {
-                    lastNot74SubProtocolID = -1;
-                    detailsData = 2;
                     isConditionMet = true;
                 }
             }
