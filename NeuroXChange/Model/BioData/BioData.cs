@@ -38,7 +38,7 @@ namespace NeuroXChange.Model.BioData
             data.trainingType = Int32.Parse(reader["TrainingType"].ToString());
             data.trainingStep = Int32.Parse(reader["TrainingStep"].ToString());
             data.applicationStates = Int32.Parse(reader["ApplicationStates"].ToString());
-            if (hasPrice)
+            if (hasPrice && !string.IsNullOrEmpty(reader["SellPrice"].ToString()) && !string.IsNullOrEmpty(reader["BuyPrice"].ToString()))
             {
                 data.payload = new string[] {reader["SellPrice"].ToString(), reader["BuyPrice"].ToString() };
             }

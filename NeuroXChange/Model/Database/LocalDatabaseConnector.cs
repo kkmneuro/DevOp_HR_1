@@ -123,6 +123,11 @@ namespace NeuroXChange.Model.Database
         {
             LastOrderID++;
 
+            if (emulationOnHistoryMode)
+            {
+                return LastOrderID;
+            }
+
             var commandText = string.Format(
                 @"UPDATE DBSettings SET [Value] = '{0}' WHERE [Key] = 'LastOrderID'",
                 LastOrderID);
@@ -135,6 +140,11 @@ namespace NeuroXChange.Model.Database
         public int InitiateNewGroupID()
         {
             LastGroupID++;
+
+            if (emulationOnHistoryMode)
+            {
+                return LastGroupID;
+            }
 
             var commandText = string.Format(
                 @"UPDATE DBSettings SET [Value] = '{0}' WHERE [Key] = 'LastGroupID'",
