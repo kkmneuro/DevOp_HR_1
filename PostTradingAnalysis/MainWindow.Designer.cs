@@ -40,12 +40,14 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cbStddevInterval = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -82,6 +84,8 @@
             // 
             // panelLoadData
             // 
+            this.panelLoadData.Controls.Add(this.label4);
+            this.panelLoadData.Controls.Add(this.cbStddevInterval);
             this.panelLoadData.Controls.Add(this.btnLoad);
             this.panelLoadData.Controls.Add(this.dtpTo);
             this.panelLoadData.Controls.Add(this.label3);
@@ -170,6 +174,21 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // loadDataPanelToolStripMenuItem
+            // 
+            this.loadDataPanelToolStripMenuItem.Checked = true;
+            this.loadDataPanelToolStripMenuItem.CheckOnClick = true;
+            this.loadDataPanelToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.loadDataPanelToolStripMenuItem.Name = "loadDataPanelToolStripMenuItem";
+            this.loadDataPanelToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.loadDataPanelToolStripMenuItem.Text = "Load data panel";
+            this.loadDataPanelToolStripMenuItem.Click += new System.EventHandler(this.loadDataPanelToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -195,20 +214,39 @@
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
-            // loadDataPanelToolStripMenuItem
+            // cbStddevInterval
             // 
-            this.loadDataPanelToolStripMenuItem.Checked = true;
-            this.loadDataPanelToolStripMenuItem.CheckOnClick = true;
-            this.loadDataPanelToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.loadDataPanelToolStripMenuItem.Name = "loadDataPanelToolStripMenuItem";
-            this.loadDataPanelToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.loadDataPanelToolStripMenuItem.Text = "Load data panel";
-            this.loadDataPanelToolStripMenuItem.Click += new System.EventHandler(this.loadDataPanelToolStripMenuItem_Click);
+            this.cbStddevInterval.DisplayMember = "3";
+            this.cbStddevInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStddevInterval.FormattingEnabled = true;
+            this.cbStddevInterval.Items.AddRange(new object[] {
+            "1 second",
+            "2 seconds",
+            "3 seconds",
+            "5 seconds",
+            "10 seconds",
+            "15 seconds",
+            "20 seconds",
+            "30 seconds",
+            "1 minute",
+            "2 minutes",
+            "3 minutes",
+            "5 minutes",
+            "10 minutes"});
+            this.cbStddevInterval.Location = new System.Drawing.Point(540, 33);
+            this.cbStddevInterval.Name = "cbStddevInterval";
+            this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
+            this.cbStddevInterval.TabIndex = 8;
+            this.cbStddevInterval.SelectedIndexChanged += new System.EventHandler(this.cbStddevInterval_SelectedIndexChanged);
             // 
-            // toolStripMenuItem1
+            // label4
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(453, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(81, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Stddev interval:";
             // 
             // MainWindow
             // 
@@ -254,6 +292,8 @@
         public WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem loadDataPanelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbStddevInterval;
     }
 }
 

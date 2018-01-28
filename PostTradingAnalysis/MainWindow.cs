@@ -20,6 +20,7 @@ namespace PostTradingAnalysis
             InitializeComponent();
             this.application = application;
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+            cbStddevInterval.SelectedIndex = 8;
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e)
@@ -87,6 +88,67 @@ namespace PostTradingAnalysis
         private void loadDataPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             panelLoadData.Visible = loadDataPanelToolStripMenuItem.Checked;
+        }
+
+        private void cbStddevInterval_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // values from combobox:
+            //1 second
+            //2 seconds
+            //3 seconds
+            //5 seconds
+            //10 seconds
+            //15 seconds
+            //20 seconds
+            //30 seconds
+            //1 minute
+            //2 minutes
+            //3 minutes
+            //5 minutes
+            //10 minutes
+
+            int seconds = 0;
+            switch (cbStddevInterval.SelectedIndex)
+            {
+                case 0:
+                    seconds = 1;
+                    break;
+                case 1:
+                    seconds = 2;
+                    break;
+                case 3:
+                    seconds = 5;
+                    break;
+                case 4:
+                    seconds = 10;
+                    break;
+                case 5:
+                    seconds = 15;
+                    break;
+                case 6:
+                    seconds = 20;
+                    break;
+                case 7:
+                    seconds = 30;
+                    break;
+                case 8:
+                    seconds = 60;
+                    break;
+                case 9:
+                    seconds = 60*2;
+                    break;
+                case 10:
+                    seconds = 60*3;
+                    break;
+                case 11:
+                    seconds = 60*5;
+                    break;
+                case 12:
+                    seconds = 60*10;
+                    break;
+            }
+
+            application.SetStdDevPeriod(seconds*2);
         }
     }
 }

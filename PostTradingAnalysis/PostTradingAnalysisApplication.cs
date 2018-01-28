@@ -31,6 +31,10 @@ namespace PostTradingAnalysis
             chartWindows["Skin conductance"] = new ChartWindow(this);
             chartWindows["Training step"] = new ChartWindow(this);
             chartWindows["Price"] = new ChartWindow(this);
+            chartWindows["Temperature stddev"] = new ChartWindow(this);
+            chartWindows["Heart rate stddev"] = new ChartWindow(this);
+            chartWindows["Skin conductance stddev"] = new ChartWindow(this);
+            chartWindows["Price stddev"] = new ChartWindow(this);
 
             // setup windows
             foreach (var kv in chartWindows)
@@ -157,6 +161,98 @@ namespace PostTradingAnalysis
 
                 window.plotView.Model = model;
             }
+
+            // update std charts
+            SetStdDevPeriod(stdDevPeriod);
+        }
+
+        private int stdDevPeriod = 120;
+        public void SetStdDevPeriod(int stdDevPeriod)
+        {
+            this.stdDevPeriod = stdDevPeriod;
+
+            if (chartWindows == null || chartWindows.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var kv in chartWindows)
+            {
+                var chartName = kv.Key;
+                var window = kv.Value;
+                var model = window.plotView.Model;
+                if (!chartName.Contains("stddev"))
+                {
+                    continue;
+                }
+
+                var series = new LineSeries();
+                series.Title = chartName;
+                series.StrokeThickness = 1;
+
+                for (int i = stdDevPeriod - 1; i < bioData.Count; i++)
+                {
+                    double mean = 0;
+                    int realCount = 0;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        realCount++;
+                        if (chartName == "Temperature stddev")
+                            mean += bioData[j].temperature;
+                        if (chartName == "Heart rate stddev")
+                            mean += bioData[j].heartRate;
+                        if (chartName == "Skin conductance stddev")
+                            mean += bioData[j].skinConductance;
+                        if (chartName == "Price stddev")
+                            if (bioData[j].buyPrice.HasValue)
+                            {
+                                mean += bioData[j].buyPrice.Value;
+                            }
+                            else
+                            {
+                                realCount--;
+                            }
+                    }
+
+                    if (realCount <= stdDevPeriod / 2)
+                    {
+                        continue;
+                    }
+
+                    mean /= realCount;
+
+                    double sum = 0;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        double val = mean;
+                        if (chartName == "Temperature stddev")
+                            val = bioData[j].temperature;
+                        if (chartName == "Heart rate stddev")
+                            val = bioData[j].heartRate;
+                        if (chartName == "Skin conductance stddev")
+                            val = bioData[j].skinConductance;
+                        if (chartName == "Price stddev")
+                            if (bioData[j].buyPrice.HasValue)
+                                val = bioData[j].buyPrice.Value;
+                        sum += (val - mean) * (val - mean);
+                    }
+
+                    sum /= realCount;
+                    double stddev = Math.Sqrt(sum);
+
+                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddev));
+                }
+
+                model.Series.Clear();
+                model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
+            }
+        }
+
+        public int GetStdDevPeriod()
+        {
+            return stdDevPeriod;
         }
 
         private bool manualChanging = false;
