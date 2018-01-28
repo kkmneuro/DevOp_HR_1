@@ -163,7 +163,7 @@ namespace PostTradingAnalysis
             }
 
             // update std charts
-            //SetStdDevPeriod(stdDevPeriod);
+            SetStdDevPeriod(stdDevPeriod);
         }
 
         private int stdDevPeriod = 120;
@@ -185,66 +185,57 @@ namespace PostTradingAnalysis
                 series.Title = chartName;
                 series.StrokeThickness = 1;
 
-                double mean = 0;
-                int currentCount = 0;
-                for (int i = 0; i < bioData.Count && currentCount < stdDevPeriod; i++)
+                for (int i = stdDevPeriod - 1; i < bioData.Count; i++)
                 {
-                    if (chartName == "Temperature stddev")
-                        mean += bioData[i].temperature;
-                    if (chartName == "Heart rate stddev")
-                        mean += bioData[i].heartRate;
-                    if (chartName == "Skin conductance stddev")
-                        mean += bioData[i].skinConductance;
-                    if (chartName == "Price stddev")
-                        if (bioData[i].buyPrice.HasValue)
-                            mean += bioData[i].buyPrice.Value;
-                    currentCount++;
-                    if (chartName == "Price stddev" && !bioData[i].buyPrice.HasValue)
-                        currentCount--;
-                }
+                    double mean = 0;
+                    int realCount = 0;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        realCount++;
+                        if (chartName == "Temperature stddev")
+                            mean += bioData[j].temperature;
+                        if (chartName == "Heart rate stddev")
+                            mean += bioData[j].heartRate;
+                        if (chartName == "Skin conductance stddev")
+                            mean += bioData[j].skinConductance;
+                        if (chartName == "Price stddev")
+                            if (bioData[j].buyPrice.HasValue)
+                            {
+                                mean += bioData[j].buyPrice.Value;
+                            }
+                            else
+                            {
+                                realCount--;
+                            }
+                    }
 
-                currentCount = 0;
-                double stddevSum = 0;
-                for (int left = 0, right=0; right < bioData.Count; right++)
-                {
-                    double val = 0;
-                    if (chartName == "Temperature stddev")
-                        val = bioData[right].temperature;
-                    if (chartName == "Heart rate stddev")
-                        val = bioData[right].heartRate;
-                    if (chartName == "Skin conductance stddev")
-                        val = bioData[right].skinConductance;
-                    if (chartName == "Price stddev")
-                        if (bioData[right].buyPrice.HasValue)
-                            val = bioData[right].buyPrice.Value;
-                    if (chartName == "Price stddev" && !bioData[right].buyPrice.HasValue)
+                    if (realCount <= stdDevPeriod / 2)
+                    {
                         continue;
-                    val -= mean;
-                    stddevSum += val*val;
-                    currentCount++;
-                    if (currentCount < stdDevPeriod)
-                        continue;
-                    var stddev = Math.Sqrt(stddevSum / stdDevPeriod);
-                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[right].time), stddev));
+                    }
 
-                    while (chartName == "Price stddev" && left < bioData.Count && !bioData[left].buyPrice.HasValue)
-                        left++;
-                    if (left == bioData.Count)
-                        break;
-                    val = 0;
-                    if (chartName == "Temperature stddev")
-                        val = bioData[left].temperature;
-                    if (chartName == "Heart rate stddev")
-                        val = bioData[left].heartRate;
-                    if (chartName == "Skin conductance stddev")
-                        val = bioData[left].skinConductance;
-                    if (chartName == "Price stddev")
-                        if (bioData[left].buyPrice.HasValue)
-                            val = bioData[left].buyPrice.Value;
-                    mean -= val;
-                    stddevSum += val * val;
-                    currentCount--;
-                    //var stddev = Math.Sqrt(stddevSum / stdDevPeriod);
+                    mean /= realCount;
+
+                    double sum = 0;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        double val = mean;
+                        if (chartName == "Temperature stddev")
+                            val = bioData[j].temperature;
+                        if (chartName == "Heart rate stddev")
+                            val = bioData[j].heartRate;
+                        if (chartName == "Skin conductance stddev")
+                            val = bioData[j].skinConductance;
+                        if (chartName == "Price stddev")
+                            if (bioData[j].buyPrice.HasValue)
+                                val = bioData[j].buyPrice.Value;
+                        sum += (val - mean) * (val - mean);
+                    }
+
+                    sum /= realCount;
+                    double stddev = Math.Sqrt(sum);
+
+                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddev));
                 }
 
                 model.Series.Clear();
