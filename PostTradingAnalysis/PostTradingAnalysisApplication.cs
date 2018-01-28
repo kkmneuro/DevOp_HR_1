@@ -171,6 +171,11 @@ namespace PostTradingAnalysis
         {
             this.stdDevPeriod = stdDevPeriod;
 
+            if (chartWindows == null || chartWindows.Count == 0)
+            {
+                return;
+            }
+
             foreach (var kv in chartWindows)
             {
                 var chartName = kv.Key;
@@ -240,6 +245,8 @@ namespace PostTradingAnalysis
 
                 model.Series.Clear();
                 model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
             }
         }
 
