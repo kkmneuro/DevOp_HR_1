@@ -191,7 +191,7 @@ namespace NeuroXChange.Model.FixApi
                         SendMessage(message);
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     State = FixApiModelState.Disconnected;
                     Thread.Sleep(1000);

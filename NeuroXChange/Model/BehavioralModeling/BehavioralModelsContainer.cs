@@ -118,6 +118,7 @@ namespace NeuroXChange.Model.BehavioralModeling
                 hrPreactivationCondition,
                 BehavioralModelState.ReadyToTrade,
                 BehavioralModelState.Preactivation);
+            Func<bool> hrPreactivationMet = () => { return hrPreactivationCondition.isConditionMet; };
             Func<bool> hrPreactivationNotMet = () => { return !hrPreactivationCondition.isConditionMet; };
             Func<bool> hrReadyToTradeNotMet = () => { return !hrReadyToTradeCondition.isConditionMet; };
             var hrPreactivationNotMetTransition = new FunctionalTransition(
@@ -145,8 +146,10 @@ namespace NeuroXChange.Model.BehavioralModeling
             var logicQuery1TransitionV2 = new LogicQuery1Transition("Logic query 1 v2", logicQuery1ConditionV2);
             var logicQuery1TransitionV3 = new LogicQuery1Transition("Logic query 1 v3", logicQuery1ConditionV3);
             var logicQuery1TransitionV4 = new LogicQuery1Transition("Logic query 1 v4", logicQuery1ConditionV4);
-            var logicQuery2Transition = new LogicQuery2Transition("Logic query 2", logicQuery2Condition);
-            var logicQuery2TransitionV2 = new LogicQuery2Transition("Logic query 2 v2", logicQuery2Condition, false);
+            var logicQuery2TransitionPreactMet = new LogicQuery2Transition("Logic query 2 HR met", logicQuery2Condition, hrPreactivationMet);
+            var logicQuery2TransitionPreactNotMet = new LogicQuery2Transition("Logic query 2 HR not met", logicQuery2Condition, hrPreactivationNotMet);
+            var logicQuery2TransitionV2PreactMet = new LogicQuery2Transition("Logic query 2 v2 HR met", logicQuery2Condition, hrPreactivationMet, false);
+            var logicQuery2TransitionV2PreactNotMet = new LogicQuery2Transition("Logic query 2 v2 HR not met", logicQuery2Condition, hrPreactivationNotMet, false);
             Func<bool> alwaysTrueFunction = () => { return true; };
             var executeOrderToConfirmationFilledTransition = new FunctionalTransition(
                 "Execute order to confirmation filled",
@@ -243,22 +246,33 @@ namespace NeuroXChange.Model.BehavioralModeling
                 if (i == 0 || i == 1 || i == 6 || i == 7)
                 {
                     model.transitions.Add(logicQuery1Transition);
-                    model.transitions.Add(logicQuery2Transition);
                 }
                 else if (i == 2 || i == 3 || i == 8 || i == 9)
                 {
                     model.transitions.Add(logicQuery1TransitionV2);
-                    model.transitions.Add(logicQuery2Transition);
                 }
                 else if (i == 4 || i == 5 || i == 10 || i == 11)
                 {
                     model.transitions.Add(logicQuery1TransitionV3);
-                    model.transitions.Add(logicQuery2TransitionV2);
                 }
                 else if (12 <= i && i <= 15)
                 {
                     model.transitions.Add(logicQuery1TransitionV4);
-                    model.transitions.Add(logicQuery2Transition);
+                }
+
+                if (i != 4 && i != 5 && i != 10 && i != 11)
+                {
+                    if (i % 2 ==0)
+                        model.transitions.Add(logicQuery2TransitionPreactMet);
+                    else
+                        model.transitions.Add(logicQuery2TransitionPreactNotMet);
+                }
+                else
+                {
+                    if (i % 2 == 0)
+                        model.transitions.Add(logicQuery2TransitionV2PreactMet);
+                    else
+                        model.transitions.Add(logicQuery2TransitionV2PreactNotMet);
                 }
 
                 model.transitions.Add(executeOrderToConfirmationFilledTransition);
