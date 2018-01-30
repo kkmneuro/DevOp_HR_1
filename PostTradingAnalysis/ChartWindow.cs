@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Drawing;
 
 namespace PostTradingAnalysis
 {
     public partial class ChartWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
         private PostTradingAnalysisApplication application;
+        public Color color { get; private set; }
 
-        public ChartWindow(PostTradingAnalysisApplication application)
+        public ChartWindow(PostTradingAnalysisApplication application, Color color)
         {
             InitializeComponent();
-
             this.application = application;
+            this.color = color;
             this.HideOnClose = true;
         }
 

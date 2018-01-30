@@ -116,6 +116,9 @@ namespace PostTradingAnalysis
                 case 1:
                     seconds = 2;
                     break;
+                case 2:
+                    seconds = 2;
+                    break;
                 case 3:
                     seconds = 5;
                     break;

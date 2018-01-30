@@ -26,15 +26,16 @@ namespace PostTradingAnalysis
 
             // registering windows
             chartWindows = new Dictionary<string, ChartWindow>();
-            chartWindows["Temperature"] = new ChartWindow(this);
-            chartWindows["Heart rate"] = new ChartWindow(this);
-            chartWindows["Skin conductance"] = new ChartWindow(this);
-            chartWindows["Training step"] = new ChartWindow(this);
-            chartWindows["Price"] = new ChartWindow(this);
-            chartWindows["Temperature stddev"] = new ChartWindow(this);
-            chartWindows["Heart rate stddev"] = new ChartWindow(this);
-            chartWindows["Skin conductance stddev"] = new ChartWindow(this);
-            chartWindows["Price stddev"] = new ChartWindow(this);
+            chartWindows["Temperature"] = new ChartWindow(this, Color.Red);
+            chartWindows["Heart rate"] = new ChartWindow(this, Color.Green);
+            chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue);
+            chartWindows["Training step"] = new ChartWindow(this, Color.Orange);
+            chartWindows["Price"] = new ChartWindow(this, Color.Brown);
+            chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red);
+            chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green);
+            chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue);
+            chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown);
+            chartWindows["SC/Price stddev mult."] = new ChartWindow(this, Color.DarkMagenta);
 
             // setup windows
             foreach (var kv in chartWindows)
@@ -43,13 +44,20 @@ namespace PostTradingAnalysis
                 var window = kv.Value;
                 window.Text = chartName;
                 window.Owner = mainWindow;
-                ToolStripMenuItem menuItem = new ToolStripMenuItem(kv.Key);
+
+                // update toolstrip
+                ToolStripMenuItem menuItem = new ToolStripMenuItem(chartName);
                 mainWindow.chartsToolStripMenuItem.DropDownItems.Add(menuItem);
                 menuItem.Click += new System.EventHandler(
                     delegate (Object sender, EventArgs e) {
                         window.Show();
                         window.BringToFront();
                     });
+
+                if (chartName == "Price" || chartName == "Price stddev")
+                {
+                    mainWindow.chartsToolStripMenuItem.DropDownItems.Add("-");
+                }
             }
 
             Application.Run(mainWindow);
@@ -98,6 +106,7 @@ namespace PostTradingAnalysis
                 var series = new LineSeries();
                 series.Title = chartName;
                 series.StrokeThickness = 1;
+                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
 
                 // chose what data to show
                 if (chartName == "Temperature")
@@ -117,20 +126,6 @@ namespace PostTradingAnalysis
                     for (int i = 0; i < bioData.Count; i++)
                         if (bioData[i].buyPrice.HasValue)
                             series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].buyPrice.Value));
-
-                Color color = Color.Green;
-                if (chartName == "Temperature")
-                    color = Color.Red;
-                if (chartName == "Heart rate")
-                    color = Color.Green;
-                if (chartName == "Skin conductance")
-                    color = Color.Blue;
-                if (chartName == "Training step")
-                    color = Color.Orange;
-                if (chartName == "Price")
-                    color = Color.Brown;
-
-                series.Color = OxyColor.FromUInt32((uint)color.ToArgb());
 
                 var model = new PlotModel();
                 model.PlotMargins = new OxyThickness(28, -8, -7, 6);
@@ -181,7 +176,7 @@ namespace PostTradingAnalysis
                 var chartName = kv.Key;
                 var window = kv.Value;
                 var model = window.plotView.Model;
-                if (!chartName.Contains("stddev"))
+                if (!chartName.EndsWith(" stddev"))
                 {
                     continue;
                 }
@@ -189,6 +184,7 @@ namespace PostTradingAnalysis
                 var series = new LineSeries();
                 series.Title = chartName;
                 series.StrokeThickness = 1;
+                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
 
                 for (int i = stdDevPeriod - 1; i < bioData.Count; i++)
                 {
@@ -216,6 +212,7 @@ namespace PostTradingAnalysis
 
                     if (realCount <= stdDevPeriod / 2)
                     {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), 0));
                         continue;
                     }
 
@@ -241,6 +238,34 @@ namespace PostTradingAnalysis
                     double stddev = Math.Sqrt(sum);
 
                     series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddev));
+                }
+
+                model.Series.Clear();
+                model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
+            }
+
+
+            // update complex charts
+            {
+                var chartName = "SC/Price stddev mult.";
+                var window = chartWindows[chartName];
+                var model = window.plotView.Model;
+
+                var series = new LineSeries();
+                series.Title = chartName;
+                series.StrokeThickness = 1;
+                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
+
+                var seriesSC = (LineSeries)chartWindows["Skin conductance stddev"].plotView.Model.Series[0];
+                var seriesPrice = (LineSeries)chartWindows["Price stddev"].plotView.Model.Series[0];
+
+                for (int i = 0; i < seriesSC.Points.Count; i++)
+                {
+                    var pointSc = seriesSC.Points[i];
+                    var pointPrice = seriesPrice.Points[i];
+                    series.Points.Add(new DataPoint(pointSc.X, pointSc.Y * pointPrice.Y));
                 }
 
                 model.Series.Clear();
