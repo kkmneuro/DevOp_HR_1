@@ -32,6 +32,8 @@
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoadData = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbStddevInterval = new System.Windows.Forms.ComboBox();
             this.btnLoad = new System.Windows.Forms.Button();
             this.dtpTo = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,8 +48,6 @@
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.cbStddevInterval = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -100,6 +100,40 @@
             this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
             this.panelLoadData.TabIndex = 3;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(453, 37);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(81, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Stddev interval:";
+            // 
+            // cbStddevInterval
+            // 
+            this.cbStddevInterval.DisplayMember = "3";
+            this.cbStddevInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStddevInterval.FormattingEnabled = true;
+            this.cbStddevInterval.Items.AddRange(new object[] {
+            "1 second",
+            "2 seconds",
+            "3 seconds",
+            "5 seconds",
+            "10 seconds",
+            "15 seconds",
+            "20 seconds",
+            "30 seconds",
+            "1 minute",
+            "2 minutes",
+            "3 minutes",
+            "5 minutes",
+            "10 minutes"});
+            this.cbStddevInterval.Location = new System.Drawing.Point(540, 33);
+            this.cbStddevInterval.Name = "cbStddevInterval";
+            this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
+            this.cbStddevInterval.TabIndex = 8;
+            this.cbStddevInterval.SelectedIndexChanged += new System.EventHandler(this.cbStddevInterval_SelectedIndexChanged);
+            // 
             // btnLoad
             // 
             this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -133,7 +167,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 37);
+            this.label2.Location = new System.Drawing.Point(18, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 4;
@@ -213,40 +247,6 @@
             this.dockPanel.Size = new System.Drawing.Size(1041, 596);
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
-            // 
-            // cbStddevInterval
-            // 
-            this.cbStddevInterval.DisplayMember = "3";
-            this.cbStddevInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStddevInterval.FormattingEnabled = true;
-            this.cbStddevInterval.Items.AddRange(new object[] {
-            "1 second",
-            "2 seconds",
-            "3 seconds",
-            "5 seconds",
-            "10 seconds",
-            "15 seconds",
-            "20 seconds",
-            "30 seconds",
-            "1 minute",
-            "2 minutes",
-            "3 minutes",
-            "5 minutes",
-            "10 minutes"});
-            this.cbStddevInterval.Location = new System.Drawing.Point(540, 33);
-            this.cbStddevInterval.Name = "cbStddevInterval";
-            this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
-            this.cbStddevInterval.TabIndex = 8;
-            this.cbStddevInterval.SelectedIndexChanged += new System.EventHandler(this.cbStddevInterval_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(453, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(81, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Stddev interval:";
             // 
             // MainWindow
             // 
