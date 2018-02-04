@@ -85,9 +85,30 @@ namespace NeuroXChange.Model
                 }
                 if (PreviousTickState == BehavioralModelState.ConfirmationFilled)
                 {
-                    Order order;
-                    // TODO: determine correct reason for opening positions (SingularLong, SingularShort, MLS1, etc...)
-                    portfolio.OpenOrder(ModelID, (OrderDirection)Direction, LastPrice, OpenReason.UnknownReason, out order, data.time);
+                    //Order order;
+                    var openReason = OpenReason.UnknownReason;
+                    switch(lastNot74SubProtocolID)
+                    {
+                        case 68:
+                            openReason = OpenReason.MLS1;
+                            break;
+                        case 69:
+                            openReason = OpenReason.MLS2;
+                            break;
+                        case 70:
+                            openReason = OpenReason.MSL1;
+                            break;
+                        case 71:
+                            openReason = OpenReason.MSL2;
+                            break;
+                        case 72:
+                            openReason = OpenReason.SingularLong;
+                            break;
+                        case 73:
+                            openReason = OpenReason.SingularShort;
+                            break;
+                    }
+                    portfolio.StartTradingHierarchy(ModelID, openReason, LastPrice, data.time);
                 }
 
                 UpdateStatistics();

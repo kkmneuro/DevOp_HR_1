@@ -87,7 +87,7 @@ namespace NeuroXChange.Model.Portfolio
             OpenReason openReason)
         {
             this.OrderID = orderID;
-            this.OrderGroup = orderID;
+            this.OrderGroup = orderGroup;
             this.OrderInGroupID = orderInGroupId;
             this.BMModelID = bmModelID;
             this.PlaceTime = placeTime;

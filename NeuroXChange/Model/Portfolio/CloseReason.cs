@@ -9,6 +9,7 @@
         TrailingStopLossExecuted,
         TakeProfitExecuted,
         ReverseOrderRequested,
-        NotEnoughFunds
+        NotEnoughFunds,
+        NewTradingHierarchyInstance
     }
 }
