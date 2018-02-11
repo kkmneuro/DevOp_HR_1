@@ -29,13 +29,17 @@ namespace PostTradingAnalysis
             chartWindows["Temperature"] = new ChartWindow(this, Color.Red);
             chartWindows["Heart rate"] = new ChartWindow(this, Color.Green);
             chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue);
-            chartWindows["Training step"] = new ChartWindow(this, Color.Orange);
             chartWindows["Price"] = new ChartWindow(this, Color.Brown);
+            chartWindows["Training step"] = new ChartWindow(this, Color.Orange);
             chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red);
             chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green);
             chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue);
             chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown);
             chartWindows["SC/Price stddev mult."] = new ChartWindow(this, Color.DarkMagenta);
+            chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red);
+            chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green);
+            chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue);
+            chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown);
 
             // setup windows
             foreach (var kv in chartWindows)
@@ -54,7 +58,7 @@ namespace PostTradingAnalysis
                         window.BringToFront();
                     });
 
-                if (chartName == "Price" || chartName == "Price stddev")
+                if (chartName == "Training step" || chartName == "Price stddev" || chartName == "SC/Price stddev mult.")
                 {
                     mainWindow.chartsToolStripMenuItem.DropDownItems.Add("-");
                 }
@@ -176,7 +180,7 @@ namespace PostTradingAnalysis
                 var chartName = kv.Key;
                 var window = kv.Value;
                 var model = window.plotView.Model;
-                if (!chartName.EndsWith(" stddev"))
+                if (!chartName.EndsWith(" stddev") && !chartName.EndsWith(" stddev away"))
                 {
                     continue;
                 }
@@ -193,13 +197,13 @@ namespace PostTradingAnalysis
                     for (int j = i - stdDevPeriod + 1; j <= i; j++)
                     {
                         realCount++;
-                        if (chartName == "Temperature stddev")
+                        if (chartName == "Temperature stddev" || chartName == "Temperature stddev away")
                             mean += bioData[j].temperature;
-                        if (chartName == "Heart rate stddev")
+                        if (chartName == "Heart rate stddev" || chartName == "Heart rate stddev away")
                             mean += bioData[j].heartRate;
-                        if (chartName == "Skin conductance stddev")
+                        if (chartName == "Skin conductance stddev" || chartName == "Skin conductance stddev away")
                             mean += bioData[j].skinConductance;
-                        if (chartName == "Price stddev")
+                        if (chartName == "Price stddev" || chartName == "Price stddev away")
                             if (bioData[j].buyPrice.HasValue)
                             {
                                 mean += bioData[j].buyPrice.Value;
@@ -219,16 +223,16 @@ namespace PostTradingAnalysis
                     mean /= realCount;
 
                     double sum = 0;
+                    double val = mean;
                     for (int j = i - stdDevPeriod + 1; j <= i; j++)
                     {
-                        double val = mean;
-                        if (chartName == "Temperature stddev")
+                        if (chartName == "Temperature stddev" || chartName == "Temperature stddev away")
                             val = bioData[j].temperature;
-                        if (chartName == "Heart rate stddev")
+                        if (chartName == "Heart rate stddev" || chartName == "Heart rate stddev away")
                             val = bioData[j].heartRate;
-                        if (chartName == "Skin conductance stddev")
+                        if (chartName == "Skin conductance stddev" || chartName == "Skin conductance stddev away")
                             val = bioData[j].skinConductance;
-                        if (chartName == "Price stddev")
+                        if (chartName == "Price stddev" || chartName == "Price stddev away")
                             if (bioData[j].buyPrice.HasValue)
                                 val = bioData[j].buyPrice.Value;
                         sum += (val - mean) * (val - mean);
@@ -237,7 +241,12 @@ namespace PostTradingAnalysis
                     sum /= realCount;
                     double stddev = Math.Sqrt(sum);
 
-                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddev));
+                    double stddevAway = stddev > 0 ? (val - mean) / stddev : 0;
+
+                    if (chartName.EndsWith(" stddev away"))
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddevAway));
+                    else
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddev));
                 }
 
                 model.Series.Clear();
