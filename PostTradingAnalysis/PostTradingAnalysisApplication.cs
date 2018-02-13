@@ -329,7 +329,7 @@ namespace PostTradingAnalysis
                     }
                     else
                     {
-                        if (i > 0 && prevPriceDiff > 0)
+                        if (i > 0 && prevPriceDiff >= 0)
                             seriesDown.Points.Add(new DataPoint(seriesSCAway.Points[i - 1].X, prevValue));
                         seriesDown.Points.Add(new DataPoint(pointSc.X, value));
                         seriesUp.Points.Add(new DataPoint(pointSc.X, double.NaN));
