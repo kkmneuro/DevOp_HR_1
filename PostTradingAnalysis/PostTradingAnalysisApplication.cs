@@ -31,15 +31,19 @@ namespace PostTradingAnalysis
             chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue);
             chartWindows["Price"] = new ChartWindow(this, Color.Brown);
             chartWindows["Training step"] = new ChartWindow(this, Color.Orange);
+
             chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red);
             chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green);
             chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue);
             chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown);
-            chartWindows["SC/Price stddev mult."] = new ChartWindow(this, Color.DarkMagenta);
+
             chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red);
             chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green);
             chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue);
             chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown);
+
+            chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta);
+            chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta);
 
             // setup windows
             foreach (var kv in chartWindows)
@@ -58,7 +62,7 @@ namespace PostTradingAnalysis
                         window.BringToFront();
                     });
 
-                if (chartName == "Training step" || chartName == "Price stddev" || chartName == "SC/Price stddev mult.")
+                if (chartName == "Training step" || chartName == "Price stddev" || chartName == "Price stddev away")
                 {
                     mainWindow.chartsToolStripMenuItem.DropDownItems.Add("-");
                 }
@@ -258,7 +262,7 @@ namespace PostTradingAnalysis
 
             // update complex charts
             {
-                var chartName = "SC/Price stddev mult.";
+                var chartName = "SC stddev * Price stddev";
                 var window = chartWindows[chartName];
                 var model = window.plotView.Model;
 
@@ -279,6 +283,64 @@ namespace PostTradingAnalysis
 
                 model.Series.Clear();
                 model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
+            }
+
+            {
+                var chartName = "SC stdev away - Price stddev away";
+                var window = chartWindows[chartName];
+                var model = window.plotView.Model;
+
+                var seriesUp = new LineSeries();
+                seriesUp.Title = "Uptrend";
+                seriesUp.StrokeThickness = 1;
+                seriesUp.Color = OxyColor.FromUInt32((uint)Color.Green.ToArgb());
+
+                var seriesDown = new LineSeries();
+                seriesDown.Title = "Downtrend";
+                seriesDown.StrokeThickness = 1;
+                seriesDown.Color = OxyColor.FromUInt32((uint)Color.Red.ToArgb());
+
+                var seriesSCAway = (LineSeries)chartWindows["Skin conductance stddev away"].plotView.Model.Series[0];
+                var seriesPriceAway = (LineSeries)chartWindows["Price stddev away"].plotView.Model.Series[0];
+                var seriesPrice = (LineSeries)chartWindows["Price"].plotView.Model.Series[0];
+
+                double prevValue = 0;
+                double prevPriceDiff = 0;
+                double value = 0;
+                double priceDiff = 0;
+                for (int i = 0; i < seriesSCAway.Points.Count; i++)
+                {
+                    var pointSc = seriesSCAway.Points[i];
+                    var pointPrice = seriesPriceAway.Points[i];
+                    double scVal = pointSc.Y;
+                    double priceVal = pointPrice.Y;
+                    double priceStart = seriesPrice.Points[i].Y;
+                    double priceEnd = seriesPrice.Points[i + stdDevPeriod - 1].Y;
+                    priceDiff = priceEnd - priceStart;
+                    value = (scVal - priceVal) * priceDiff;
+                    if (priceDiff >= 0)
+                    {
+                        if (i > 0 && prevPriceDiff < 0)
+                            seriesUp.Points.Add(new DataPoint(seriesSCAway.Points[i-1].X, prevValue));
+                        seriesUp.Points.Add(new DataPoint(pointSc.X, value));
+                        seriesDown.Points.Add(new DataPoint(pointSc.X, double.NaN));
+                    }
+                    else
+                    {
+                        if (i > 0 && prevPriceDiff > 0)
+                            seriesDown.Points.Add(new DataPoint(seriesSCAway.Points[i - 1].X, prevValue));
+                        seriesDown.Points.Add(new DataPoint(pointSc.X, value));
+                        seriesUp.Points.Add(new DataPoint(pointSc.X, double.NaN));
+                    }
+                    prevValue = value;
+                    prevPriceDiff = priceDiff;
+                }
+
+                model.Series.Clear();
+                model.Series.Add(seriesUp);
+                model.Series.Add(seriesDown);
 
                 window.plotView.Model.InvalidatePlot(true);
             }
