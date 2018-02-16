@@ -132,8 +132,8 @@ namespace PostTradingAnalysis
                             series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].trainingStep));
                 if (chartName == "Price")
                     for (int i = 0; i < bioData.Count; i++)
-                        if (bioData[i].buyPrice.HasValue)
-                            series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].buyPrice.Value));
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time),
+                            bioData[i].buyPrice.HasValue ? bioData[i].buyPrice.Value : double.NaN));
 
                 var model = new PlotModel();
                 model.PlotMargins = new OxyThickness(28, -8, -7, 6);
@@ -220,7 +220,7 @@ namespace PostTradingAnalysis
 
                     if (realCount <= stdDevPeriod / 2)
                     {
-                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), 0));
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), double.NaN));
                         continue;
                     }
 
@@ -237,8 +237,7 @@ namespace PostTradingAnalysis
                         if (chartName == "Skin conductance stddev" || chartName == "Skin conductance stddev away")
                             val = bioData[j].skinConductance;
                         if (chartName == "Price stddev" || chartName == "Price stddev away")
-                            if (bioData[j].buyPrice.HasValue)
-                                val = bioData[j].buyPrice.Value;
+                            val = bioData[j].buyPrice.HasValue ? bioData[j].buyPrice.Value : double.NaN;
                         sum += (val - mean) * (val - mean);
                     }
 
