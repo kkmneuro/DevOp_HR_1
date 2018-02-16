@@ -304,21 +304,19 @@ namespace PostTradingAnalysis
 
                 var seriesSCAway = (LineSeries)chartWindows["Skin conductance stddev away"].plotView.Model.Series[0];
                 var seriesPriceAway = (LineSeries)chartWindows["Price stddev away"].plotView.Model.Series[0];
-                var seriesPrice = (LineSeries)chartWindows["Price"].plotView.Model.Series[0];
 
                 double prevValue = 0;
                 double prevPriceDiff = 0;
                 double value = 0;
                 double priceDiff = 0;
-                for (int i = 0; i < seriesSCAway.Points.Count; i++)
+                for (int i = stdDevPeriod - 1; i < seriesSCAway.Points.Count; i++)
                 {
                     var pointSc = seriesSCAway.Points[i];
-                    var pointPrice = seriesPriceAway.Points[i];
+                    var pointPriceStart = seriesPriceAway.Points[i - stdDevPeriod + 1];
+                    var pointPriceEnd = seriesPriceAway.Points[i];
                     double scVal = pointSc.Y;
-                    double priceVal = pointPrice.Y;
-                    double priceStart = seriesPrice.Points[i].Y;
-                    double priceEnd = seriesPrice.Points[i + stdDevPeriod - 1].Y;
-                    priceDiff = priceEnd - priceStart;
+                    double priceVal = pointPriceEnd.Y;
+                    priceDiff = pointPriceEnd.Y - pointPriceStart.Y;
                     value = (scVal - priceVal) * priceDiff;
                     if (priceDiff >= 0)
                     {
