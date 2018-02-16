@@ -153,5 +153,68 @@ namespace PostTradingAnalysis
 
             application.SetStdDevPeriod(seconds*2);
         }
+
+        public static string dblstr(double val)
+        {
+            if (double.IsNaN(val))
+                return "";
+            else
+                return val.ToString();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            var from = dtpFrom.Value.ToString("dd_MM_yyyy_HH_mm_ss");
+            var to = dtpTo.Value.ToString("dd_MM_yyyy_HH_mm_ss");
+            saveFileDialog.FileName = "PostAnalysisData - " + from + " - " + to + " - " + cbStddevInterval.Text + ".txt";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName))
+                {
+                    var stdDevPeriod = application.GetStdDevPeriod();
+                    var temperatureStddev = ((LineSeries)application.chartWindows["Temperature stddev"].plotView.Model.Series[0]).Points;
+                    var heartRateStddev = ((LineSeries)application.chartWindows["Heart rate stddev"].plotView.Model.Series[0]).Points;
+                    var skinConductanceStddev = ((LineSeries)application.chartWindows["Skin conductance stddev"].plotView.Model.Series[0]).Points;
+                    var priceStddev = ((LineSeries)application.chartWindows["Price stddev"].plotView.Model.Series[0]).Points;
+                    var temperatureStddevAway = ((LineSeries)application.chartWindows["Temperature stddev away"].plotView.Model.Series[0]).Points;
+                    var heartRateStddevAway = ((LineSeries)application.chartWindows["Heart rate stddev away"].plotView.Model.Series[0]).Points;
+                    var skinConductanceStddevAway = ((LineSeries)application.chartWindows["Skin conductance stddev away"].plotView.Model.Series[0]).Points;
+                    var priceStddevAway = ((LineSeries)application.chartWindows["Price stddev away"].plotView.Model.Series[0]).Points;
+                    var scPriceStdDevMult = ((LineSeries)application.chartWindows["SC stddev * Price stddev"].plotView.Model.Series[0]).Points;
+                    var scPriceStdDevSubstrUp = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[0]).Points;
+                    var scPriceStdDevSubstrDown = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[1]).Points;
+                    outputFile.WriteLine("Id\tTime\tTemperature\tHeartRate\tSkinConductance\tTrainingStep\tTemperatureStddev\tHeartRateStddev\tSkinConductanceStddev\tPriceStddev\tTemperatureStddevAway\tHeartRateStddevAway\tSkinConductanceStddevAway\tPriceStddevAway\tscPriceStdDevMult\tscPriceStdDevSubstr");
+                    for (int ind = 0; ind < application.bioData.Count; ind++)
+                    {
+                        var dataPoint = application.bioData[ind];
+                        outputFile.Write(dataPoint.id);
+                        outputFile.Write("\t");
+                        outputFile.Write(dataPoint.time.ToString("dd/MM/yyyy HH:mm:ss"));
+                        outputFile.Write("\t");
+                        outputFile.Write(dataPoint.temperature);
+                        outputFile.Write("\t");
+                        outputFile.Write(dataPoint.heartRate);
+                        outputFile.Write("\t");
+                        outputFile.Write(dataPoint.skinConductance);
+                        outputFile.Write("\t");
+                        outputFile.Write(dataPoint.trainingStep);
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(temperatureStddev[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(heartRateStddev[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(skinConductanceStddev[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(priceStddev[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(scPriceStdDevMult[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(double.IsNaN(scPriceStdDevSubstrUp[ind].Y) ? scPriceStdDevSubstrDown[ind].Y : scPriceStdDevSubstrUp[ind].Y));
+                        outputFile.WriteLine();
+                    }
+                }
+            }
+        }
     }
 }

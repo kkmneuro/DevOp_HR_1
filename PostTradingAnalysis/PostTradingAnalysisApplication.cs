@@ -194,8 +194,14 @@ namespace PostTradingAnalysis
                 series.StrokeThickness = 1;
                 series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
 
-                for (int i = stdDevPeriod - 1; i < bioData.Count; i++)
+                for (int i = 0; i < bioData.Count; i++)
                 {
+                    if (i < stdDevPeriod - 1)
+                    {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), double.NaN));
+                        continue;
+                    }
+
                     double mean = 0;
                     int realCount = 0;
                     for (int j = i - stdDevPeriod + 1; j <= i; j++)
@@ -308,9 +314,15 @@ namespace PostTradingAnalysis
                 double prevPriceDiff = 0;
                 double value = 0;
                 double priceDiff = 0;
-                for (int i = stdDevPeriod - 1; i < seriesSCAway.Points.Count; i++)
+                for (int i = 0; i < seriesSCAway.Points.Count; i++)
                 {
                     var pointSc = seriesSCAway.Points[i];
+                    if (i < stdDevPeriod - 1)
+                    {
+                        seriesUp.Points.Add(new DataPoint(pointSc.X, double.NaN));
+                        seriesDown.Points.Add(new DataPoint(pointSc.X, double.NaN));
+                        continue;
+                    }
                     var pointPriceStart = seriesPriceAway.Points[i - stdDevPeriod + 1];
                     var pointPriceEnd = seriesPriceAway.Points[i];
                     double scVal = pointSc.Y;

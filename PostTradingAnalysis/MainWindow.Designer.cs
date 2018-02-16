@@ -48,6 +48,8 @@
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +86,7 @@
             // 
             // panelLoadData
             // 
+            this.panelLoadData.Controls.Add(this.btnExport);
             this.panelLoadData.Controls.Add(this.label4);
             this.panelLoadData.Controls.Add(this.cbStddevInterval);
             this.panelLoadData.Controls.Add(this.btnLoad);
@@ -103,7 +106,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(453, 37);
+            this.label4.Location = new System.Drawing.Point(494, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 9;
@@ -128,7 +131,7 @@
             "3 minutes",
             "5 minutes",
             "10 minutes"});
-            this.cbStddevInterval.Location = new System.Drawing.Point(540, 33);
+            this.cbStddevInterval.Location = new System.Drawing.Point(581, 33);
             this.cbStddevInterval.Name = "cbStddevInterval";
             this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
             this.cbStddevInterval.TabIndex = 8;
@@ -248,6 +251,22 @@
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(411, 33);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 21);
+            this.btnExport.TabIndex = 10;
+            this.btnExport.Text = "Export...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileName = "AnalysisData";
+            this.saveFileDialog.Filter = "Tab-delemited text files (*.txt)|*.txt";
+            this.saveFileDialog.Title = "Export biodata to...";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,6 +313,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbStddevInterval;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 
