@@ -328,7 +328,10 @@ namespace PostTradingAnalysis
                     double scVal = pointSc.Y;
                     double priceVal = pointPriceEnd.Y;
                     priceDiff = pointPriceEnd.Y - pointPriceStart.Y;
-                    value = (scVal - priceVal) * priceDiff;
+                    if (scVal != 0)
+                        value = Math.Abs(scVal) - Math.Abs(priceVal);
+                    else
+                        value = double.NaN;
                     if (priceDiff >= 0)
                     {
                         if (i > 0 && prevPriceDiff < 0)
