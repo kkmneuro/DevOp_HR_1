@@ -184,7 +184,7 @@ namespace PostTradingAnalysis
                     var scPriceStdDevMult = ((LineSeries)application.chartWindows["SC stddev * Price stddev"].plotView.Model.Series[0]).Points;
                     var scPriceStdDevSubstrUp = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[0]).Points;
                     var scPriceStdDevSubstrDown = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[1]).Points;
-                    outputFile.WriteLine("Id\tTime\tTemperature\tHeartRate\tSkinConductance\tTrainingStep\tTemperatureStddev\tHeartRateStddev\tSkinConductanceStddev\tPriceStddev\tTemperatureStddevAway\tHeartRateStddevAway\tSkinConductanceStddevAway\tPriceStddevAway\tscPriceStdDevMult\tscPriceStdDevSubstr");
+                    outputFile.WriteLine("Id\tTime\tTemperature\tHeartRate\tSkinConductance\tTrainingStep\tBuyPrice\tTemperatureStddev\tHeartRateStddev\tSkinConductanceStddev\tPriceStddev\tTemperatureStddevAway\tHeartRateStddevAway\tSkinConductanceStddevAway\tPriceStddevAway\tscPriceStdDevMult\tscPriceStdDevSubstr");
                     for (int ind = 0; ind < application.bioData.Count; ind++)
                     {
                         var dataPoint = application.bioData[ind];
@@ -200,6 +200,8 @@ namespace PostTradingAnalysis
                         outputFile.Write("\t");
                         outputFile.Write(dataPoint.trainingStep);
                         outputFile.Write("\t");
+                        outputFile.Write(dataPoint.buyPrice);
+                        outputFile.Write("\t");
                         outputFile.Write(dblstr(temperatureStddev[ind].Y));
                         outputFile.Write("\t");
                         outputFile.Write(dblstr(heartRateStddev[ind].Y));
@@ -208,9 +210,18 @@ namespace PostTradingAnalysis
                         outputFile.Write("\t");
                         outputFile.Write(dblstr(priceStddev[ind].Y));
                         outputFile.Write("\t");
+                        outputFile.Write(dblstr(temperatureStddevAway[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(heartRateStddevAway[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(skinConductanceStddevAway[ind].Y));
+                        outputFile.Write("\t");
+                        outputFile.Write(dblstr(priceStddevAway[ind].Y));
+                        outputFile.Write("\t");
                         outputFile.Write(dblstr(scPriceStdDevMult[ind].Y));
                         outputFile.Write("\t");
-                        outputFile.Write(dblstr(double.IsNaN(scPriceStdDevSubstrUp[ind].Y) ? scPriceStdDevSubstrDown[ind].Y : scPriceStdDevSubstrUp[ind].Y));
+                        var y = skinConductanceStddevAway[ind].Y - priceStddevAway[ind].Y;
+                        outputFile.Write(dblstr(y));
                         outputFile.WriteLine();
                     }
                 }
