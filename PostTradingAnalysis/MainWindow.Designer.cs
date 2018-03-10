@@ -32,6 +32,7 @@
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoadData = new System.Windows.Forms.Panel();
+            this.btnExport = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.cbStddevInterval = new System.Windows.Forms.ComboBox();
             this.btnLoad = new System.Windows.Forms.Button();
@@ -46,9 +47,13 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainChartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stddevToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stddevAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.velocityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.signalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.btnExport = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -102,6 +107,16 @@
             this.panelLoadData.Name = "panelLoadData";
             this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
             this.panelLoadData.TabIndex = 3;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(411, 33);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 21);
+            this.btnExport.TabIndex = 10;
+            this.btnExport.Text = "Export...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // label4
             // 
@@ -235,9 +250,45 @@
             // 
             // chartsToolStripMenuItem
             // 
+            this.chartsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainChartsToolStripMenuItem,
+            this.stddevToolStripMenuItem,
+            this.stddevAwayToolStripMenuItem,
+            this.velocityToolStripMenuItem,
+            this.signalsToolStripMenuItem});
             this.chartsToolStripMenuItem.Name = "chartsToolStripMenuItem";
             this.chartsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.chartsToolStripMenuItem.Text = "Charts";
+            // 
+            // mainChartsToolStripMenuItem
+            // 
+            this.mainChartsToolStripMenuItem.Name = "mainChartsToolStripMenuItem";
+            this.mainChartsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mainChartsToolStripMenuItem.Text = "Main Charts";
+            // 
+            // stddevToolStripMenuItem
+            // 
+            this.stddevToolStripMenuItem.Name = "stddevToolStripMenuItem";
+            this.stddevToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stddevToolStripMenuItem.Text = "Stddev";
+            // 
+            // stddevAwayToolStripMenuItem
+            // 
+            this.stddevAwayToolStripMenuItem.Name = "stddevAwayToolStripMenuItem";
+            this.stddevAwayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stddevAwayToolStripMenuItem.Text = "Stddev Away";
+            // 
+            // velocityToolStripMenuItem
+            // 
+            this.velocityToolStripMenuItem.Name = "velocityToolStripMenuItem";
+            this.velocityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.velocityToolStripMenuItem.Text = "Velocity";
+            // 
+            // signalsToolStripMenuItem
+            // 
+            this.signalsToolStripMenuItem.Name = "signalsToolStripMenuItem";
+            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.signalsToolStripMenuItem.Text = "Signals";
             // 
             // dockPanel
             // 
@@ -250,16 +301,6 @@
             this.dockPanel.Size = new System.Drawing.Size(1041, 596);
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
-            // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(411, 33);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(75, 21);
-            this.btnExport.TabIndex = 10;
-            this.btnExport.Text = "Export...";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // saveFileDialog
             // 
@@ -307,7 +348,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
         public System.Windows.Forms.MenuStrip menuStrip;
-        public System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItem;
         public WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem loadDataPanelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
@@ -315,6 +355,12 @@
         private System.Windows.Forms.ComboBox cbStddevInterval;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem mainChartsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem stddevAwayToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem velocityToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem signalsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem stddevToolStripMenuItem;
     }
 }
 

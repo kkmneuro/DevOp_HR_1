@@ -26,24 +26,29 @@ namespace PostTradingAnalysis
 
             // registering windows
             chartWindows = new Dictionary<string, ChartWindow>();
-            chartWindows["Temperature"] = new ChartWindow(this, Color.Red);
-            chartWindows["Heart rate"] = new ChartWindow(this, Color.Green);
-            chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue);
-            chartWindows["Price"] = new ChartWindow(this, Color.Brown);
-            chartWindows["Training step"] = new ChartWindow(this, Color.Orange);
+            chartWindows["Temperature"] = new ChartWindow(this, Color.Red, mainWindow.mainChartsToolStripMenuItem);
+            chartWindows["Heart rate"] = new ChartWindow(this, Color.Green, mainWindow.mainChartsToolStripMenuItem);
+            chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue, mainWindow.mainChartsToolStripMenuItem);
+            chartWindows["Price"] = new ChartWindow(this, Color.Brown, mainWindow.mainChartsToolStripMenuItem);
+            chartWindows["Training step"] = new ChartWindow(this, Color.Orange, mainWindow.mainChartsToolStripMenuItem);
 
-            chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red);
-            chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green);
-            chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue);
-            chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown);
+            chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red, mainWindow.stddevToolStripMenuItem);
+            chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green, mainWindow.stddevToolStripMenuItem);
+            chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue, mainWindow.stddevToolStripMenuItem);
+            chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown, mainWindow.stddevToolStripMenuItem);
 
-            chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red);
-            chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green);
-            chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue);
-            chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown);
+            chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red, mainWindow.stddevAwayToolStripMenuItem);
+            chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green, mainWindow.stddevAwayToolStripMenuItem);
+            chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue, mainWindow.stddevAwayToolStripMenuItem);
+            chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown, mainWindow.stddevAwayToolStripMenuItem);
 
-            chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta);
-            chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta);
+            chartWindows["Temperature velocity"] = new ChartWindow(this, Color.Red, mainWindow.velocityToolStripMenuItem);
+            chartWindows["Heart rate velocity"] = new ChartWindow(this, Color.Green, mainWindow.velocityToolStripMenuItem);
+            chartWindows["Skin conductance velocity"] = new ChartWindow(this, Color.Blue, mainWindow.velocityToolStripMenuItem);
+            chartWindows["Price velocity"] = new ChartWindow(this, Color.Brown, mainWindow.velocityToolStripMenuItem);
+
+            chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem);
+            chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem);
 
             // setup windows
             foreach (var kv in chartWindows)
@@ -55,17 +60,13 @@ namespace PostTradingAnalysis
 
                 // update toolstrip
                 ToolStripMenuItem menuItem = new ToolStripMenuItem(chartName);
-                mainWindow.chartsToolStripMenuItem.DropDownItems.Add(menuItem);
+                window.ChartGroupItem.DropDownItems.Add(menuItem);
                 menuItem.Click += new System.EventHandler(
-                    delegate (Object sender, EventArgs e) {
+                    delegate (Object sender, EventArgs e)
+                    {
                         window.Show();
                         window.BringToFront();
                     });
-
-                if (chartName == "Training step" || chartName == "Price stddev" || chartName == "Price stddev away")
-                {
-                    mainWindow.chartsToolStripMenuItem.DropDownItems.Add("-");
-                }
             }
 
             Application.Run(mainWindow);
@@ -114,9 +115,9 @@ namespace PostTradingAnalysis
                 var series = new LineSeries();
                 series.Title = chartName;
                 series.StrokeThickness = 1;
-                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
+                series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
 
-                // chose what data to show
+                // choose what data to show
                 if (chartName == "Temperature")
                     for (int i = 0; i < bioData.Count; i++)
                         series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].temperature));
@@ -166,11 +167,11 @@ namespace PostTradingAnalysis
             }
 
             // update std charts
-            SetStdDevPeriod(stdDevPeriod);
+            SetChartPeriod(stdDevPeriod);
         }
 
         private int stdDevPeriod = 120;
-        public void SetStdDevPeriod(int stdDevPeriod)
+        public void SetChartPeriod(int stdDevPeriod)
         {
             this.stdDevPeriod = stdDevPeriod;
 
@@ -179,6 +180,7 @@ namespace PostTradingAnalysis
                 return;
             }
 
+            // update stddev and stddev away charts only
             foreach (var kv in chartWindows)
             {
                 var chartName = kv.Key;
@@ -192,7 +194,7 @@ namespace PostTradingAnalysis
                 var series = new LineSeries();
                 series.Title = chartName;
                 series.StrokeThickness = 1;
-                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
+                series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
 
                 for (int i = 0; i < bioData.Count; i++)
                 {
@@ -265,7 +267,85 @@ namespace PostTradingAnalysis
             }
 
 
-            // update complex charts
+            // update velocity charts only
+            foreach (var kv in chartWindows)
+            {
+                var chartName = kv.Key;
+                var window = kv.Value;
+                var model = window.plotView.Model;
+                if (!chartName.EndsWith(" velocity"))
+                {
+                    continue;
+                }
+
+                var series = new LineSeries();
+                series.Title = chartName;
+                series.StrokeThickness = 1;
+                series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
+
+                double sum = 0;
+                int realCount = 0;
+                for (int i = 1; i < bioData.Count; i++)
+                {
+                    realCount++;
+                    if (chartName == "Temperature velocity")
+                        sum += Math.Abs(bioData[i - 1].temperature - bioData[i].temperature);
+                    if (chartName == "Heart rate velocity")
+                        sum += Math.Abs(bioData[i - 1].heartRate - bioData[i].heartRate);
+                    if (chartName == "Skin conductance velocity")
+                        sum += Math.Abs(bioData[i - 1].skinConductance - bioData[i].skinConductance);
+                    if (chartName == "Price velocity")
+                    {
+                        if (bioData[i - 1].buyPrice.HasValue && bioData[i].buyPrice.HasValue)
+                        {
+                            sum += Math.Abs(bioData[i - 1].buyPrice.Value - bioData[i].buyPrice.Value);
+                        }
+                        else
+                        {
+                            realCount--;
+                        }
+                    }
+
+                    if (i < stdDevPeriod - 1)
+                    {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), double.NaN));
+                        continue;
+                    }
+
+                    double velocity = realCount < stdDevPeriod - 1 ? double.NaN : sum / realCount;
+                    //double velocity = sum / (stdDevPeriod - 1);
+                    //if (realCount < stdDevPeriod - 1)
+                    //    velocity = double.NaN;
+                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), velocity));
+
+                    realCount--;
+                    if (chartName == "Temperature velocity")
+                        sum -= Math.Abs(bioData[i - stdDevPeriod + 1].temperature - bioData[i - stdDevPeriod + 2].temperature);
+                    if (chartName == "Heart rate velocity")
+                        sum -= Math.Abs(bioData[i - stdDevPeriod + 1].heartRate - bioData[i - stdDevPeriod + 2].heartRate);
+                    if (chartName == "Skin conductance velocity")
+                        sum -= Math.Abs(bioData[i - stdDevPeriod + 1].skinConductance - bioData[i - stdDevPeriod + 2].skinConductance);
+                    if (chartName == "Price velocity")
+                    {
+                        if (bioData[i - stdDevPeriod + 1].buyPrice.HasValue && bioData[i - stdDevPeriod + 2].buyPrice.HasValue)
+                        {
+                            sum -= Math.Abs(bioData[i - stdDevPeriod + 1].buyPrice.Value - bioData[i - stdDevPeriod + 2].buyPrice.Value);
+                        }
+                        else
+                        {
+                            realCount--;
+                        }
+                    }
+                }
+
+                model.Series.Clear();
+                model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
+            }
+
+
+            // update signal charts
             {
                 var chartName = "SC stddev * Price stddev";
                 var window = chartWindows[chartName];
@@ -274,7 +354,7 @@ namespace PostTradingAnalysis
                 var series = new LineSeries();
                 series.Title = chartName;
                 series.StrokeThickness = 1;
-                series.Color = OxyColor.FromUInt32((uint)window.color.ToArgb());
+                series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
 
                 var seriesSC = (LineSeries)chartWindows["Skin conductance stddev"].plotView.Model.Series[0];
                 var seriesPrice = (LineSeries)chartWindows["Price stddev"].plotView.Model.Series[0];

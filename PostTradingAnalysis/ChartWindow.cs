@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace PostTradingAnalysis
 {
     public partial class ChartWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-        private PostTradingAnalysisApplication application;
-        public Color color { get; private set; }
+        private PostTradingAnalysisApplication Application;
+        public Color Color { get; private set; }
+        public ToolStripMenuItem ChartGroupItem { get; private set; }
 
-        public ChartWindow(PostTradingAnalysisApplication application, Color color)
+        public ChartWindow(PostTradingAnalysisApplication application, Color color, ToolStripMenuItem chartGroupItem)
         {
             InitializeComponent();
-            this.application = application;
-            this.color = color;
+            this.Application = application;
+            this.Color = color;
             this.HideOnClose = true;
+            this.ChartGroupItem = chartGroupItem;
         }
 
         private void btnZoom_Click(object sender, EventArgs e)

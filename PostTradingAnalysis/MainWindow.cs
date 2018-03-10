@@ -151,7 +151,7 @@ namespace PostTradingAnalysis
                     break;
             }
 
-            application.SetStdDevPeriod(seconds*2);
+            application.SetChartPeriod(seconds*2);
         }
 
         public static string dblstr(double val)
