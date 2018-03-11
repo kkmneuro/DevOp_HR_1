@@ -20,6 +20,8 @@ namespace NeuroXChange.View
 {
     public class MainNeuroXView : IMainNeuroXModelObserver, IBioDataObserver, IFixApiObserver
     {
+        public bool isStateGood { get; private set; }
+
         private MainNeuroXModel model;
         private MainNeuroXController controller;
         private Thread mainNeuroXViewThread;
@@ -46,6 +48,7 @@ namespace NeuroXChange.View
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
+        public AuthorisationWindow authorisationWindow { get; private set; }
         public LogoWindow logoWindow { get; private set; }
         public ManualOrderConfirmationWindow manualOrderConfirmationWindow { get; private set; }
 
@@ -53,6 +56,8 @@ namespace NeuroXChange.View
 
         public MainNeuroXView(MainNeuroXModel model, MainNeuroXController controller)
         {
+            isStateGood = true;
+
             this.model = model;
             this.controller = controller;
             mainNeuroXViewThread = Thread.CurrentThread;
@@ -105,8 +110,15 @@ namespace NeuroXChange.View
 
             // dialog windows creation
 
+            authorisationWindow = new AuthorisationWindow(model);
+            if (authorisationWindow.ShowDialog(mainWindow) == DialogResult.Cancel)
+            {
+                isStateGood = false;
+                mainWindow.Close();
+                return;
+            }
+
             logoWindow = new LogoWindow();
-            logoWindow.ShowDialog(mainWindow);
 
             customDialogWindow = new CustomDialogWindow();
             customDialogWindow.Show();

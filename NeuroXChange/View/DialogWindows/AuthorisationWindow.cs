@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using NeuroXChange.Model;
 
-namespace NeuroXChange.View
+namespace NeuroXChange.View.DialogWindows
 {
-    public partial class LogoWindow : Form
+    public partial class AuthorisationWindow : Form
     {
-        public LogoWindow()
+        private MainNeuroXModel model;
+
+        public AuthorisationWindow(MainNeuroXModel model)
         {
             InitializeComponent();
+
+            this.model = model;
         }
 
         private void okBtn_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Hide();
         }
 
@@ -30,6 +36,12 @@ namespace NeuroXChange.View
                 Left += e.X - lastMouseLocation.X;
                 Top += e.Y - lastMouseLocation.Y;
             }
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Hide();
         }
     }
 }

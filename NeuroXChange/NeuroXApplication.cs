@@ -22,13 +22,14 @@ namespace NeuroXChange
             {
                 model = new MainNeuroXModel();
                 if (!model.isStateGood)
-                {
                     return;
-                }
                 Application.ApplicationExit += new EventHandler(model.StopProcessing);
 
                 controller = new MainNeuroXController(model);
+
                 view = new MainNeuroXView(model, controller);
+                if (!view.isStateGood)
+                    return;
 
                 model.StartProcessing();
 

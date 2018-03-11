@@ -27,7 +27,6 @@ namespace NeuroXChange.Model
         public LocalDatabaseConnector localDatabaseConnector { get; private set; }
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
 
-
         // ---- Observable pattern implementation
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
 

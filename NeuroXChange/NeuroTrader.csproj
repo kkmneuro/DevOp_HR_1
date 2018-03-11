@@ -170,6 +170,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\AGauge\AGauge.Designer.cs" />
+    <Compile Include="View\DialogWindows\AuthorisationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\AuthorisationWindow.Designer.cs">
+      <DependentUpon>AuthorisationWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DialogWindows\ManualOrderConfirmationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,6 +286,9 @@
     <Compile Include="View\Training\MarketSentimentSurveyWindow.Designer.cs">
       <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\DialogWindows\AuthorisationWindow.resx">
+      <DependentUpon>AuthorisationWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\DialogWindows\ManualOrderConfirmationWindow.resx">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -423,7 +432,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\ServerConnection\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -107,6 +107,9 @@ namespace NeuroXChange
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!mainNeuroXView.isStateGood)
+                return;
+
             // manually close comp day training if it was opened
             mainNeuroXView.compDayWindow.Hide();
 
