@@ -36,6 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cbSaveCredentials = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -51,10 +52,11 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.cbSaveCredentials);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 182);
+            this.panel1.Size = new System.Drawing.Size(250, 201);
             this.panel1.TabIndex = 3;
             // 
             // tbLogin
@@ -74,10 +76,10 @@
             // 
             // okBtn
             // 
-            this.okBtn.Location = new System.Drawing.Point(107, 145);
+            this.okBtn.Location = new System.Drawing.Point(107, 167);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(62, 23);
-            this.okBtn.TabIndex = 3;
+            this.okBtn.TabIndex = 4;
             this.okBtn.Text = "Ok";
             this.okBtn.UseVisualStyleBackColor = true;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -85,10 +87,10 @@
             // exitBtn
             // 
             this.exitBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.exitBtn.Location = new System.Drawing.Point(175, 145);
+            this.exitBtn.Location = new System.Drawing.Point(175, 167);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(62, 23);
-            this.exitBtn.TabIndex = 4;
+            this.exitBtn.TabIndex = 5;
             this.exitBtn.Text = "Exit";
             this.exitBtn.UseVisualStyleBackColor = true;
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
@@ -125,13 +127,23 @@
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
+            // cbSaveCredentials
+            // 
+            this.cbSaveCredentials.AutoSize = true;
+            this.cbSaveCredentials.Location = new System.Drawing.Point(79, 142);
+            this.cbSaveCredentials.Name = "cbSaveCredentials";
+            this.cbSaveCredentials.Size = new System.Drawing.Size(105, 17);
+            this.cbSaveCredentials.TabIndex = 3;
+            this.cbSaveCredentials.Text = "Save credentials";
+            this.cbSaveCredentials.UseVisualStyleBackColor = true;
+            // 
             // AuthorisationWindow
             // 
             this.AcceptButton = this.okBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.exitBtn;
-            this.ClientSize = new System.Drawing.Size(250, 182);
+            this.ClientSize = new System.Drawing.Size(250, 201);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AuthorisationWindow";
@@ -154,5 +166,6 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Button exitBtn;
+        public System.Windows.Forms.CheckBox cbSaveCredentials;
     }
 }

@@ -9,6 +9,7 @@ using NeuroXChange.Model.BehavioralModeling;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.Training;
 using NeuroXChange.Model.Database;
+using NeuroXChange.Model.ServerConnection;
 
 namespace NeuroXChange.Model
 {
@@ -22,9 +23,10 @@ namespace NeuroXChange.Model
 
         // unique objects for application
         public IniFileReader iniFileReader { get; private set; }
+        public ServerConnector serverConnector { get; private set; }
+        public LocalDatabaseConnector localDatabaseConnector { get; private set; }
         public AbstractBioDataProvider bioDataProvider { get; private set; }
         public AbstractFixApiModel fixApiModel { get; private set; }
-        public LocalDatabaseConnector localDatabaseConnector { get; private set; }
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
 
         // ---- Observable pattern implementation
@@ -92,6 +94,8 @@ namespace NeuroXChange.Model
                 iniFileReader = new IniFileReader(settingsFileName);
 
                 emulationOnHistoryMode = Boolean.Parse(iniFileReader.Read("UseEmulationOnHistory", "EmulationOnHistory", "false"));
+
+                serverConnector = new ServerConnector(this);
 
                 localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
 

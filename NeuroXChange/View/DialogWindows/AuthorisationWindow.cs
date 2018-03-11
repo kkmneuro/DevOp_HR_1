@@ -2,23 +2,36 @@
 using System.Drawing;
 using System.Windows.Forms;
 using NeuroXChange.Model;
+using NeuroXChange.Model.ServerConnection;
 
 namespace NeuroXChange.View.DialogWindows
 {
     public partial class AuthorisationWindow : Form
     {
         private MainNeuroXModel model;
+        private ServerConnector serverConnector;
 
         public AuthorisationWindow(MainNeuroXModel model)
         {
             InitializeComponent();
 
             this.model = model;
+            this.serverConnector = model.serverConnector;
+
+            cbSaveCredentials.Checked = serverConnector.SaveCredentials;
+            tbLogin.Text = serverConnector.UserLogin;
+            tbPassword.Text = serverConnector.UserPassword;
         }
 
         private void okBtn_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+
+            serverConnector.SaveCredentials = cbSaveCredentials.Checked;
+            serverConnector.UserLogin = tbLogin.Text;
+            serverConnector.UserPassword = tbPassword.Text;
+            serverConnector.UpdateINICredentials();
+
             Hide();
         }
 
