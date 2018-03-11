@@ -31,5 +31,41 @@ namespace NeuroTraderServer.Properties {
                 return ((ushort)(this["Port"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("neurotrader-biodata-prod.database.windows.net")]
+        public string DataSource {
+            get {
+                return ((string)(this["DataSource"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UladzimirSukharukau")]
+        public string UserID {
+            get {
+                return ((string)(this["UserID"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("KercLeiw11Ynic")]
+        public string Password {
+            get {
+                return ((string)(this["Password"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PsychophysiologyDatabase")]
+        public string InitialCatalog {
+            get {
+                return ((string)(this["InitialCatalog"]));
+            }
+        }
     }
 }

@@ -1,11 +1,11 @@
-﻿// short port = global::NeuroTraderServer.Properties.Settings.Default.Port;
-
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Linq;
+using System.Data.SqlClient;
+using global::NeuroTraderServer.Properties;
 
 // State object for reading client data asynchronously  
 public class StateObject
@@ -20,15 +20,28 @@ public class StateObject
     public StringBuilder sb = new StringBuilder();
 }
 
-public class AsynchronousSocketListener
+public static class AsynchronousSocketListener
 {
     public static char[] credentialsSeparators = {'\t', '\v'};
 
     // Thread signal.  
     public static ManualResetEvent allDone = new ManualResetEvent(false);
 
-    public AsynchronousSocketListener()
+    // Azure database connection
+    public static SqlConnection connection;
+
+    public static void ConnectToDatabase()
     {
+        var cb = new SqlConnectionStringBuilder();
+        cb.DataSource = Settings.Default.DataSource;
+        cb.UserID = Settings.Default.UserID;
+        cb.Password = Settings.Default.Password;
+        cb.InitialCatalog = Settings.Default.InitialCatalog;
+
+        Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
+        connection = new SqlConnection(cb.ConnectionString);
+        connection.Open();
+        Console.WriteLine("Connected!\n");
     }
 
     public static void StartListening()
@@ -45,7 +58,7 @@ public class AsynchronousSocketListener
         IPHostEntry ipHostInfo = Dns.GetHostEntry(dnsGetHostName);
         IPAddress ipAddress = ipHostInfo.AddressList.First(address => address.AddressFamily == AddressFamily.InterNetwork);
         Console.WriteLine($"ipAddress: '{ipAddress}'");
-        ushort port = global::NeuroTraderServer.Properties.Settings.Default.Port;
+        ushort port = Settings.Default.Port;
         Console.WriteLine($"Port: '{port}'");
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
@@ -132,15 +145,34 @@ public class AsynchronousSocketListener
                 //Send(handler, content);
                 var credentials = content.Split(credentialsSeparators);
                 Console.WriteLine($"Received credentials: {string.Join(" : ", credentials)}");
-                var result = new byte[1];
-                result[0] = 200;
+                var resultMsg = new byte[1];
+                resultMsg[0] = 200;
                 if (credentials.Count() < 2)
-                    result[0] = 201;
-                else if (credentials[0] != "UladzimirSukharukau")
-                    result[0] = 202;
-                else if (credentials[1] != "aaa")
-                    result[0] = 203;
-                handler.Send(result);
+                {
+                    resultMsg[0] = 201;
+                }
+                else
+                {
+                    using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = '{credentials[0]}'", connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                var correctPassword = reader["Password"].ToString();
+                                if(credentials[1] != correctPassword)
+                                {
+                                    resultMsg[0] = 203;
+                                }
+                            }
+                            else
+                            {
+                                resultMsg[0] = 202;
+                            }
+                        }
+                    }
+                }
+                handler.Send(resultMsg);
             }
             else
             {
@@ -184,7 +216,15 @@ public class AsynchronousSocketListener
 
     public static int Main(String[] args)
     {
-        StartListening();
+        try
+        {
+            ConnectToDatabase();
+            StartListening();
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine("Error occured: " + e.Message);
+        }
         return 0;
     }
 }
