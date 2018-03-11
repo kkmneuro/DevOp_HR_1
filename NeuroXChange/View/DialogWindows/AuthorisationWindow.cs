@@ -25,11 +25,19 @@ namespace NeuroXChange.View.DialogWindows
 
         private void okBtn_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-
             serverConnector.SaveCredentials = cbSaveCredentials.Checked;
             serverConnector.UserLogin = tbLogin.Text;
             serverConnector.UserPassword = tbPassword.Text;
+
+            string errorMessage;
+            if (!serverConnector.ConnectToServer(out errorMessage))
+            {
+                MessageBox.Show(text: errorMessage);
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
+
             serverConnector.UpdateINICredentials();
 
             Hide();

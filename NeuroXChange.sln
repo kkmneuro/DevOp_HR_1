@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EZScan", "EZScan\EZScan.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostTradingAnalysis", "PostTradingAnalysis\PostTradingAnalysis.csproj", "{4035A01F-16F3-4F57-A486-D92F226D1579}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroTraderServer", "NeuroTraderServer\NeuroTraderServer.csproj", "{8C081815-586F-494C-BA3B-4EE65A8BA3BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{4035A01F-16F3-4F57-A486-D92F226D1579}.Release|x64.Build.0 = Release|Any CPU
 		{4035A01F-16F3-4F57-A486-D92F226D1579}.Release|x86.ActiveCfg = Release|Any CPU
 		{4035A01F-16F3-4F57-A486-D92F226D1579}.Release|x86.Build.0 = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|x64.Build.0 = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Debug|x86.Build.0 = Debug|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x64.ActiveCfg = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x64.Build.0 = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
