@@ -32,7 +32,7 @@ namespace NeuroXChange.View.DialogWindows
             string errorMessage;
             if (!serverConnector.ConnectToServer(out errorMessage))
             {
-                MessageBox.Show(text: errorMessage);
+                MessageBox.Show(errorMessage, "Authorisation error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
