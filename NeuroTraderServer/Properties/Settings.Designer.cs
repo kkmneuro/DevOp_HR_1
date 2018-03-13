@@ -67,5 +67,26 @@ namespace NeuroTraderServer.Properties {
                 return ((string)(this["InitialCatalog"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("cert.pfx")]
+        public string SslCertificatePath {
+            get {
+                return ((string)(this["SslCertificatePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("abc")]
+        public string SslCertificatePassword {
+            get {
+                return ((string)(this["SslCertificatePassword"]));
+            }
+            set {
+                this["SslCertificatePassword"] = value;
+            }
+        }
     }
 }

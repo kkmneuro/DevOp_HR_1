@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace NeuroXChange.Model.ServerConnection
@@ -41,6 +44,17 @@ namespace NeuroXChange.Model.ServerConnection
             model.iniFileReader.Write("Password", SaveCredentials ? UserPassword : string.Empty, "Authorisation");
         }
 
+        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            if (sslPolicyErrors == SslPolicyErrors.RemoteCertificateNotAvailable ||
+                sslPolicyErrors == SslPolicyErrors.RemoteCertificateNameMismatch)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool ConnectToServer(out string errorMessage)
         {
             errorMessage = null;
@@ -51,50 +65,45 @@ namespace NeuroXChange.Model.ServerConnection
                 // Establish the remote endpoint for the socket.  
                 IPHostEntry ipHostInfo = Dns.GetHostEntry(Server);
                 IPAddress ipAddress = ipHostInfo.AddressList.First(address => address.AddressFamily == AddressFamily.InterNetwork);
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, Port);
-
-                // Create a TCP/IP  socket.  
-                Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-                // Connect the socket to the remote endpoint. Catch any errors.  
-                try
+                string ipAddressString = ipAddress.ToString();
+                using (TcpClient client = new TcpClient(ipAddressString, Port))
                 {
-                    sender.Connect(remoteEP);
 
-                    // Encode the data string into a byte array.  
-                    byte[] msg = Encoding.ASCII.GetBytes($"{UserLogin}\t{UserPassword}\v");
-
-                    // Send the data through the socket.  
-                    int bytesSent = sender.Send(msg);
-
-                    // Receive the response from the remote device.
-                    byte[] bytes = new byte[16];
-                    int bytesRec = sender.Receive(bytes);
-
-                    // Release the socket.  
-                    sender.Shutdown(SocketShutdown.Both);
-                    sender.Close();
-
-                    // 200 - is Ok
-                    switch(bytes[0])
+                    using (SslStream stream = new SslStream(client.GetStream(), false, 
+                        new RemoteCertificateValidationCallback(ValidateServerCertificate), null))
                     {
-                        case 201:
-                            errorMessage = "Error in the protocol!";
-                            return false;
-                        case 202:
-                            errorMessage = "Wrong credentials!\nCan't find such user";
-                            return false;
-                        case 203:
-                            errorMessage = "Wrong credentials!\nWrong password";
-                            return false;
-                    }
-                }
-                catch (Exception e)
-                {
-                    errorMessage = e.ToString();
-                    return false;
-                }
+                        stream.AuthenticateAsClient("WS2016DC-1");
 
+                        // Encode the data string into a byte array.  
+                        byte[] msg = Encoding.ASCII.GetBytes($"{UserLogin}\t{UserPassword}\v");
+
+                        // Send the data through the socket.  
+                        stream.Write(msg);
+
+                        // Receive the response from the remote device.
+                        byte[] bytes = new byte[16];
+                        int bytesRec = stream.Read(bytes, 0, 16);
+
+                        // Release the socket.  
+                        stream.Close();
+
+                        // 200 - is Ok
+                        switch (bytes[0])
+                        {
+                            case 201:
+                                errorMessage = "Error in the protocol!";
+                                return false;
+                            case 202:
+                                errorMessage = "Wrong credentials!\nCan't find such user";
+                                return false;
+                            case 203:
+                                errorMessage = "Wrong credentials!\nWrong password";
+                                return false;
+                        }
+                    }
+
+                    client.Close();
+                }
             }
             catch (Exception e)
             {

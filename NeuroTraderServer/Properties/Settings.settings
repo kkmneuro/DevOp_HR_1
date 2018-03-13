@@ -17,5 +17,11 @@
     <Setting Name="InitialCatalog" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PsychophysiologyDatabase</Value>
     </Setting>
+    <Setting Name="SslCertificatePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">cert.pfx</Value>
+    </Setting>
+    <Setting Name="SslCertificatePassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">abc</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
