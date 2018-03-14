@@ -57,6 +57,8 @@ namespace NeuroXChange.Model.ServerConnection
 
         public bool ConnectToServer(out string errorMessage)
         {
+            bool result = false;
+
             errorMessage = null;
 
             // Connect to a remote device.  
@@ -84,21 +86,32 @@ namespace NeuroXChange.Model.ServerConnection
                         byte[] bytes = new byte[16];
                         int bytesRec = stream.Read(bytes, 0, 16);
 
+                        if (bytesRec != 1)
+                        {
+                            errorMessage = "Error on server side";
+                            return false;
+                        }
+
                         // Release the socket.  
                         stream.Close();
 
-                        // 200 - is Ok
                         switch (bytes[0])
                         {
+                            case 199:
+                                errorMessage = "Unknown error";
+                                break;
+                            case 200:
+                                result = true;
+                                break;
                             case 201:
-                                errorMessage = "Error in the protocol!";
-                                return false;
+                                errorMessage = "Error in the protocol";
+                                break;
                             case 202:
                                 errorMessage = "Wrong credentials!\nCan't find such user";
-                                return false;
+                                break;
                             case 203:
                                 errorMessage = "Wrong credentials!\nWrong password";
-                                return false;
+                                break;
                         }
                     }
 
@@ -112,7 +125,7 @@ namespace NeuroXChange.Model.ServerConnection
                 return false;
             }
 
-            return true;
+            return result;
         }
     }
 }

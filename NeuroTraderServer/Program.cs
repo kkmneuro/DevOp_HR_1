@@ -124,36 +124,50 @@ public static class AsynchronousSocketListener
         var credentials = input.Split(credentialsSeparators);
         Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
         var resultMsg = new byte[1];
-        resultMsg[0] = 200;
+        resultMsg[0] = 199;
 
-        if (credentials.Count() != 3)
+        // syntactic hack, skip later code by using break
+        do
         {
-            resultMsg[0] = 201;
-        }
-        else
-        {
-            using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = '{credentials[0]}'", connection))
+            if (credentials.Count() != 3)
             {
+                resultMsg[0] = 201;
+                break;
+            }
+
+            string login = credentials[0];
+            string password = credentials[1];
+
+            using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = @login", connection))
+            {
+                command.Parameters.AddWithValue("@login", login);
+
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (!reader.Read())
                     {
                         resultMsg[0] = 202;
+                        break;
                     }
-                    else
+
+                    var correctPassword = reader["Password"].ToString();
+                    if (password != correctPassword)
                     {
-                        var correctPassword = reader["Password"].ToString();
-                        if (credentials[1] != correctPassword)
-                        {
-                            resultMsg[0] = 203;
-                        }
+                        resultMsg[0] = 203;
+                        break;
                     }
+
+                    resultMsg[0] = 200;
                 }
             }
-        }
+
+        } while (false);
 
         switch (resultMsg[0])
         {
+            case 199:
+                Console.WriteLine("\tUnknown error");
+                break;
             case 200:
                 Console.WriteLine("\tAuthorised");
                 break;
