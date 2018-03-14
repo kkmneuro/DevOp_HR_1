@@ -10,193 +10,197 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.Security.Authentication;
 
-public static class AsynchronousSocketListener
+namespace NeuroTraderServer
 {
-    public static char[] credentialsSeparators = {'\t', '\v'};
-
-    static X509Certificate serverCertificate = null;
-
-    // Thread signal.  
-    public static ManualResetEvent allDone = new ManualResetEvent(false);
-
-    // Azure database connection
-    public static SqlConnection connection;
-
-    public static void InitializeSSLCertificate()
+    public static class AsynchronousSocketListener
     {
-        Console.WriteLine($"Certificate initialization...");
-        X509Certificate2Collection collection = new X509Certificate2Collection();
-        collection.Import(Settings.Default.SslCertificatePath, Settings.Default.SslCertificatePassword, X509KeyStorageFlags.PersistKeySet);
-        serverCertificate = collection[0];
-        Console.WriteLine("Initialized!\n");
-    }
+        public static char[] credentialsSeparators = { '\t', '\v' };
 
-    public static void ConnectToDatabase()
-    {
-        var cb = new SqlConnectionStringBuilder();
-        cb.DataSource = Settings.Default.DataSource;
-        cb.UserID = Settings.Default.UserID;
-        cb.Password = Settings.Default.Password;
-        cb.InitialCatalog = Settings.Default.InitialCatalog;
+        static X509Certificate serverCertificate = null;
 
-        Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
-        connection = new SqlConnection(cb.ConnectionString);
-        connection.Open();
-        Console.WriteLine("Connected!\n");
-    }
+        // Thread signal.  
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
 
-    public static void StartListening()
-    {
-        Console.WriteLine($"Started listening on port {Settings.Default.Port}");
+        // Azure database connection
+        public static SqlConnection connection;
 
-        try
+        public static void InitializeSSLCertificate()
         {
-            // Create a TCP/IP (IPv4) socket and listen for incoming connections.
-            TcpListener listener = new TcpListener(IPAddress.Any, Settings.Default.Port);
-            listener.Start();
-            while (true)
-            {
-                allDone.Reset();
-                listener.BeginAcceptTcpClient(new AsyncCallback(AcceptCallback), listener);
-
-                allDone.WaitOne();
-            }
+            Console.WriteLine($"Certificate initialization...");
+            X509Certificate2Collection collection = new X509Certificate2Collection();
+            collection.Import(Settings.Default.SslCertificatePath, Settings.Default.SslCertificatePassword, X509KeyStorageFlags.PersistKeySet);
+            serverCertificate = collection[0];
+            Console.WriteLine("Initialized!\n");
         }
-        catch (Exception e)
+
+        public static void ConnectToDatabase()
         {
-            Console.WriteLine(e.ToString());
+            var cb = new SqlConnectionStringBuilder();
+            cb.DataSource = Settings.Default.DataSource;
+            cb.UserID = Settings.Default.UserID;
+            cb.Password = Settings.Default.Password;
+            cb.InitialCatalog = Settings.Default.InitialCatalog;
+
+            Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
+            connection = new SqlConnection(cb.ConnectionString);
+            connection.Open();
+            Console.WriteLine("Connected!\n");
         }
-    }
 
-    public static void AcceptCallback(IAsyncResult ar)
-    {
-        // Signal the main thread to continue.  
-        allDone.Set();
-
-        var listener = (TcpListener)ar.AsyncState;
-
-        using (TcpClient client = listener.EndAcceptTcpClient(ar))
+        public static void StartListening()
         {
+            Console.WriteLine($"Started listening on port {Settings.Default.Port}");
+
             try
             {
-                Console.WriteLine($"{DateTime.Now}\tAttempt to connect with {client.Client.RemoteEndPoint}");
-
-                using (SslStream sslStream = new SslStream(client.GetStream(), false))
+                // Create a TCP/IP (IPv4) socket and listen for incoming connections.
+                TcpListener listener = new TcpListener(IPAddress.Any, Settings.Default.Port);
+                listener.Start();
+                while (true)
                 {
-                    sslStream.AuthenticateAsServer(serverCertificate, false, SslProtocols.Tls, true);
+                    allDone.Reset();
+                    listener.BeginAcceptTcpClient(new AsyncCallback(AcceptCallback), listener);
 
-                    Console.WriteLine($"\t{DateTime.Now}\tConnected!");
-                    Console.WriteLine("\tIs Encrypted: {0}", sslStream.IsEncrypted);
-
-                    string content = string.Empty;
-                    while (content.IndexOf("\v") < 0)
-                    {
-                        var bytes = new byte[1024];
-                        int bytesRec = sslStream.Read(bytes, 0, 1024);
-                        content += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                    }
-
-                    Authorisation(content, sslStream);
-
-                    sslStream.Close();
+                    allDone.WaitOne();
                 }
-            }
-            catch (AuthenticationException e)
-            {
-                Console.WriteLine("Exception: {0}", e.Message);
-                if (e.InnerException != null)
-                {
-                    Console.WriteLine("Inner exception: {0}", e.InnerException.Message);
-                }
-                Console.WriteLine("Authentication failed - closing the connection.");
             }
             catch (Exception e)
             {
-                Console.WriteLine("General Exception: {0}", e.Message);
+                Console.WriteLine(e.ToString());
             }
-
-            client.Close();
         }
-    }
 
-    static void Authorisation(string input, SslStream stream)
-    {
-        var credentials = input.Split(credentialsSeparators);
-        Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
-        var resultMsg = new byte[1];
-        resultMsg[0] = 199;
-
-        // syntactic hack, skip later code by using break
-        do
+        public static void AcceptCallback(IAsyncResult ar)
         {
-            if (credentials.Count() != 3)
+            // Signal the main thread to continue.  
+            allDone.Set();
+
+            var listener = (TcpListener)ar.AsyncState;
+
+            using (TcpClient client = listener.EndAcceptTcpClient(ar))
             {
-                resultMsg[0] = 201;
-                break;
-            }
-
-            string login = credentials[0];
-            string password = credentials[1];
-
-            using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = @login", connection))
-            {
-                command.Parameters.AddWithValue("@login", login);
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                try
                 {
-                    if (!reader.Read())
-                    {
-                        resultMsg[0] = 202;
-                        break;
-                    }
+                    Console.WriteLine($"{DateTime.Now}\tAttempt to connect with {client.Client.RemoteEndPoint}");
 
-                    var correctPassword = reader["Password"].ToString();
-                    if (password != correctPassword)
+                    using (SslStream sslStream = new SslStream(client.GetStream(), false))
                     {
-                        resultMsg[0] = 203;
-                        break;
-                    }
+                        sslStream.AuthenticateAsServer(serverCertificate, false, SslProtocols.Tls, true);
 
-                    resultMsg[0] = 200;
+                        Console.WriteLine($"\t{DateTime.Now}\tConnected!");
+                        Console.WriteLine("\tIs Encrypted: {0}", sslStream.IsEncrypted);
+
+                        string content = string.Empty;
+                        while (content.IndexOf("\v") < 0)
+                        {
+                            var bytes = new byte[1024];
+                            int bytesRec = sslStream.Read(bytes, 0, 1024);
+                            content += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        }
+
+                        Authorisation(content, sslStream);
+
+                        sslStream.Close();
+                    }
                 }
+                catch (AuthenticationException e)
+                {
+                    Console.WriteLine("Exception: {0}", e.Message);
+                    if (e.InnerException != null)
+                    {
+                        Console.WriteLine("Inner exception: {0}", e.InnerException.Message);
+                    }
+                    Console.WriteLine("Authentication failed - closing the connection.");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("General Exception: {0}", e.Message);
+                }
+
+                client.Close();
+            }
+        }
+
+        static void Authorisation(string input, SslStream stream)
+        {
+            var credentials = input.Split(credentialsSeparators);
+            Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
+            AuthorisationResult resultMsg = AuthorisationResult.UnknownError;
+
+            // syntactic hack, skip later code by using break
+            do
+            {
+                if (credentials.Count() != 3)
+                {
+                    resultMsg = AuthorisationResult.ProtocolError;
+                    break;
+                }
+
+                string login = credentials[0];
+                string password = credentials[1];
+
+                using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = @login", connection))
+                {
+                    command.Parameters.AddWithValue("@login", login);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            resultMsg = AuthorisationResult.NoSuchUser;
+                            break;
+                        }
+
+                        var correctPassword = reader["Password"].ToString();
+                        if (password != correctPassword)
+                        {
+                            resultMsg = AuthorisationResult.WrongPassword;
+                            break;
+                        }
+
+                        resultMsg = AuthorisationResult.Ok;
+                    }
+                }
+
+            } while (false);
+
+            switch (resultMsg)
+            {
+                case AuthorisationResult.UnknownError:
+                    Console.WriteLine("\tUnknown error");
+                    break;
+                case AuthorisationResult.Ok:
+                    Console.WriteLine("\tAuthorised");
+                    break;
+                case AuthorisationResult.ProtocolError:
+                    Console.WriteLine("\tError in the protocol");
+                    break;
+                case AuthorisationResult.NoSuchUser:
+                    Console.WriteLine("\tNo such user");
+                    break;
+                case AuthorisationResult.WrongPassword:
+                    Console.WriteLine("\tWrong password");
+                    break;
             }
 
-        } while (false);
-
-        switch (resultMsg[0])
-        {
-            case 199:
-                Console.WriteLine("\tUnknown error");
-                break;
-            case 200:
-                Console.WriteLine("\tAuthorised");
-                break;
-            case 201:
-                Console.WriteLine("\tError in the protocol");
-                break;
-            case 202:
-                Console.WriteLine("\tNo such user");
-                break;
-            case 203:
-                Console.WriteLine("\tWrong password");
-                break;
+            var data = new byte[1];
+            data[0] = (byte)resultMsg;
+            stream.Write(data, 0, 1);
         }
 
-        stream.Write(resultMsg, 0, 1);
-    }
-
-    public static int Main(String[] args)
-    {
-        try
+        public static int Main(String[] args)
         {
-            InitializeSSLCertificate();
-            ConnectToDatabase();
-            StartListening();
+            try
+            {
+                InitializeSSLCertificate();
+                ConnectToDatabase();
+                StartListening();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error occured: " + e.Message);
+            }
+            return 0;
         }
-        catch(Exception e)
-        {
-            Console.WriteLine("Error occured: " + e.Message);
-        }
-        return 0;
     }
 }
