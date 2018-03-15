@@ -123,46 +123,8 @@ namespace NeuroTraderServer
 
         static void Authorisation(string input, SslStream stream)
         {
-            var credentials = input.Split(credentialsSeparators);
-            Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
-            AuthorisationResult resultMsg = AuthorisationResult.UnknownError;
-
-            // syntactic hack, skip later code by using break
-            do
-            {
-                if (credentials.Count() != 3)
-                {
-                    resultMsg = AuthorisationResult.ProtocolError;
-                    break;
-                }
-
-                string login = credentials[0];
-                string password = credentials[1];
-
-                using (var command = new SqlCommand($"SELECT * FROM dbo.Users WHERE [Login] = @login", connection))
-                {
-                    command.Parameters.AddWithValue("@login", login);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (!reader.Read())
-                        {
-                            resultMsg = AuthorisationResult.NoSuchUser;
-                            break;
-                        }
-
-                        var correctPassword = reader["Password"].ToString();
-                        if (password != correctPassword)
-                        {
-                            resultMsg = AuthorisationResult.WrongPassword;
-                            break;
-                        }
-
-                        resultMsg = AuthorisationResult.Ok;
-                    }
-                }
-
-            } while (false);
+            AuthorisationResult resultMsg;
+            var userId = GetUserIdByCredentials(input, out resultMsg);
 
             switch (resultMsg)
             {
@@ -186,6 +148,52 @@ namespace NeuroTraderServer
             var data = new byte[1];
             data[0] = (byte)resultMsg;
             stream.Write(data, 0, 1);
+            stream.Flush();
+        }
+
+        // return user id in the database if credentials are correct
+        public static long GetUserIdByCredentials(string credentialString, out AuthorisationResult authorisationResult)
+        {
+            long result = -1;
+            authorisationResult = AuthorisationResult.UnknownError;
+
+            var credentials = credentialString.Split(credentialsSeparators);
+            Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
+
+            if (credentials.Count() != 3)
+            {
+                authorisationResult = AuthorisationResult.ProtocolError;
+                return result;
+            }
+
+            string login = credentials[0];
+            string password = credentials[1];
+
+            using (var command = new SqlCommand($"SELECT [Id], [Login], [Password] FROM dbo.Users WHERE [Login] = @login", connection))
+            {
+                command.Parameters.AddWithValue("@login", login);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        authorisationResult = AuthorisationResult.NoSuchUser;
+                        return result;
+                    }
+
+                    var correctPassword = reader["Password"].ToString();
+                    if (password != correctPassword)
+                    {
+                        authorisationResult = AuthorisationResult.WrongPassword;
+                        return result;
+                    }
+
+                    authorisationResult = AuthorisationResult.Ok;
+                    result = long.Parse(reader["Id"].ToString());
+                }
+            }
+
+            return result;
         }
 
         public static int Main(String[] args)
