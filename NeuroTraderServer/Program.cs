@@ -130,6 +130,7 @@ namespace NeuroTraderServer
 
             long userId = -1;
             BinaryFormatter formatter = new BinaryFormatter();
+            int blocksReaded = 0;
             while (true)
             {
                 NTProtocolHeader blockHeader;
@@ -141,6 +142,12 @@ namespace NeuroTraderServer
                 // No more blocks
                 catch(EndOfStreamException)
                 {
+                    Console.WriteLine($"\tBlock reading finished succesfully, readed {blocksReaded} blocks");
+                    break;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("\tConnection forcibly closed by the client! Potential error");
                     break;
                 }
 
@@ -149,19 +156,21 @@ namespace NeuroTraderServer
                     throw new Exception("User was not authorised!");
                 }
 
-                switch(blockHeader)
+                switch (blockHeader)
                 {
                     case NTProtocolHeader.Authorisation:
                         var obj = formatter.Deserialize(sslStream);
-                        userId = ProcessAuthorisation((AuthorisationData)obj, sslStream);
+                        userId = ProcessAuthorisation((AuthorisationPacket)obj, sslStream);
                         break;
                     case NTProtocolHeader.RequestStatistics:
+                        ProcessRequestStatistics(formatter, sslStream);
                         break;
                 }
+                blocksReaded++;
             }
         }
 
-        public static long ProcessAuthorisation(AuthorisationData data, SslStream stream)
+        public static long ProcessAuthorisation(AuthorisationPacket data, SslStream stream)
         {
             long result = -1;
             AuthorisationResult authorisationResult = AuthorisationResult.UnknownError;
@@ -223,9 +232,15 @@ namespace NeuroTraderServer
             return result;
         }
 
-        public static void ProcessRequestStatistics()
+        public static void ProcessRequestStatistics(BinaryFormatter formatter, SslStream stream)
         {
+            var stats = new StatisticsPacket();
+            stats.LastBioDataTime = DateTime.Now.ToOADate();
+            stats.LastOrderTime = DateTime.Now.ToOADate();
+            stats.LastUserActionTime = DateTime.Now.ToOADate();
 
+            formatter.Serialize(stream, stats);
+            stream.Flush();
         }
 
         public static int Main(String[] args)

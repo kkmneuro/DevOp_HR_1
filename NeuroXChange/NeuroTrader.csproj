@@ -183,6 +183,12 @@
     <Compile Include="View\DialogWindows\ManualOrderConfirmationWindow.Designer.cs">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\DialogWindows\SynchronizationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\SynchronizationWindow.Designer.cs">
+      <DependentUpon>SynchronizationWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Training\CompDayWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\DialogWindows\ManualOrderConfirmationWindow.resx">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\SynchronizationWindow.resx">
+      <DependentUpon>SynchronizationWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Training\CompDayWindow.resx">
       <DependentUpon>CompDayWindow.cs</DependentUpon>

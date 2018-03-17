@@ -6,6 +6,11 @@
         ActiveModelStateChanged,
 
         // inner model event
-        LogicQueryDirection
+        LogicQueryDirection,
+
+        // synchronization
+        SyncrhonizationStarted,
+        SynchronizationEvent,       // for debug purpose
+        SynchronizationFinished
     }
 }

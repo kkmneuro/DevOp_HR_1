@@ -21,6 +21,10 @@ namespace NeuroXChange.Model.ServerConnection
         public string Server { get; private set; }
         public ushort Port { get; private set; }
 
+        // connection objects
+        public TcpClient tcpClient { get; private set; }
+        public SslStream sslStream { get; private set; }
+
         public ServerConnector(MainNeuroXModel model)
         {
             this.model = model;
@@ -57,7 +61,7 @@ namespace NeuroXChange.Model.ServerConnection
             return true;
         }
 
-        public bool ConnectToServer(out string errorMessage)
+        public bool Connect(out string errorMessage)
         {
             bool result = false;
 
@@ -70,68 +74,94 @@ namespace NeuroXChange.Model.ServerConnection
                 IPHostEntry ipHostInfo = Dns.GetHostEntry(Server);
                 IPAddress ipAddress = ipHostInfo.AddressList.First(address => address.AddressFamily == AddressFamily.InterNetwork);
                 string ipAddressString = ipAddress.ToString();
-                using (TcpClient client = new TcpClient(ipAddressString, Port))
+
+                tcpClient = new TcpClient(ipAddressString, Port);
+                sslStream = new SslStream(tcpClient.GetStream(), false,
+                    new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                sslStream.AuthenticateAsClient("WS2016DC-1");
+
+                BinaryWriter writer = new BinaryWriter(sslStream);
+                writer.Write((byte)NTProtocolHeader.General);
+                writer.Write((byte)NTProtocolHeader.Authorisation);
+                writer.Flush();
+
+                BinaryFormatter formatter = new BinaryFormatter();
+                var credentials = new AuthorisationPacket {Login = UserLogin, Password = UserPassword };
+                formatter.Serialize(sslStream, credentials);
+                sslStream.Flush();
+
+                // Receive the response from the remote device.
+                byte[] bytes = new byte[4];
+                int bytesRec = sslStream.Read(bytes, 0, 4);
+
+                if (bytesRec != 1)
                 {
+                    errorMessage = "Error on server side";
+                    Disconnect();
+                }
 
-                    using (SslStream stream = new SslStream(client.GetStream(), false, 
-                        new RemoteCertificateValidationCallback(ValidateServerCertificate), null))
-                    {
-                        stream.AuthenticateAsClient("WS2016DC-1");
+                AuthorisationResult authResult = (AuthorisationResult)bytes[0];
 
-                        BinaryWriter writer = new BinaryWriter(stream);
-                        writer.Write((byte)NTProtocolHeader.General);
-                        writer.Write((byte)NTProtocolHeader.Authorisation);
-                        writer.Flush();
+                switch (authResult)
+                {
+                    case AuthorisationResult.UnknownError:
+                        errorMessage = "Unknown error";
+                        break;
+                    case AuthorisationResult.Ok:
+                        result = true;
+                        break;
+                    case AuthorisationResult.ProtocolError:
+                        errorMessage = "Error in the protocol";
+                        break;
+                    case AuthorisationResult.NoSuchUser:
+                        errorMessage = "Wrong credentials!\nCan't find such user";
+                        break;
+                    case AuthorisationResult.WrongPassword:
+                        errorMessage = "Wrong credentials!\nWrong password";
+                        break;
+                }
 
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        var credentials = new AuthorisationData {Login = UserLogin, Password = UserPassword };
-                        formatter.Serialize(stream, credentials);
-                        stream.Flush();
-
-                        // Receive the response from the remote device.
-                        byte[] bytes = new byte[8];
-                        int bytesRec = stream.Read(bytes, 0, 8);
-
-                        if (bytesRec != 1)
-                        {
-                            errorMessage = "Error on server side";
-                            return false;
-                        }
-
-                        // Release the socket.  
-                        stream.Close();
-
-                        switch (bytes[0])
-                        {
-                            case 199:
-                                errorMessage = "Unknown error";
-                                break;
-                            case 200:
-                                result = true;
-                                break;
-                            case 201:
-                                errorMessage = "Error in the protocol";
-                                break;
-                            case 202:
-                                errorMessage = "Wrong credentials!\nCan't find such user";
-                                break;
-                            case 203:
-                                errorMessage = "Wrong credentials!\nWrong password";
-                                break;
-                        }
-                    }
-
-                    client.Close();
+                if (authResult != AuthorisationResult.Ok)
+                {
+                    Disconnect();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 errorMessage = e.ToString();
+                Disconnect();
                 return false;
             }
 
             return result;
+        }
+
+        public void Synchronize()
+        {
+            if (sslStream == null || !sslStream.CanRead || !tcpClient.Connected)
+            {
+                string errorMessage;
+                if (!Connect(out errorMessage))
+                {
+                    return;
+                }
+            }
+
+            // get last statistics from the server
+            BinaryWriter writer = new BinaryWriter(sslStream);
+            writer.Write((byte)NTProtocolHeader.RequestStatistics);
+            writer.Flush();
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            var stats = (StatisticsPacket)formatter.Deserialize(sslStream);
+            model.PublishSynchonizationEvent($"Received stats: {stats}");
+        }
+
+        public void Disconnect()
+        {
+            sslStream.Close();
+            tcpClient.Close();
         }
     }
 }

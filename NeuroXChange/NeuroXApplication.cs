@@ -31,6 +31,8 @@ namespace NeuroXChange
                 if (!view.isStateGood)
                     return;
 
+                model.Synchronize();
+
                 model.StartProcessing();
 
                 view.RunApplication();

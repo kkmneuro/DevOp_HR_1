@@ -155,6 +155,19 @@ namespace NeuroXChange.Model
             fixApiModel.StartProcessing();
         }
 
+        public void Synchronize()
+        {
+            NotifyObservers(MainNeuroXModelEvent.SyncrhonizationStarted, null);
+            serverConnector.Synchronize();
+            serverConnector.Disconnect();
+            NotifyObservers(MainNeuroXModelEvent.SynchronizationFinished, null);
+        }
+
+        public void PublishSynchonizationEvent(string message)
+        {
+            NotifyObservers(MainNeuroXModelEvent.SynchronizationEvent, message);
+        }
+
         /// <summary>
         /// Stop any processing. Called before application closing
         /// </summary>

@@ -30,7 +30,7 @@ namespace NeuroXChange.View.DialogWindows
             serverConnector.UserPassword = tbPassword.Text;
 
             string errorMessage;
-            if (!serverConnector.ConnectToServer(out errorMessage))
+            if (!serverConnector.Connect(out errorMessage))
             {
                 MessageBox.Show(errorMessage, "Authorisation error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
