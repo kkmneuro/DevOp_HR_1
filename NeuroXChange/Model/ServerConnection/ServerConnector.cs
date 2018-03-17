@@ -155,7 +155,22 @@ namespace NeuroXChange.Model.ServerConnection
 
             BinaryFormatter formatter = new BinaryFormatter();
             var stats = (StatisticsPacket)formatter.Deserialize(sslStream);
-            model.PublishSynchonizationEvent($"Received stats: {stats}");
+            model.PublishSynchonizationEvent($"Received stats: {stats}\r\n");
+
+            // send userActionsData
+            var userActions = model.localDatabaseConnector.PrepareUserActionsData(DateTime.FromOADate(stats.LastUserActionTime));
+            if (userActions.Count > 0)
+            {
+                writer.Write((byte)NTProtocolHeader.NewData);
+                var userActionsPacket = new UserActionsDataPacket { Actions = userActions.ToArray() };
+                formatter.Serialize(sslStream, userActionsPacket);
+                sslStream.Flush();
+
+                MemoryStream memStream = new MemoryStream();
+                formatter.Serialize(memStream, userActionsPacket);
+                memStream.Flush();
+                model.PublishSynchonizationEvent($"Sent UserActions data, {memStream.Length} bytes\n");
+            }
         }
 
         public void Disconnect()

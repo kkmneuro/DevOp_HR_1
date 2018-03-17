@@ -159,19 +159,24 @@ namespace NeuroTraderServer
                 switch (blockHeader)
                 {
                     case NTProtocolHeader.Authorisation:
-                        var obj = formatter.Deserialize(sslStream);
-                        userId = ProcessAuthorisation((AuthorisationPacket)obj, sslStream);
+                        
+                        userId = ProcessAuthorisation(formatter, sslStream);
                         break;
                     case NTProtocolHeader.RequestStatistics:
                         ProcessRequestStatistics(formatter, sslStream);
+                        break;
+                    case NTProtocolHeader.NewData:
+                        ProcessNewDataRequest(formatter, sslStream);
                         break;
                 }
                 blocksReaded++;
             }
         }
 
-        public static long ProcessAuthorisation(AuthorisationPacket data, SslStream stream)
+        public static long ProcessAuthorisation(BinaryFormatter formatter, SslStream stream)
         {
+            var data = (AuthorisationPacket)formatter.Deserialize(stream);
+
             long result = -1;
             AuthorisationResult authorisationResult = AuthorisationResult.UnknownError;
 
@@ -235,12 +240,22 @@ namespace NeuroTraderServer
         public static void ProcessRequestStatistics(BinaryFormatter formatter, SslStream stream)
         {
             var stats = new StatisticsPacket();
-            stats.LastBioDataTime = DateTime.Now.ToOADate();
-            stats.LastOrderTime = DateTime.Now.ToOADate();
-            stats.LastUserActionTime = DateTime.Now.ToOADate();
+            stats.LastBioDataTime = 0;
+            stats.LastOrderTime = 0;
+            stats.LastUserActionTime = 0;
 
             formatter.Serialize(stream, stats);
             stream.Flush();
+        }
+
+        public static void ProcessNewDataRequest(BinaryFormatter formatter, SslStream stream)
+        {
+            var obj = formatter.Deserialize(stream);
+
+            if (obj is UserActionsDataPacket)
+            {
+                var packet = (UserActionsDataPacket)obj;
+            }
         }
 
         public static int Main(String[] args)

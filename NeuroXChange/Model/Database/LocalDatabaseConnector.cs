@@ -1,4 +1,5 @@
-﻿using NeuroXChange.Common;
+﻿using NeuroTraderProtocols;
+using NeuroXChange.Common;
 using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.Portfolio;
 using System;
@@ -518,6 +519,35 @@ namespace NeuroXChange.Model.Database
                     "Can't update database from version {0} to version {1}!\r\nYou need to start data colleciton from the scratch",
                     fromVersion, CurrentDBVersion));
             }
+        }
+
+        // prepare data transfer to server
+        public List<UserActionsData> PrepareUserActionsData(DateTime time)
+        {
+            var result = new List<UserActionsData>();
+            try
+            {
+                var cmd = new OleDbCommand();
+                cmd.Connection = connection;
+                cmd.CommandText = $"SELECT * FROM UserActions WHERE [Time] > #{time.ToString("yyyy-MM-dd HH:mm:ss")}# ORDER BY ID";
+
+                var reader = cmd.ExecuteReader();
+                var item = new UserActionsData();
+                while (reader.Read())
+                {
+                    item.ActionID = UInt64.Parse(reader["ActionID"].ToString());
+                    item.Time = DateTime.Parse(reader["Time"].ToString()).ToOADate();
+                    item.Data = 0;
+                    result.Add(item);
+                }
+                reader.Close();
+            }
+            catch(Exception e)
+            {
+                return result;
+            }
+
+            return result;
         }
     }
 }
