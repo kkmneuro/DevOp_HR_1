@@ -5,6 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroTrader", "NeuroXChange\NeuroTrader.csproj", "{56E015C9-0CC5-4AC7-98D7-8E42D1265A19}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF} = {BA46F03A-5942-4308-9031-8C53FD3D0DEF}
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1} = {C75532C4-765B-418E-B09B-46D36B2ABDB1}
 		{007D4AC8-948F-4816-86AD-B9D1343672C1} = {007D4AC8-948F-4816-86AD-B9D1343672C1}
 	EndProjectSection
@@ -18,6 +19,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostTradingAnalysis", "PostTradingAnalysis\PostTradingAnalysis.csproj", "{4035A01F-16F3-4F57-A486-D92F226D1579}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroTraderServer", "NeuroTraderServer\NeuroTraderServer.csproj", "{8C081815-586F-494C-BA3B-4EE65A8BA3BC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF} = {BA46F03A-5942-4308-9031-8C53FD3D0DEF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroTraderProtocols", "NeuroTraderProtocols\NeuroTraderProtocols.csproj", "{BA46F03A-5942-4308-9031-8C53FD3D0DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +107,18 @@ Global
 		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x64.Build.0 = Release|Any CPU
 		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C081815-586F-494C-BA3B-4EE65A8BA3BC}.Release|x86.Build.0 = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|x64.Build.0 = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|x64.Build.0 = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA46F03A-5942-4308-9031-8C53FD3D0DEF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

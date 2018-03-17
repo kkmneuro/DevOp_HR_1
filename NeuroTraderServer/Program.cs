@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Linq;
 using System.Data.SqlClient;
 using global::NeuroTraderServer.Properties;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.Security.Authentication;
+using System.IO;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using NeuroTraderProtocols;
 
 namespace NeuroTraderServer
 {
@@ -90,15 +92,7 @@ namespace NeuroTraderServer
                         Console.WriteLine($"\t{DateTime.Now}\tConnected!");
                         Console.WriteLine("\tIs Encrypted: {0}", sslStream.IsEncrypted);
 
-                        string content = string.Empty;
-                        while (content.IndexOf("\v") < 0)
-                        {
-                            var bytes = new byte[1024];
-                            int bytesRec = sslStream.Read(bytes, 0, 1024);
-                            content += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                        }
-
-                        Authorisation(content, sslStream);
+                        ProcessClient(sslStream);
 
                         sslStream.Close();
                     }
@@ -121,12 +115,88 @@ namespace NeuroTraderServer
             }
         }
 
-        static void Authorisation(string input, SslStream stream)
+        public static void ProcessClient(SslStream sslStream)
         {
-            AuthorisationResult resultMsg;
-            var userId = GetUserIdByCredentials(input, out resultMsg);
+            // Protocol description: General (1 byte), Authorisation block, [Other blocks]
+            // Block description: block header (1 byte), block data
 
-            switch (resultMsg)
+            BinaryReader reader = new BinaryReader(sslStream);
+
+            var generalHeader = (NTProtocolHeader)reader.ReadByte();
+            if (generalHeader != NTProtocolHeader.General)
+            {
+                return;
+            }
+
+            long userId = -1;
+            BinaryFormatter formatter = new BinaryFormatter();
+            while (true)
+            {
+                NTProtocolHeader blockHeader;
+
+                try
+                {
+                    blockHeader = (NTProtocolHeader)reader.ReadByte();
+                }
+                // No more blocks
+                catch(EndOfStreamException)
+                {
+                    break;
+                }
+
+                if (blockHeader != NTProtocolHeader.Authorisation && userId == -1)
+                {
+                    throw new Exception("User was not authorised!");
+                }
+
+                switch(blockHeader)
+                {
+                    case NTProtocolHeader.Authorisation:
+                        var obj = formatter.Deserialize(sslStream);
+                        userId = ProcessAuthorisation((AuthorisationData)obj, sslStream);
+                        break;
+                    case NTProtocolHeader.RequestStatistics:
+                        break;
+                }
+            }
+        }
+
+        public static long ProcessAuthorisation(AuthorisationData data, SslStream stream)
+        {
+            long result = -1;
+            AuthorisationResult authorisationResult = AuthorisationResult.UnknownError;
+
+            Console.WriteLine($"\tReceived credentials:\t'{data.Login}'\t'{data.Password}'");
+
+            // trick to skip further code, by calling break in this loop
+            do
+            {
+                using (var command = new SqlCommand($"SELECT [Id], [Login], [Password] FROM dbo.Users WHERE [Login] = @login", connection))
+                {
+                    command.Parameters.AddWithValue("@login", data.Login);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            authorisationResult = AuthorisationResult.NoSuchUser;
+                            break;
+                        }
+
+                        var correctPassword = reader["Password"].ToString();
+                        if (data.Password != correctPassword)
+                        {
+                            authorisationResult = AuthorisationResult.WrongPassword;
+                            break;
+                        }
+
+                        authorisationResult = AuthorisationResult.Ok;
+                        result = long.Parse(reader["Id"].ToString());
+                    }
+                }
+            } while (false);
+
+            switch (authorisationResult)
             {
                 case AuthorisationResult.UnknownError:
                     Console.WriteLine("\tUnknown error");
@@ -145,55 +215,17 @@ namespace NeuroTraderServer
                     break;
             }
 
-            var data = new byte[1];
-            data[0] = (byte)resultMsg;
-            stream.Write(data, 0, 1);
+            var resultData = new byte[1];
+            resultData[0] = (byte)authorisationResult;
+            stream.Write(resultData, 0, 1);
             stream.Flush();
-        }
-
-        // return user id in the database if credentials are correct
-        public static long GetUserIdByCredentials(string credentialString, out AuthorisationResult authorisationResult)
-        {
-            long result = -1;
-            authorisationResult = AuthorisationResult.UnknownError;
-
-            var credentials = credentialString.Split(credentialsSeparators);
-            Console.WriteLine($"\tReceived credentials: {string.Join(" : ", credentials)}");
-
-            if (credentials.Count() != 3)
-            {
-                authorisationResult = AuthorisationResult.ProtocolError;
-                return result;
-            }
-
-            string login = credentials[0];
-            string password = credentials[1];
-
-            using (var command = new SqlCommand($"SELECT [Id], [Login], [Password] FROM dbo.Users WHERE [Login] = @login", connection))
-            {
-                command.Parameters.AddWithValue("@login", login);
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (!reader.Read())
-                    {
-                        authorisationResult = AuthorisationResult.NoSuchUser;
-                        return result;
-                    }
-
-                    var correctPassword = reader["Password"].ToString();
-                    if (password != correctPassword)
-                    {
-                        authorisationResult = AuthorisationResult.WrongPassword;
-                        return result;
-                    }
-
-                    authorisationResult = AuthorisationResult.Ok;
-                    result = long.Parse(reader["Id"].ToString());
-                }
-            }
 
             return result;
+        }
+
+        public static void ProcessRequestStatistics()
+        {
+
         }
 
         public static int Main(String[] args)

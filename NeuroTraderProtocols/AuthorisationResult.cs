@@ -1,4 +1,4 @@
-﻿namespace NeuroTraderServer
+﻿namespace NeuroTraderProtocols
 {
     public enum AuthorisationResult : byte 
     {

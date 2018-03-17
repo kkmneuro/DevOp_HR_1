@@ -386,6 +386,10 @@
       <Project>{6e9dde6f-db1b-4cff-90ff-42ebb2786ac1}</Project>
       <Name>EZScan</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NeuroTraderProtocols\NeuroTraderProtocols.csproj">
+      <Project>{ba46f03a-5942-4308-9031-8c53fd3d0def}</Project>
+      <Name>NeuroTraderProtocols</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BreathPacer.png" />

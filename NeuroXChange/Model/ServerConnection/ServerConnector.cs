@@ -1,9 +1,11 @@
-﻿using System;
+﻿using NeuroTraderProtocols;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -76,15 +78,19 @@ namespace NeuroXChange.Model.ServerConnection
                     {
                         stream.AuthenticateAsClient("WS2016DC-1");
 
-                        // Encode the data string into a byte array.  
-                        byte[] msg = Encoding.ASCII.GetBytes($"{UserLogin}\t{UserPassword}\v");
+                        BinaryWriter writer = new BinaryWriter(stream);
+                        writer.Write((byte)NTProtocolHeader.General);
+                        writer.Write((byte)NTProtocolHeader.Authorisation);
+                        writer.Flush();
 
-                        // Send the data through the socket.  
-                        stream.Write(msg);
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        var credentials = new AuthorisationData {Login = UserLogin, Password = UserPassword };
+                        formatter.Serialize(stream, credentials);
+                        stream.Flush();
 
                         // Receive the response from the remote device.
-                        byte[] bytes = new byte[16];
-                        int bytesRec = stream.Read(bytes, 0, 16);
+                        byte[] bytes = new byte[8];
+                        int bytesRec = stream.Read(bytes, 0, 8);
 
                         if (bytesRec != 1)
                         {
