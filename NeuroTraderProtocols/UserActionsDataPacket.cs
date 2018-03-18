@@ -5,9 +5,9 @@ namespace NeuroTraderProtocols
     [Serializable]
     public struct UserActionsData
     {
-        public ulong ActionID;
+        public int ActionID;
         public double Time;
-        public int Data;
+        public long Data;
     }
 
     [Serializable]

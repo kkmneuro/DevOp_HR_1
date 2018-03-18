@@ -163,10 +163,10 @@ namespace NeuroTraderServer
                         userId = ProcessAuthorisation(formatter, sslStream);
                         break;
                     case NTProtocolHeader.RequestStatistics:
-                        ProcessRequestStatistics(formatter, sslStream);
+                        ProcessRequestStatistics(formatter, sslStream, userId);
                         break;
                     case NTProtocolHeader.NewData:
-                        ProcessNewDataRequest(formatter, sslStream);
+                        ProcessNewDataRequest(formatter, sslStream, userId);
                         break;
                 }
                 blocksReaded++;
@@ -237,24 +237,63 @@ namespace NeuroTraderServer
             return result;
         }
 
-        public static void ProcessRequestStatistics(BinaryFormatter formatter, SslStream stream)
+        public static void ProcessRequestStatistics(BinaryFormatter formatter, SslStream stream, long userId)
         {
             var stats = new StatisticsPacket();
             stats.LastBioDataTime = 0;
             stats.LastOrderTime = 0;
             stats.LastUserActionTime = 0;
 
+            using (var command = new SqlCommand(@"SELECT TOP 1 [Time] As TopTime FROM dbo.UserActions WHERE UserId = @UserId ORDER BY [TopTIme] DESC", connection))
+            {
+                command.Parameters.AddWithValue("@UserId", userId);
+                var sqlResult = command.ExecuteScalar();
+                if (sqlResult != null)
+                {
+                    stats.LastUserActionTime = DateTime.Parse(sqlResult.ToString()).ToOADate();
+                }
+            }
+
             formatter.Serialize(stream, stats);
             stream.Flush();
         }
 
-        public static void ProcessNewDataRequest(BinaryFormatter formatter, SslStream stream)
+        public static void ProcessNewDataRequest(BinaryFormatter formatter, SslStream stream, long userId)
         {
-            var obj = formatter.Deserialize(stream);
+            var data = formatter.Deserialize(stream);
 
-            if (obj is UserActionsDataPacket)
+            try
             {
-                var packet = (UserActionsDataPacket)obj;
+                if (data is UserActionsDataPacket)
+                {
+                    var packet = (UserActionsDataPacket)data;
+                    using (var command = new SqlCommand(
+                        @"INSERT INTO [dbo].[UserActions]
+                           ([UserID]
+                           ,[ActionID]
+                           ,[Time]
+                           ,[Data])
+                     VALUES
+                           (@UserID
+                           ,@ActionID
+                           ,@Time
+                           ,@Data)", connection))
+                    {
+                        foreach (var action in packet.Actions)
+                        {
+                            command.Parameters.Clear();
+                            command.Parameters.AddWithValue("@UserID", userId);
+                            command.Parameters.AddWithValue("@ActionID", (int)action.ActionID);
+                            command.Parameters.AddWithValue("@Time", DateTime.FromOADate(action.Time));
+                            command.Parameters.AddWithValue("@Data", action.Data);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    Console.WriteLine($"\tAdd UserActionsData with {packet.Actions.Length} items");
+                }
+            }catch(Exception e)
+            {
+                Console.WriteLine("Error in processing DataRequest: " + e.Message);
             }
         }
 

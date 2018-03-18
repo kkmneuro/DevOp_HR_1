@@ -535,7 +535,7 @@ namespace NeuroXChange.Model.Database
                 var item = new UserActionsData();
                 while (reader.Read())
                 {
-                    item.ActionID = UInt64.Parse(reader["ActionID"].ToString());
+                    item.ActionID = Int32.Parse(reader["ActionID"].ToString());
                     item.Time = DateTime.Parse(reader["Time"].ToString()).ToOADate();
                     item.Data = 0;
                     result.Add(item);
