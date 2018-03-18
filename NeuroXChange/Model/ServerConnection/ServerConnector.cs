@@ -157,7 +157,7 @@ namespace NeuroXChange.Model.ServerConnection
             var stats = (StatisticsPacket)formatter.Deserialize(sslStream);
             model.PublishSynchonizationEvent($"Received stats: {stats}\r\n");
 
-            // send userActionsData
+            // prepare and send userActionsData
             var userActions = model.localDatabaseConnector.PrepareUserActionsData(DateTime.FromOADate(stats.LastUserActionTime));
             if (userActions.Count > 0)
             {
@@ -170,6 +170,20 @@ namespace NeuroXChange.Model.ServerConnection
                 formatter.Serialize(memStream, userActionsPacket);
                 memStream.Flush();
                 model.PublishSynchonizationEvent($"Sent UserActions data, {memStream.Length} bytes\n");
+            }
+
+            // prepare and send BioDataPricePackets
+            var bioDataPackets = model.localDatabaseConnector.PrepareBioDataPricePackets(DateTime.FromOADate(stats.LastBioDataTime));
+            foreach(var bioDataPricePacket in bioDataPackets)
+            {
+                writer.Write((byte)NTProtocolHeader.NewData);
+                formatter.Serialize(sslStream, bioDataPricePacket);
+                sslStream.Flush();
+
+                MemoryStream memStream = new MemoryStream();
+                formatter.Serialize(memStream, bioDataPricePacket);
+                memStream.Flush();
+                model.PublishSynchonizationEvent($"Sent BioDataPacket data, {memStream.Length} bytes\n");
             }
         }
 

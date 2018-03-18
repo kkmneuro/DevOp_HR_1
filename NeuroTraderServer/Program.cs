@@ -11,6 +11,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using NeuroTraderProtocols;
+using System.Data;
 
 namespace NeuroTraderServer
 {
@@ -147,7 +148,7 @@ namespace NeuroTraderServer
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine("\tConnection forcibly closed by the client! Potential error");
+                    Console.WriteLine("\tConnection forcibly closed by the client! " + e.Message);
                     break;
                 }
 
@@ -156,10 +157,11 @@ namespace NeuroTraderServer
                     throw new Exception("User was not authorised!");
                 }
 
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                Console.WriteLine("\tStart processing block...");
                 switch (blockHeader)
                 {
                     case NTProtocolHeader.Authorisation:
-                        
                         userId = ProcessAuthorisation(formatter, sslStream);
                         break;
                     case NTProtocolHeader.RequestStatistics:
@@ -169,6 +171,9 @@ namespace NeuroTraderServer
                         ProcessNewDataRequest(formatter, sslStream, userId);
                         break;
                 }
+                watch.Stop();
+                Console.WriteLine($"\tBlock processed {watch.ElapsedMilliseconds} msec");
+
                 blocksReaded++;
             }
         }
@@ -244,7 +249,17 @@ namespace NeuroTraderServer
             stats.LastOrderTime = 0;
             stats.LastUserActionTime = 0;
 
-            using (var command = new SqlCommand(@"SELECT TOP 1 [Time] As TopTime FROM dbo.UserActions WHERE UserId = @UserId ORDER BY [TopTIme] DESC", connection))
+            using (var command = new SqlCommand(@"SELECT TOP 1 [Time] As TopTime FROM dbo.BioDataWithPrice WHERE UserId = @UserId ORDER BY [TopTime] DESC", connection))
+            {
+                command.Parameters.AddWithValue("@UserId", userId);
+                var sqlResult = command.ExecuteScalar();
+                if (sqlResult != null)
+                {
+                    stats.LastBioDataTime = DateTime.Parse(sqlResult.ToString()).ToOADate();
+                }
+            }
+
+            using (var command = new SqlCommand(@"SELECT TOP 1 [Time] As TopTime FROM dbo.UserActions WHERE UserId = @UserId ORDER BY [TopTime] DESC", connection))
             {
                 command.Parameters.AddWithValue("@UserId", userId);
                 var sqlResult = command.ExecuteScalar();
@@ -267,29 +282,82 @@ namespace NeuroTraderServer
                 if (data is UserActionsDataPacket)
                 {
                     var packet = (UserActionsDataPacket)data;
-                    using (var command = new SqlCommand(
-                        @"INSERT INTO [dbo].[UserActions]
-                           ([UserID]
-                           ,[ActionID]
-                           ,[Time]
-                           ,[Data])
-                     VALUES
-                           (@UserID
-                           ,@ActionID
-                           ,@Time
-                           ,@Data)", connection))
+                    Console.WriteLine($"\t\tAdd UserActionsData with {packet.Actions.Length} items...");
+
+                    DataTable dataTable = new DataTable();
+                    dataTable.Columns.Add("ID", typeof(long));
+                    dataTable.Columns.Add("UserID", typeof(long));
+                    dataTable.Columns.Add("ActionID", typeof(int));
+                    dataTable.Columns.Add("Time", typeof(DateTime));
+                    dataTable.Columns.Add("Data", typeof(long));
+
+                    SqlBulkCopy bulkCopy = new SqlBulkCopy(connection);
+                    bulkCopy.DestinationTableName = "[dbo].[UserActions]";
+
+                    foreach (var action in packet.Actions)
                     {
-                        foreach (var action in packet.Actions)
-                        {
-                            command.Parameters.Clear();
-                            command.Parameters.AddWithValue("@UserID", userId);
-                            command.Parameters.AddWithValue("@ActionID", (int)action.ActionID);
-                            command.Parameters.AddWithValue("@Time", DateTime.FromOADate(action.Time));
-                            command.Parameters.AddWithValue("@Data", action.Data);
-                            command.ExecuteNonQuery();
-                        }
+                        var row = dataTable.NewRow();
+                        row["UserID"] = userId;
+                        row["ActionID"] = action.ActionID;
+                        row["Time"] = DateTime.FromOADate(action.Time);
+                        row["Data"] = action.Data;
+                        dataTable.Rows.Add(row);
                     }
-                    Console.WriteLine($"\tAdd UserActionsData with {packet.Actions.Length} items");
+
+                    bulkCopy.WriteToServer(dataTable);
+                    bulkCopy.Close();
+                }
+                else if (data is BioDataPricePacket)
+                {
+                    var packet = (BioDataPricePacket)data;
+                    Console.WriteLine($"\t\tAdd BioDataPricePacket with {packet.Time.Length} items...");
+
+                    // create internal table
+                    DataTable dataTable = new DataTable();
+                    dataTable.Columns.Add("ID", typeof(long));
+                    dataTable.Columns.Add("UserID", typeof(int));
+                    dataTable.Columns.Add("Time", typeof(DateTime));
+                    dataTable.Columns.Add("Temperature", typeof(float));
+                    dataTable.Columns.Add("HeartRate", typeof(float));
+                    dataTable.Columns.Add("SkinConductance", typeof(float));
+                    dataTable.Columns.Add("TrainingType", typeof(short));
+                    dataTable.Columns.Add("TrainingStep", typeof(short));
+                    dataTable.Columns.Add("ApplicationStates", typeof(int));
+                    dataTable.Columns.Add("BuyPrice", typeof(float));
+                    dataTable.Columns.Add("SellPrice", typeof(float));
+
+                    SqlBulkCopy bulkCopy = new SqlBulkCopy(connection);
+                    bulkCopy.DestinationTableName = "[dbo].[BioDataWithPrice]";
+
+                    for (int iRow = 0; iRow < packet.Time.Length; iRow++)
+                    {
+                        var row = dataTable.NewRow();
+                        row["UserID"] = userId;
+                        row["Time"] = DateTime.FromOADate(packet.Time[iRow]);
+                        row["Temperature"] = packet.Temperature[iRow];
+                        row["HeartRate"] = packet.HeartRate[iRow];
+                        row["SkinConductance"] = packet.SkinConductance[iRow];
+                        row["TrainingType"] = packet.TrainingType[iRow];
+                        row["TrainingStep"] = packet.TrainingStep[iRow];
+                        row["ApplicationStates"] = packet.ApplicationStates[iRow];
+                        if (!double.IsNaN(packet.BuyPrice[iRow]))
+                            row["BuyPrice"] = packet.BuyPrice[iRow];
+                        else
+                        {
+                            row["BuyPrice"] = DBNull.Value;
+                        }
+                        if (!double.IsNaN(packet.SellPrice[iRow]))
+                            row["SellPrice"] = packet.SellPrice[iRow];
+                        else
+                        {
+                            row["SellPrice"] = DBNull.Value;
+                        }
+
+                        dataTable.Rows.Add(row);
+                    }
+
+                    bulkCopy.WriteToServer(dataTable);
+                    bulkCopy.Close();
                 }
             }catch(Exception e)
             {

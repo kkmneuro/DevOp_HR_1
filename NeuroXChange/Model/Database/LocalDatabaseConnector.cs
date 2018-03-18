@@ -549,5 +549,91 @@ namespace NeuroXChange.Model.Database
 
             return result;
         }
+
+        public List<BioDataPricePacket> PrepareBioDataPricePackets(DateTime time)
+        {
+            var result = new List<BioDataPricePacket>();
+            try
+            {
+                List<double> Time = new List<double>();
+                List<float> Temperature = new List<float>();
+                List<float> HeartRate = new List<float>();
+                List<float> SkinConductance = new List<float>();
+                List<short> TrainingType = new List<short>();
+                List<short> TrainingStep = new List<short>();
+                List<int> ApplicationStates = new List<int>();
+                List<float> BuyPrice = new List<float>();
+                List<float> SellPrice = new List<float>();
+
+                var cmd = new OleDbCommand();
+                cmd.Connection = connection;
+                cmd.CommandText = $@"SELECT BioData.*, SellPrice, BuyPrice FROM BioData
+LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID WHERE [Time] > @Time ORDER BY BioData.ID ASC";
+                cmd.Parameters.AddWithValue("@Time", time);
+
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Time.Add(DateTime.Parse(reader["Time"].ToString()).ToOADate());
+                    Temperature.Add(float.Parse(reader["Temperature"].ToString()));
+                    HeartRate.Add(float.Parse(reader["HeartRate"].ToString()));
+                    SkinConductance.Add(float.Parse(reader["SkinConductance"].ToString()));
+                    TrainingType.Add(short.Parse(reader["TrainingType"].ToString()));
+                    TrainingStep.Add(short.Parse(reader["TrainingStep"].ToString()));
+                    ApplicationStates.Add(int.Parse(reader["ApplicationStates"].ToString()));
+
+                    var sellPrice = reader["SellPrice"].ToString();
+                    var buyPrice = reader["BuyPrice"].ToString();
+                    SellPrice.Add(sellPrice != "" ? float.Parse(sellPrice) : float.NaN);
+                    BuyPrice.Add(buyPrice != "" ? float.Parse(buyPrice) : float.NaN);
+
+                    if (Time.Count == 500)
+                    {
+                        var packet = new BioDataPricePacket();
+                        packet.Time = Time.ToArray();
+                        packet.Temperature = Temperature.ToArray();
+                        packet.HeartRate = HeartRate.ToArray();
+                        packet.SkinConductance = SkinConductance.ToArray();
+                        packet.TrainingType = TrainingType.ToArray();
+                        packet.TrainingStep = TrainingStep.ToArray();
+                        packet.ApplicationStates = ApplicationStates.ToArray();
+                        packet.BuyPrice = BuyPrice.ToArray();
+                        packet.SellPrice = SellPrice.ToArray();
+                        result.Add(packet);
+                        Time.Clear();
+                        Temperature.Clear();
+                        HeartRate.Clear();
+                        SkinConductance.Clear();
+                        TrainingType.Clear();
+                        TrainingStep.Clear();
+                        ApplicationStates.Clear();
+                        BuyPrice.Clear();
+                        SellPrice.Clear();
+                    }
+                }
+
+                if (Time.Count > 0)
+                {
+                    var packet = new BioDataPricePacket();
+                    packet.Time = Time.ToArray();
+                    packet.Temperature = Temperature.ToArray();
+                    packet.HeartRate = HeartRate.ToArray();
+                    packet.SkinConductance = SkinConductance.ToArray();
+                    packet.TrainingType = TrainingType.ToArray();
+                    packet.TrainingStep = TrainingStep.ToArray();
+                    packet.ApplicationStates = ApplicationStates.ToArray();
+                    packet.BuyPrice = BuyPrice.ToArray();
+                    packet.SellPrice = SellPrice.ToArray();
+                    result.Add(packet);
+                }
+
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                return result;
+            }
+            return result;
+        }
     }
 }
