@@ -157,10 +157,12 @@ namespace NeuroXChange.Model
 
         public void Synchronize()
         {
-            NotifyObservers(MainNeuroXModelEvent.SyncrhonizationStarted, null);
+            if(!StopProcessingCalled)
+                NotifyObservers(MainNeuroXModelEvent.SyncrhonizationStarted, null);
             serverConnector.Synchronize();
             serverConnector.Disconnect();
-            NotifyObservers(MainNeuroXModelEvent.SynchronizationFinished, null);
+            if (!StopProcessingCalled)
+                NotifyObservers(MainNeuroXModelEvent.SynchronizationFinished, null);
         }
 
         public void PublishSynchonizationEvent(string message)
@@ -168,16 +170,28 @@ namespace NeuroXChange.Model
             NotifyObservers(MainNeuroXModelEvent.SynchronizationEvent, message);
         }
 
+        private bool StopProcessingCalled = false;
+
         /// <summary>
         /// Stop any processing. Called before application closing
         /// </summary>
         public void StopProcessing(object sender, EventArgs e)
         {
+            if (StopProcessingCalled)
+                return;
+            StopProcessingCalled = true;
+
             if (bioDataProvider != null)
                 bioDataProvider.StopProcessing();
             if (fixApiModel != null)
                 fixApiModel.StopProcessing();
             localDatabaseConnector.WriteUserAction(UserAction.ApplicationClosed);
+
+            // wait until data will be written to the local database
+            System.Threading.Thread.Sleep(1000);
+            Synchronize();
+
+            localDatabaseConnector.Close();
         }
 
 

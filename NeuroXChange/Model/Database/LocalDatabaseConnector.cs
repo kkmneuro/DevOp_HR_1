@@ -117,6 +117,13 @@ namespace NeuroXChange.Model.Database
             DatabaseConnected = true;
         }
 
+        public void Close()
+        {
+            if (connection != null)
+            {
+                connection.Close();
+            }
+        }
 
         // persistent orders variables
         public int LastOrderID { get; private set; }
@@ -542,7 +549,7 @@ namespace NeuroXChange.Model.Database
                 }
                 reader.Close();
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return result;
             }
@@ -629,7 +636,7 @@ LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID WHERE [
 
                 reader.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return result;
             }

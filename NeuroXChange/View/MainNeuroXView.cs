@@ -210,11 +210,11 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.SyncrhonizationStarted:
                         mainWindow.Hide();
-                        synchronizationWindow.Show();
+                        //synchronizationWindow.Show();
                         break;
                     case MainNeuroXModelEvent.SynchronizationFinished:
                         //synchronizationWindow.Hide();
-                       mainWindow.Show();
+                        mainWindow.Show();
                         break;
                     case MainNeuroXModelEvent.SynchronizationEvent:
                         synchronizationWindow.infoRTB.AppendText((string)data);
