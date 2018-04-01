@@ -7,7 +7,7 @@ namespace NeuroTraderProtocols
     {
         public int ActionID;
         public double Time;
-        public long Data;
+        public int Detail;
     }
 
     [Serializable]

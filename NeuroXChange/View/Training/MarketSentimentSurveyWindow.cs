@@ -1,4 +1,5 @@
-﻿using NeuroXChange.Model.Database;
+﻿using NeuroXChange.Model;
+using NeuroXChange.Model.Database;
 
 namespace NeuroXChange.View.Training
 {
@@ -15,20 +16,20 @@ namespace NeuroXChange.View.Training
 
         private void btnVariant_Click(object sender, System.EventArgs e)
         {
-            string variantString = null;
+            UserActionDetail detail = UserActionDetail.NoDetail;
             if (sender == btnVariant1)
-                variantString = "High";
+                detail = UserActionDetail.SurveyHigh;
             else if (sender == btnVariant2)
-                variantString = "Low";
+                detail = UserActionDetail.SurveyLow;
             else if (sender == btnVariant3)
-                variantString = "Against";
+                detail = UserActionDetail.SurveyAgainst;
             else if (sender == btnVariant4)
-                variantString = "Favor";
+                detail = UserActionDetail.SurveyFavor;
             else if (sender == btnVariant5)
-                variantString = "Exit";
+                detail = UserActionDetail.SurveyExit;
             else if (sender == btnVariant6)
-                variantString = "Enter";
-            localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, variantString);
+                detail = UserActionDetail.SurveyEnter;
+            localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, detail);
         }
     }
 }

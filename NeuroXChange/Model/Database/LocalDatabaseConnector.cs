@@ -12,7 +12,7 @@ namespace NeuroXChange.Model.Database
 {
     public class LocalDatabaseConnector
     {
-        public const int CurrentDBVersion = 2;
+        public const int CurrentDBVersion = 3;
 
         private string databaseLocation;
         private string connectionString;
@@ -265,12 +265,12 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQueryAsync();
         }
 
-        public void WriteUserAction(UserAction action, string data = null)
+        public void WriteUserAction(UserAction action, UserActionDetail detail = UserActionDetail.NoDetail)
         {
-            WriteUserAction(action, DateTime.Now, data);
+            WriteUserAction(action, DateTime.Now, detail);
         }
 
-        public void WriteUserAction(UserAction action, DateTime time, string data = null)
+        public void WriteUserAction(UserAction action, DateTime time, UserActionDetail detail = UserActionDetail.NoDetail)
         {
             if (!DatabaseConnected || !saveUserActions || emulationOnHistoryMode)
             {
@@ -279,11 +279,11 @@ namespace NeuroXChange.Model.Database
 
             var commandText = string.Format(
                 @"INSERT INTO UserActions
-                    ([ActionID], [Time], [Data])
+                    ([ActionID], [Time], [DetailID])
                     VALUES ({0}, '{1}', '{2}');",
                 (int)action,
                 time,
-                data);
+                (int)detail);
 
             var cmd = new OleDbCommand(commandText, connection);
             cmd.ExecuteNonQueryAsync();
@@ -361,6 +361,7 @@ namespace NeuroXChange.Model.Database
 
             // creating tables from enumerations
             CreateTableFromEnum(cmd, typeof(UserAction));
+            CreateTableFromEnum(cmd, typeof(UserActionDetail));
             CreateTableFromEnum(cmd, typeof(OrderDirection));
             CreateTableFromEnum(cmd, typeof(OpenReason));
             CreateTableFromEnum(cmd, typeof(Portfolio.CloseReason));
@@ -424,9 +425,10 @@ namespace NeuroXChange.Model.Database
                             [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                             [ActionID] INTEGER NOT NULL,
                             [Time] DATETIME NOT NULL,
-                            [Data] TEXT,
-                            CONSTRAINT FK_Action FOREIGN KEY (ActionID)
-                            REFERENCES UserAction(ID));";
+                            [DetailID] INTEGER NOT NULL,
+                            CONSTRAINT FK_Action FOREIGN KEY (ActionID) REFERENCES UserAction(ID),
+                            CONSTRAINT FK_Detail FOREIGN KEY (DetailID) REFERENCES UserActionDetail(ID)
+                        );";
             cmd.ExecuteNonQuery();
 
             cmd.CommandText =
@@ -544,7 +546,7 @@ namespace NeuroXChange.Model.Database
                 {
                     item.ActionID = Int32.Parse(reader["ActionID"].ToString());
                     item.Time = DateTime.Parse(reader["Time"].ToString()).ToOADate();
-                    item.Data = 0;
+                    item.Detail = Int32.Parse(reader["DetailID"].ToString());
                     result.Add(item);
                 }
                 reader.Close();

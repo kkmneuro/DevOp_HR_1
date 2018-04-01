@@ -296,7 +296,7 @@ namespace NeuroTraderServer
                     dataTable.Columns.Add("UserID", typeof(long));
                     dataTable.Columns.Add("ActionID", typeof(int));
                     dataTable.Columns.Add("Time", typeof(DateTime));
-                    dataTable.Columns.Add("Data", typeof(long));
+                    dataTable.Columns.Add("Detail", typeof(int));
 
                     SqlBulkCopy bulkCopy = new SqlBulkCopy(connection);
                     bulkCopy.DestinationTableName = "[dbo].[UserActions]";
@@ -307,7 +307,7 @@ namespace NeuroTraderServer
                         row["UserID"] = userId;
                         row["ActionID"] = action.ActionID;
                         row["Time"] = DateTime.FromOADate(action.Time);
-                        row["Data"] = action.Data;
+                        row["Detail"] = action.Detail;
                         dataTable.Rows.Add(row);
                     }
 
