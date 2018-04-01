@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tbFile = new System.Windows.Forms.TextBox();
-            this.btnOpenFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoadData = new System.Windows.Forms.Panel();
+            this.cbUsers = new System.Windows.Forms.ComboBox();
             this.btnExport = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.cbStddevInterval = new System.Windows.Forms.ComboBox();
@@ -40,7 +39,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,38 +57,18 @@
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tbFile
-            // 
-            this.tbFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFile.Location = new System.Drawing.Point(61, 7);
-            this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(883, 20);
-            this.tbFile.TabIndex = 0;
-            this.tbFile.Text = "C:\\tmp\\neurotrader\\PsychophysiologyDatabase.mdb";
-            // 
-            // btnOpenFile
-            // 
-            this.btnOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFile.Location = new System.Drawing.Point(947, 6);
-            this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(24, 22);
-            this.btnOpenFile.TabIndex = 1;
-            this.btnOpenFile.Text = "...";
-            this.btnOpenFile.UseVisualStyleBackColor = true;
-            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 10);
+            this.label1.Location = new System.Drawing.Point(19, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Database:";
+            this.label1.Text = "User:";
             // 
             // panelLoadData
             // 
+            this.panelLoadData.Controls.Add(this.cbUsers);
             this.panelLoadData.Controls.Add(this.btnExport);
             this.panelLoadData.Controls.Add(this.label4);
             this.panelLoadData.Controls.Add(this.cbStddevInterval);
@@ -100,13 +78,21 @@
             this.panelLoadData.Controls.Add(this.label2);
             this.panelLoadData.Controls.Add(this.dtpFrom);
             this.panelLoadData.Controls.Add(this.label1);
-            this.panelLoadData.Controls.Add(this.tbFile);
-            this.panelLoadData.Controls.Add(this.btnOpenFile);
             this.panelLoadData.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLoadData.Location = new System.Drawing.Point(0, 24);
             this.panelLoadData.Name = "panelLoadData";
             this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
             this.panelLoadData.TabIndex = 3;
+            // 
+            // cbUsers
+            // 
+            this.cbUsers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbUsers.FormattingEnabled = true;
+            this.cbUsers.Location = new System.Drawing.Point(61, 5);
+            this.cbUsers.Name = "cbUsers";
+            this.cbUsers.Size = new System.Drawing.Size(425, 23);
+            this.cbUsers.TabIndex = 11;
             // 
             // btnExport
             // 
@@ -201,10 +187,6 @@
             this.dtpFrom.TabIndex = 3;
             this.dtpFrom.Value = new System.DateTime(2018, 1, 7, 21, 17, 0, 0);
             // 
-            // openFileDialog
-            // 
-            this.openFileDialog.Filter = "MS Access files|*.mdb";
-            // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -263,31 +245,31 @@
             // mainChartsToolStripMenuItem
             // 
             this.mainChartsToolStripMenuItem.Name = "mainChartsToolStripMenuItem";
-            this.mainChartsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mainChartsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.mainChartsToolStripMenuItem.Text = "Main Charts";
             // 
             // stddevToolStripMenuItem
             // 
             this.stddevToolStripMenuItem.Name = "stddevToolStripMenuItem";
-            this.stddevToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stddevToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.stddevToolStripMenuItem.Text = "Stddev";
             // 
             // stddevAwayToolStripMenuItem
             // 
             this.stddevAwayToolStripMenuItem.Name = "stddevAwayToolStripMenuItem";
-            this.stddevAwayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stddevAwayToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.stddevAwayToolStripMenuItem.Text = "Stddev Away";
             // 
             // velocityToolStripMenuItem
             // 
             this.velocityToolStripMenuItem.Name = "velocityToolStripMenuItem";
-            this.velocityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.velocityToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.velocityToolStripMenuItem.Text = "Velocity";
             // 
             // signalsToolStripMenuItem
             // 
             this.signalsToolStripMenuItem.Name = "signalsToolStripMenuItem";
-            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.signalsToolStripMenuItem.Text = "Signals";
             // 
             // dockPanel
@@ -333,12 +315,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox tbFile;
-        private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panelLoadData;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.DateTimePicker dtpFrom;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnLoad;
@@ -361,6 +339,7 @@
         public System.Windows.Forms.ToolStripMenuItem velocityToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem signalsToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem stddevToolStripMenuItem;
+        public System.Windows.Forms.ComboBox cbUsers;
     }
 }
 

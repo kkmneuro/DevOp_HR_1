@@ -13,16 +13,59 @@ namespace PostTradingAnalysis
 {
     public class PostTradingAnalysisApplication
     {
+        public List<User> users = new List<User>();
+        public Dictionary<int, long> cbUserInd2UserID = new Dictionary<int, long>();
+
         public List<BioData> bioData;
 
         public MainWindow mainWindow;
 
         public Dictionary<string, ChartWindow> chartWindows;
 
+        private SqlConnection connection;
+
         public PostTradingAnalysisApplication()
         {
+            // create windows
             mainWindow = new MainWindow(this);
             bioData = new List<BioData>();
+
+
+            // connect database
+            var cb = new SqlConnectionStringBuilder();
+            cb.DataSource = Settings.Default.DataSource;
+            cb.UserID = Settings.Default.UserID;
+            cb.Password = Settings.Default.Password;
+            cb.InitialCatalog = Settings.Default.InitialCatalog;
+
+            Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
+            connection = new SqlConnection(cb.ConnectionString);
+            connection.Open();
+
+            // Load Users
+            var cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = @"SELECT ID, FullName, Mail, Login From Users ORDER BY FullName";
+
+            var reader = cmd.ExecuteReader();
+            int kensIndex = -1;
+            while (reader.Read())
+            {
+                var user = User.FromSqlDataReader(reader);
+                users.Add(user);
+                var itemIndex = mainWindow.cbUsers.Items.Add($"{user.fullName}  ({user.login})  -  {user.mail}");
+                cbUserInd2UserID[itemIndex] = user.id;
+                if (user.login == "KenMedanic")
+                {
+                    kensIndex = itemIndex;
+                }
+            }
+            reader.Close();
+
+            if (kensIndex != -1)
+            {
+                mainWindow.cbUsers.SelectedIndex = kensIndex;
+            }
 
             // registering windows
             chartWindows = new Dictionary<string, ChartWindow>();
@@ -72,7 +115,7 @@ namespace PostTradingAnalysis
             Application.Run(mainWindow);
         }
 
-        public void LoadData(string fileName, DateTime dateFrom, DateTime dateTo)
+        public void LoadData(DateTime dateFrom, DateTime dateTo)
         {
             if (dateFrom >= dateTo)
             {
@@ -81,23 +124,13 @@ namespace PostTradingAnalysis
 
             bioData.Clear();
 
-            var cb = new SqlConnectionStringBuilder();
-            cb.DataSource = Settings.Default.DataSource;
-            cb.UserID = Settings.Default.UserID;
-            cb.Password = Settings.Default.Password;
-            cb.InitialCatalog = Settings.Default.InitialCatalog;
-
-            Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
-            var connection = new SqlConnection(cb.ConnectionString);
-            connection.Open();
-
+            // biodata Loading
             var cmd = new SqlCommand();
             cmd.Connection = connection;
-
-            // biodata Loading
             cmd.CommandText = @"SELECT * From BioDataWithPrice
-                WHERE Time BETWEEN @StartDate AND @EndDate
+                WHERE UserID = @UserId AND Time BETWEEN @StartDate AND @EndDate
                 ORDER BY ID";
+            cmd.Parameters.AddWithValue("@UserId", cbUserInd2UserID[mainWindow.cbUsers.SelectedIndex]);
             cmd.Parameters.AddWithValue("@StartDate", dateFrom);
             cmd.Parameters.AddWithValue("@EndDate", dateTo);
 
@@ -107,6 +140,7 @@ namespace PostTradingAnalysis
                 var data = BioData.FromSqlDataReader(reader);
                 bioData.Add(data);
             }
+            reader.Close();
 
             foreach (var kv in chartWindows)
             {
