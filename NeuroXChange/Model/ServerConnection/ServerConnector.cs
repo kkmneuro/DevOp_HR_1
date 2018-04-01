@@ -81,7 +81,8 @@ namespace NeuroXChange.Model.ServerConnection
                 sslStream.AuthenticateAsClient("WS2016DC-1");
 
                 BinaryWriter writer = new BinaryWriter(sslStream);
-                writer.Write((byte)NTProtocolHeader.General);
+                writer.Write(ProtocolConstData.Magic);
+                writer.Write(ProtocolConstData.Version);
                 writer.Write((byte)NTProtocolHeader.Authorisation);
                 writer.Flush();
 
@@ -185,6 +186,8 @@ namespace NeuroXChange.Model.ServerConnection
                 memStream.Flush();
                 model.PublishSynchonizationEvent($"Sent BioDataPacket data, {memStream.Length} bytes\n");
             }
+
+            Disconnect();
         }
 
         public void Disconnect()

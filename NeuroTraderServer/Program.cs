@@ -118,15 +118,22 @@ namespace NeuroTraderServer
 
         public static void ProcessClient(SslStream sslStream)
         {
-            // Protocol description: General (1 byte), Authorisation block, [Other blocks]
+            // Protocol description: Magic number (8 bytes), Version (8 bytes), Authorisation block, [Other blocks]
             // Block description: block header (1 byte), block data
 
             BinaryReader reader = new BinaryReader(sslStream);
 
-            var generalHeader = (NTProtocolHeader)reader.ReadByte();
-            if (generalHeader != NTProtocolHeader.General)
+            var magic = reader.ReadUInt64();
+            if (magic != ProtocolConstData.Magic)
             {
-                return;
+                throw new Exception("Wrong magic number!");
+            }
+
+            var version = reader.ReadUInt64();
+            if (version != ProtocolConstData.Version)
+            {
+                throw new Exception(
+                    string.Format("Protocol version mismatch: client uses version 0x{0:X} when server uses 0x{1:X}", version, ProtocolConstData.Version));
             }
 
             long userId = -1;
