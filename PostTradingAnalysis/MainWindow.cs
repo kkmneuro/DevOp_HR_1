@@ -1,7 +1,4 @@
-﻿using NeuroXChange.Model.BioData;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
+﻿using OxyPlot.Series;
 using System;
 using System.IO;
 using System.Windows.Forms;

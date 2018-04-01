@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace NeuroXChange.Model.BioData
 {
@@ -27,7 +23,7 @@ namespace NeuroXChange.Model.BioData
         // implementation dependent payload
         public object payload;
 
-        public static BioData FromOleDbDataReader(OleDbDataReader reader)
+        public static BioData FromSqlDataReader(SqlDataReader reader)
         {
             var data = new BioData();
             data.id = Int64.Parse(reader["ID"].ToString());
@@ -35,9 +31,6 @@ namespace NeuroXChange.Model.BioData
             data.temperature = Double.Parse(reader["Temperature"].ToString());
             data.heartRate = Double.Parse(reader["HeartRate"].ToString());
             data.skinConductance = Double.Parse(reader["SkinConductance"].ToString());
-            data.accX = Double.Parse(reader["AccX"].ToString());
-            data.accY = Double.Parse(reader["AccY"].ToString());
-            data.accZ = Double.Parse(reader["AccZ"].ToString());
             data.trainingType = Int32.Parse(reader["TrainingType"].ToString());
             data.trainingStep = Int32.Parse(reader["TrainingStep"].ToString());
             data.applicationStates = Int32.Parse(reader["ApplicationStates"].ToString());

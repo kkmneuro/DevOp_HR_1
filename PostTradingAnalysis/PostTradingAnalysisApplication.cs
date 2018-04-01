@@ -4,10 +4,10 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
+using global::PostTradingAnalysis.Properties;
 
 namespace PostTradingAnalysis
 {
@@ -74,11 +74,6 @@ namespace PostTradingAnalysis
 
         public void LoadData(string fileName, DateTime dateFrom, DateTime dateTo)
         {
-            if (!File.Exists(fileName))
-            {
-                throw new Exception("There are no such file: \"" + fileName + "\"");
-            }
-
             if (dateFrom >= dateTo)
             {
                 throw new Exception("First date should be less than second date!");
@@ -86,24 +81,30 @@ namespace PostTradingAnalysis
 
             bioData.Clear();
 
-            var connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\"{0}\"", fileName);
-            var connection = new OleDbConnection(connectionString);
+            var cb = new SqlConnectionStringBuilder();
+            cb.DataSource = Settings.Default.DataSource;
+            cb.UserID = Settings.Default.UserID;
+            cb.Password = Settings.Default.Password;
+            cb.InitialCatalog = Settings.Default.InitialCatalog;
+
+            Console.WriteLine($"Connecting to database {cb.InitialCatalog} on {cb.DataSource} ...");
+            var connection = new SqlConnection(cb.ConnectionString);
             connection.Open();
-            var cmd = new OleDbCommand();
+
+            var cmd = new SqlCommand();
             cmd.Connection = connection;
 
             // biodata Loading
-            var biodataSQL = string.Format(
-                @"SELECT BioData.*, SellPrice, BuyPrice From BioData
-            LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID
-            WHERE BioData.Time BETWEEN #{0:yyyy-MM-dd HH:mm:ss}# AND #{1:yyyy-MM-dd HH:mm:ss}#
-            ORDER BY BioData.ID",
-                dateFrom, dateTo);
-            cmd.CommandText = biodataSQL;
+            cmd.CommandText = @"SELECT * From BioDataWithPrice
+                WHERE Time BETWEEN @StartDate AND @EndDate
+                ORDER BY ID";
+            cmd.Parameters.AddWithValue("@StartDate", dateFrom);
+            cmd.Parameters.AddWithValue("@EndDate", dateTo);
+
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                var data = BioData.FromOleDbDataReader(reader);
+                var data = BioData.FromSqlDataReader(reader);
                 bioData.Add(data);
             }
 
