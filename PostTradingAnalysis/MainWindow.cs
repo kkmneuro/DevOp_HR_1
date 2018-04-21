@@ -35,20 +35,19 @@ namespace PostTradingAnalysis
                     kv.Value.DockPanel = application.mainWindow.dockPanel;
                 }
             }
-
-            var now = DateTime.Now;
-            var timeFrom = new DateTime(now.Year, now.Month, now.Day);
-            var timeTo = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
-
-            dtpFrom.Value = timeFrom;
-            dtpTo.Value = timeTo;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
             try
             {
-                application.LoadData(dtpFrom.Value, dtpTo.Value);
+                if (cbDates.SelectedIndex > -1)
+                {
+                    var date = DateTime.Parse(cbDates.Text);
+                    var timeFrom = new DateTime(date.Year, date.Month, date.Day);
+                    var timeTo = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+                    application.LoadData(timeFrom, timeTo);
+                }
             }
             catch (Exception ex)
             {
@@ -150,9 +149,9 @@ namespace PostTradingAnalysis
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            var from = dtpFrom.Value.ToString("dd_MM_yyyy_HH_mm_ss");
-            var to = dtpTo.Value.ToString("dd_MM_yyyy_HH_mm_ss");
-            saveFileDialog.FileName = "PostAnalysisData - " + from + " - " + to + " - " + cbStddevInterval.Text + ".txt";
+            if (cbDates.SelectedIndex == -1)
+                return;
+            saveFileDialog.FileName = "PostAnalysisData - " + cbDates.Text + " - " + cbStddevInterval.Text + ".txt";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -211,6 +210,21 @@ namespace PostTradingAnalysis
                         outputFile.WriteLine();
                     }
                 }
+            }
+        }
+
+        private void cbUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbDates.Items.Clear();
+            var userId = application.cbUserInd2UserID[cbUsers.SelectedIndex];
+            foreach (var date in application.activeDates[userId])
+            {
+                cbDates.Items.Add(date);
+            }
+
+            if(cbDates.Items.Count > 0)
+            {
+                cbDates.SelectedIndex = 0;
             }
         }
     }

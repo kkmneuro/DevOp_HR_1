@@ -30,15 +30,13 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoadData = new System.Windows.Forms.Panel();
+            this.cbDates = new System.Windows.Forms.ComboBox();
             this.cbUsers = new System.Windows.Forms.ComboBox();
             this.btnExport = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.cbStddevInterval = new System.Windows.Forms.ComboBox();
             this.btnLoad = new System.Windows.Forms.Button();
-            this.dtpTo = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,9 +48,9 @@
             this.stddevAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.velocityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.signalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -68,21 +66,28 @@
             // 
             // panelLoadData
             // 
+            this.panelLoadData.Controls.Add(this.btnLoad);
+            this.panelLoadData.Controls.Add(this.cbDates);
             this.panelLoadData.Controls.Add(this.cbUsers);
             this.panelLoadData.Controls.Add(this.btnExport);
             this.panelLoadData.Controls.Add(this.label4);
             this.panelLoadData.Controls.Add(this.cbStddevInterval);
-            this.panelLoadData.Controls.Add(this.btnLoad);
-            this.panelLoadData.Controls.Add(this.dtpTo);
-            this.panelLoadData.Controls.Add(this.label3);
             this.panelLoadData.Controls.Add(this.label2);
-            this.panelLoadData.Controls.Add(this.dtpFrom);
             this.panelLoadData.Controls.Add(this.label1);
             this.panelLoadData.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLoadData.Location = new System.Drawing.Point(0, 24);
             this.panelLoadData.Name = "panelLoadData";
             this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
             this.panelLoadData.TabIndex = 3;
+            // 
+            // cbDates
+            // 
+            this.cbDates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDates.FormattingEnabled = true;
+            this.cbDates.Location = new System.Drawing.Point(62, 33);
+            this.cbDates.Name = "cbDates";
+            this.cbDates.Size = new System.Drawing.Size(196, 21);
+            this.cbDates.TabIndex = 12;
             // 
             // cbUsers
             // 
@@ -91,12 +96,13 @@
             this.cbUsers.FormattingEnabled = true;
             this.cbUsers.Location = new System.Drawing.Point(61, 5);
             this.cbUsers.Name = "cbUsers";
-            this.cbUsers.Size = new System.Drawing.Size(425, 23);
+            this.cbUsers.Size = new System.Drawing.Size(464, 23);
             this.cbUsers.TabIndex = 11;
+            this.cbUsers.SelectedIndexChanged += new System.EventHandler(this.cbUsers_SelectedIndexChanged);
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(411, 33);
+            this.btnExport.Location = new System.Drawing.Point(264, 33);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 21);
             this.btnExport.TabIndex = 10;
@@ -107,7 +113,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(494, 37);
+            this.label4.Location = new System.Drawing.Point(347, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 9;
@@ -132,7 +138,7 @@
             "3 minutes",
             "5 minutes",
             "10 minutes"});
-            this.cbStddevInterval.Location = new System.Drawing.Point(581, 33);
+            this.cbStddevInterval.Location = new System.Drawing.Point(434, 33);
             this.cbStddevInterval.Name = "cbStddevInterval";
             this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
             this.cbStddevInterval.TabIndex = 8;
@@ -150,24 +156,6 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
-            // dtpTo
-            // 
-            this.dtpTo.CustomFormat = "dd/MM/yyyy   HH:mm:ss";
-            this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTo.Location = new System.Drawing.Point(247, 33);
-            this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(147, 20);
-            this.dtpTo.TabIndex = 6;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(218, 38);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "To:";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -175,17 +163,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "From:";
-            // 
-            // dtpFrom
-            // 
-            this.dtpFrom.CustomFormat = "dd/MM/yyyy   HH:mm:ss";
-            this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFrom.Location = new System.Drawing.Point(61, 33);
-            this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(147, 20);
-            this.dtpFrom.TabIndex = 3;
-            this.dtpFrom.Value = new System.DateTime(2018, 1, 7, 21, 17, 0, 0);
+            this.label2.Text = "Date:";
             // 
             // menuStrip
             // 
@@ -272,6 +250,12 @@
             this.signalsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.signalsToolStripMenuItem.Text = "Signals";
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileName = "AnalysisData";
+            this.saveFileDialog.Filter = "Tab-delemited text files (*.txt)|*.txt";
+            this.saveFileDialog.Title = "Export biodata to...";
+            // 
             // dockPanel
             // 
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -283,12 +267,6 @@
             this.dockPanel.Size = new System.Drawing.Size(1041, 596);
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileName = "AnalysisData";
-            this.saveFileDialog.Filter = "Tab-delemited text files (*.txt)|*.txt";
-            this.saveFileDialog.Title = "Export biodata to...";
             // 
             // MainWindow
             // 
@@ -317,11 +295,8 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panelLoadData;
-        private System.Windows.Forms.DateTimePicker dtpFrom;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.DateTimePicker dtpTo;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
@@ -340,6 +315,7 @@
         public System.Windows.Forms.ToolStripMenuItem signalsToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem stddevToolStripMenuItem;
         public System.Windows.Forms.ComboBox cbUsers;
+        public System.Windows.Forms.ComboBox cbDates;
     }
 }
 

@@ -16,6 +16,8 @@ namespace PostTradingAnalysis
         public List<User> users = new List<User>();
         public Dictionary<int, long> cbUserInd2UserID = new Dictionary<int, long>();
 
+        public Dictionary<long, List<DateTime>> activeDates = new Dictionary<long, List<DateTime>>();
+
         public List<BioData> bioData;
 
         public MainWindow mainWindow;
@@ -43,24 +45,45 @@ namespace PostTradingAnalysis
             connection.Open();
 
             // Load Users
-            var cmd = new SqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandText = @"SELECT ID, FullName, Mail, Login From Users ORDER BY FullName";
-
-            var reader = cmd.ExecuteReader();
             int kensIndex = -1;
-            while (reader.Read())
+            using (var cmd = new SqlCommand())
             {
-                var user = User.FromSqlDataReader(reader);
-                users.Add(user);
-                var itemIndex = mainWindow.cbUsers.Items.Add($"{user.fullName}  ({user.login})  -  {user.mail}");
-                cbUserInd2UserID[itemIndex] = user.id;
-                if (user.login == "KenMedanic")
+                cmd.Connection = connection;
+                cmd.CommandText = @"SELECT ID, FullName, Mail, Login From Users ORDER BY FullName";
+
+                using (var reader = cmd.ExecuteReader())
                 {
-                    kensIndex = itemIndex;
+                    while (reader.Read())
+                    {
+                        var user = User.FromSqlDataReader(reader);
+                        users.Add(user);
+                        var itemIndex = mainWindow.cbUsers.Items.Add($"{user.fullName}  ({user.login})  -  {user.mail}");
+                        cbUserInd2UserID[itemIndex] = user.id;
+                        if (user.login == "KenMedanic")
+                        {
+                            kensIndex = itemIndex;
+                        }
+                        activeDates[user.id] = new List<DateTime>();
+                    }
                 }
             }
-            reader.Close();
+
+            // load dates where users traded
+            using (var cmd = new SqlCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = @"SELECT DISTINCT CONVERT(Date, [Time]) AS Date, UserID From UserActions WHERE ActionID = 1 ORDER BY Date DESC";
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var date = DateTime.Parse(reader["Date"].ToString());
+                        var userId = long.Parse(reader["UserId"].ToString());
+                        activeDates[userId].Add(date);
+                    }
+                }
+            }
 
             if (kensIndex != -1)
             {
