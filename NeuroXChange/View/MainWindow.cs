@@ -20,7 +20,7 @@ namespace NeuroXChange
     {
         private MainNeuroXView mainNeuroXView = null;
         private IniFileReader iniFileReader = null;
-        private string dockPanelConfigFile = "DockPanel.config";
+        private string dockPanelConfigFile;
         private DeserializeDockContent m_deserializeDockContent;
 
         public MainWindow(MainNeuroXView mainNeuroXView, IniFileReader iniFileReader)
@@ -33,12 +33,14 @@ namespace NeuroXChange
             bool SimplestMode = Boolean.Parse(iniFileReader.Read("SimplestMode", "GeneralSettings", "true"));
             if(SimplestMode)
             {
+                dockPanelConfigFile = "DockPanelSimplestMode.config";
                 fileToolStripMenuItem.Visible = false;
                 trainingToolStripMenuItem.Visible = false;
                 windowsToolStripMenuItem.Visible = false;
             }
             else
             {
+                dockPanelConfigFile = "DockPanel.config";
                 fileToolStripMenuItemSimplestMode.Visible = false;
                 windowsToolStripMenuItemSimplestMode.Visible = false;
             }
