@@ -190,6 +190,12 @@
     <Compile Include="View\DialogWindows\SynchronizationWindow.Designer.cs">
       <DependentUpon>SynchronizationWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\DockableWindows\ApplicationControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\ApplicationControlWindow.Designer.cs">
+      <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Training\CompDayWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\DialogWindows\SynchronizationWindow.resx">
       <DependentUpon>SynchronizationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\ApplicationControlWindow.resx">
+      <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Training\CompDayWindow.resx">
       <DependentUpon>CompDayWindow.cs</DependentUpon>

@@ -64,6 +64,8 @@ namespace NeuroXChange
                 return mainNeuroXView.behavioralModelTransitionsWindow;
             else if (persistString == typeof(BMColorCodedWithPriceWindow).ToString())
                 return mainNeuroXView.bMColorCodedWithPriceWindow;
+            else if (persistString == typeof(ApplicationControlWindow).ToString())
+                return mainNeuroXView.applicationControlWindow;
             else if (persistString == typeof(EmulationModeControlWindow).ToString())
                 return mainNeuroXView.emulationModeControlWindow;
             else if (persistString == typeof(OrdersWindow).ToString())
@@ -99,6 +101,8 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.behavioralModelTransitionsWindow;
             else if (sender == bMColorCodedWithPriceToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.bMColorCodedWithPriceWindow;
+            else if (sender == applicationControlToolStripMenuItem || sender == applicationControlToolStripMenuItemSimplestMode)
+                dockContentWindow = mainNeuroXView.applicationControlWindow;
             else if (sender == emulationModeControlToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.emulationModeControlWindow;
             else if (sender == ordersToolStripMenuItem)
@@ -162,6 +166,7 @@ namespace NeuroXChange
             mainNeuroXView.behavioralModelWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.behavioralModelTransitionsWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.bMColorCodedWithPriceWindow.DockStateChanged += dockStateChangedAction;
+            mainNeuroXView.applicationControlWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.emulationModeControlWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.ordersWindow.DockStateChanged += dockStateChangedAction;
             mainNeuroXView.compDayWindow.DockStateChanged += dockStateChangedAction;
@@ -178,6 +183,7 @@ namespace NeuroXChange
             mainNeuroXView.behavioralModelWindow.DockPanel = dockPanel;
             mainNeuroXView.behavioralModelTransitionsWindow.DockPanel = dockPanel;
             mainNeuroXView.bMColorCodedWithPriceWindow.DockPanel = dockPanel;
+            mainNeuroXView.applicationControlWindow.DockPanel = dockPanel;
             mainNeuroXView.emulationModeControlWindow.DockPanel = dockPanel;
             mainNeuroXView.ordersWindow.DockPanel = dockPanel;
             mainNeuroXView.compDayWindow.DockPanel = dockPanel;

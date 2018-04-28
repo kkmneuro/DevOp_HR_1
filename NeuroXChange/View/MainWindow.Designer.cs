@@ -32,6 +32,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulationModeControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -47,6 +49,12 @@
             this.chartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.applicationControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.breathPacerToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.indicatorsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.applicationControlToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -54,12 +62,6 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.fileToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.windowsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.breathPacerToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.indicatorsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +104,21 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // fileToolStripMenuItemSimplestMode
+            // 
+            this.fileToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItemSimplestMode});
+            this.fileToolStripMenuItemSimplestMode.Name = "fileToolStripMenuItemSimplestMode";
+            this.fileToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItemSimplestMode.Text = "File";
+            // 
+            // exitToolStripMenuItemSimplestMode
+            // 
+            this.exitToolStripMenuItemSimplestMode.Name = "exitToolStripMenuItemSimplestMode";
+            this.exitToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItemSimplestMode.Text = "Exit";
+            this.exitToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // trainingToolStripMenuItem
             // 
             this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -143,7 +160,8 @@
             this.rawInformationToolStripMenuItem,
             this.chartsToolStripMenuItem,
             this.bMColorCodedWithPriceToolStripMenuItem,
-            this.ordersToolStripMenuItem});
+            this.ordersToolStripMenuItem,
+            this.applicationControlToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -216,6 +234,52 @@
             this.ordersToolStripMenuItem.Text = "Orders";
             this.ordersToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
+            // applicationControlToolStripMenuItem
+            // 
+            this.applicationControlToolStripMenuItem.Name = "applicationControlToolStripMenuItem";
+            this.applicationControlToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.applicationControlToolStripMenuItem.Text = "Application control";
+            this.applicationControlToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // windowsToolStripMenuItemSimplestMode
+            // 
+            this.windowsToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.breathPacerToolStripMenuItemSimplestMode,
+            this.indicatorsToolStripMenuItemSimplestMode,
+            this.chartsToolStripMenuItemSimplestMode,
+            this.applicationControlToolStripMenuItemSimplestMode});
+            this.windowsToolStripMenuItemSimplestMode.Name = "windowsToolStripMenuItemSimplestMode";
+            this.windowsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(68, 20);
+            this.windowsToolStripMenuItemSimplestMode.Text = "Windows";
+            // 
+            // breathPacerToolStripMenuItemSimplestMode
+            // 
+            this.breathPacerToolStripMenuItemSimplestMode.Name = "breathPacerToolStripMenuItemSimplestMode";
+            this.breathPacerToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.breathPacerToolStripMenuItemSimplestMode.Text = "Breath pacer";
+            this.breathPacerToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // indicatorsToolStripMenuItemSimplestMode
+            // 
+            this.indicatorsToolStripMenuItemSimplestMode.Name = "indicatorsToolStripMenuItemSimplestMode";
+            this.indicatorsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.indicatorsToolStripMenuItemSimplestMode.Text = "Indicators";
+            this.indicatorsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // chartsToolStripMenuItemSimplestMode
+            // 
+            this.chartsToolStripMenuItemSimplestMode.Name = "chartsToolStripMenuItemSimplestMode";
+            this.chartsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.chartsToolStripMenuItemSimplestMode.Text = "Charts";
+            this.chartsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // applicationControlToolStripMenuItemSimplestMode
+            // 
+            this.applicationControlToolStripMenuItemSimplestMode.Name = "applicationControlToolStripMenuItemSimplestMode";
+            this.applicationControlToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.applicationControlToolStripMenuItemSimplestMode.Text = "Application control";
+            this.applicationControlToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -227,7 +291,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -267,52 +331,6 @@
             this.dockPanel.Size = new System.Drawing.Size(397, 296);
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
-            // 
-            // fileToolStripMenuItemSimplestMode
-            // 
-            this.fileToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItemSimplestMode});
-            this.fileToolStripMenuItemSimplestMode.Name = "fileToolStripMenuItemSimplestMode";
-            this.fileToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItemSimplestMode.Text = "File";
-            // 
-            // exitToolStripMenuItemSimplestMode
-            // 
-            this.exitToolStripMenuItemSimplestMode.Name = "exitToolStripMenuItemSimplestMode";
-            this.exitToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItemSimplestMode.Text = "Exit";
-            this.exitToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // windowsToolStripMenuItemSimplestMode
-            // 
-            this.windowsToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.breathPacerToolStripMenuItemSimplestMode,
-            this.indicatorsToolStripMenuItemSimplestMode,
-            this.chartsToolStripMenuItemSimplestMode});
-            this.windowsToolStripMenuItemSimplestMode.Name = "windowsToolStripMenuItemSimplestMode";
-            this.windowsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(68, 20);
-            this.windowsToolStripMenuItemSimplestMode.Text = "Windows";
-            // 
-            // breathPacerToolStripMenuItemSimplestMode
-            // 
-            this.breathPacerToolStripMenuItemSimplestMode.Name = "breathPacerToolStripMenuItemSimplestMode";
-            this.breathPacerToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
-            this.breathPacerToolStripMenuItemSimplestMode.Text = "Breath pacer";
-            this.breathPacerToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
-            // 
-            // indicatorsToolStripMenuItemSimplestMode
-            // 
-            this.indicatorsToolStripMenuItemSimplestMode.Name = "indicatorsToolStripMenuItemSimplestMode";
-            this.indicatorsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
-            this.indicatorsToolStripMenuItemSimplestMode.Text = "Indicators";
-            this.indicatorsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
-            // 
-            // chartsToolStripMenuItemSimplestMode
-            // 
-            this.chartsToolStripMenuItemSimplestMode.Name = "chartsToolStripMenuItemSimplestMode";
-            this.chartsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
-            this.chartsToolStripMenuItemSimplestMode.Text = "Charts";
-            this.chartsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -370,6 +388,8 @@
         private System.Windows.Forms.ToolStripMenuItem breathPacerToolStripMenuItemSimplestMode;
         private System.Windows.Forms.ToolStripMenuItem indicatorsToolStripMenuItemSimplestMode;
         private System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItemSimplestMode;
     }
 }
 
