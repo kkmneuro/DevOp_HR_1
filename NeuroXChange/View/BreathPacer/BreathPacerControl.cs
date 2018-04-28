@@ -222,6 +222,8 @@ namespace BreathPacer
             pbBall.Top = pbPacer.Height - pbBall.Height;
             Running = false;
             renderingTimer.Interval = 10;
+
+            setStartPosition();
         }
 
         public void Start()
@@ -270,6 +272,9 @@ namespace BreathPacer
             y2 = 0;
             pbBall.Left = 0;
             pbBall.Top = pbPacer.Height;
+
+            pbBall.Left = (int)(x * Width) - pbBall.Width / 2;
+            pbBall.Top = (int)(y * Height) - pbBall.Height / 2;
         }
 
         public void StartResonantBTest()

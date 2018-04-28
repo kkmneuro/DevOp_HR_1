@@ -15,7 +15,6 @@ namespace NeuroXChange.View
         public BreathPacerWindow()
         {
             InitializeComponent();
-            breathPacerControl.Start();
         }
     }
 }

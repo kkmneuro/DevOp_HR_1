@@ -30,8 +30,7 @@ namespace NeuroXChange
             InitializeComponent();
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 
-            bool SimplestMode = Boolean.Parse(iniFileReader.Read("SimplestMode", "GeneralSettings", "true"));
-            if(SimplestMode)
+            if(mainNeuroXView.SimplestMode)
             {
                 dockPanelConfigFile = "DockPanelSimplestMode.config";
                 fileToolStripMenuItem.Visible = false;

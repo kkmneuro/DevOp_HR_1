@@ -26,6 +26,9 @@ namespace NeuroXChange.View
         private MainNeuroXController controller;
         private Thread mainNeuroXViewThread;
 
+        // mode of the application
+        public bool SimplestMode { get; private set; }
+
         // main application window
         public MainWindow mainWindow { get; private set; }
         public bool allWindowsOnTop { get; private set; }
@@ -63,6 +66,7 @@ namespace NeuroXChange.View
             this.model = model;
             this.controller = controller;
             mainNeuroXViewThread = Thread.CurrentThread;
+            SimplestMode = Boolean.Parse(model.iniFileReader.Read("SimplestMode", "GeneralSettings", "true"));
 
             mainWindow = new MainWindow(this, model.iniFileReader);
             mainWindow.modeNameSL.Text = "Mode: " + (model.emulationOnHistoryMode ? "emulation on history" : "real-time");
@@ -102,7 +106,7 @@ namespace NeuroXChange.View
             bMColorCodedWithPriceWindow = new BMColorCodedWithPriceWindow(model);
             bMColorCodedWithPriceWindow.Owner = mainWindow;
 
-            applicationControlWindow = new ApplicationControlWindow(model, controller);
+            applicationControlWindow = new ApplicationControlWindow(this, controller);
             applicationControlWindow.Owner = mainWindow;
 
             emulationModeControlWindow = new EmulationModeControlWindow(model, controller);

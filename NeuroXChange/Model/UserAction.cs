@@ -7,6 +7,10 @@
         ApplicationStarted = 1,
         ApplicationClosed,
 
+        // Start/stop record button pressed
+        ApplicationControlStart,
+        ApplicationControlStop,
+
         // training
         TrainingStarted = 10,
         TrainingManuallyStopped,
@@ -16,7 +20,7 @@
         ManualPositionChosen,
         MarketSentimentSurveyPressed = 50,
 
-        // manual traiding
+        // manual trading
         PositionManuallyOpened = 100,
         PositionManuallyClosed
     }
