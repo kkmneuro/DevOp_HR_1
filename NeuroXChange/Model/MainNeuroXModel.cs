@@ -32,7 +32,6 @@ namespace NeuroXChange.Model
         // ---- Observable pattern implementation
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
 
-
         // fields that determine state of application, but won't be logged
         public bool emulationOnHistoryMode { get; private set; }
 

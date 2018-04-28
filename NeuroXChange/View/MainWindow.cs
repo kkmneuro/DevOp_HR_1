@@ -29,6 +29,19 @@ namespace NeuroXChange
             this.iniFileReader = iniFileReader;
             InitializeComponent();
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+
+            bool SimplestMode = Boolean.Parse(iniFileReader.Read("SimplestMode", "GeneralSettings", "true"));
+            if(SimplestMode)
+            {
+                fileToolStripMenuItem.Visible = false;
+                trainingToolStripMenuItem.Visible = false;
+                windowsToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                fileToolStripMenuItemSimplestMode.Visible = false;
+                windowsToolStripMenuItemSimplestMode.Visible = false;
+            }
         }
 
         private IDockContent GetContentFromPersistString(string persistString)
@@ -72,11 +85,11 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.rawInformationWindow;
             else if (sender == newOrderToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.newOrderWindow;
-            else if (sender == chartsToolStripMenuItem)
+            else if (sender == chartsToolStripMenuItem || sender == chartsToolStripMenuItemSimplestMode)
                 dockContentWindow = mainNeuroXView.chartsWindow;
-            else if (sender == breathPacerToolStripMenuItem)
+            else if (sender == breathPacerToolStripMenuItem || sender == breathPacerToolStripMenuItemSimplestMode)
                 dockContentWindow = mainNeuroXView.breathPacerWindow;
-            else if (sender == indicatorsToolStripMenuItem)
+            else if (sender == indicatorsToolStripMenuItem || sender == indicatorsToolStripMenuItemSimplestMode)
                 dockContentWindow = mainNeuroXView.indicatorsWindow;
             else if (sender == behavioralModelsToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.behavioralModelWindow;

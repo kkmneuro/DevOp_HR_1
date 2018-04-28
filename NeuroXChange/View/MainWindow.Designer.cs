@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulationModeControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.marketSentimentSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breathPacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indicatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,24 +54,30 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.marketSentimentSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
+            this.fileToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.breathPacerToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.indicatorsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // mainMenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.fileToolStripMenuItemSimplestMode,
             this.trainingToolStripMenuItem,
             this.windowsToolStripMenuItem,
+            this.windowsToolStripMenuItemSimplestMode,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(397, 24);
-            this.menuStrip1.TabIndex = 6;
-            this.menuStrip1.Text = "menuStrip1";
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(397, 24);
+            this.mainMenuStrip.TabIndex = 6;
+            this.mainMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -110,6 +118,18 @@
             this.compDayToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.compDayToolStripMenuItem.Text = "Comp day";
             this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 6);
+            // 
+            // marketSentimentSurveyToolStripMenuItem
+            // 
+            this.marketSentimentSurveyToolStripMenuItem.Name = "marketSentimentSurveyToolStripMenuItem";
+            this.marketSentimentSurveyToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.marketSentimentSurveyToolStripMenuItem.Text = "Market sentiment - survey";
+            this.marketSentimentSurveyToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // windowsToolStripMenuItem
             // 
@@ -207,7 +227,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -248,17 +268,51 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
-            // toolStripMenuItem2
+            // fileToolStripMenuItemSimplestMode
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 6);
+            this.fileToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItemSimplestMode});
+            this.fileToolStripMenuItemSimplestMode.Name = "fileToolStripMenuItemSimplestMode";
+            this.fileToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItemSimplestMode.Text = "File";
             // 
-            // marketSentimentSurveyToolStripMenuItem
+            // exitToolStripMenuItemSimplestMode
             // 
-            this.marketSentimentSurveyToolStripMenuItem.Name = "marketSentimentSurveyToolStripMenuItem";
-            this.marketSentimentSurveyToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.marketSentimentSurveyToolStripMenuItem.Text = "Market sentiment - survey";
-            this.marketSentimentSurveyToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            this.exitToolStripMenuItemSimplestMode.Name = "exitToolStripMenuItemSimplestMode";
+            this.exitToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItemSimplestMode.Text = "Exit";
+            this.exitToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // windowsToolStripMenuItemSimplestMode
+            // 
+            this.windowsToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.breathPacerToolStripMenuItemSimplestMode,
+            this.indicatorsToolStripMenuItemSimplestMode,
+            this.chartsToolStripMenuItemSimplestMode});
+            this.windowsToolStripMenuItemSimplestMode.Name = "windowsToolStripMenuItemSimplestMode";
+            this.windowsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(68, 20);
+            this.windowsToolStripMenuItemSimplestMode.Text = "Windows";
+            // 
+            // breathPacerToolStripMenuItemSimplestMode
+            // 
+            this.breathPacerToolStripMenuItemSimplestMode.Name = "breathPacerToolStripMenuItemSimplestMode";
+            this.breathPacerToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
+            this.breathPacerToolStripMenuItemSimplestMode.Text = "Breath pacer";
+            this.breathPacerToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // indicatorsToolStripMenuItemSimplestMode
+            // 
+            this.indicatorsToolStripMenuItemSimplestMode.Name = "indicatorsToolStripMenuItemSimplestMode";
+            this.indicatorsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
+            this.indicatorsToolStripMenuItemSimplestMode.Text = "Indicators";
+            this.indicatorsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // chartsToolStripMenuItemSimplestMode
+            // 
+            this.chartsToolStripMenuItemSimplestMode.Name = "chartsToolStripMenuItemSimplestMode";
+            this.chartsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(152, 22);
+            this.chartsToolStripMenuItemSimplestMode.Text = "Charts";
+            this.chartsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -267,15 +321,15 @@
             this.ClientSize = new System.Drawing.Size(397, 344);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.mainMenuStrip);
             this.IsMdiContainer = true;
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.mainMenuStrip;
             this.Name = "MainWindow";
             this.Text = "NeuroTrader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -284,7 +338,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
@@ -310,6 +364,12 @@
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem marketSentimentSurveyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem breathPacerToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem indicatorsToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItemSimplestMode;
     }
 }
 
