@@ -204,7 +204,7 @@ namespace NeuroXChange.Model.Database
             var commandText = string.Format(@"
                 INSERT INTO BioData ([Time], Temperature, HeartRate, SkinConductance, AccX, AccY, AccZ, TrainingType, TrainingStep, ApplicationStates)
                     VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', {7}, {8}, {9})",
-                data.time,
+                data.time.ToUniversalTime(),
                 data.temperature,
                 data.heartRate,
                 data.skinConductance,
@@ -282,7 +282,7 @@ namespace NeuroXChange.Model.Database
                     ([ActionID], [Time], [DetailID])
                     VALUES ({0}, '{1}', '{2}');",
                 (int)action,
-                time,
+                time.ToUniversalTime(),
                 (int)detail);
 
             var cmd = new OleDbCommand(commandText, connection);
@@ -538,7 +538,7 @@ namespace NeuroXChange.Model.Database
             {
                 var cmd = new OleDbCommand();
                 cmd.Connection = connection;
-                cmd.CommandText = $"SELECT * FROM UserActions WHERE [Time] > #{time.ToString("yyyy-MM-dd HH:mm:ss")}# ORDER BY ID";
+                cmd.CommandText = $"SELECT * FROM UserActions WHERE [Time] > #{time.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}# ORDER BY ID";
 
                 var reader = cmd.ExecuteReader();
                 var item = new UserActionsData();
@@ -578,7 +578,7 @@ namespace NeuroXChange.Model.Database
                 cmd.Connection = connection;
                 cmd.CommandText = $@"SELECT BioData.*, SellPrice, BuyPrice FROM BioData
 LEFT OUTER JOIN PriceAtBioDataTick ON BioData.ID = PriceAtBioDataTick.ID WHERE [Time] > @Time ORDER BY BioData.ID ASC";
-                cmd.Parameters.AddWithValue("@Time", time);
+                cmd.Parameters.AddWithValue("@Time", time.ToUniversalTime());
 
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
