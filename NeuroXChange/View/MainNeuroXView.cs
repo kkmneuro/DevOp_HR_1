@@ -128,6 +128,7 @@ namespace NeuroXChange.View
                 return;
             }
 
+            // TODO: delete SynchronizationWindow in future
             synchronizationWindow = new SynchronizationWindow();
 
             logoWindow = new LogoWindow();
@@ -207,10 +208,18 @@ namespace NeuroXChange.View
                         mainWindow.behavioralModelSL.Text = "Behavioral model: " + (model.behavioralModelsContainer.ActiveBehavioralModelIndex + 1);
                         break;
                     case MainNeuroXModelEvent.ActiveModelStateChanged:
+                        if (SimplestMode)
+                        {
+                            break;
+                        }
                         UpdateInterfaceFromModelState(model.getActiveBehavioralModel().CurrentTickState);
                         break;
                     case MainNeuroXModelEvent.LogicQueryDirection:
                         {
+                            if (SimplestMode)
+                            {
+                                break;
+                            }
                             int trainingStep = (int)data;
                             string[] messages = { "LONG", "SHORT", "M_L_S_1", "M_L_S_2", "M_S_L_1", "M_S_L_2", "Singular LONG", "Singular SHORT" };
                             string message = 66 <= trainingStep && trainingStep <= 73 ? messages[trainingStep - 66] : "No direction confirmed!";
@@ -219,10 +228,8 @@ namespace NeuroXChange.View
                         }
                     case MainNeuroXModelEvent.SyncrhonizationStarted:
                         mainWindow.Hide();
-                        //synchronizationWindow.Show();
                         break;
                     case MainNeuroXModelEvent.SynchronizationFinished:
-                        //synchronizationWindow.Hide();
                         mainWindow.Show();
                         break;
                     case MainNeuroXModelEvent.SynchronizationEvent:
