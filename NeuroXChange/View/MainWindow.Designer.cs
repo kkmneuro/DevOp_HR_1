@@ -36,7 +36,6 @@
             this.exitToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.marketSentimentSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breathPacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,7 +122,6 @@
             // 
             this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.compDayToolStripMenuItem,
-            this.toolStripMenuItem2,
             this.marketSentimentSurveyToolStripMenuItem});
             this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
             this.trainingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
@@ -135,11 +133,6 @@
             this.compDayToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.compDayToolStripMenuItem.Text = "Comp day";
             this.compDayToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 6);
             // 
             // marketSentimentSurveyToolStripMenuItem
             // 
@@ -380,7 +373,6 @@
         private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compDayToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem marketSentimentSurveyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItemSimplestMode;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItemSimplestMode;

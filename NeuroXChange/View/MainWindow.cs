@@ -34,7 +34,7 @@ namespace NeuroXChange
             {
                 dockPanelConfigFile = "DockPanelSimplestMode.config";
                 fileToolStripMenuItem.Visible = false;
-                trainingToolStripMenuItem.Visible = false;
+                compDayToolStripMenuItem.Visible = false;
                 windowsToolStripMenuItem.Visible = false;
             }
             else
