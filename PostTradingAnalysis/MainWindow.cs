@@ -43,9 +43,8 @@ namespace PostTradingAnalysis
             {
                 if (cbDates.SelectedIndex > -1)
                 {
-                    var date = DateTime.Parse(cbDates.Text);
-                    var timeFrom = new DateTime(date.Year, date.Month, date.Day);
-                    var timeTo = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+                    var timeFrom = DateTime.Parse(cbDates.Text);
+                    var timeTo = timeFrom.AddHours(8);
                     application.LoadData(timeFrom, timeTo);
                 }
             }

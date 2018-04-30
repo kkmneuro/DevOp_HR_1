@@ -72,13 +72,13 @@ namespace PostTradingAnalysis
             using (var cmd = new SqlCommand())
             {
                 cmd.Connection = connection;
-                cmd.CommandText = @"SELECT DISTINCT CONVERT(Date, [Time]) AS Date, UserID From UserActions WHERE ActionID = 1 ORDER BY Date DESC";
+                cmd.CommandText = @"SELECT DISTINCT Time, UserID From UserActions WHERE ActionID = 3 ORDER BY Time DESC";
 
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var date = DateTime.Parse(reader["Date"].ToString());
+                        var date = DateTime.Parse(reader["Time"].ToString());
                         var userId = long.Parse(reader["UserId"].ToString());
                         activeDates[userId].Add(date);
                     }
