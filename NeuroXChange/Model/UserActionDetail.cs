@@ -11,6 +11,9 @@
         SurveyFavor = 103,
         SurveyExit = 104,
         SurveyEnter = 105,
+        LongTrade = 106,
+        ShortTrade = 107,
+        NoDirection = 108,
 
         // Training
         TrainingCompDay = 200,

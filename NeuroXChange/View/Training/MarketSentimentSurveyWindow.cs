@@ -29,6 +29,12 @@ namespace NeuroXChange.View.Training
                 detail = UserActionDetail.SurveyExit;
             else if (sender == btnVariant6)
                 detail = UserActionDetail.SurveyEnter;
+            else if (sender == btnVariant7)
+                detail = UserActionDetail.LongTrade;
+            else if (sender == btnVariant8)
+                detail = UserActionDetail.ShortTrade;
+            else if (sender == btnVariant9)
+                detail = UserActionDetail.NoDirection;
             localDatabaseConnector.WriteUserAction(Model.UserAction.MarketSentimentSurveyPressed, detail);
         }
     }
