@@ -1,12 +1,14 @@
 ﻿using NeuroTraderProtocols;
 using NeuroXChange.Common;
 using NeuroXChange.Model.FixApi;
-using NeuroXChange.Model.Portfolio;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
 using System.Windows.Forms;
+#if !SIMPLEST
+using NeuroXChange.Model.Portfolio;
+#endif
 
 namespace NeuroXChange.Model.Database
 {
@@ -177,6 +179,7 @@ namespace NeuroXChange.Model.Database
             reader.Close();
         }
 
+#if !SIMPLEST
         public List<Order> LoadTradesHistory()
         {
             List<Order> result = new List<Order>();
@@ -192,6 +195,7 @@ namespace NeuroXChange.Model.Database
 
             return result;
         }
+#endif
 
         // returns id of added row in the database table
         public int WriteBioData(BioData.BioData data)
@@ -289,6 +293,7 @@ namespace NeuroXChange.Model.Database
             cmd.ExecuteNonQueryAsync();
         }
 
+#if !SIMPLEST
         public void WriteClosedOrder(Order order)
         {
             if (!DatabaseConnected || emulationOnHistoryMode)
@@ -339,6 +344,7 @@ namespace NeuroXChange.Model.Database
             var cmd = new OleDbCommand(commandText, connection);
             cmd.ExecuteNonQuery();
         }
+#endif
 
 
         private void CreateDatabaseStructure(OleDbCommand cmd)
@@ -362,9 +368,11 @@ namespace NeuroXChange.Model.Database
             // creating tables from enumerations
             CreateTableFromEnum(cmd, typeof(UserAction));
             CreateTableFromEnum(cmd, typeof(UserActionDetail));
+#if !SIMPLEST
             CreateTableFromEnum(cmd, typeof(OrderDirection));
             CreateTableFromEnum(cmd, typeof(OpenReason));
             CreateTableFromEnum(cmd, typeof(Portfolio.CloseReason));
+#endif
 
             // BioData table
             cmd.CommandText =
@@ -425,9 +433,7 @@ namespace NeuroXChange.Model.Database
                             [ID] AUTOINCREMENT NOT NULL PRIMARY KEY,
                             [ActionID] INTEGER NOT NULL,
                             [Time] DATETIME NOT NULL,
-                            [DetailID] INTEGER NOT NULL,
-                            CONSTRAINT FK_Action FOREIGN KEY (ActionID) REFERENCES UserAction(ID),
-                            CONSTRAINT FK_Detail FOREIGN KEY (DetailID) REFERENCES UserActionDetail(ID)
+                            [DetailID] INTEGER NOT NULL
                         );";
             cmd.ExecuteNonQuery();
 
@@ -455,10 +461,7 @@ namespace NeuroXChange.Model.Database
                         [CloseReason] INTEGER NOT NULL,
                         [Profitability] LONG NOT NULL,
                         [StopLossPips] INTEGER,
-                        [TakeProfitPips] INTEGER,
-                        CONSTRAINT FK_Direction FOREIGN KEY (Direction) REFERENCES OrderDirection(ID),
-                        CONSTRAINT FK_OpenReason FOREIGN KEY (OpenReason) REFERENCES OpenReason(ID),
-                        CONSTRAINT FK_CloseReason FOREIGN KEY (CloseReason) REFERENCES CloseReason(ID)
+                        [TakeProfitPips] INTEGER
                     );";
             cmd.ExecuteNonQuery();
 

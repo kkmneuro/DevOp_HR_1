@@ -73,6 +73,7 @@ namespace NeuroXChange.View
 
         private void dataUpdaterTimer_Tick(object sender, EventArgs e)
         {
+#if !SIMPLEST
             if (selectedIndex < 0 || selectedIndex >= model.behavioralModelsContainer.BehavioralModelsCount)
             {
                 return;
@@ -108,8 +109,10 @@ namespace NeuroXChange.View
                     AddItemToTrackedData(item);
                 }
             }
+#endif
         }
 
+#if !SIMPLEST
         private void AddItemToTrackedData(TransitionHistoryItem item)
         {
             var row = trackedData.NewRow();
@@ -120,5 +123,6 @@ namespace NeuroXChange.View
             trackedData.Rows.Add(row);
             trackedData.AcceptChanges();
         }
+#endif
     }
 }

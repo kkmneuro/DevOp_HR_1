@@ -28,6 +28,7 @@ namespace NeuroXChange.View
             this.view = view;
         }
 
+#if !SIMPLEST
         public void UpdateInterfaceFromModelState(BehavioralModelState state)
         {
             labStepName.Text = BehavioralModelStateHelper.StateToString(state);
@@ -104,6 +105,7 @@ namespace NeuroXChange.View
                     }
             }
         }
+#endif
 
         private void buysell_button_Click(object sender, EventArgs e)
         {
@@ -113,6 +115,7 @@ namespace NeuroXChange.View
 
         private void CBlinkButtonsToActiveBM_CheckedChanged(object sender, EventArgs e)
         {
+#if !SIMPLEST
             UpdateInterfaceFromModelState(model.getActiveBehavioralModel().CurrentTickState);
 
             if (!CBlinkButtonsToActiveBM.Checked)
@@ -122,6 +125,7 @@ namespace NeuroXChange.View
                 btnBuy.BackColor = Color.RoyalBlue;
                 btnSell.BackColor = Color.Red;
             }
+#endif
         }
     }
 }

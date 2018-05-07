@@ -136,7 +136,9 @@ namespace NeuroXChange
             iniFileReader.Write("MainWindowY", Location.Y.ToString(), "Interface");
             iniFileReader.Write("MainWindowWidth", Size.Width.ToString(), "Interface");
             iniFileReader.Write("MainWindowHeight", Size.Height.ToString(), "Interface");
+#if !SIMPLEST
             iniFileReader.Write("HistoryTickInterval", mainNeuroXView.emulationModeControlWindow.tickSizeUpDown.Value.ToString(), "EmulationOnHistory");
+#endif
         }
 
         void dockStateChangedAction(object sender, EventArgs e)

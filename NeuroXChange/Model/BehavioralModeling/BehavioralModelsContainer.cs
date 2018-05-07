@@ -1,13 +1,15 @@
 ﻿using NeuroXChange.Common;
-using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
-using NeuroXChange.Model.BehavioralModeling.Transitions;
 using NeuroXChange.Model.BioData;
 using NeuroXChange.Model.FixApi;
 using System;
 using System.Collections.Generic;
 using System.Data;
+#if !SIMPLEST
+using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+using NeuroXChange.Model.BehavioralModeling.Transitions;
+#endif
 
 namespace NeuroXChange.Model.BehavioralModeling
 {
@@ -23,6 +25,7 @@ namespace NeuroXChange.Model.BehavioralModeling
         // processors of raw biological data
         public HeartRateProcessor heartRateProcessor { get; private set; }
 
+#if !SIMPLEST
         // behavioral model conditions properties
         public List<AbstractBehavioralModelCondition> conditions { get; private set; }
 
@@ -55,6 +58,8 @@ namespace NeuroXChange.Model.BehavioralModeling
                 UpdateActiveTag(ActiveBehavioralModelIndex);
             }
         }
+#endif
+
 
         public BehavioralModelsContainer(MainNeuroXModel mainNeuroXModel, IniFileReader iniFileReader)
         {
@@ -81,6 +86,8 @@ namespace NeuroXChange.Model.BehavioralModeling
 
             // initialize raw biological processors
             heartRateProcessor = new HeartRateProcessor();
+
+#if !SIMPLEST
 
             // initialize conditions
             var stepChangeStart = StringHelpers.ParseDoubleCultureIndependent(iniFileReader.Read("StepChangeStart", "LogicConditions", "-60"), true);
@@ -294,6 +301,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             UpdateActiveTag(ActiveBehavioralModelIndex);
 
             LoadTradesHistory();
+#endif
         }
 
         public void OnNext(BioData.BioData data)
@@ -301,6 +309,7 @@ namespace NeuroXChange.Model.BehavioralModeling
             // notify processors
             heartRateProcessor.OnNext(data);
 
+#if !SIMPLEST
             // notify conditions
             foreach (var condition in conditions)
             {
@@ -312,17 +321,21 @@ namespace NeuroXChange.Model.BehavioralModeling
             {
                 model.OnNext(data);
             }
+#endif
         }
 
         private TickPrice lastPrice = new TickPrice();
         public void OnNext(TickPrice price)
         {
+#if !SIMPLEST
             foreach (var model in behavioralModels)
             {
                 model.OnNext(price);
             }
+#endif
         }
 
+#if !SIMPLEST
         // update statistics for specific model
         private void UpdateActiveTag(int modelInd)
         {
@@ -350,5 +363,6 @@ namespace NeuroXChange.Model.BehavioralModeling
                 behavioralModels[order.BMModelID - 1].portfolio.AddHistoryOrder(order);
             }
         }
+#endif
     }
 }

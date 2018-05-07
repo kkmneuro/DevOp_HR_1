@@ -90,6 +90,36 @@
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|AnyCPU'">
+    <OutputPath>bin\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|x64'">
+    <OutputPath>bin\x64\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|x86'">
+    <OutputPath>bin\x86\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE;SIMPLEST</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,37 +144,45 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\IniFileReader.cs" />
-    <Compile Include="Common\StringHelpers.cs" />
-    <Compile Include="Common\ThreadedBindingList.cs" />
-    <Compile Include="Model\ApplicationState.cs" />
+  <ItemGroup Condition="'$(Configuration)'!='SIMPLEST'">
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AccYCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AbstractBehavioralModelCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRReadyToTradeCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRPreactivationCondition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery1Condition.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery2Condition.cs" />
-    <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\SimpleBehavioralModel.cs" />
-    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelStateHelper.cs" />
     <Compile Include="Model\BehavioralModeling\BehavioralModels\TransitionHistoryItem.cs" />
-    <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
-    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
-    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\ConditionalTransition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\AbstractTransition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\FunctionalTransition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery1Transition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery2Transition.cs" />
     <Compile Include="Model\BehavioralModeling\Transitions\DirectionConfirmedExpirationTransition.cs" />
+    <Compile Include="Model\Portfolio\CloseReason.cs" />
+    <Compile Include="Model\Portfolio\Direction.cs" />
+    <Compile Include="Model\Portfolio\OpenReason.cs" />
+    <Compile Include="Model\Portfolio\Order.cs" />
+    <Compile Include="Model\Portfolio\OrderState.cs" />
+    <Compile Include="Model\Portfolio\Portfolio.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
     <Compile Include="Model\BioData\BioDataEvent.cs" />
     <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
     <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
     <Compile Include="Model\BioData\IBioDataObserver.cs" />
     <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
     <Compile Include="Model\BioData\TTLApiBioDataProvider.cs" />
+    <Compile Include="Common\IniFileReader.cs" />
+    <Compile Include="Common\StringHelpers.cs" />
+    <Compile Include="Common\ThreadedBindingList.cs" />
+    <Compile Include="Model\ApplicationState.cs" />
     <Compile Include="Model\Database\LocalDatabaseConnector.cs" />
     <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
@@ -158,12 +196,6 @@
     <Compile Include="Model\IMainNeuroXModelObserver.cs" />
     <Compile Include="Controller\MainNeuroXController.cs" />
     <Compile Include="Model\MainNeuroXModelEvent.cs" />
-    <Compile Include="Model\Portfolio\CloseReason.cs" />
-    <Compile Include="Model\Portfolio\Direction.cs" />
-    <Compile Include="Model\Portfolio\OpenReason.cs" />
-    <Compile Include="Model\Portfolio\Order.cs" />
-    <Compile Include="Model\Portfolio\OrderState.cs" />
-    <Compile Include="Model\Portfolio\Portfolio.cs" />
     <Compile Include="Model\ServerConnection\ServerConnector.cs" />
     <Compile Include="Model\Training\TrainingType.cs" />
     <Compile Include="Model\UserAction.cs" />

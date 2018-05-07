@@ -5,16 +5,16 @@ using System.Windows.Forms;
 using NeuroXChange.Controller;
 using NeuroXChange.Model;
 using NeuroXChange.Model.BioData;
-using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 using NeuroXChange.Model.FixApi;
 using System.Linq;
 using System.Data;
 using System.Threading;
 using WeifenLuo.WinFormsUI.Docking;
-using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
 using NeuroXChange.Common;
 using NeuroXChange.View.Training;
 using NeuroXChange.View.DialogWindows;
+using NeuroXChange.Model.BehavioralModeling.BehavioralModels;
+using NeuroXChange.Model.BehavioralModeling.BioDataProcessors;
 
 namespace NeuroXChange.View
 {
@@ -97,8 +97,11 @@ namespace NeuroXChange.View
             behavioralModelWindow = new BehavioralModelsWindow(controller);
             behavioralModelWindow.Owner = mainWindow;
             behavioralModelWindow.dataGridView.AutoGenerateColumns = true;
+#if !SIMPLEST
+
             behavioralModelWindow.dataGridView.DataSource = model.behavioralModelsContainer.behavioralModelsDataSet;
             behavioralModelWindow.dataGridView.DataMember = model.behavioralModelsContainer.behavioralModelsDataTableName;
+#endif
 
             behavioralModelTransitionsWindow = new BehavioralModelTransitionsWindow(model);
             behavioralModelTransitionsWindow.Owner = mainWindow;
@@ -153,8 +156,10 @@ namespace NeuroXChange.View
                 mainWindow.TopMost = true;
             }
 
+#if !SIMPLEST
             // move view to initial state
             UpdateInterfaceFromModelState(BehavioralModelState.InitialState);
+#endif
         }
 
         public void RunApplication()
@@ -162,6 +167,7 @@ namespace NeuroXChange.View
             Application.Run(mainWindow);
         }
 
+#if !SIMPLEST
         private void UpdateInterfaceFromModelState(BehavioralModelState state)
         {
             newOrderWindow.labStepName.Text = BehavioralModelStateHelper.StateToString(state);
@@ -197,6 +203,7 @@ namespace NeuroXChange.View
 
             newOrderWindow.UpdateInterfaceFromModelState(state);
         }
+#endif
 
         public void OnNext(MainNeuroXModelEvent modelEvent, object data)
         {
@@ -204,6 +211,7 @@ namespace NeuroXChange.View
             {
                 switch (modelEvent)
                 {
+#if !SIMPLEST
                     case MainNeuroXModelEvent.ActiveModelChanged:
                         mainWindow.behavioralModelSL.Text = "Behavioral model: " + (model.behavioralModelsContainer.ActiveBehavioralModelIndex + 1);
                         break;
@@ -226,6 +234,7 @@ namespace NeuroXChange.View
                             MessageBox.Show(message, "NeuroXChange", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             break;
                         }
+#endif
                     case MainNeuroXModelEvent.SyncrhonizationStarted:
                         mainWindow.Hide();
                         break;
@@ -439,6 +448,7 @@ namespace NeuroXChange.View
                     }
                     indicatorsWindow.peakPerformanceGauge.Value = ((float)peakIndValue) - 0.5f;
 
+#if !SIMPLEST
                     // update BM color-coded charts
                     bool addBmPoints = bMColorCodedWithPriceWindow.chart.Series[0].Points.Count < 10;
                     if (!addBmPoints)
@@ -523,6 +533,7 @@ namespace NeuroXChange.View
                         //int pointCount = bMColorCodedWithPriceWindow.chart.Series.Select(s => s.Points.Count).Sum();
                         //bMColorCodedWithPriceWindow.Text = pointCount.ToString();
                     }
+#endif
                 }
                 catch { }
                 }));

@@ -6,10 +6,12 @@ using NeuroXChange.Common;
 using System.IO;
 using NeuroXChange.Model.FixApi;
 using NeuroXChange.Model.BehavioralModeling;
-using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
 using NeuroXChange.Model.Training;
 using NeuroXChange.Model.Database;
 using NeuroXChange.Model.ServerConnection;
+#if !SIMPLEST
+using NeuroXChange.Model.BehavioralModeling.BehavioralModelCondition;
+#endif
 
 namespace NeuroXChange.Model
 {
@@ -55,7 +57,7 @@ namespace NeuroXChange.Model
         public int TrainingStep { get; set; }
         public ApplicationState ApplicationStates { get; set; }
 
-
+#if !SIMPLEST
         // Query condition only for showing popup message purpose
         // TODO: need to move this to anoter place or to remove completely
         private LogicQuery1Condition logicQuery1Condition;
@@ -66,15 +68,18 @@ namespace NeuroXChange.Model
             return behavioralModelsContainer.behavioralModels[
                 behavioralModelsContainer.ActiveBehavioralModelIndex];
         }
+#endif
 
         public void setActiveBehavioralModelIndex(int modelInd)
         {
+#if !SIMPLEST
             if (behavioralModelsContainer.ActiveBehavioralModelIndex == modelInd)
             {
                 return;
             }
             behavioralModelsContainer.ActiveBehavioralModelIndex = modelInd;
             NotifyObservers(MainNeuroXModelEvent.ActiveModelChanged, null);
+#endif
         }
 
         public MainNeuroXModel()
@@ -135,7 +140,10 @@ namespace NeuroXChange.Model
 
                 // initialization of behavioral models
                 behavioralModelsContainer = new BehavioralModelsContainer(this, iniFileReader);
+#if !SIMPLEST
                 logicQuery1Condition = new LogicQuery1Condition(100, 60);
+#endif
+
 
                 ApplicationStates = ApplicationState.UsualState;
             }
@@ -238,6 +246,7 @@ namespace NeuroXChange.Model
         // ---- IBioDataObserver implementation
         public void OnNext(BioData.BioDataEvent bioDataEvent, object data)
         {
+#if !SIMPLEST
             if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
                 return;
@@ -262,6 +271,7 @@ namespace NeuroXChange.Model
             {
                 NotifyObservers(MainNeuroXModelEvent.LogicQueryDirection, logicQuery1Condition.lastNot74SubProtocolID);
             }
+#endif
         }
 
         // ---- IFixApiObserver implementation
@@ -272,7 +282,9 @@ namespace NeuroXChange.Model
                 return;
             }
 
+#if !SIMPLEST
             behavioralModelsContainer.OnNext((TickPrice)data);
+#endif
         }
 
         // ---- Observable pattern implementation

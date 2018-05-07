@@ -22,6 +22,7 @@ namespace NeuroXChange.View
 
         private void modelCB_SelectedIndexChanged(object sender, EventArgs e)
         {
+#if !SIMPLEST
             selectedIndex = modelCB.SelectedIndex;
             var portfolio = model.behavioralModelsContainer.behavioralModels[selectedIndex].portfolio;
 
@@ -34,6 +35,7 @@ namespace NeuroXChange.View
             closedOrdersList.SynchronizationContext = SynchronizationContext.Current;
             closedOrdersBS.DataSource = closedOrdersList;
             closedOrdersDGV.AutoResizeColumns();
+#endif
         }
 
         private void ProfitabilityWindow_Load(object sender, EventArgs e)
