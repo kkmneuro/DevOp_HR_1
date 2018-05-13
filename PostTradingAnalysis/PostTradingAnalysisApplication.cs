@@ -358,6 +358,7 @@ namespace PostTradingAnalysis
 
                 double sum = 0;
                 int realCount = 0;
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[0].time), double.NaN));
                 for (int i = 1; i < bioData.Count; i++)
                 {
                     realCount++;
