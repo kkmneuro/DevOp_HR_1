@@ -246,7 +246,6 @@ namespace NeuroXChange.Model
         // ---- IBioDataObserver implementation
         public void OnNext(BioData.BioDataEvent bioDataEvent, object data)
         {
-#if !SIMPLEST
             if (bioDataEvent != BioDataEvent.NewBioDataTick)
             {
                 return;
@@ -254,6 +253,7 @@ namespace NeuroXChange.Model
 
             behavioralModelsContainer.OnNext((BioData.BioData)data);
 
+#if !SIMPLEST
             var activeModel = getActiveBehavioralModel();
             if (activeModel.PreviousTickState != activeModel.CurrentTickState)
             {
