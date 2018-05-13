@@ -61,6 +61,7 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
+            this.newOrderToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -239,6 +240,7 @@
             this.windowsToolStripMenuItemSimplestMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.breathPacerToolStripMenuItemSimplestMode,
             this.indicatorsToolStripMenuItemSimplestMode,
+            this.newOrderToolStripMenuItemSimplestMode,
             this.chartsToolStripMenuItemSimplestMode,
             this.applicationControlToolStripMenuItemSimplestMode});
             this.windowsToolStripMenuItemSimplestMode.Name = "windowsToolStripMenuItemSimplestMode";
@@ -325,6 +327,13 @@
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
+            // newOrderToolStripMenuItemSimplestMode
+            // 
+            this.newOrderToolStripMenuItemSimplestMode.Name = "newOrderToolStripMenuItemSimplestMode";
+            this.newOrderToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.newOrderToolStripMenuItemSimplestMode.Text = "New order";
+            this.newOrderToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -382,6 +391,7 @@
         private System.Windows.Forms.ToolStripMenuItem chartsToolStripMenuItemSimplestMode;
         private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem newOrderToolStripMenuItemSimplestMode;
     }
 }
 

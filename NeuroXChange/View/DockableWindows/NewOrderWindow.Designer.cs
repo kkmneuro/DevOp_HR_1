@@ -72,9 +72,8 @@
             this.labStepName.AutoSize = true;
             this.labStepName.Location = new System.Drawing.Point(12, 10);
             this.labStepName.Name = "labStepName";
-            this.labStepName.Size = new System.Drawing.Size(220, 13);
+            this.labStepName.Size = new System.Drawing.Size(0, 13);
             this.labStepName.TabIndex = 7;
-            this.labStepName.Text = "Display the stage of the loop process - HERE";
             // 
             // CBlinkButtonsToActiveBM
             // 

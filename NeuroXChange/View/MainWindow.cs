@@ -86,7 +86,7 @@ namespace NeuroXChange
             DockContent dockContentWindow = null;
             if (sender == rawInformationToolStripMenuItem)
                 dockContentWindow = mainNeuroXView.rawInformationWindow;
-            else if (sender == newOrderToolStripMenuItem)
+            else if (sender == newOrderToolStripMenuItem || sender == newOrderToolStripMenuItemSimplestMode)
                 dockContentWindow = mainNeuroXView.newOrderWindow;
             else if (sender == chartsToolStripMenuItem || sender == chartsToolStripMenuItemSimplestMode)
                 dockContentWindow = mainNeuroXView.chartsWindow;
