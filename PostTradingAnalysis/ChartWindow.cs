@@ -10,13 +10,16 @@ namespace PostTradingAnalysis
         public Color Color { get; private set; }
         public ToolStripMenuItem ChartGroupItem { get; private set; }
 
-        public ChartWindow(PostTradingAnalysisApplication application, Color color, ToolStripMenuItem chartGroupItem)
+        public string WindowName { get; private set; }
+
+        public ChartWindow(PostTradingAnalysisApplication application, Color color, ToolStripMenuItem chartGroupItem, string windowName = "")
         {
             InitializeComponent();
             this.Application = application;
             this.Color = color;
             this.HideOnClose = true;
             this.ChartGroupItem = chartGroupItem;
+            this.WindowName = windowName;
         }
 
         private void btnZoom_Click(object sender, EventArgs e)

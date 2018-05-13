@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using System.Linq;
 
 namespace PostTradingAnalysis
 {
@@ -58,7 +59,7 @@ namespace PostTradingAnalysis
 
         private IDockContent GetContentFromPersistString(string persistString)
         {
-            return application.chartWindows[persistString];
+            return application.chartWindows.First(x => x.Value.WindowName == persistString).Value;
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)

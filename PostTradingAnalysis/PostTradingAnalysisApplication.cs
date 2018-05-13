@@ -107,36 +107,36 @@ namespace PostTradingAnalysis
 
             // registering windows
             chartWindows = new Dictionary<string, ChartWindow>();
-            chartWindows["Temperature"] = new ChartWindow(this, Color.Red, mainWindow.mainChartsToolStripMenuItem);
-            chartWindows["Heart rate"] = new ChartWindow(this, Color.Green, mainWindow.mainChartsToolStripMenuItem);
-            chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue, mainWindow.mainChartsToolStripMenuItem);
-            chartWindows["Price"] = new ChartWindow(this, Color.Brown, mainWindow.mainChartsToolStripMenuItem);
-            chartWindows["Training step"] = new ChartWindow(this, Color.Orange, mainWindow.mainChartsToolStripMenuItem);
+            chartWindows["Temperature"] = new ChartWindow(this, Color.Red, mainWindow.mainChartsToolStripMenuItem, "Temperature");
+            chartWindows["Heart rate"] = new ChartWindow(this, Color.Green, mainWindow.mainChartsToolStripMenuItem, "Heart rate");
+            chartWindows["Skin conductance"] = new ChartWindow(this, Color.Blue, mainWindow.mainChartsToolStripMenuItem, "Skin conductance");
+            chartWindows["Price"] = new ChartWindow(this, Color.Brown, mainWindow.mainChartsToolStripMenuItem, "Price");
+            chartWindows["Training step"] = new ChartWindow(this, Color.Orange, mainWindow.mainChartsToolStripMenuItem, "Training step");
 
-            chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red, mainWindow.stddevToolStripMenuItem);
-            chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green, mainWindow.stddevToolStripMenuItem);
-            chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue, mainWindow.stddevToolStripMenuItem);
-            chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown, mainWindow.stddevToolStripMenuItem);
+            chartWindows["Temperature stddev"] = new ChartWindow(this, Color.Red, mainWindow.stddevToolStripMenuItem, "T_1");
+            chartWindows["Heart rate stddev"] = new ChartWindow(this, Color.Green, mainWindow.stddevToolStripMenuItem, "H_1");
+            chartWindows["Skin conductance stddev"] = new ChartWindow(this, Color.Blue, mainWindow.stddevToolStripMenuItem, "S_1");
+            chartWindows["Price stddev"] = new ChartWindow(this, Color.Brown, mainWindow.stddevToolStripMenuItem, "P_1");
 
-            chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red, mainWindow.stddevAwayToolStripMenuItem);
-            chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green, mainWindow.stddevAwayToolStripMenuItem);
-            chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue, mainWindow.stddevAwayToolStripMenuItem);
-            chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown, mainWindow.stddevAwayToolStripMenuItem);
+            chartWindows["Temperature stddev away"] = new ChartWindow(this, Color.Red, mainWindow.stddevAwayToolStripMenuItem, "T_2");
+            chartWindows["Heart rate stddev away"] = new ChartWindow(this, Color.Green, mainWindow.stddevAwayToolStripMenuItem, "H_2");
+            chartWindows["Skin conductance stddev away"] = new ChartWindow(this, Color.Blue, mainWindow.stddevAwayToolStripMenuItem, "S_2");
+            chartWindows["Price stddev away"] = new ChartWindow(this, Color.Brown, mainWindow.stddevAwayToolStripMenuItem, "P_2");
 
-            chartWindows["Temperature velocity"] = new ChartWindow(this, Color.Red, mainWindow.velocityToolStripMenuItem);
-            chartWindows["Heart rate velocity"] = new ChartWindow(this, Color.Green, mainWindow.velocityToolStripMenuItem);
-            chartWindows["Skin conductance velocity"] = new ChartWindow(this, Color.Blue, mainWindow.velocityToolStripMenuItem);
-            chartWindows["Price velocity"] = new ChartWindow(this, Color.Brown, mainWindow.velocityToolStripMenuItem);
+            chartWindows["Temperature velocity"] = new ChartWindow(this, Color.Red, mainWindow.velocityToolStripMenuItem, "T_3");
+            chartWindows["Heart rate velocity"] = new ChartWindow(this, Color.Green, mainWindow.velocityToolStripMenuItem, "H_3");
+            chartWindows["Skin conductance velocity"] = new ChartWindow(this, Color.Blue, mainWindow.velocityToolStripMenuItem, "S_3");
+            chartWindows["Price velocity"] = new ChartWindow(this, Color.Brown, mainWindow.velocityToolStripMenuItem, "P_3");
 
-            chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem);
-            chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem);
+            chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem, "SC stddev * Price stddev");
+            chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem, "SC stdev away - Price stddev away");
 
             // setup windows
             foreach (var kv in chartWindows)
             {
                 var chartName = kv.Key;
                 var window = kv.Value;
-                window.Text = chartName;
+                window.Text = window.WindowName;
                 window.Owner = mainWindow;
 
                 // update toolstrip
@@ -190,7 +190,7 @@ namespace PostTradingAnalysis
                 series.StrokeThickness = 1;
                 series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
 
-                // choose what data to show
+                // chose what data to show
                 if (chartName == "Temperature")
                     for (int i = 0; i < bioData.Count; i++)
                         series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), bioData[i].temperature));
