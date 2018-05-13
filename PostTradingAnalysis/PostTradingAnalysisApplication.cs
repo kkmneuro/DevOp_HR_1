@@ -16,7 +16,7 @@ namespace PostTradingAnalysis
         public List<User> users = new List<User>();
         public Dictionary<int, long> cbUserInd2UserID = new Dictionary<int, long>();
 
-        public Dictionary<long, List<DateTime>> activeDates = new Dictionary<long, List<DateTime>>();
+        public Dictionary<long, List<Tuple<DateTime,DateTime>>> activeDates = new Dictionary<long, List<Tuple<DateTime, DateTime>>>();
 
         public List<BioData> bioData;
 
@@ -63,25 +63,40 @@ namespace PostTradingAnalysis
                         {
                             kensIndex = itemIndex;
                         }
-                        activeDates[user.id] = new List<DateTime>();
+                        activeDates[user.id] = new List<Tuple<DateTime, DateTime>>();
                     }
                 }
             }
 
             // load dates where users traded
-            using (var cmd = new SqlCommand())
+            foreach (var user in users)
             {
-                cmd.Connection = connection;
-                cmd.CommandText = @"SELECT DISTINCT Time, UserID From UserActions WHERE ActionID = 3 ORDER BY Time DESC";
-
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new SqlCommand())
                 {
-                    while (reader.Read())
+                    cmd.Connection = connection;
+                    cmd.CommandText = @"SELECT Time,ActionID From UserActions WHERE UserID = @UserID AND (ActionID = 3 OR ActionID = 4) ORDER BY Time";
+                    cmd.Parameters.AddWithValue("@UserId", user.id);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        var date = DateTime.Parse(reader["Time"].ToString());
-                        var userId = long.Parse(reader["UserId"].ToString());
-                        activeDates[userId].Add(date);
+                        int prevAction = -1;
+                        DateTime prevDate = new DateTime();
+                        while (reader.Read())
+                        {
+                            var action = int.Parse(reader["ActionID"].ToString());
+                            var date = DateTime.Parse(reader["Time"].ToString());
+                            if (prevAction == -1 && action == 3)
+                            {
+                                prevAction = action;
+                                prevDate = date;
+                            }else if (prevAction == 3 && action == 4)
+                            {
+                                activeDates[user.id].Add(new Tuple<DateTime,DateTime>(prevDate, date));
+                                prevAction = -1;
+                            }
+                        }
                     }
+                    activeDates[user.id].Reverse();
                 }
             }
 
@@ -152,7 +167,7 @@ namespace PostTradingAnalysis
             cmd.Connection = connection;
             cmd.CommandText = @"SELECT * From BioDataWithPrice
                 WHERE UserID = @UserId AND Time BETWEEN @StartDate AND @EndDate
-                ORDER BY ID";
+                ORDER BY Time";
             cmd.Parameters.AddWithValue("@UserId", cbUserInd2UserID[mainWindow.cbUsers.SelectedIndex]);
             cmd.Parameters.AddWithValue("@StartDate", dateFrom);
             cmd.Parameters.AddWithValue("@EndDate", dateTo);

@@ -43,8 +43,10 @@ namespace PostTradingAnalysis
             {
                 if (cbDates.SelectedIndex > -1)
                 {
-                    var timeFrom = DateTime.Parse(cbDates.Text);
-                    var timeTo = timeFrom.AddHours(8);
+                    var userId = application.cbUserInd2UserID[cbUsers.SelectedIndex];
+                    var timeRange = application.activeDates[userId][cbDates.SelectedIndex];
+                    var timeFrom = timeRange.Item1;
+                    var timeTo = timeRange.Item2;
                     application.LoadData(timeFrom, timeTo);
                 }
             }
@@ -216,9 +218,9 @@ namespace PostTradingAnalysis
         {
             cbDates.Items.Clear();
             var userId = application.cbUserInd2UserID[cbUsers.SelectedIndex];
-            foreach (var date in application.activeDates[userId])
+            foreach (var dates in application.activeDates[userId])
             {
-                cbDates.Items.Add(date);
+                cbDates.Items.Add(dates.Item1.ToString("yyyy/MM/dd   HH:mm:ss") + "  -  " + dates.Item2.ToString("HH:mm:ss"));
             }
 
             if(cbDates.Items.Count > 0)
