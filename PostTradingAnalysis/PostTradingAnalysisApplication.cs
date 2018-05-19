@@ -18,7 +18,9 @@ namespace PostTradingAnalysis
 
         public Dictionary<long, List<Tuple<DateTime,DateTime>>> activeDates = new Dictionary<long, List<Tuple<DateTime, DateTime>>>();
 
-        public List<BioData> bioData;
+        public List<BioData> bioData = new List<BioData>();
+
+        public List<UserAction> userActions = new List<UserAction>();
 
         public MainWindow mainWindow;
 
@@ -30,8 +32,6 @@ namespace PostTradingAnalysis
         {
             // create windows
             mainWindow = new MainWindow(this);
-            bioData = new List<BioData>();
-
 
             // connect database
             var cb = new SqlConnectionStringBuilder();
@@ -160,25 +160,51 @@ namespace PostTradingAnalysis
                 throw new Exception("First date should be less than second date!");
             }
 
-            bioData.Clear();
-
             // biodata Loading
-            var cmd = new SqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandText = @"SELECT * From BioDataWithPrice
+            bioData.Clear();
+            using (var cmd = new SqlCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = @"SELECT * From BioDataWithPrice
                 WHERE UserID = @UserId AND Time BETWEEN @StartDate AND @EndDate
                 ORDER BY Time";
-            cmd.Parameters.AddWithValue("@UserId", cbUserInd2UserID[mainWindow.cbUsers.SelectedIndex]);
-            cmd.Parameters.AddWithValue("@StartDate", dateFrom);
-            cmd.Parameters.AddWithValue("@EndDate", dateTo);
+                cmd.Parameters.AddWithValue("@UserId", cbUserInd2UserID[mainWindow.cbUsers.SelectedIndex]);
+                cmd.Parameters.AddWithValue("@StartDate", dateFrom);
+                cmd.Parameters.AddWithValue("@EndDate", dateTo);
 
-            var reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                var data = BioData.FromSqlDataReader(reader);
-                bioData.Add(data);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var data = BioData.FromSqlDataReader(reader);
+                        bioData.Add(data);
+                    }
+                    reader.Close();
+                }
             }
-            reader.Close();
+
+            // user acitons Loading
+            userActions.Clear();
+            using (var cmd = new SqlCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = @"SELECT * From UserActions
+                WHERE UserID = @UserId AND Time BETWEEN @StartDate AND @EndDate
+                ORDER BY Time";
+                cmd.Parameters.AddWithValue("@UserId", cbUserInd2UserID[mainWindow.cbUsers.SelectedIndex]);
+                cmd.Parameters.AddWithValue("@StartDate", dateFrom);
+                cmd.Parameters.AddWithValue("@EndDate", dateTo);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var data = UserAction.FromSqlDataReader(reader);
+                        userActions.Add(data);
+                    }
+                    reader.Close();
+                }
+            }
 
             foreach (var kv in chartWindows)
             {
@@ -241,6 +267,12 @@ namespace PostTradingAnalysis
 
             // update std charts
             SetChartPeriod(stdDevPeriod);
+
+            // update annotations
+            foreach (var kv in chartWindows)
+            {
+                kv.Value.UpdateUserActionsAnnotations();
+            }
         }
 
         private int stdDevPeriod = 120;
