@@ -30,12 +30,12 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoadData = new System.Windows.Forms.Panel();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.cbDates = new System.Windows.Forms.ComboBox();
             this.cbUsers = new System.Windows.Forms.ComboBox();
             this.btnExport = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.cbStddevInterval = new System.Windows.Forms.ComboBox();
-            this.btnLoad = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +48,7 @@
             this.stddevAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.velocityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.signalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.velocityStdAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
@@ -79,6 +80,18 @@
             this.panelLoadData.Name = "panelLoadData";
             this.panelLoadData.Size = new System.Drawing.Size(1041, 59);
             this.panelLoadData.TabIndex = 3;
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLoad.Location = new System.Drawing.Point(977, 5);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(58, 48);
+            this.btnLoad.TabIndex = 7;
+            this.btnLoad.Text = "Load";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // cbDates
             // 
@@ -144,18 +157,6 @@
             this.cbStddevInterval.TabIndex = 8;
             this.cbStddevInterval.SelectedIndexChanged += new System.EventHandler(this.cbStddevInterval_SelectedIndexChanged);
             // 
-            // btnLoad
-            // 
-            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLoad.Location = new System.Drawing.Point(977, 5);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(58, 48);
-            this.btnLoad.TabIndex = 7;
-            this.btnLoad.Text = "Load";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -215,6 +216,7 @@
             this.stddevToolStripMenuItem,
             this.stddevAwayToolStripMenuItem,
             this.velocityToolStripMenuItem,
+            this.velocityStdAwayToolStripMenuItem,
             this.signalsToolStripMenuItem});
             this.chartsToolStripMenuItem.Name = "chartsToolStripMenuItem";
             this.chartsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
@@ -223,32 +225,38 @@
             // mainChartsToolStripMenuItem
             // 
             this.mainChartsToolStripMenuItem.Name = "mainChartsToolStripMenuItem";
-            this.mainChartsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.mainChartsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.mainChartsToolStripMenuItem.Text = "Main Charts";
             // 
             // stddevToolStripMenuItem
             // 
             this.stddevToolStripMenuItem.Name = "stddevToolStripMenuItem";
-            this.stddevToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.stddevToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.stddevToolStripMenuItem.Text = "Stddev";
             // 
             // stddevAwayToolStripMenuItem
             // 
             this.stddevAwayToolStripMenuItem.Name = "stddevAwayToolStripMenuItem";
-            this.stddevAwayToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.stddevAwayToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.stddevAwayToolStripMenuItem.Text = "Stddev Away";
             // 
             // velocityToolStripMenuItem
             // 
             this.velocityToolStripMenuItem.Name = "velocityToolStripMenuItem";
-            this.velocityToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.velocityToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.velocityToolStripMenuItem.Text = "Velocity";
             // 
             // signalsToolStripMenuItem
             // 
             this.signalsToolStripMenuItem.Name = "signalsToolStripMenuItem";
-            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.signalsToolStripMenuItem.Text = "Signals";
+            // 
+            // velocityStdAwayToolStripMenuItem
+            // 
+            this.velocityStdAwayToolStripMenuItem.Name = "velocityStdAwayToolStripMenuItem";
+            this.velocityStdAwayToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.velocityStdAwayToolStripMenuItem.Text = "Velocity StdAway";
             // 
             // saveFileDialog
             // 
@@ -316,6 +324,7 @@
         public System.Windows.Forms.ToolStripMenuItem stddevToolStripMenuItem;
         public System.Windows.Forms.ComboBox cbUsers;
         public System.Windows.Forms.ComboBox cbDates;
+        public System.Windows.Forms.ToolStripMenuItem velocityStdAwayToolStripMenuItem;
     }
 }
 

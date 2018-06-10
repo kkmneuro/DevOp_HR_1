@@ -128,6 +128,11 @@ namespace PostTradingAnalysis
             chartWindows["Skin conductance velocity"] = new ChartWindow(this, Color.Blue, mainWindow.velocityToolStripMenuItem, "S_3");
             chartWindows["Price velocity"] = new ChartWindow(this, Color.Brown, mainWindow.velocityToolStripMenuItem, "P_3");
 
+            chartWindows["Temperature velocity stdaway"] = new ChartWindow(this, Color.Red, mainWindow.velocityStdAwayToolStripMenuItem, "T_4");
+            chartWindows["Heart rate velocity stdaway"] = new ChartWindow(this, Color.Green, mainWindow.velocityStdAwayToolStripMenuItem, "H_4");
+            chartWindows["Skin conductance velocity stdaway"] = new ChartWindow(this, Color.Blue, mainWindow.velocityStdAwayToolStripMenuItem, "S_4");
+            chartWindows["Price velocity stdaway"] = new ChartWindow(this, Color.Brown, mainWindow.velocityStdAwayToolStripMenuItem, "P_4");
+
             chartWindows["SC stddev * Price stddev"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem, "SC stddev * Price stddev");
             chartWindows["SC stdev away - Price stddev away"] = new ChartWindow(this, Color.DarkMagenta, mainWindow.signalsToolStripMenuItem, "SC stdev away - Price stddev away");
 
@@ -442,6 +447,80 @@ namespace PostTradingAnalysis
                             realCount--;
                         }
                     }
+                }
+
+                model.Series.Clear();
+                model.Series.Add(series);
+
+                window.plotView.Model.InvalidatePlot(true);
+            }
+
+
+
+            // update velocity stddev away charts only
+            foreach (var kv in chartWindows)
+            {
+                var chartName = kv.Key;
+                var window = kv.Value;
+                var model = window.plotView.Model;
+                if (!chartName.EndsWith(" velocity stdaway"))
+                {
+                    continue;
+                }
+
+                LineSeries velocity = null;
+                if (chartName == "Temperature velocity stdaway")
+                    velocity = (LineSeries)chartWindows["Temperature velocity"].plotView.Model.Series[0];
+                if (chartName == "Heart rate velocity stdaway")
+                    velocity = (LineSeries)chartWindows["Heart rate velocity"].plotView.Model.Series[0];
+                if (chartName == "Skin conductance velocity stdaway")
+                    velocity = (LineSeries)chartWindows["Skin conductance velocity"].plotView.Model.Series[0];
+                if (chartName == "Price velocity stdaway")
+                    velocity = (LineSeries)chartWindows["Price velocity"].plotView.Model.Series[0];
+
+                var series = new LineSeries();
+                series.Title = chartName;
+                series.StrokeThickness = 1;
+                series.Color = OxyColor.FromUInt32((uint)window.Color.ToArgb());
+
+                for (int i = 0; i < bioData.Count; i++)
+                {
+                    if (i < stdDevPeriod - 1)
+                    {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), double.NaN));
+                        continue;
+                    }
+
+                    double mean = 0;
+                    int realCount = 0;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        realCount++;
+                        mean += velocity.Points[j].Y;
+                    }
+
+                    if (realCount <= stdDevPeriod / 2)
+                    {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), double.NaN));
+                        continue;
+                    }
+
+                    mean /= realCount;
+
+                    double sum = 0;
+                    double val = mean;
+                    for (int j = i - stdDevPeriod + 1; j <= i; j++)
+                    {
+                        val = velocity.Points[j].Y;
+                        sum += (val - mean) * (val - mean);
+                    }
+
+                    sum /= realCount;
+                    double stddev = Math.Sqrt(sum);
+
+                    double stddevAway = stddev > 0 ? (val - mean) / stddev : 0;
+
+                    series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(bioData[i].time), stddevAway));
                 }
 
                 model.Series.Clear();
