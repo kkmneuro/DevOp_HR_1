@@ -47,8 +47,8 @@
             this.stddevToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stddevAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.velocityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.signalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.velocityStdAwayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.signalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
@@ -138,19 +138,11 @@
             this.cbStddevInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStddevInterval.FormattingEnabled = true;
             this.cbStddevInterval.Items.AddRange(new object[] {
-            "1 second",
-            "2 seconds",
-            "3 seconds",
-            "5 seconds",
-            "10 seconds",
             "15 seconds",
-            "20 seconds",
             "30 seconds",
             "1 minute",
-            "2 minutes",
             "3 minutes",
-            "5 minutes",
-            "10 minutes"});
+            "5 minutes"});
             this.cbStddevInterval.Location = new System.Drawing.Point(434, 33);
             this.cbStddevInterval.Name = "cbStddevInterval";
             this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
@@ -246,17 +238,17 @@
             this.velocityToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.velocityToolStripMenuItem.Text = "Velocity";
             // 
-            // signalsToolStripMenuItem
-            // 
-            this.signalsToolStripMenuItem.Name = "signalsToolStripMenuItem";
-            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.signalsToolStripMenuItem.Text = "Signals";
-            // 
             // velocityStdAwayToolStripMenuItem
             // 
             this.velocityStdAwayToolStripMenuItem.Name = "velocityStdAwayToolStripMenuItem";
             this.velocityStdAwayToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.velocityStdAwayToolStripMenuItem.Text = "Velocity StdAway";
+            // 
+            // signalsToolStripMenuItem
+            // 
+            this.signalsToolStripMenuItem.Name = "signalsToolStripMenuItem";
+            this.signalsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.signalsToolStripMenuItem.Text = "Signals";
             // 
             // saveFileDialog
             // 
