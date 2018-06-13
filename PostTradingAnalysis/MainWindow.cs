@@ -121,29 +121,25 @@ namespace PostTradingAnalysis
         {
             if (cbDates.SelectedIndex == -1)
                 return;
-            saveFileDialog.FileName = "PostAnalysisData - " + cbDates.Text.Replace('/', '_').Replace(':', '_') + " - " + cbStddevInterval.Text + ".txt";
+            saveFileDialog.FileName = "PostAnalysisData - " + cbDates.Text.Replace('/', '_').Replace(':', '_') + " - " + cbStddevInterval.Text + ".tsv";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName))
                 {
                     var stdDevPeriod = application.GetStdDevPeriod();
-                    var temperatureStddev = ((LineSeries)application.chartWindows["Temperature stddev"].plotView.Model.Series[0]).Points;
-                    var heartRateStddev = ((LineSeries)application.chartWindows["Heart rate stddev"].plotView.Model.Series[0]).Points;
-                    var skinConductanceStddev = ((LineSeries)application.chartWindows["Skin conductance stddev"].plotView.Model.Series[0]).Points;
-                    var priceStddev = ((LineSeries)application.chartWindows["Price stddev"].plotView.Model.Series[0]).Points;
                     var temperatureStddevAway = ((LineSeries)application.chartWindows["Temperature stddev away"].plotView.Model.Series[0]).Points;
                     var heartRateStddevAway = ((LineSeries)application.chartWindows["Heart rate stddev away"].plotView.Model.Series[0]).Points;
                     var skinConductanceStddevAway = ((LineSeries)application.chartWindows["Skin conductance stddev away"].plotView.Model.Series[0]).Points;
                     var priceStddevAway = ((LineSeries)application.chartWindows["Price stddev away"].plotView.Model.Series[0]).Points;
-                    var temperatureStddevVelocity = ((LineSeries)application.chartWindows["Temperature velocity"].plotView.Model.Series[0]).Points;
-                    var heartRateStddevVelocity = ((LineSeries)application.chartWindows["Heart rate velocity"].plotView.Model.Series[0]).Points;
-                    var skinConductanceStddevVelocity = ((LineSeries)application.chartWindows["Skin conductance velocity"].plotView.Model.Series[0]).Points;
-                    var priceStddevVelocity = ((LineSeries)application.chartWindows["Price velocity"].plotView.Model.Series[0]).Points;
+                    var temperatureStddevVelocityStdaway = ((LineSeries)application.chartWindows["Temperature velocity stdaway"].plotView.Model.Series[0]).Points;
+                    var heartRateStddevVelocityStdaway = ((LineSeries)application.chartWindows["Heart rate velocity stdaway"].plotView.Model.Series[0]).Points;
+                    var skinConductanceStddevVelocityStdaway = ((LineSeries)application.chartWindows["Skin conductance velocity stdaway"].plotView.Model.Series[0]).Points;
+                    var priceStddevVelocityStdaway = ((LineSeries)application.chartWindows["Price velocity stdaway"].plotView.Model.Series[0]).Points;
                     var scPriceStdDevMult = ((LineSeries)application.chartWindows["SC stddev * Price stddev"].plotView.Model.Series[0]).Points;
                     var scPriceStdDevSubstrUp = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[0]).Points;
                     var scPriceStdDevSubstrDown = ((LineSeries)application.chartWindows["SC stdev away - Price stddev away"].plotView.Model.Series[1]).Points;
-                    outputFile.WriteLine("Id\tTime\tTemperature\tHeartRate\tSkinConductance\tTrainingStep\tBuyPrice\tTemperatureStddev\tHeartRateStddev\tSkinConductanceStddev\tPriceStddev\tTemperatureStddevAway\tHeartRateStddevAway\tSkinConductanceStddevAway\tPriceStddevAway\tTemperatureVelocity\tHeartRateVelocity\tSkinConductanceVelocity\tPriceVelocity\tscPriceStdDevMult\tscPriceStdDevSubstr");
+                    outputFile.WriteLine("Id\tTime\tTemperature\tHeartRate\tSkinConductance\tBuyPrice\tTemperatureStddevAway\tHeartRateStddevAway\tSkinConductanceStddevAway\tPriceStddevAway\tTemperatureVelocityStdaway\tHeartRateVelocityStdaway\tSkinConductanceVelocityStdaway\tPriceVelocityStdaway\tscPriceStdDevMult\tscPriceStdDevSubstr");
                     for (int ind = 0; ind < application.bioData.Count; ind++)
                     {
                         var dataPoint = application.bioData[ind];
@@ -157,17 +153,7 @@ namespace PostTradingAnalysis
                         outputFile.Write("\t");
                         outputFile.Write(dataPoint.skinConductance);
                         outputFile.Write("\t");
-                        outputFile.Write(dataPoint.trainingStep);
-                        outputFile.Write("\t");
                         outputFile.Write(dataPoint.buyPrice);
-                        outputFile.Write("\t");
-                        outputFile.Write(dblstr(temperatureStddev[ind].Y));
-                        outputFile.Write("\t");
-                        outputFile.Write(dblstr(heartRateStddev[ind].Y));
-                        outputFile.Write("\t");
-                        outputFile.Write(dblstr(skinConductanceStddev[ind].Y));
-                        outputFile.Write("\t");
-                        outputFile.Write(dblstr(priceStddev[ind].Y));
                         outputFile.Write("\t");
                         outputFile.Write(dblstr(temperatureStddevAway[ind].Y));
                         outputFile.Write("\t");
@@ -177,13 +163,13 @@ namespace PostTradingAnalysis
                         outputFile.Write("\t");
                         outputFile.Write(dblstr(priceStddevAway[ind].Y));
                         outputFile.Write("\t");
-                        outputFile.Write(dblstr(temperatureStddevVelocity[ind].Y));
+                        outputFile.Write(dblstr(temperatureStddevVelocityStdaway[ind].Y));
                         outputFile.Write("\t");
-                        outputFile.Write(dblstr(heartRateStddevVelocity[ind].Y));
+                        outputFile.Write(dblstr(heartRateStddevVelocityStdaway[ind].Y));
                         outputFile.Write("\t");
-                        outputFile.Write(dblstr(skinConductanceStddevVelocity[ind].Y));
+                        outputFile.Write(dblstr(skinConductanceStddevVelocityStdaway[ind].Y));
                         outputFile.Write("\t");
-                        outputFile.Write(dblstr(priceStddevVelocity[ind].Y));
+                        outputFile.Write(dblstr(priceStddevVelocityStdaway[ind].Y));
                         outputFile.Write("\t");
                         outputFile.Write(dblstr(scPriceStdDevMult[ind].Y));
                         outputFile.Write("\t");

@@ -253,7 +253,7 @@
             // saveFileDialog
             // 
             this.saveFileDialog.FileName = "AnalysisData";
-            this.saveFileDialog.Filter = "Tab-delemited text files (*.txt)|*.txt";
+            this.saveFileDialog.Filter = "Tab-delemited text files (*.tsv)|*.tsv";
             this.saveFileDialog.Title = "Export biodata to...";
             // 
             // dockPanel
