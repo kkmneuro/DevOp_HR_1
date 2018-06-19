@@ -121,7 +121,7 @@ namespace PostTradingAnalysis
         {
             if (cbDates.SelectedIndex == -1)
                 return;
-            saveFileDialog.FileName = "PostAnalysisData - " + cbDates.Text.Replace('/', '_').Replace(':', '_') + " - " + cbStddevInterval.Text + ".tsv";
+            saveFileDialog.FileName = "PostAnalysisData - " + dtFrom.Value.ToString("dd_MM_yyyy hh_mm_ss") + "  -  " + dtTo.Value.ToString("dd_MM_yyyy hh_mm_ss") + "  -  " + cbStddevInterval.Text + ".tsv";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -143,6 +143,8 @@ namespace PostTradingAnalysis
                     for (int ind = 0; ind < application.bioData.Count; ind++)
                     {
                         var dataPoint = application.bioData[ind];
+                        if (dataPoint.time < dtFrom.Value || dataPoint.time > dtTo.Value)
+                            continue;
                         outputFile.Write(dataPoint.id);
                         outputFile.Write("\t");
                         outputFile.Write(dataPoint.time.ToString("dd/MM/yyyy HH:mm:ss"));
@@ -194,6 +196,14 @@ namespace PostTradingAnalysis
             {
                 cbDates.SelectedIndex = 0;
             }
+        }
+
+        private void cbDates_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var userId = application.cbUserInd2UserID[cbUsers.SelectedIndex];
+            var interval = application.activeDates[userId][cbDates.SelectedIndex];
+            dtFrom.Value = interval.Item1;
+            dtTo.Value = interval.Item2;
         }
     }
 }

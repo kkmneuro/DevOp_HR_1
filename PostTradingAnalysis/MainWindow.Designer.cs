@@ -52,6 +52,10 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dtFrom = new System.Windows.Forms.DateTimePicker();
+            this.dtTo = new System.Windows.Forms.DateTimePicker();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +71,10 @@
             // 
             // panelLoadData
             // 
+            this.panelLoadData.Controls.Add(this.dtTo);
+            this.panelLoadData.Controls.Add(this.label5);
+            this.panelLoadData.Controls.Add(this.dtFrom);
+            this.panelLoadData.Controls.Add(this.label3);
             this.panelLoadData.Controls.Add(this.btnLoad);
             this.panelLoadData.Controls.Add(this.cbDates);
             this.panelLoadData.Controls.Add(this.cbUsers);
@@ -99,8 +107,9 @@
             this.cbDates.FormattingEnabled = true;
             this.cbDates.Location = new System.Drawing.Point(62, 33);
             this.cbDates.Name = "cbDates";
-            this.cbDates.Size = new System.Drawing.Size(196, 21);
+            this.cbDates.Size = new System.Drawing.Size(230, 21);
             this.cbDates.TabIndex = 12;
+            this.cbDates.SelectedIndexChanged += new System.EventHandler(this.cbDates_SelectedIndexChanged);
             // 
             // cbUsers
             // 
@@ -115,9 +124,9 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(264, 33);
+            this.btnExport.Location = new System.Drawing.Point(731, 13);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(75, 21);
+            this.btnExport.Size = new System.Drawing.Size(75, 33);
             this.btnExport.TabIndex = 10;
             this.btnExport.Text = "Export...";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -126,7 +135,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(347, 37);
+            this.label4.Location = new System.Drawing.Point(309, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 9;
@@ -143,9 +152,9 @@
             "1 minute",
             "3 minutes",
             "5 minutes"});
-            this.cbStddevInterval.Location = new System.Drawing.Point(434, 33);
+            this.cbStddevInterval.Location = new System.Drawing.Point(396, 33);
             this.cbStddevInterval.Name = "cbStddevInterval";
-            this.cbStddevInterval.Size = new System.Drawing.Size(91, 21);
+            this.cbStddevInterval.Size = new System.Drawing.Size(129, 21);
             this.cbStddevInterval.TabIndex = 8;
             this.cbStddevInterval.SelectedIndexChanged += new System.EventHandler(this.cbStddevInterval_SelectedIndexChanged);
             // 
@@ -268,6 +277,46 @@
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(545, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "To:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(535, 11);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "From:";
+            // 
+            // dtFrom
+            // 
+            this.dtFrom.CustomFormat = "dd/MM/yyyy hh:mm:ss";
+            this.dtFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtFrom.Location = new System.Drawing.Point(574, 7);
+            this.dtFrom.Name = "dtFrom";
+            this.dtFrom.ShowUpDown = true;
+            this.dtFrom.Size = new System.Drawing.Size(146, 20);
+            this.dtFrom.TabIndex = 15;
+            this.dtFrom.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
+            // 
+            // dtTo
+            // 
+            this.dtTo.CustomFormat = "dd/MM/yyyy hh:mm:ss";
+            this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtTo.Location = new System.Drawing.Point(574, 33);
+            this.dtTo.Name = "dtTo";
+            this.dtTo.ShowUpDown = true;
+            this.dtTo.Size = new System.Drawing.Size(146, 20);
+            this.dtTo.TabIndex = 17;
+            this.dtTo.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,6 +366,10 @@
         public System.Windows.Forms.ComboBox cbUsers;
         public System.Windows.Forms.ComboBox cbDates;
         public System.Windows.Forms.ToolStripMenuItem velocityStdAwayToolStripMenuItem;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.DateTimePicker dtFrom;
+        public System.Windows.Forms.DateTimePicker dtTo;
     }
 }
 
