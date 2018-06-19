@@ -71,10 +71,6 @@
             // 
             // panelLoadData
             // 
-            this.panelLoadData.Controls.Add(this.dtTo);
-            this.panelLoadData.Controls.Add(this.label5);
-            this.panelLoadData.Controls.Add(this.dtFrom);
-            this.panelLoadData.Controls.Add(this.label3);
             this.panelLoadData.Controls.Add(this.btnLoad);
             this.panelLoadData.Controls.Add(this.cbDates);
             this.panelLoadData.Controls.Add(this.cbUsers);
@@ -83,6 +79,10 @@
             this.panelLoadData.Controls.Add(this.cbStddevInterval);
             this.panelLoadData.Controls.Add(this.label2);
             this.panelLoadData.Controls.Add(this.label1);
+            this.panelLoadData.Controls.Add(this.dtFrom);
+            this.panelLoadData.Controls.Add(this.dtTo);
+            this.panelLoadData.Controls.Add(this.label5);
+            this.panelLoadData.Controls.Add(this.label3);
             this.panelLoadData.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLoadData.Location = new System.Drawing.Point(0, 24);
             this.panelLoadData.Name = "panelLoadData";
