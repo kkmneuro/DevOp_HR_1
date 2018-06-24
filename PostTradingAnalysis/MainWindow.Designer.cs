@@ -37,6 +37,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbStddevInterval = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.dtFrom = new System.Windows.Forms.DateTimePicker();
+            this.dtTo = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDataPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,10 +56,6 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.dtFrom = new System.Windows.Forms.DateTimePicker();
-            this.dtTo = new System.Windows.Forms.DateTimePicker();
             this.panelLoadData.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -167,6 +167,46 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Date:";
             // 
+            // dtFrom
+            // 
+            this.dtFrom.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+            this.dtFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtFrom.Location = new System.Drawing.Point(574, 7);
+            this.dtFrom.Name = "dtFrom";
+            this.dtFrom.ShowUpDown = true;
+            this.dtFrom.Size = new System.Drawing.Size(146, 20);
+            this.dtFrom.TabIndex = 15;
+            this.dtFrom.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
+            // 
+            // dtTo
+            // 
+            this.dtTo.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+            this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtTo.Location = new System.Drawing.Point(574, 33);
+            this.dtTo.Name = "dtTo";
+            this.dtTo.ShowUpDown = true;
+            this.dtTo.Size = new System.Drawing.Size(146, 20);
+            this.dtTo.TabIndex = 17;
+            this.dtTo.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(535, 11);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "From:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(545, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "To:";
+            // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -276,46 +316,6 @@
             this.dockPanel.Size = new System.Drawing.Size(1041, 596);
             this.dockPanel.TabIndex = 5;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(545, 37);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 13);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "To:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(535, 11);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(33, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "From:";
-            // 
-            // dtFrom
-            // 
-            this.dtFrom.CustomFormat = "dd/MM/yyyy hh:mm:ss";
-            this.dtFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtFrom.Location = new System.Drawing.Point(574, 7);
-            this.dtFrom.Name = "dtFrom";
-            this.dtFrom.ShowUpDown = true;
-            this.dtFrom.Size = new System.Drawing.Size(146, 20);
-            this.dtFrom.TabIndex = 15;
-            this.dtFrom.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
-            // 
-            // dtTo
-            // 
-            this.dtTo.CustomFormat = "dd/MM/yyyy hh:mm:ss";
-            this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtTo.Location = new System.Drawing.Point(574, 33);
-            this.dtTo.Name = "dtTo";
-            this.dtTo.ShowUpDown = true;
-            this.dtTo.Size = new System.Drawing.Size(146, 20);
-            this.dtTo.TabIndex = 17;
-            this.dtTo.Value = new System.DateTime(2018, 6, 21, 0, 0, 0, 0);
             // 
             // MainWindow
             // 

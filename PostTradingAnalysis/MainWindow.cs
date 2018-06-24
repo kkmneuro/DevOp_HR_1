@@ -121,7 +121,7 @@ namespace PostTradingAnalysis
         {
             if (cbDates.SelectedIndex == -1)
                 return;
-            saveFileDialog.FileName = "PostAnalysisData - " + dtFrom.Value.ToString("dd_MM_yyyy hh_mm_ss") + "  -  " + dtTo.Value.ToString("dd_MM_yyyy hh_mm_ss") + "  -  " + cbStddevInterval.Text + ".tsv";
+            saveFileDialog.FileName = "PostAnalysisData - " + dtFrom.Value.ToString("dd_MM_yyyy HH_mm_ss") + "  -  " + dtTo.Value.ToString("dd_MM_yyyy HH_mm_ss") + "  -  " + cbStddevInterval.Text + ".tsv";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {

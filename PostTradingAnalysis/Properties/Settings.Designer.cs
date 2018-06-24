@@ -43,7 +43,7 @@ namespace PostTradingAnalysis.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("KercLeiw11Ynic")]
+        [global::System.Configuration.DefaultSettingValueAttribute("yuMnc46_dS23Ku")]
         public string Password {
             get {
                 return ((string)(this["Password"]));
