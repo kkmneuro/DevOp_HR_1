@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NeuroTraderServer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Port" Type="System.UInt16" Scope="Application">
+      <Value Profile="(Default)">7657</Value>
+    </Setting>
+    <Setting Name="DataSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">neurotrader-biodata-prod.database.windows.net</Value>
+    </Setting>
+    <Setting Name="UserID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UladzimirSukharukau</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">KercLeiw11Ynic</Value>
+    </Setting>
+    <Setting Name="InitialCatalog" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PsychophysiologyDatabase</Value>
+    </Setting>
+    <Setting Name="SslCertificatePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">cert.pfx</Value>
+    </Setting>
+    <Setting Name="SslCertificatePassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">abc</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

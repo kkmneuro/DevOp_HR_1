@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NTDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BioData">
+          <Key>
+            <PropertyRef Name="BioDataID" />
+          </Key>
+          <Property Name="BioDataID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionID" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="HR" Type="float" />
+          <Property Name="SC" Type="float" />
+          <Property Name="AccX" Type="float" />
+          <Property Name="AccY" Type="float" />
+          <Property Name="AccZ" Type="float" />
+        </EntityType>
+        <EntityType Name="PriceData">
+          <Key>
+            <PropertyRef Name="PriceID" />
+          </Key>
+          <Property Name="PriceID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionID" Type="int" Nullable="false" />
+          <Property Name="Symbol" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="PriceAsk" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="PriceBid" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="OpenPrice" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="ClosePrice" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="HighPrice" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="LowPrice" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="Volume" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="TimeFrame" Type="nchar" MaxLength="10" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LoginTimeLocal" Type="datetime" Nullable="false" />
+          <Property Name="LoginTimeUniversal" Type="datetime" Nullable="false" />
+          <Property Name="LogoutTimeLocal" Type="datetime" />
+          <Property Name="LogOutTimeUniversal" Type="datetime" />
+          <Property Name="IP" Type="nchar" MaxLength="15" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nchar" MaxLength="10" />
+          <Property Name="OS" Type="nvarchar" MaxLength="50" />
+          <Property Name="LocalTimeZone" Type="nvarchar" MaxLength="50" />
+          <Property Name="ScreenResolution" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddtitionalInfo" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="TradingData">
+          <Key>
+            <PropertyRef Name="TradeID" />
+          </Key>
+          <Property Name="TradeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionID" Type="int" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Symbol" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="19" Scale="5" Nullable="false" />
+          <Property Name="OpenTime" Type="datetime" Nullable="false" />
+          <Property Name="CloseTime" Type="datetime" />
+          <Property Name="OpenPrice" Type="decimal" Precision="19" Scale="5" Nullable="false" />
+          <Property Name="ClosePrice" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="ProfitLoss" Type="decimal" Precision="19" Scale="5" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Company" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_BioData_Sessions">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="BioData" Type="Self.BioData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="BioData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriceData_PriceData">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="PriceData" Type="Self.PriceData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="PriceData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TradingData_Sessions">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="TradingData" Type="Self.TradingData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="TradingData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NTDataModelStoreContainer">
+          <EntitySet Name="BioData" EntityType="Self.BioData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceData" EntityType="Self.PriceData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TradingData" EntityType="Self.TradingData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BioData_Sessions" Association="Self.FK_BioData_Sessions">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="BioData" EntitySet="BioData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriceData_PriceData" Association="Self.FK_PriceData_PriceData">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="PriceData" EntitySet="PriceData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Users" Association="Self.FK_Sessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TradingData_Sessions" Association="Self.FK_TradingData_Sessions">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="TradingData" EntitySet="TradingData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NTDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BioData">
+          <Key>
+            <PropertyRef Name="BioDataID" />
+          </Key>
+          <Property Name="BioDataID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionID" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="HR" Type="Double" />
+          <Property Name="SC" Type="Double" />
+          <Property Name="AccX" Type="Double" />
+          <Property Name="AccY" Type="Double" />
+          <Property Name="AccZ" Type="Double" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_BioData_Sessions" FromRole="BioData" ToRole="Sessions" />
+        </EntityType>
+        <EntityType Name="PriceData">
+          <Key>
+            <PropertyRef Name="PriceID" />
+          </Key>
+          <Property Name="PriceID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionID" Type="Int32" Nullable="false" />
+          <Property Name="Symbol" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="OpenPrice" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="ClosePrice" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="HighPrice" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="LowPrice" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_PriceData_PriceData" FromRole="PriceData" ToRole="Sessions" />
+          <Property Name="PriceAsk" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="PriceBid" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="Volume" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="TimeFrame" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="LoginTimeLocal" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LoginTimeUniversal" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogoutTimeLocal" Type="DateTime" Precision="3" />
+          <Property Name="LogOutTimeUniversal" Type="DateTime" Precision="3" />
+          <Property Name="IP" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="OS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LocalTimeZone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ScreenResolution" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddtitionalInfo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BioData" Relationship="Self.FK_BioData_Sessions" FromRole="Sessions" ToRole="BioData" />
+          <NavigationProperty Name="PriceData" Relationship="Self.FK_PriceData_PriceData" FromRole="Sessions" ToRole="PriceData" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Sessions_Users" FromRole="Sessions" ToRole="Users" />
+          <NavigationProperty Name="TradingData" Relationship="Self.FK_TradingData_Sessions" FromRole="Sessions" ToRole="TradingData" />
+        </EntityType>
+        <EntityType Name="TradingData">
+          <Key>
+            <PropertyRef Name="TradeID" />
+          </Key>
+          <Property Name="TradeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionID" Type="Int32" Nullable="false" />
+          <Property Name="Symbol" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="OpenTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CloseTime" Type="DateTime" Precision="3" />
+          <Property Name="OpenPrice" Type="Decimal" Precision="19" Scale="5" Nullable="false" />
+          <Property Name="ClosePrice" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="ProfitLoss" Type="Decimal" Precision="19" Scale="5" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_TradingData_Sessions" FromRole="TradingData" ToRole="Sessions" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="5" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_Sessions_Users" FromRole="Users" ToRole="Sessions" />
+        </EntityType>
+        <Association Name="FK_BioData_Sessions">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="BioData" Type="Self.BioData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="BioData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriceData_PriceData">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="PriceData" Type="Self.PriceData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="PriceData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TradingData_Sessions">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
+          <End Role="TradingData" Type="Self.TradingData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="TradingData">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BioData" EntityType="Self.BioData" />
+          <EntitySet Name="PriceData" EntityType="Self.PriceData" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" />
+          <EntitySet Name="TradingData" EntityType="Self.TradingData" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_BioData_Sessions" Association="Self.FK_BioData_Sessions">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="BioData" EntitySet="BioData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriceData_PriceData" Association="Self.FK_PriceData_PriceData">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="PriceData" EntitySet="PriceData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Users" Association="Self.FK_Sessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TradingData_Sessions" Association="Self.FK_TradingData_Sessions">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="TradingData" EntitySet="TradingData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NTDataModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="BioData">
+            <EntityTypeMapping TypeName="NTDataModel.BioData">
+              <MappingFragment StoreEntitySet="BioData">
+                <ScalarProperty Name="BioDataID" ColumnName="BioDataID" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="HR" ColumnName="HR" />
+                <ScalarProperty Name="SC" ColumnName="SC" />
+                <ScalarProperty Name="AccX" ColumnName="AccX" />
+                <ScalarProperty Name="AccY" ColumnName="AccY" />
+                <ScalarProperty Name="AccZ" ColumnName="AccZ" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceData">
+            <EntityTypeMapping TypeName="NTDataModel.PriceData">
+              <MappingFragment StoreEntitySet="PriceData">
+                <ScalarProperty Name="TimeFrame" ColumnName="TimeFrame" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="PriceBid" ColumnName="PriceBid" />
+                <ScalarProperty Name="PriceAsk" ColumnName="PriceAsk" />
+                <ScalarProperty Name="PriceID" ColumnName="PriceID" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="OpenPrice" ColumnName="OpenPrice" />
+                <ScalarProperty Name="ClosePrice" ColumnName="ClosePrice" />
+                <ScalarProperty Name="HighPrice" ColumnName="HighPrice" />
+                <ScalarProperty Name="LowPrice" ColumnName="LowPrice" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="NTDataModel.Sessions">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginTimeLocal" ColumnName="LoginTimeLocal" />
+                <ScalarProperty Name="LoginTimeUniversal" ColumnName="LoginTimeUniversal" />
+                <ScalarProperty Name="LogoutTimeLocal" ColumnName="LogoutTimeLocal" />
+                <ScalarProperty Name="LogOutTimeUniversal" ColumnName="LogOutTimeUniversal" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="OS" ColumnName="OS" />
+                <ScalarProperty Name="LocalTimeZone" ColumnName="LocalTimeZone" />
+                <ScalarProperty Name="ScreenResolution" ColumnName="ScreenResolution" />
+                <ScalarProperty Name="AddtitionalInfo" ColumnName="AddtitionalInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TradingData">
+            <EntityTypeMapping TypeName="NTDataModel.TradingData">
+              <MappingFragment StoreEntitySet="TradingData">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="TradeID" ColumnName="TradeID" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="OpenTime" ColumnName="OpenTime" />
+                <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
+                <ScalarProperty Name="OpenPrice" ColumnName="OpenPrice" />
+                <ScalarProperty Name="ClosePrice" ColumnName="ClosePrice" />
+                <ScalarProperty Name="ProfitLoss" ColumnName="ProfitLoss" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="NTDataModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

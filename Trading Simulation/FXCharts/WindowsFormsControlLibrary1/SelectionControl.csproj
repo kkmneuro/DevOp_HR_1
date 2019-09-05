@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4FDCFD1B-D78A-45DC-8BC4-6951702531ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SelectionControl</RootNamespace>
+    <AssemblyName>SelectionControl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FuturesSelection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FuturesSelection.Designer.cs">
+      <DependentUpon>FuturesSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InterActionWithMarket.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InterActionWithMarket.Designer.cs">
+      <DependentUpon>InterActionWithMarket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PriceChartControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PriceChartControl.Designer.cs">
+      <DependentUpon>PriceChartControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FuturesSelection.resx">
+      <DependentUpon>FuturesSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InterActionWithMarket.resx">
+      <DependentUpon>InterActionWithMarket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PriceChartControl.resx">
+      <DependentUpon>PriceChartControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ChartLines\ChartLines.csproj">
+      <Project>{f1943ccf-89c5-4c0d-be38-ae86531cd397}</Project>
+      <Name>ChartLines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MarketData\MarketData.csproj">
+      <Project>{19303745-8ea6-422b-b9b2-33dbe92bd87c}</Project>
+      <Name>MarketData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelectionSteps\Common.csproj">
+      <Project>{4edb72c0-8f7a-4915-93e7-244e3272bcbf}</Project>
+      <Name>Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

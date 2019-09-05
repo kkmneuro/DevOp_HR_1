@@ -1,0 +1,672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{56E015C9-0CC5-4AC7-98D7-8E42D1265A19}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NeuroXChange</RootNamespace>
+    <AssemblyName>NeuroTrader</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>E:\NeuroXChange-master\Publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|AnyCPU'">
+    <OutputPath>bin\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|x64'">
+    <OutputPath>bin\x64\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIMPLEST|x86'">
+    <OutputPath>bin\x86\SIMPLEST\</OutputPath>
+    <DefineConstants>TRACE;SIMPLEST</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>579AF6004283CDAD35CFF691B16FA8073D800EB0</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>NeuroTrader_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>3dparty\AxInterop.TTLLiveCtrlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>3dparty\Interop.TTLLiveCtrlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SuperSocket.ClientEngine, Version=0.10.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net, Version=0.15.2.11, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocket4Net.0.15.2\lib\net45\WebSocket4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>3dparty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015">
+      <HintPath>3dparty\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'!='SIMPLEST'">
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AccYCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AbstractBehavioralModelCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRReadyToTradeCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\HRPreactivationCondition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery1Condition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\LogicQuery2Condition.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\SimpleBehavioralModel.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelStateHelper.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\TransitionHistoryItem.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\ConditionalTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\AbstractTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\FunctionalTransition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery1Transition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\LogicQuery2Transition.cs" />
+    <Compile Include="Model\BehavioralModeling\Transitions\DirectionConfirmedExpirationTransition.cs" />
+    <Compile Include="Model\Portfolio\CloseReason.cs" />
+    <Compile Include="Model\Portfolio\Direction.cs" />
+    <Compile Include="Model\Portfolio\OpenReason.cs" />
+    <Compile Include="Model\Portfolio\Order.cs" />
+    <Compile Include="Model\Portfolio\OrderState.cs" />
+    <Compile Include="Model\Portfolio\Portfolio.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\SelectionEnum.cs" />
+    <Compile Include="Common\SerialPortInterface.cs" />
+    <Compile Include="Data\DS\DS4MarketWatch.cs">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DS\DS4MarketWatch.designer.cs">
+      <DependentUpon>DS4MarketWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DS\DS4MarketWatch1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
+    <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateProcessor.cs" />
+    <Compile Include="Model\BehavioralModeling\BehavioralModels\BehavioralModelState.cs" />
+    <Compile Include="Model\BioData\BioDataEvent.cs" />
+    <Compile Include="Model\BioData\EmulationOnHistoryBioDataProvider.cs" />
+    <Compile Include="Model\BioData\RandomBioDataProvider.cs" />
+    <Compile Include="Model\BioData\IBioDataObserver.cs" />
+    <Compile Include="Model\BioData\AbstractBioDataProvider.cs" />
+    <Compile Include="Model\BioData\TTLApiBioDataProvider.cs" />
+    <Compile Include="Common\IniFileReader.cs" />
+    <Compile Include="Common\StringHelpers.cs" />
+    <Compile Include="Common\ThreadedBindingList.cs" />
+    <Compile Include="Model\ApplicationState.cs" />
+    <Compile Include="Model\Meta.cs" />
+    <Compile Include="Model\wsHelperContract.cs" />
+    <Compile Include="Model\WsHelperQuotes.cs" />
+    <Compile Include="Model\WsHelperOrders.cs" />
+    <Compile Include="Model\Database\LocalDatabaseConnector.cs" />
+    <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
+    <Compile Include="Model\FixApi\FixApiModel.cs" />
+    <Compile Include="Model\FixApi\AbstractFixApiModel.cs" />
+    <Compile Include="Model\FixApi\FixApiModelEvent.cs" />
+    <Compile Include="Model\FixApi\FixApiState.cs" />
+    <Compile Include="Model\FixApi\IFixApiObserver.cs" />
+    <Compile Include="Model\FixApi\MessageConstructor.cs" />
+    <Compile Include="Model\FixApi\RandomFixApiModel.cs" />
+    <Compile Include="Model\FixApi\TickPrice.cs" />
+    <Compile Include="Model\IMainNeuroXModelObserver.cs" />
+    <Compile Include="Controller\MainNeuroXController.cs" />
+    <Compile Include="Model\MainNeuroXModelEvent.cs" />
+    <Compile Include="Model\ServerConnection\ServerConnector.cs" />
+    <Compile Include="Model\Training\TrainingType.cs" />
+    <Compile Include="Model\UserAction.cs" />
+    <Compile Include="Model\UserActionDetail.cs" />
+    <Compile Include="Service References\ExchangeInstrumentService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\NeuroTraderLoggerReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="View\AGauge\AGauge.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\AGauge\AGauge.Designer.cs" />
+    <Compile Include="View\DialogWindows\AuthorisationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\AuthorisationWindow.Designer.cs">
+      <DependentUpon>AuthorisationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\ManualOrderConfirmationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\ManualOrderConfirmationWindow.Designer.cs">
+      <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\SelectionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\SelectionWindow.Designer.cs">
+      <DependentUpon>SelectionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\SymbolSelectionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\SymbolSelectionWindow.Designer.cs">
+      <DependentUpon>SymbolSelectionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\SynchronizationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\SynchronizationWindow.Designer.cs">
+      <DependentUpon>SynchronizationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\WelcomeWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\WelcomeWindow.Designer.cs">
+      <DependentUpon>WelcomeWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\ApplicationControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\ApplicationControlWindow.Designer.cs">
+      <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\TrainingControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\TrainingControlWindow.Designer.cs">
+      <DependentUpon>TrainingControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\TradeControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\TradeControlWindow.Designer.cs">
+      <DependentUpon>TradeControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Training\CompDayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Training\CompDayWindow.Designer.cs">
+      <DependentUpon>CompDayWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\BehavioralModelsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\BehavioralModelsWindow.Designer.cs">
+      <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\BehavioralModelTransitionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\BehavioralModelTransitionsWindow.Designer.cs">
+      <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\BMColorCodedWithPriceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\BMColorCodedWithPriceWindow.Designer.cs">
+      <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\BreathPacerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\BreathPacerWindow.Designer.cs">
+      <DependentUpon>BreathPacerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BreathPacer\BreathPacerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BreathPacer\BreathPacerControl.Designer.cs">
+      <DependentUpon>BreathPacerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BreathPacer\BreathSettings.cs" />
+    <Compile Include="View\DockableWindows\EmulationModeControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\EmulationModeControlWindow.Designer.cs">
+      <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\IndicatorsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\IndicatorsWindow.Designer.cs">
+      <DependentUpon>IndicatorsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\NewOrderWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\NewOrderWindow.Designer.cs">
+      <DependentUpon>NewOrderWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\ChartsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\ChartsWindow.Designer.cs">
+      <DependentUpon>ChartsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\CustomDialogWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\CustomDialogWindow.Designer.cs">
+      <DependentUpon>CustomDialogWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogWindows\LogoWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\LogoWindow.Designer.cs">
+      <DependentUpon>LogoWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MainNeuroXModel.cs" />
+    <Compile Include="View\MainNeuroXView.cs" />
+    <Compile Include="NeuroXApplication.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\BioData\BioData.cs" />
+    <Compile Include="View\DockableWindows\OrdersWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\OrdersWindow.Designer.cs">
+      <DependentUpon>OrdersWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\RawInformationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\RawInformationWindow.Designer.cs">
+      <DependentUpon>RawInformationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ControlPaintUtils.cs" />
+    <Compile Include="View\Training\MarketSentimentSurveyWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Training\MarketSentimentSurveyWindow.Designer.cs">
+      <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="View\DialogWindows\AuthorisationWindow.resx">
+      <DependentUpon>AuthorisationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\ManualOrderConfirmationWindow.resx">
+      <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\SelectionWindow.resx">
+      <DependentUpon>SelectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\SymbolSelectionWindow.resx">
+      <DependentUpon>SymbolSelectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\SynchronizationWindow.resx">
+      <DependentUpon>SynchronizationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\WelcomeWindow.resx">
+      <DependentUpon>WelcomeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\ApplicationControlWindow.resx">
+      <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\TrainingControlWindow.resx">
+      <DependentUpon>TrainingControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\TradeControlWindow.resx">
+      <DependentUpon>TradeControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Training\CompDayWindow.resx">
+      <DependentUpon>CompDayWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\BehavioralModelsWindow.resx">
+      <DependentUpon>BehavioralModelsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\BehavioralModelTransitionsWindow.resx">
+      <DependentUpon>BehavioralModelTransitionsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\BMColorCodedWithPriceWindow.resx">
+      <DependentUpon>BMColorCodedWithPriceWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\BreathPacerWindow.resx">
+      <DependentUpon>BreathPacerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BreathPacer\BreathPacerControl.resx">
+      <DependentUpon>BreathPacerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\EmulationModeControlWindow.resx">
+      <DependentUpon>EmulationModeControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\IndicatorsWindow.resx">
+      <DependentUpon>IndicatorsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\NewOrderWindow.resx">
+      <DependentUpon>NewOrderWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\ChartsWindow.resx">
+      <DependentUpon>ChartsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\CustomDialogWindow.resx">
+      <DependentUpon>CustomDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\LogoWindow.resx">
+      <DependentUpon>LogoWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="View\DockableWindows\OrdersWindow.resx">
+      <DependentUpon>OrdersWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\RawInformationWindow.resx">
+      <DependentUpon>RawInformationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Training\MarketSentimentSurveyWindow.resx">
+      <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Data\DS\DS4MarketWatch.xsc">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </None>
+    <None Include="Data\DS\DS4MarketWatch.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DS4MarketWatch1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\DS\DS4MarketWatch.xss">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </None>
+    <None Include="NeuroTrader_TemporaryKey.pfx" />
+    <None Include="NeuroXChangeSettings.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.wsdl" />
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.wsdl" />
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\Logger1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NeuroXLogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Neuro-Xchange_logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EZScan\EZScan.csproj">
+      <Project>{6e9dde6f-db1b-4cff-90ff-42ebb2786ac1}</Project>
+      <Name>EZScan</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuroTraderProtocols\NeuroTraderProtocols.csproj">
+      <Project>{ba46f03a-5942-4308-9031-8c53fd3d0def}</Project>
+      <Name>NeuroTraderProtocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PostTradingAnalysis\PostTradingAnalysis.csproj">
+      <Project>{4035a01f-16f3-4f57-a486-d92f226d1579}</Project>
+      <Name>PostTradingAnalysis</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BreathPacer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Indicator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NT_Logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="3dparty\AxInterop.TTLLiveCtrlLib.dll" />
+    <Content Include="3dparty\Interop.TTLLiveCtrlLib.dll" />
+    <Content Include="Data\Training\CompDay.txt" />
+    <Content Include="3dparty\TTLLiveCtrl.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\NeuroTraderLoggerReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\configuration.svcinfo" />
+    <None Include="Service References\NeuroTraderLoggerReference\configuration91.svcinfo" />
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.disco" />
+    <None Include="Service References\ExchangeInstrumentService\NeuroXChange.ExchangeInstrumentService.InstrumentData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\NeuroXChange.ExchangeInstrumentService.InstrumentInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\configuration.svcinfo" />
+    <None Include="Service References\ExchangeInstrumentService\configuration91.svcinfo" />
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.disco" />
+    <None Include="Resources\CompDaySelectionButtons\Singular_Short_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Singular_Long_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Short_Long_2_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Short_Long_1_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Long_Short_2_small_15.png" />
+    <None Include="Resources\CompDaySelectionButtons\Multi_Long_Short_1_small_15.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADOX">
+      <Guid>{00000600-0000-0010-8000-00AA006D2EA4}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ExchangeInstrumentService\" />
+    <WCFMetadataStorage Include="Service References\NeuroTraderLoggerReference\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+
+mkdir "$(TargetDir)Data"
+
+
+xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /Y /D /E</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

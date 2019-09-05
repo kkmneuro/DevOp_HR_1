@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PostTradingAnalysis.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DataSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">neurotrader-biodata-prod.database.windows.net</Value>
+    </Setting>
+    <Setting Name="UserID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UladzimirSukharukau</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">yuMnc46_dS23Ku</Value>
+    </Setting>
+    <Setting Name="InitialCatalog" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PsychophysiologyDatabase</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
