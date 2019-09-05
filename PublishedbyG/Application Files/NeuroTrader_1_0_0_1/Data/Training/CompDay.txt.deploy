@@ -1,0 +1,31 @@
+;TrainingStep	Type	Text	ImagePath	BreathsPerMinute	CyclesToFinish
+49	Text	Center Yourself		5.5	2
+50	Text_Image	Ideal Trader	Data\Training\Ideal_Trader_Broad_Internal_Analysis.png	5.5	2
+51	Text_Image	Ideal Trader	Data\Training\IdealTrader.jpg	5.5	2
+52	Text_Image	Ideal Trading Session	Data\Training\Ideal_Trading_Day_Broad_Internal_Analysis.png	5.5	2
+53	Text	Ideal Trading Session		5.5	2
+54	Text_Image	Ideal Account Value	Data\Training\Account_Value_Ideal_Trading_Week_Broad_Internal_Analysis.png	5.5	2
+55	Text	Ideal Account Value = 20 pips		5.5	2
+56	Text_Image	Security Name	Data\Training\Security_Name_Broad_Internal_Analysis.png	5.5	2
+57	Text	Security Name		5.5	2
+58	Selection?	SELECTION		5.5	2
+59	Text_Image	Ideal Strategic Chart	Data\Training\Ideal_Strategic_Chart_Broad_Internal_Analysis.png	5.5	2
+60	Text_Image	Ideal Strategic Chart - Long	Data\Training\Maximum_Reversal_Long_Broad_Internal.png	5.5	2
+61	Text_Image	Ideal Strategic Chart - Short	Data\Training\Maimum_Reversal_Short_Broad_Internal.png	5.5	2
+62	Text_Image	Abstract Efficiency	Data\Training\Abstract_Efficiency_Broad_Internal_Analysis.png	5.5	2
+63	Text	SELECTION		5.5	8
+64	Text_Image	Ideal Trade	Data\Training\The_Ideal_Trade_Broad_Internal_Analysis.png	5.5	2
+65	Text_Image	Direction	Data\Training\Direction_Inverted.png	5.5	2
+66	Text_Image	Direction - Long	Data\Training\ThePerfectTrade_Direction_Inverted_Long_Broad_Internal.png	5.5	2
+67	Text_Image	Direction - Short	Data\Training\ThePerfectTrade_Direction_Inverted_Short_Broad_Internal.png	5.5	2
+68	Text_Image	Multi_Long-Short_1	Data\Training\Multi_Long_Short_1.png	5.5	2
+69	Text_Image	Multi_Long-Short_2	Data\Training\Multi_Long_Short_2.png	5.5	2
+70	Text_Image	Multi_Short-Long_1	Data\Training\Multi_Short_Long_1.png	5.5	2
+71	Text_Image	Multi_Short-Long_2	Data\Training\Multi_Short_Long_2.png	5.5	2
+72	Text_Image	Singular_Long	Data\Training\Singular_Long.png	5.5	2
+73	Text_Image	Singular_Short	Data\Training\Singular_Short.png	5.5	2
+74	Selection_Manual_Position_Chose	Make your selection for the direction		5.5	2
+81	Text_Image	Profit Target	Data\Training\Profit_Target_Broad_Internal_Analysis.png	5.5	2
+82	Text_Image	Profit Target	Data\Training\ProfitTarget.png	5.5	2
+83	Text	SELECTION		5.5	3
+

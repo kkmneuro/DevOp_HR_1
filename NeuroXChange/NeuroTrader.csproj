@@ -583,11 +583,11 @@
       <Project>{ba46f03a-5942-4308-9031-8c53fd3d0def}</Project>
       <Name>NeuroTraderProtocols</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NeuroTraderServer\NeuroTraderServer.csproj">
+    <ProjectReference Include="..\NeuroTraderServer\UV NeuroTraderServer.csproj">
       <Project>{8c081815-586f-494c-ba3b-4ee65a8ba3bc}</Project>
       <Name>UV NeuroTraderServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PostTradingAnalysis\PostTradingAnalysis.csproj">
+    <ProjectReference Include="..\PostTradingAnalysis\UV PostTradingAnalysis.csproj">
       <Project>{4035a01f-16f3-4f57-a486-d92f226d1579}</Project>
       <Name>UV PostTradingAnalysis</Name>
     </ProjectReference>

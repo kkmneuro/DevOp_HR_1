@@ -26,14 +26,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.TTLLiveCtrlLib">
-      <HintPath>..\3dparty\AxInterop.TTLLiveCtrlLib.dll</HintPath>
+      <HintPath>..\NeuroXChange\3dparty\AxInterop.TTLLiveCtrlLib.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TPSbvp_cl">
-      <HintPath>..\3dparty\TPSbvp_cl.dll</HintPath>
+      <HintPath>..\NeuroXChange\3dparty\TPSbvp_cl.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
