@@ -39,7 +39,7 @@ namespace NeuroXChange.View
 
         private void ChartsWindow_VisibleChanged(object sender, EventArgs e)
         {
-            if(!heartRateChart.Created)
+            if (!heartRateChart.Created)
             {
                 return;
             }

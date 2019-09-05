@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulationModeControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trainingToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.compDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.marketSentimentSurveyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,9 +50,13 @@
             this.bMColorCodedWithPriceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applicationControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tradeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.breathPacerToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.indicatorsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.newOrderToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.chartsToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.applicationControlToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +66,8 @@
             this.behavioralModelSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015BlueTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme();
-            this.newOrderToolStripMenuItemSimplestMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerStartRecording = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.mainMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -71,13 +77,13 @@
             this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.fileToolStripMenuItemSimplestMode,
-            this.trainingToolStripMenuItem,
+            this.trainingToolStripMenuItem2,
             this.windowsToolStripMenuItem,
             this.windowsToolStripMenuItemSimplestMode,
             this.helpToolStripMenuItem});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
-            this.mainMenuStrip.Size = new System.Drawing.Size(397, 24);
+            this.mainMenuStrip.Size = new System.Drawing.Size(342, 24);
             this.mainMenuStrip.TabIndex = 6;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
@@ -95,6 +101,7 @@
             this.emulationModeControlToolStripMenuItem.Name = "emulationModeControlToolStripMenuItem";
             this.emulationModeControlToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.emulationModeControlToolStripMenuItem.Text = "Emulation mode control";
+            this.emulationModeControlToolStripMenuItem.Visible = false;
             this.emulationModeControlToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
@@ -119,14 +126,15 @@
             this.exitToolStripMenuItemSimplestMode.Text = "Exit";
             this.exitToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // trainingToolStripMenuItem
+            // trainingToolStripMenuItem2
             // 
-            this.trainingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.trainingToolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.compDayToolStripMenuItem,
             this.marketSentimentSurveyToolStripMenuItem});
-            this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
-            this.trainingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.trainingToolStripMenuItem.Text = "Training";
+            this.trainingToolStripMenuItem2.Name = "trainingToolStripMenuItem2";
+            this.trainingToolStripMenuItem2.Size = new System.Drawing.Size(63, 20);
+            this.trainingToolStripMenuItem2.Text = "Training";
+            this.trainingToolStripMenuItem2.Visible = false;
             // 
             // compDayToolStripMenuItem
             // 
@@ -155,7 +163,10 @@
             this.chartsToolStripMenuItem,
             this.bMColorCodedWithPriceToolStripMenuItem,
             this.ordersToolStripMenuItem,
-            this.applicationControlToolStripMenuItem});
+            this.applicationControlToolStripMenuItem,
+            this.tradeToolStripMenuItem,
+            this.trainingToolStripMenuItem,
+            this.symbolsToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -165,6 +176,7 @@
             this.breathPacerToolStripMenuItem.Name = "breathPacerToolStripMenuItem";
             this.breathPacerToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.breathPacerToolStripMenuItem.Text = "Breath pacer";
+            this.breathPacerToolStripMenuItem.Visible = false;
             this.breathPacerToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // indicatorsToolStripMenuItem
@@ -172,6 +184,7 @@
             this.indicatorsToolStripMenuItem.Name = "indicatorsToolStripMenuItem";
             this.indicatorsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.indicatorsToolStripMenuItem.Text = "Indicators";
+            this.indicatorsToolStripMenuItem.Visible = false;
             this.indicatorsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // newOrderToolStripMenuItem
@@ -179,6 +192,7 @@
             this.newOrderToolStripMenuItem.Name = "newOrderToolStripMenuItem";
             this.newOrderToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.newOrderToolStripMenuItem.Text = "New order";
+            this.newOrderToolStripMenuItem.Visible = false;
             this.newOrderToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // behavioralModelsToolStripMenuItem
@@ -186,6 +200,7 @@
             this.behavioralModelsToolStripMenuItem.Name = "behavioralModelsToolStripMenuItem";
             this.behavioralModelsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.behavioralModelsToolStripMenuItem.Text = "Behavioral models";
+            this.behavioralModelsToolStripMenuItem.Visible = false;
             this.behavioralModelsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
@@ -198,6 +213,7 @@
             this.behavioralModelTransitonsToolStripMenuItem.Name = "behavioralModelTransitonsToolStripMenuItem";
             this.behavioralModelTransitonsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.behavioralModelTransitonsToolStripMenuItem.Text = "Behavioral model transitons";
+            this.behavioralModelTransitonsToolStripMenuItem.Visible = false;
             this.behavioralModelTransitonsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // rawInformationToolStripMenuItem
@@ -205,6 +221,7 @@
             this.rawInformationToolStripMenuItem.Name = "rawInformationToolStripMenuItem";
             this.rawInformationToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.rawInformationToolStripMenuItem.Text = "Raw information";
+            this.rawInformationToolStripMenuItem.Visible = false;
             this.rawInformationToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // chartsToolStripMenuItem
@@ -219,6 +236,7 @@
             this.bMColorCodedWithPriceToolStripMenuItem.Name = "bMColorCodedWithPriceToolStripMenuItem";
             this.bMColorCodedWithPriceToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.bMColorCodedWithPriceToolStripMenuItem.Text = "BM color coded with price";
+            this.bMColorCodedWithPriceToolStripMenuItem.Visible = false;
             this.bMColorCodedWithPriceToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // ordersToolStripMenuItem
@@ -226,6 +244,7 @@
             this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
             this.ordersToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.ordersToolStripMenuItem.Text = "Orders";
+            this.ordersToolStripMenuItem.Visible = false;
             this.ordersToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // applicationControlToolStripMenuItem
@@ -234,6 +253,29 @@
             this.applicationControlToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.applicationControlToolStripMenuItem.Text = "Application control";
             this.applicationControlToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // tradeToolStripMenuItem
+            // 
+            this.tradeToolStripMenuItem.Name = "tradeToolStripMenuItem";
+            this.tradeToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.tradeToolStripMenuItem.Text = "Trade";
+            this.tradeToolStripMenuItem.Visible = false;
+            // 
+            // trainingToolStripMenuItem
+            // 
+            this.trainingToolStripMenuItem.Name = "trainingToolStripMenuItem";
+            this.trainingToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.trainingToolStripMenuItem.Text = "Training";
+            this.trainingToolStripMenuItem.Visible = false;
+            this.trainingToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // symbolsToolStripMenuItem
+            // 
+            this.symbolsToolStripMenuItem.Name = "symbolsToolStripMenuItem";
+            this.symbolsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.symbolsToolStripMenuItem.Text = "Symbols";
+            this.symbolsToolStripMenuItem.Visible = false;
+            this.symbolsToolStripMenuItem.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // windowsToolStripMenuItemSimplestMode
             // 
@@ -260,6 +302,13 @@
             this.indicatorsToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
             this.indicatorsToolStripMenuItemSimplestMode.Text = "Indicators";
             this.indicatorsToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            // 
+            // newOrderToolStripMenuItemSimplestMode
+            // 
+            this.newOrderToolStripMenuItemSimplestMode.Name = "newOrderToolStripMenuItemSimplestMode";
+            this.newOrderToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
+            this.newOrderToolStripMenuItemSimplestMode.Text = "New order";
+            this.newOrderToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
             // 
             // chartsToolStripMenuItemSimplestMode
             // 
@@ -295,9 +344,9 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.modeNameSL,
             this.behavioralModelSL});
-            this.statusStrip.Location = new System.Drawing.Point(0, 320);
+            this.statusStrip.Location = new System.Drawing.Point(0, 237);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(397, 24);
+            this.statusStrip.Size = new System.Drawing.Size(342, 24);
             this.statusStrip.TabIndex = 10;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -314,6 +363,7 @@
             this.behavioralModelSL.Name = "behavioralModelSL";
             this.behavioralModelSL.Size = new System.Drawing.Size(115, 19);
             this.behavioralModelSL.Text = "Behavioral model: 1";
+            this.behavioralModelSL.Click += new System.EventHandler(this.behavioralModelSL_Click);
             // 
             // dockPanel
             // 
@@ -323,22 +373,25 @@
             this.dockPanel.Name = "dockPanel";
             this.dockPanel.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel.ShowAutoHideContentOnHover = false;
-            this.dockPanel.Size = new System.Drawing.Size(397, 296);
+            this.dockPanel.Size = new System.Drawing.Size(342, 213);
             this.dockPanel.TabIndex = 7;
             this.dockPanel.Theme = this.vS2015BlueTheme1;
             // 
-            // newOrderToolStripMenuItemSimplestMode
+            // timerStartRecording
             // 
-            this.newOrderToolStripMenuItemSimplestMode.Name = "newOrderToolStripMenuItemSimplestMode";
-            this.newOrderToolStripMenuItemSimplestMode.Size = new System.Drawing.Size(176, 22);
-            this.newOrderToolStripMenuItemSimplestMode.Text = "New order";
-            this.newOrderToolStripMenuItemSimplestMode.Click += new System.EventHandler(this.windowToolStripMenuItem_Click);
+            this.timerStartRecording.Interval = 5000;
+            this.timerStartRecording.Tick += new System.EventHandler(this.timerStartRecording_Tick);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 344);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(342, 261);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.mainMenuStrip);
@@ -379,7 +432,7 @@
         private System.Windows.Forms.ToolStripMenuItem emulationModeControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem compDayToolStripMenuItem;
         private WeifenLuo.WinFormsUI.Docking.VS2015BlueTheme vS2015BlueTheme1;
         private System.Windows.Forms.ToolStripMenuItem marketSentimentSurveyToolStripMenuItem;
@@ -392,6 +445,11 @@
         private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem applicationControlToolStripMenuItemSimplestMode;
         private System.Windows.Forms.ToolStripMenuItem newOrderToolStripMenuItemSimplestMode;
+        private System.Windows.Forms.ToolStripMenuItem tradeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trainingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem symbolsToolStripMenuItem;
+        private System.Windows.Forms.Timer timerStartRecording;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

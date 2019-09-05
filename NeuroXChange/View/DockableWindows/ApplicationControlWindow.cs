@@ -24,20 +24,33 @@ namespace NeuroXChange.View
             InitializeComponent();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        public void btnStart_Click(object sender, EventArgs e)
         {
+            //write to log
+            NeuroXChange.Model.Globals.LoggerClient.WriteLog(Globals.AccountId.ToString(), "Start button clicked.", DateTime.Now);
+
             view.breathPacerWindow.breathPacerControl.Restart();
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             controller.WriteUserAction(UserAction.ApplicationControlStart);
+            Globals.ApplicationStop = false;
+            Model.Globals.StartRecording = true;
+            view.mainWindow.EnableTimer();
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        public void btnStop_Click(object sender, EventArgs e)
         {
+            //write to log
+            NeuroXChange.Model.Globals.LoggerClient.WriteLog(Globals.AccountId.ToString(), "Stop button clicked.", DateTime.Now);
+
             view.breathPacerWindow.breathPacerControl.Stop();
             btnStart.Enabled = true;
             btnStop.Enabled = false;
             controller.WriteUserAction(UserAction.ApplicationControlStop);
+            Globals.ApplicationStop = true;
+            Model.Globals.StartRecording = false;
+            view.mainWindow.DisableTimer();
+
         }
     }
 }

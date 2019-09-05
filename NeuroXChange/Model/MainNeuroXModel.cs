@@ -31,6 +31,9 @@ namespace NeuroXChange.Model
         public AbstractFixApiModel fixApiModel { get; private set; }
         public BehavioralModelsContainer behavioralModelsContainer { get; private set; }
 
+        public WsHelperOrders WsHelperOrders = WsHelperOrders.INSTANCE;
+        public WsHelperQuotes WsHelperQuotes = WsHelperQuotes.INSTANCE;
+
         // ---- Observable pattern implementation
         private List<IMainNeuroXModelObserver> observers = new List<IMainNeuroXModelObserver>();
 
@@ -103,6 +106,8 @@ namespace NeuroXChange.Model
 
                 localDatabaseConnector = new LocalDatabaseConnector(iniFileReader);
 
+
+
                 if (!emulationOnHistoryMode)
                 {
                     if (!Boolean.Parse(iniFileReader.Read("EmulateDevice", "BioData", "false")))
@@ -124,7 +129,7 @@ namespace NeuroXChange.Model
                 {
                     if (!Boolean.Parse(iniFileReader.Read("EmulateFixApi", "FixApi", "false")))
                     {
-                        fixApiModel = new FixApiModel(localDatabaseConnector, iniFileReader);
+                        fixApiModel = new FixApiModel(localDatabaseConnector, iniFileReader,this.WsHelperOrders, this.WsHelperQuotes);
                     }
                     else
                     {
@@ -155,6 +160,27 @@ namespace NeuroXChange.Model
             }
         }
 
+        public void ReInitalize()
+        {
+            if (!emulationOnHistoryMode)
+            {
+                if (!Boolean.Parse(iniFileReader.Read("EmulateDevice", "BioData", "false")))
+                {
+                    bioDataProvider = new TTLApiBioDataProvider(this, localDatabaseConnector, iniFileReader);
+                }
+                else
+                {
+                    bioDataProvider = new RandomBioDataProvider(this, localDatabaseConnector, iniFileReader);
+                }
+            }
+            else
+            {
+                bioDataProvider = new EmulationOnHistoryBioDataProvider(this, localDatabaseConnector, iniFileReader);
+            }
+        }
+
+        
+
         public void StartProcessing()
         {
             localDatabaseConnector.WriteUserAction(UserAction.ApplicationStarted);
@@ -166,7 +192,7 @@ namespace NeuroXChange.Model
         {
             if(!StopProcessingCalled)
                 NotifyObservers(MainNeuroXModelEvent.SyncrhonizationStarted, null);
-            serverConnector.Synchronize();
+            //serverConnector.Synchronize();
             serverConnector.Disconnect();
             if (!StopProcessingCalled)
                 NotifyObservers(MainNeuroXModelEvent.SynchronizationFinished, null);

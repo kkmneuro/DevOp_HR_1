@@ -24,6 +24,7 @@ namespace NeuroXChange.View
             InitializeComponent();
 
             this.model = model;
+            
             this.controller = controller;
             this.view = view;
         }

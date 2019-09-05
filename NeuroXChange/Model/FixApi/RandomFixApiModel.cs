@@ -3,6 +3,7 @@ using NeuroXChange.Model.BioData;
 using NeuroXChange.Model.Database;
 using NeuroXChange.Common;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace NeuroXChange.Model.FixApi
 {
@@ -52,6 +53,16 @@ namespace NeuroXChange.Model.FixApi
         public override void StopProcessing()
         {
             NeedStop = true;
+        }
+
+        public override void SubscribeForQuotes(Enum ReqType, string contract)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SubscribeForQuotes(Enum ReqType, List<string> lst)
+        {
+            throw new NotImplementedException();
         }
     }
 }

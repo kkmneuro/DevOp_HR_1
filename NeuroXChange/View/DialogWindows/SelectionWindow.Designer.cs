@@ -67,7 +67,6 @@
             // 
             // btnViewReports
             // 
-            this.btnViewReports.Enabled = false;
             this.btnViewReports.Location = new System.Drawing.Point(415, 238);
             this.btnViewReports.Name = "btnViewReports";
             this.btnViewReports.Size = new System.Drawing.Size(109, 62);
@@ -84,7 +83,7 @@
             this.btnTrade.Size = new System.Drawing.Size(103, 62);
             this.btnTrade.TabIndex = 4;
             this.btnTrade.Text = "Trade";
-            this.btnTrade.UseVisualStyleBackColor = true;
+            this.btnTrade.UseVisualStyleBackColor = false;
             this.btnTrade.Click += new System.EventHandler(this.btnTrade_Click);
             // 
             // btnTraningSession

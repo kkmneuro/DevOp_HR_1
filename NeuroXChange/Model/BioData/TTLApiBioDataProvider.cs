@@ -27,7 +27,7 @@ namespace NeuroXChange.Model.BioData
             IniFileReader iniFileReader)
             :base(model, localDatabaseConnector)
         {
-            usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData", "\\\\.\\COM5");
+            usbConnectionStr = iniFileReader.Read("TPSUSBPort", "BioData", "");            
             bioDataTickInterval = Int32.Parse(iniFileReader.Read("BioDataTickInterval", "BioData", "500"));
 
             try
@@ -43,7 +43,7 @@ namespace NeuroXChange.Model.BioData
             }
 
             tpsr = new TPSForNeuroTrader.TPSForNeuroTrader(1000, this.axTTLLive, usbConnectionStr);
-            while (this.tpsr.getState() != e_cs.CONNECTED)
+            while (this.tpsr.getState() != e_cs.CONNECTED && Globals.CurrentLoginStatus == LoginStatus.Success)
             {
                 try
                 {
@@ -69,7 +69,7 @@ namespace NeuroXChange.Model.BioData
             timer1.Interval = bioDataTickInterval;
             timer1.Tick += new EventHandler(timer1_Tick);
 
-            if (tpsr.getState() != e_cs.STARTED)
+            if (tpsr.getState() != e_cs.STARTED && Globals.CurrentLoginStatus == LoginStatus.Success)
             {
                 if (!tpsr.startDevice())
                 {
@@ -144,7 +144,21 @@ namespace NeuroXChange.Model.BioData
             bioData.accZ = tpsData.AccZ;
             FillApplicaitonStates(bioData);
 
-            bioData.id = localDatabaseConnector.WriteBioData(bioData);
+
+
+            // bioData.id = localDatabaseConnector.WriteBioData(bioData);
+
+
+            if (Globals.ApplicationStop || !Globals.StartRecording)
+            {
+                //Reset count to zero to check restart
+                localDatabaseConnector.ResetCount();
+            }
+            else
+            {
+                if (Globals.AccountId != 0 && Globals.StartRecording)
+                    localDatabaseConnector.WriteBioData(bioData);
+            }
 
             NotifyObservers(BioDataEvent.NewBioDataTick, bioData);
         }

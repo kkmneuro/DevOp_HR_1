@@ -42,5 +42,15 @@ namespace NeuroXChange.Model.FixApi
         public override void StopProcessing()
         {
         }
+
+        public override void SubscribeForQuotes(Enum ReqType, List<string> lst)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SubscribeForQuotes(Enum ReqType, string contract)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

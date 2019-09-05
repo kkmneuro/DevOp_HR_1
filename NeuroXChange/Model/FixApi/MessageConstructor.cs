@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
 
 namespace NeuroXChange.Model.FixApi
 {
     public class MessageConstructor
     {
+        
         public enum SessionMessageType
         {
             Logon,
@@ -40,6 +44,13 @@ namespace NeuroXChange.Model.FixApi
         private string _senderCompID;
         private string _senderSubID;
         private string _targetCompID;
+
+        public string Host { get => _host; set => _host = value; }
+        public string Username { get => _username; set => _username = value; }
+        public string Password { get => _password; set => _password = value; }
+        public string SenderCompID { get => _senderCompID; set => _senderCompID = value; }
+        public string SenderSubID { get => _senderSubID; set => _senderSubID = value; }
+        public string TargetCompID { get => _targetCompID; set => _targetCompID = value; }
 
         public MessageConstructor(string host, string username, string password, string senderCompID, string senderSubID, string targetCompID)
         {
@@ -174,31 +185,72 @@ namespace NeuroXChange.Model.FixApi
         /// <param name="noRelatedSymbol">Number of symbols requested.</param>
         /// <param name="symbol">Instrument identificators are provided by Spotware.</param>
         /// <returns></returns>
-        public string MarketDataRequestMessage(SessionQualifier qualifier, int messageSequenceNumber, string marketDataRequestID, int subscriptionRequestType, int marketDepth, int marketDataEntryType, int noRelatedSymbol, long symbol = 0)
-        {
-            var body = new StringBuilder();
-            //Unique quote request id. New ID for a new subscription, same one as previously used for subscription removal.
-            body.Append("262=" + marketDataRequestID + "|");
-            //1 = Snapshot plus updates (subscribe) 2 = Disable previous snapshot plus update request (unsubscribe)
-            body.Append("263=" + subscriptionRequestType + "|");
-            //Full book will be provided, 0 = Depth subscription, 1 = Spot subscription
-            body.Append("264=" + marketDepth + "|");
-            //Only Incremental refresh is supported.
-            body.Append("265=1|");
-            //Always set to 2 (both bid and ask will be sent).
-            body.Append("267=2|");
-            //Always set to 2 (both bid and ask will be sent).
-            body.Append("269=0|269=1|");
-            //Number of symbols requested.
-            body.Append("146=" + noRelatedSymbol + "|");
-            //Instrument identificators are provided by Spotware.
-            body.Append("55=" + symbol + "|");
-            var header = ConstructHeader(qualifier, ApplicationMessageCode(ApplicationMessageType.MarketDataRequest), messageSequenceNumber, body.ToString());
-            var headerAndBody = header + body;
-            var trailer = ConstructTrailer(headerAndBody);
-            var headerAndMessageAndTrailer = header + body + trailer;
-            return headerAndMessageAndTrailer.Replace("|", "\u0001");
-        }
+        //public string MarketDataRequestMessage(Enum ReqType, List<Symbol> lst)
+        //{
+        //    //var body = new StringBuilder();
+        //    ////Unique quote request id. New ID for a new subscription, same one as previously used for subscription removal.
+        //    //body.Append("262=" + marketDataRequestID + "|");
+        //    ////1 = Snapshot plus updates (subscribe) 2 = Disable previous snapshot plus update request (unsubscribe)
+        //    //body.Append("263=" + subscriptionRequestType + "|");
+        //    ////Full book will be provided, 0 = Depth subscription, 1 = Spot subscription
+        //    //body.Append("264=" + marketDepth + "|");
+        //    ////Only Incremental refresh is supported.
+        //    //body.Append("265=1|");
+        //    ////Always set to 2 (both bid and ask will be sent).
+        //    //body.Append("267=2|");
+        //    ////Always set to 2 (both bid and ask will be sent).
+        //    //body.Append("269=0|269=1|");
+        //    ////Number of symbols requested.
+        //    //body.Append("146=" + noRelatedSymbol + "|");
+        //    ////Instrument identificators are provided by Spotware.
+        //    //body.Append("55=" + symbol + "|");
+        //    //var header = ConstructHeader(qualifier, ApplicationMessageCode(ApplicationMessageType.MarketDataRequest), messageSequenceNumber, body.ToString());
+        //    //var headerAndBody = header + body;
+        //    //var trailer = ConstructTrailer(headerAndBody);
+        //    //var headerAndMessageAndTrailer = header + body + trailer;
+        //    //return headerAndMessageAndTrailer.Replace("|", "\u0001");
+        //    var json = string.Empty;
+
+        //    try
+        //    {
+        //        if (lst.Count > 0)
+        //        {
+        //            List<List<Symbol>> _lstSymbols = new List<List<Symbol>>();
+        //            while (lst.Any())
+        //            {
+        //                _lstSymbols.Add(lst.Take(_MAM_MAX_REQUEST_QTY).ToList());
+        //                lst = lst.Skip(_MAM_MAX_REQUEST_QTY).ToList();
+        //            }
+        //            foreach (var itemTemp in _lstSymbols)
+        //            {
+        //                SymbolSubscribeRequest SubscribeRequest = new SymbolSubscribeRequest();
+        //                SubscribeRequest.Symbol = new List<SymbolInfo>();
+
+        //                foreach (Symbol item in itemTemp)
+        //                {
+        //                    SymbolInfo objSymbol = new SymbolInfo();
+        //                    objSymbol.Contract = item.Contract;
+        //                    objSymbol.Gateway = item.Gateway;
+        //                    objSymbol.Product = item.Product;
+        //                    objSymbol.ProductType = '1';//item.ProductType;
+        //                    SubscribeRequest.Symbol.Add(objSymbol);
+        //                }
+        //                SubscribeRequest.NoOfSymbols = SubscribeRequest.Symbol.Count;
+        //                SubscribeRequest.isForSubscribe = (SubscribeRequestType)ReqType;
+        //                SubscribeRequest.msgtype = SUBSCRIBE;
+        //                json = new JavaScriptSerializer().Serialize(SubscribeRequest);
+                        
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+
+        //    return json;
+
+        //}
 
         /// <summary>
         /// Constructs a message for requesting market data snapshot.

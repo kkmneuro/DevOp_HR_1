@@ -1,5 +1,6 @@
 ﻿using NeuroTraderProtocols;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NeuroXChange.Model.ServerConnection
 {
@@ -18,12 +21,15 @@ namespace NeuroXChange.Model.ServerConnection
         public bool SaveCredentials { get; set; }
         public string UserLogin { get; set; }
         public string UserPassword { get; set; }
-        public string Server { get; private set; }
-        public ushort Port { get; private set; }
+        //public string Server { get; private set; }
+        public string UsbPort { get; set; }
+        public string ErrorMessage { get; set; }
+        public string OrderSocket { get; set; }
+        public string QuotesSocket { get; set; }
 
         // connection objects
-        public TcpClient tcpClient { get; private set; }
-        public SslStream sslStream { get; private set; }
+        //public TcpClient tcpClient { get; private set; }
+        //public SslStream sslStream { get; private set; }
 
         public ServerConnector(MainNeuroXModel model)
         {
@@ -37,17 +43,23 @@ namespace NeuroXChange.Model.ServerConnection
             {
                 UserLogin = model.iniFileReader.Read("Login", "Authorisation", string.Empty);
                 UserPassword = model.iniFileReader.Read("Password", "Authorisation", string.Empty);
+                OrderSocket = model.iniFileReader.Read("OrderSocket", "Authorisation", string.Empty); ;
+                QuotesSocket = model.iniFileReader.Read("QuoteSocket", "Authorisation", string.Empty); ;
             }
 
-            Server = model.iniFileReader.Read("Server", "Authorisation", "127.0.0.1");
-            Port = ushort.Parse(model.iniFileReader.Read("Port", "Authorisation", "7657"));
+            //Server = model.iniFileReader.Read("Server", "Authorisation", "127.0.0.1");
+            //Port = ushort.Parse(model.iniFileReader.Read("Port", "Authorisation", "7657"));
         }
 
         public void UpdateINICredentials()
         {
-            model.iniFileReader.Write("SaveCredentials", SaveCredentials.ToString(), "Authorisation");
+            //model.iniFileReader.Write("SaveCredentials", SaveCredentials.ToString(), "Authorisation");
             model.iniFileReader.Write("Login", SaveCredentials ? UserLogin : string.Empty, "Authorisation");
             model.iniFileReader.Write("Password", SaveCredentials ? UserPassword : string.Empty, "Authorisation");
+
+            if (UsbPort!=null)
+            model.iniFileReader.Write("TPSUSBPort", @"\\.\" + UsbPort.ToString(), "BioData");
+            //model.iniFileReader.Read("TPSUSBPort", "BioData", "\\\\.\\COM5");
         }
 
         public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -61,139 +73,79 @@ namespace NeuroXChange.Model.ServerConnection
             return true;
         }
 
-        public bool Connect(out string errorMessage)
+
+        public string isQuotesLogonSuccessful = "";
+        public string isOrdersLogonSuccessful = "";
+
+        private void INSTANCE_OnLogonResponceQuotes(string reason, string brokerName)
         {
-            bool result = false;
-
-            errorMessage = null;
-
-            // Connect to a remote device.  
-            try
+            if (reason == "VALID")
             {
-                // Establish the remote endpoint for the socket.  
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(Server);
-                IPAddress ipAddress = ipHostInfo.AddressList.First(address => address.AddressFamily == AddressFamily.InterNetwork);
-                string ipAddressString = ipAddress.ToString();
-
-                tcpClient = new TcpClient(ipAddressString, Port);
-                sslStream = new SslStream(tcpClient.GetStream(), false,
-                    new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-                sslStream.AuthenticateAsClient("WS2016DC-1");
-
-                BinaryWriter writer = new BinaryWriter(sslStream);
-                writer.Write(ProtocolConstData.Magic);
-                writer.Write(ProtocolConstData.Version);
-                writer.Write((byte)NTProtocolHeader.Authorisation);
-                writer.Flush();
-
-                BinaryFormatter formatter = new BinaryFormatter();
-                var credentials = new AuthorisationPacket {Login = UserLogin, Password = UserPassword };
-                formatter.Serialize(sslStream, credentials);
-                sslStream.Flush();
-
-                // Receive the response from the remote device.
-                byte[] bytes = new byte[4];
-                int bytesRec = sslStream.Read(bytes, 0, 4);
-
-                if (bytesRec != 1)
-                {
-                    errorMessage = "Error on server side";
-                    Disconnect();
-                }
-
-                AuthorisationResult authResult = (AuthorisationResult)bytes[0];
-
-                switch (authResult)
-                {
-                    case AuthorisationResult.UnknownError:
-                        errorMessage = "Unknown error";
-                        break;
-                    case AuthorisationResult.Ok:
-                        result = true;
-                        break;
-                    case AuthorisationResult.ProtocolError:
-                        errorMessage = "Error in the protocol";
-                        break;
-                    case AuthorisationResult.NoSuchUser:
-                        errorMessage = "Wrong credentials!\nCan't find such user";
-                        break;
-                    case AuthorisationResult.WrongPassword:
-                        errorMessage = "Wrong credentials!\nWrong password";
-                        break;
-                }
-
-                if (authResult != AuthorisationResult.Ok)
-                {
-                    Disconnect();
-                }
+                isQuotesLogonSuccessful = "TRUE";
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.ToString());
-                errorMessage = e.ToString();
-                Disconnect();
-                return false;
+                isQuotesLogonSuccessful = "FALSE";
+                ErrorMessage = reason;
             }
 
-            return result;
         }
+
+        private void INSTANCE_OnLogonResponceOrders(string reason, string brokerName)
+        {
+           
+                if (reason == "VALID")
+                {
+                isOrdersLogonSuccessful = "TRUE";
+                //this.model.WsHelperOrders.participantRequest();
+            }
+                else
+                {
+                isOrdersLogonSuccessful = "FALSE";
+                ErrorMessage = reason;
+                }           
+
+        }
+
+
+
+        public bool Connect()
+        {
+
+
+            this.model.WsHelperQuotes.OnLogonResponse += new Action<string, string>(INSTANCE_OnLogonResponceQuotes);
+            this.model.WsHelperQuotes.Init(UserLogin, UserPassword, QuotesSocket);
+            ////await Task.Delay(2000);
+
+            this.model.WsHelperOrders.OnLogonResponse += new Action<string, string>(INSTANCE_OnLogonResponceOrders);
+            this.model.WsHelperOrders.Init(UserLogin, UserPassword, OrderSocket);
+            //await Task.Delay(2000);           
+
+           
+
+            while(isQuotesLogonSuccessful == "" || isOrdersLogonSuccessful == "")
+            {
+                //System.Threading.Thread.Sleep(1000);
+            }
+
+            if (isQuotesLogonSuccessful == "TRUE" && isOrdersLogonSuccessful == "TRUE")
+            {
+                Globals.CurrentLoginStatus = LoginStatus.Success;
+                return true;
+            }
+
+            Globals.CurrentLoginStatus = LoginStatus.Failure;
+            return false;
+      
+            }
 
         public void Synchronize()
         {
-            if (sslStream == null || !sslStream.CanRead || !tcpClient.Connected)
-            {
-                string errorMessage;
-                if (!Connect(out errorMessage))
-                {
-                    return;
-                }
-            }
-
-            // get last statistics from the server
-            BinaryWriter writer = new BinaryWriter(sslStream);
-            writer.Write((byte)NTProtocolHeader.RequestStatistics);
-            writer.Flush();
-
-            BinaryFormatter formatter = new BinaryFormatter();
-            var stats = (StatisticsPacket)formatter.Deserialize(sslStream);
-            model.PublishSynchonizationEvent($"Received stats: {stats}\r\n");
-
-            // prepare and send userActionsData
-            var userActions = model.localDatabaseConnector.PrepareUserActionsData(DateTime.FromOADate(stats.LastUserActionTime));
-            if (userActions.Count > 0)
-            {
-                writer.Write((byte)NTProtocolHeader.NewData);
-                var userActionsPacket = new UserActionsDataPacket { Actions = userActions.ToArray() };
-                formatter.Serialize(sslStream, userActionsPacket);
-                sslStream.Flush();
-
-                MemoryStream memStream = new MemoryStream();
-                formatter.Serialize(memStream, userActionsPacket);
-                memStream.Flush();
-                model.PublishSynchonizationEvent($"Sent UserActions data, {memStream.Length} bytes\n");
-            }
-
-            // prepare and send BioDataPricePackets
-            var bioDataPackets = model.localDatabaseConnector.PrepareBioDataPricePackets(DateTime.FromOADate(stats.LastBioDataTime));
-            foreach(var bioDataPricePacket in bioDataPackets)
-            {
-                writer.Write((byte)NTProtocolHeader.NewData);
-                formatter.Serialize(sslStream, bioDataPricePacket);
-                sslStream.Flush();
-
-                MemoryStream memStream = new MemoryStream();
-                formatter.Serialize(memStream, bioDataPricePacket);
-                memStream.Flush();
-                model.PublishSynchonizationEvent($"Sent BioDataPacket data, {memStream.Length} bytes\n");
-            }
-
-            Disconnect();
+            
         }
 
         public void Disconnect()
         {
-            sslStream.Close();
-            tcpClient.Close();
-        }
+         }
     }
 }

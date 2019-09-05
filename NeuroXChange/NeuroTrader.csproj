@@ -12,7 +12,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>d:\Users2019\efco\Downloads\ntcfinal-2-\PublishedbyG\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -22,10 +23,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -120,6 +122,24 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>579AF6004283CDAD35CFF691B16FA8073D800EB0</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>NeuroTrader_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.TTLLiveCtrlLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -130,9 +150,16 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>3dparty\Interop.TTLLiveCtrlLib.dll</HintPath>
     </Reference>
+    <Reference Include="SuperSocket.ClientEngine, Version=0.10.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -143,6 +170,16 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net, Version=0.15.2.11, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocket4Net.0.15.2\lib\net45\WebSocket4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>3dparty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015">
+      <HintPath>3dparty\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'!='SIMPLEST'">
     <Compile Include="Model\BehavioralModeling\BehavioralModelCondition\AccYCondition.cs" />
@@ -168,6 +205,19 @@
     <Compile Include="Model\Portfolio\Portfolio.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\SelectionEnum.cs" />
+    <Compile Include="Common\SerialPortInterface.cs" />
+    <Compile Include="Data\DS\DS4MarketWatch.cs">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DS\DS4MarketWatch.designer.cs">
+      <DependentUpon>DS4MarketWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DS\DS4MarketWatch1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Model\BehavioralModeling\BehavioralModelsContainer.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\AbstractBioDataProcessor.cs" />
     <Compile Include="Model\BehavioralModeling\BioDataProcessors\HeartRateInfo.cs" />
@@ -183,6 +233,10 @@
     <Compile Include="Common\StringHelpers.cs" />
     <Compile Include="Common\ThreadedBindingList.cs" />
     <Compile Include="Model\ApplicationState.cs" />
+    <Compile Include="Model\Meta.cs" />
+    <Compile Include="Model\wsHelperContract.cs" />
+    <Compile Include="Model\WsHelperQuotes.cs" />
+    <Compile Include="Model\WsHelperOrders.cs" />
     <Compile Include="Model\Database\LocalDatabaseConnector.cs" />
     <Compile Include="Model\FixApi\EmulationOnHistoryFixApiModel.cs" />
     <Compile Include="Model\FixApi\FixApiModel.cs" />
@@ -200,6 +254,16 @@
     <Compile Include="Model\Training\TrainingType.cs" />
     <Compile Include="Model\UserAction.cs" />
     <Compile Include="Model\UserActionDetail.cs" />
+    <Compile Include="Service References\ExchangeInstrumentService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\NeuroTraderLoggerReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="View\AGauge\AGauge.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -216,17 +280,47 @@
     <Compile Include="View\DialogWindows\ManualOrderConfirmationWindow.Designer.cs">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\DialogWindows\SelectionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\SelectionWindow.Designer.cs">
+      <DependentUpon>SelectionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\SymbolSelectionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\SymbolSelectionWindow.Designer.cs">
+      <DependentUpon>SymbolSelectionWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DialogWindows\SynchronizationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\DialogWindows\SynchronizationWindow.Designer.cs">
       <DependentUpon>SynchronizationWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\DialogWindows\WelcomeWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DialogWindows\WelcomeWindow.Designer.cs">
+      <DependentUpon>WelcomeWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DockableWindows\ApplicationControlWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\DockableWindows\ApplicationControlWindow.Designer.cs">
       <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\TrainingControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\TrainingControlWindow.Designer.cs">
+      <DependentUpon>TrainingControlWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockableWindows\TradeControlWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DockableWindows\TradeControlWindow.Designer.cs">
+      <DependentUpon>TradeControlWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Training\CompDayWindow.cs">
       <SubType>Form</SubType>
@@ -338,11 +432,26 @@
     <EmbeddedResource Include="View\DialogWindows\ManualOrderConfirmationWindow.resx">
       <DependentUpon>ManualOrderConfirmationWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\SelectionWindow.resx">
+      <DependentUpon>SelectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\SymbolSelectionWindow.resx">
+      <DependentUpon>SymbolSelectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\DialogWindows\SynchronizationWindow.resx">
       <DependentUpon>SynchronizationWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\DialogWindows\WelcomeWindow.resx">
+      <DependentUpon>WelcomeWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\DockableWindows\ApplicationControlWindow.resx">
       <DependentUpon>ApplicationControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\TrainingControlWindow.resx">
+      <DependentUpon>TrainingControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DockableWindows\TradeControlWindow.resx">
+      <DependentUpon>TradeControlWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Training\CompDayWindow.resx">
       <DependentUpon>CompDayWindow.cs</DependentUpon>
@@ -402,9 +511,23 @@
     <EmbeddedResource Include="View\Training\MarketSentimentSurveyWindow.resx">
       <DependentUpon>MarketSentimentSurveyWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Data\DS\DS4MarketWatch.xsc">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </None>
+    <None Include="Data\DS\DS4MarketWatch.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DS4MarketWatch1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\DS\DS4MarketWatch.xss">
+      <DependentUpon>DS4MarketWatch.xsd</DependentUpon>
+    </None>
+    <None Include="NeuroTrader_TemporaryKey.pfx" />
     <None Include="NeuroXChangeSettings.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -414,9 +537,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.wsdl" />
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.wsdl" />
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\Logger1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\NeuroXLogo.jpg" />
@@ -425,21 +567,29 @@
     <None Include="Resources\Neuro-Xchange_logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dockpanelsuite\WinFormsUI\ThemeVS2015.csproj">
-      <Project>{007D4AC8-948F-4816-86AD-B9D1343672C1}</Project>
-      <Name>ThemeVS2015</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\dockpanelsuite\WinFormsUI\WinFormsUI.csproj">
-      <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
-      <Name>WinFormsUI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EZScan\EZScan.csproj">
       <Project>{6e9dde6f-db1b-4cff-90ff-42ebb2786ac1}</Project>
       <Name>EZScan</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NeuroGrantAccess\NeuroGrantAccess.csproj">
+      <Project>{9736ddd9-0ec6-4e37-a46f-b3721e52dd5f}</Project>
+      <Name>NeuroGrantAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuroTraderLogger\NeuroTraderLogger.csproj">
+      <Project>{8fe3aa0d-5b66-4e57-9033-dfcf95561f0b}</Project>
+      <Name>NeuroTraderLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NeuroTraderProtocols\NeuroTraderProtocols.csproj">
       <Project>{ba46f03a-5942-4308-9031-8c53fd3d0def}</Project>
       <Name>NeuroTraderProtocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuroTraderServer\NeuroTraderServer.csproj">
+      <Project>{8c081815-586f-494c-ba3b-4ee65a8ba3bc}</Project>
+      <Name>UV NeuroTraderServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PostTradingAnalysis\PostTradingAnalysis.csproj">
+      <Project>{4035a01f-16f3-4f57-a486-d92f226d1579}</Project>
+      <Name>UV PostTradingAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -458,6 +608,26 @@
     <Content Include="3dparty\TTLLiveCtrl.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\NeuroTraderLoggerReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\NeuroTraderLoggerReference\configuration.svcinfo" />
+    <None Include="Service References\NeuroTraderLoggerReference\configuration91.svcinfo" />
+    <None Include="Service References\NeuroTraderLoggerReference\Logger.disco" />
+    <None Include="Service References\ExchangeInstrumentService\NeuroXChange.ExchangeInstrumentService.InstrumentData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\NeuroXChange.ExchangeInstrumentService.InstrumentInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ExchangeInstrumentService\configuration.svcinfo" />
+    <None Include="Service References\ExchangeInstrumentService\configuration91.svcinfo" />
+    <None Include="Service References\ExchangeInstrumentService\ExchangeInstrumentService.disco" />
     <None Include="Resources\CompDaySelectionButtons\Singular_Short_small_15.png" />
     <None Include="Resources\CompDaySelectionButtons\Singular_Long_small_15.png" />
     <None Include="Resources\CompDaySelectionButtons\Multi_Short_Long_2_small_15.png" />
@@ -488,7 +658,13 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ExchangeInstrumentService\" />
+    <WCFMetadataStorage Include="Service References\NeuroTraderLoggerReference\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

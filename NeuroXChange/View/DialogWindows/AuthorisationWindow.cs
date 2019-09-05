@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using NeuroXChange.Model;
 using NeuroXChange.Model.ServerConnection;
+using System.IO.Ports;
+using NeuroXChange.Common;
+using System.Threading.Tasks;
 
 namespace NeuroXChange.View.DialogWindows
 {
@@ -21,6 +24,12 @@ namespace NeuroXChange.View.DialogWindows
             cbSaveCredentials.Checked = serverConnector.SaveCredentials;
             tbLogin.Text = serverConnector.UserLogin;
             tbPassword.Text = serverConnector.UserPassword;
+
+            //SerialPortInterface sp = new Common.SerialPortInterface();
+            //sp.Open();
+            
+            cmbPorts.Items.AddRange(SerialPort.GetPortNames());
+            //cmbPorts.Items.Add(sp.PortName);
         }
 
         private void okBtn_Click(object sender, EventArgs e)
@@ -29,19 +38,32 @@ namespace NeuroXChange.View.DialogWindows
             serverConnector.UserLogin = tbLogin.Text;
             serverConnector.UserPassword = tbPassword.Text;
 
-            string errorMessage;
-            if (!serverConnector.Connect(out errorMessage))
+            if (cmbPorts.SelectedItem != null)
             {
-                MessageBox.Show(errorMessage, "Authorisation error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Globals.SelectedPort = cmbPorts.SelectedItem.ToString();
+                serverConnector.UsbPort = cmbPorts.SelectedItem.ToString();
+            }
+            bool connect= serverConnector.Connect();
+
+
+            Globals.CurrentUserId = tbLogin.Text.Trim();
+
+            //System.Threading.Thread.Sleep(5000);           
+
+
+            if (!connect)
+            {
+                MessageBox.Show(serverConnector.ErrorMessage, "Authorisation error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-
+          
             DialogResult = DialogResult.OK;
-
             serverConnector.UpdateINICredentials();
 
             Hide();
         }
+
+       
 
         private Point lastMouseLocation;
 
@@ -61,8 +83,23 @@ namespace NeuroXChange.View.DialogWindows
 
         private void exitBtn_Click(object sender, EventArgs e)
         {
+            //write to log
+            NeuroXChange.Model.Globals.LoggerClient.WriteLog(Globals.AccountId.ToString(), "Login Canceled", DateTime.Now);
             DialogResult = DialogResult.Cancel;
             Hide();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void AuthorizationWindow_Load(object sender, EventArgs e)
+        {
+            Globals.SelectedPort = model.iniFileReader.Read("TPSUSBPort", "BioData", "").Replace("\\\\.\\","");
+
+            if (Globals.SelectedPort.Trim().Length > 0)
+                cmbPorts.SelectedItem = Globals.SelectedPort;
         }
     }
 }

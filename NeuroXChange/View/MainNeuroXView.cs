@@ -25,6 +25,7 @@ namespace NeuroXChange.View
         private MainNeuroXModel model;
         private MainNeuroXController controller;
         private Thread mainNeuroXViewThread;
+        public SelectionEnum status;
 
         // mode of the application
         public bool SimplestMode { get; private set; }
@@ -49,13 +50,18 @@ namespace NeuroXChange.View
         public EmulationModeControlWindow emulationModeControlWindow { get; private set; }
         public OrdersWindow ordersWindow { get; private set; }
         public MarketSentimentSurveyWindow marketSentimentSurveyWindow { get; private set; }
+        public TradeControlWindow tradeControlWindow { get; set; }
+        public TraningControlWindow trainingControlWindow { get; set; }
 
         // other windows
         public CustomDialogWindow customDialogWindow { get; private set; }
         public AuthorisationWindow authorisationWindow { get; private set; }
+        public WelcomeWindow welcomeWindow { get; private set; }
+        public SelectionWindow selectionWindow { get; private set; }
         public SynchronizationWindow synchronizationWindow { get; private set; }
         public LogoWindow logoWindow { get; private set; }
         public ManualOrderConfirmationWindow manualOrderConfirmationWindow { get; private set; }
+        public SymbolSelectionWindow symbolSelectionWindow { get; private set; }
 
         private TickPrice lastPrice = new TickPrice();
 
@@ -78,9 +84,17 @@ namespace NeuroXChange.View
             marketSentimentSurveyWindow = new MarketSentimentSurveyWindow(model.localDatabaseConnector);
             marketSentimentSurveyWindow.Owner = mainWindow;
 
+
+
             // application windows creation
             rawInformationWindow = new RawInformationWindow();
             rawInformationWindow.Owner = mainWindow;
+
+            tradeControlWindow = new TradeControlWindow(model);
+            tradeControlWindow.Owner = mainWindow;
+
+            trainingControlWindow = new TraningControlWindow(model);
+            trainingControlWindow.Owner = mainWindow;
 
             newOrderWindow = new NewOrderWindow(model, controller, this);
             newOrderWindow.Owner = mainWindow;
@@ -121,6 +135,9 @@ namespace NeuroXChange.View
             ordersWindow = new OrdersWindow(model);
             ordersWindow.Owner = mainWindow;
 
+            symbolSelectionWindow = new SymbolSelectionWindow(model, controller);
+            symbolSelectionWindow.Owner = mainWindow;
+
             // dialog windows creation
 
             authorisationWindow = new AuthorisationWindow(model);
@@ -131,8 +148,21 @@ namespace NeuroXChange.View
                 return;
             }
 
+            welcomeWindow = new WelcomeWindow(model);
+            welcomeWindow.ShowDialog();                      
+           
+
+            selectionWindow = new SelectionWindow(mainWindow,this);
+            //selectionWindow.Show();
+            //Application.Run(selectionWindow);
+            //status = selectionWindow.status;            
+            //mainWindow.currentSelection = status;
+
+            //if (mainWindow.currentSelection == SelectionEnum.Reports)
+            //   return;
+
             // TODO: delete SynchronizationWindow in future
-            synchronizationWindow = new SynchronizationWindow();
+            /*synchronizationWindow = new SynchronizationWindow();
 
             logoWindow = new LogoWindow();
 
@@ -141,7 +171,7 @@ namespace NeuroXChange.View
             customDialogWindow.Hide();
 
             manualOrderConfirmationWindow = new ManualOrderConfirmationWindow(model, controller);
-
+            */
             // events registering
 
             model.RegisterObserver(this);
@@ -153,7 +183,7 @@ namespace NeuroXChange.View
             allWindowsOnTop = Boolean.Parse(model.iniFileReader.Read("AllWindowsOnTop", "Interface", "true"));
             if (allWindowsOnTop)
             {
-                mainWindow.TopMost = true;
+                mainWindow.TopMost = false;
             }
 
 #if !SIMPLEST
@@ -236,10 +266,10 @@ namespace NeuroXChange.View
                         }
 #endif
                     case MainNeuroXModelEvent.SyncrhonizationStarted:
-                        mainWindow.Hide();
+                        //mainWindow.Hide();
                         break;
                     case MainNeuroXModelEvent.SynchronizationFinished:
-                        mainWindow.Show();
+                        //mainWindow.Show();
                         break;
                     case MainNeuroXModelEvent.SynchronizationEvent:
                         synchronizationWindow.infoRTB.AppendText((string)data);

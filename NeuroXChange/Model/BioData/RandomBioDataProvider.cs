@@ -42,8 +42,17 @@ namespace NeuroXChange.Model.BioData
                 data.accZ = -20 - random.NextDouble() * 40;
                 FillApplicaitonStates(data);
 
-                data.id = localDatabaseConnector.WriteBioData(data);
-
+                //data.id = localDatabaseConnector.WriteBioData(data);
+                if (Globals.ApplicationStop || !Globals.StartRecording)
+                {
+                    //Reset count to zero to check restart
+                    localDatabaseConnector.ResetCount();                   
+                }
+                else
+                {
+                    if (Globals.AccountId != 0 && Globals.StartRecording)
+                        localDatabaseConnector.WriteBioData(data);
+                }
                 NotifyObservers(BioDataEvent.NewBioDataTick, data);
 
                 Thread.Sleep(bioDataTickInterval);
