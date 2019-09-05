@@ -1,0 +1,41 @@
+<Configuration>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:frmMarketWatch.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/f:FrmMain.cs" caret="0" fromTop="0" />
+      <File id="ACA320F4-90E4-4CDA-A65C-4B545B1BF271/d:UserControls/f:uctlQuickOrderButton.designer.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:uctl/f:ctlMarketWatch.cs" caret="0" fromTop="0" />
+      <File id="ACA320F4-90E4-4CDA-A65C-4B545B1BF271/d:UserControls/f:uctlMarketWatch.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:uctl/f:ctlOrderBook.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:frmOrderEntry.Designer.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:FrmBase.Designer.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:frmBase.cs" caret="0" fromTop="0" />
+      <File id="5632D4A9-C71D-4137-B61C-A38A060FA60B/f:ProducerConsumer.cs" caret="0" fromTop="0" />
+      <File id="0B4D275D-DCB5-488D-8D31-E916FE9F2546/f:FileHandling.cs" caret="0" fromTop="0" />
+      <File id="0B4D275D-DCB5-488D-8D31-E916FE9F2546/f:Message.cs" caret="0" fromTop="0" />
+      <File id="C78C9DC3-12AD-420E-B463-B485D918F72B/f:ClientDLL_Model.Cls.Market.Quote.cs" caret="0" fromTop="0" />
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:frmOrderEntry.cs" caret="10598" fromTop="11" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="58252807-DA6A-4077-9F42-3356BEAC3C34/d:Frm/f:frmOrderEntry.cs" caret="10501" fromTop="10" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+</Configuration>
