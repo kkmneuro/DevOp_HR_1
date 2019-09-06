@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace NeuroXChange.View.DialogWindows
 {
@@ -56,7 +55,9 @@ namespace NeuroXChange.View.DialogWindows
             //mainNeuroXView.RunApplication
             //
 
-            }
+
+
+        }
 
         private void btnTrade_Click(object sender, EventArgs e)
         {
@@ -64,10 +65,6 @@ namespace NeuroXChange.View.DialogWindows
             NeuroXChange.Model.Globals.LoggerClient.WriteLog(Globals.AccountId.ToString(), "Trade button clicked", DateTime.Now);
             status = SelectionEnum.Trade;
             //Close();
-
-            //ggo dodo za test
-           //_mainNeuroXView.status = SelectionEnum.Trade;
-           //_mainNeuroXView.mainWindow.ShowDialog();
         }
 
         private void btnViewReports_Click(object sender, EventArgs e)
@@ -76,8 +73,6 @@ namespace NeuroXChange.View.DialogWindows
             NeuroXChange.Model.Globals.LoggerClient.WriteLog(Globals.AccountId.ToString(), "Reports button clicked", DateTime.Now);
             status = SelectionEnum.Reports;
             //Close();
-            _mainNeuroXView.status = SelectionEnum.Reports;
-            Process.Start("PostTradingAnalysis");
         }
 
         private void button1_Click(object sender, EventArgs e)

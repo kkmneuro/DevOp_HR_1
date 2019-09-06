@@ -23,12 +23,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ProductName>Dodani floating windows</ProductName>
-    <PublisherName>Pelikan Tehnology</PublisherName>
-    <SuiteName>Dodani floating windows</SuiteName>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>7</ApplicationRevision>
-    <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
+    <ProductName>Simple - 5min</ProductName>
+    <PublisherName>Pelican Tech.</PublisherName>
+    <SuiteName>Simple - 5min</SuiteName>
+    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationVersion>1.0.0.5</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -574,25 +573,13 @@
       <Project>{6e9dde6f-db1b-4cff-90ff-42ebb2786ac1}</Project>
       <Name>EZScan</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NeuroGrantAccess\NeuroGrantAccess.csproj">
-      <Project>{9736ddd9-0ec6-4e37-a46f-b3721e52dd5f}</Project>
-      <Name>NeuroGrantAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NeuroTraderLogger\NeuroTraderLogger.csproj">
-      <Project>{8fe3aa0d-5b66-4e57-9033-dfcf95561f0b}</Project>
-      <Name>NeuroTraderLogger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NeuroTraderProtocols\NeuroTraderProtocols.csproj">
       <Project>{ba46f03a-5942-4308-9031-8c53fd3d0def}</Project>
       <Name>NeuroTraderProtocols</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NeuroTraderServer\UV NeuroTraderServer.csproj">
-      <Project>{8c081815-586f-494c-ba3b-4ee65a8ba3bc}</Project>
-      <Name>UV NeuroTraderServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PostTradingAnalysis\UV PostTradingAnalysis.csproj">
+    <ProjectReference Include="..\PostTradingAnalysis\PostTradingAnalysis.csproj">
       <Project>{4035a01f-16f3-4f57-a486-d92f226d1579}</Project>
-      <Name>UV PostTradingAnalysis</Name>
+      <Name>PostTradingAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

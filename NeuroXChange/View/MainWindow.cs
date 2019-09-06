@@ -24,11 +24,7 @@ namespace NeuroXChange
         private string dockPanelConfigFile;
         private DeserializeDockContent m_deserializeDockContent;
         public SelectionEnum currentSelection;
-
-
-        // maro stavio, ja digo private BreathPacerWindow breathpacerwindow = null;
-
-
+        
         public MainWindow(MainNeuroXView mainNeuroXView, IniFileReader iniFileReader)
         {
             this.mainNeuroXView = mainNeuroXView;
@@ -65,20 +61,11 @@ namespace NeuroXChange
                 windowToolStripMenuItem_Click(trainingToolStripMenuItem, null);
                 windowToolStripMenuItem_Click(chartsToolStripMenuItem, null);
                 windowToolStripMenuItem_Click(applicationControlToolStripMenuItem, null);
-                //gogo dodo
-                windowToolStripMenuItem_Click(breathPacerToolStripMenuItem, null);
-                windowToolStripMenuItem_Click(tradeToolStripMenuItem, null);
-                //windowToolStripMenuItem_Click(trainingToolStripMenuItem, null);
-                windowToolStripMenuItem_Click(indicatorsToolStripMenuItem, null);
-                windowToolStripMenuItem_Click(rawInformationToolStripMenuItem, null);
-                windowToolStripMenuItem_Click(bMColorCodedWithPriceToolStripMenuItem, null);
-
-
             }
             else if (this.currentSelection == SelectionEnum.Trade)
             {
                 //MessageBox.Show("Trade");
-                windowToolStripMenuItem_Click(symbolsToolStripMenuItem, null);
+                //windowToolStripMenuItem_Click(symbolsToolStripMenuItem, null);
                 windowToolStripMenuItem_Click(tradeToolStripMenuItem, null);
                 windowToolStripMenuItem_Click(applicationControlToolStripMenuItem, null);
             }
@@ -157,8 +144,7 @@ namespace NeuroXChange
                 dockContentWindow = mainNeuroXView.marketSentimentSurveyWindow;
             else if (sender == tradeToolStripMenuItem)
             {
-                //
-                this.mainNeuroXView.symbolSelectionWindow.Show();
+                //this.mainNeuroXView.symbolSelectionWindow.Show();
                 dockContentWindow = mainNeuroXView.tradeControlWindow;
             }
             else if (sender == trainingToolStripMenuItem)

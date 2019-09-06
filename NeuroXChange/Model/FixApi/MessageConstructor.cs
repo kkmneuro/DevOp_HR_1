@@ -45,13 +45,6 @@ namespace NeuroXChange.Model.FixApi
         private string _senderSubID;
         private string _targetCompID;
 
-        public string Host { get => _host; set => _host = value; }
-        public string Username { get => _username; set => _username = value; }
-        public string Password { get => _password; set => _password = value; }
-        public string SenderCompID { get => _senderCompID; set => _senderCompID = value; }
-        public string SenderSubID { get => _senderSubID; set => _senderSubID = value; }
-        public string TargetCompID { get => _targetCompID; set => _targetCompID = value; }
-
         public MessageConstructor(string host, string username, string password, string senderCompID, string senderSubID, string targetCompID)
         {
             _host = host;
