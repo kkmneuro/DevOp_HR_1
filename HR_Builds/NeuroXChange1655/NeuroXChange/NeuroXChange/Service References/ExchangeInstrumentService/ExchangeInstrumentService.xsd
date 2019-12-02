@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ExchangeInstrumentService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ExchangeInstrumentService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfInstrumentData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InstrumentData" nillable="true" type="tns:InstrumentData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInstrumentData" nillable="true" type="tns:ArrayOfInstrumentData" />
+  <xs:complexType name="InstrumentData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BuySideTurnover" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContractSize" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPRInitialPercentage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPRInterval" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPRRangeHigher" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryEndDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryQuantity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryStartDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryUnit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Descriptions" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Digits" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpiryDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FreezeLevel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Hedged" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InitialBuyMargin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InitialSellMargin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstruementID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsActive" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LPID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LimitAndStopLevel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaintenanceBuyMargin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaintenanceSellMargin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MarginCurrency" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MarketLot" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaximumAllowablePosition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaximumLots" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaximumOrderValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Orders" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="QuotationBaseValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SecurityTypeChar" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SecurityTypeID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SellSideTurnover" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SettlingCurrency" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Source" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Spread" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SpreadBalance" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Symbol" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TenderEndDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TenderStartDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TickPrice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TickSize" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TradingCurrency" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TradingGateway" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ULAssest" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InstrumentData" nillable="true" type="tns:InstrumentData" />
+  <xs:complexType name="ArrayOfInstrumentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InstrumentInfo" nillable="true" type="tns:InstrumentInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInstrumentInfo" nillable="true" type="tns:ArrayOfInstrumentInfo" />
+  <xs:complexType name="InstrumentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Data" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InstrumentInfo" nillable="true" type="tns:InstrumentInfo" />
+</xs:schema>

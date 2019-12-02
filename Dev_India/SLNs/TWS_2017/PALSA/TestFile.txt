@@ -1,0 +1,5 @@
+INSTRUMENT,http://66.23.227.19:8041/ExchangeInstrumentService.svc
+OHLC,http://66.23.227.19:8043/OHLCFundExchangeService.svc
+TRADEACCOUNT,http://66.23.227.19:8071/AccountCreateService.svc
+MAILBOX,http://66.23.227.19:8090/MailBoxService.svc
+Ticker,http://66.23.227.19:8055/TickerDisplayInfoService.svc

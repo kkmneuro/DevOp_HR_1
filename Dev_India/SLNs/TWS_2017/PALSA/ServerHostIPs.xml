@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ConnectionIPs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OrderIP ServerIP="103.233.58.96" HostIP="103.233.58.96" PortNo="9030" WebSocketHostUrl="ws://192.168.2.10:9022/test"/>
+  <QuotesIP ServerIP="103.233.58.96" HostIP="103.233.58.96" PortNo="9033" WebSocketHostUrl="ws://192.168.2.10:9033/test"/>
+  <RefreshServer ServerIP="10.11.188.70" User="ftpuser" Pwd="f+pu$er123@"  Root="/" PortNo="21" />
+  
+</ConnectionIPs>

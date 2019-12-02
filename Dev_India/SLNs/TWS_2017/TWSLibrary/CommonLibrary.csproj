@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ACA320F4-90E4-4CDA-A65C-4B545B1BF271}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommonLibrary</RootNamespace>
+    <AssemblyName>TWSLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Nevron.Diagram.WinForm, Version=9.11.3.12, Culture=neutral, PublicKeyToken=8232c9976c3abc48, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.Diagram.WinForm.dll</HintPath>
+    </Reference>
+    <Reference Include="Nevron.Presentation, Version=9.11.3.12, Culture=neutral, PublicKeyToken=6656c5d1103e75cc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Nevron.System, Version=9.11.3.12, Culture=neutral, PublicKeyToken=6a987feae5e496fd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.System.dll</HintPath>
+    </Reference>
+    <Reference Include="Nevron.UI.WebForm.Controls, Version=9.11.3.12, Culture=neutral, PublicKeyToken=b5bb1156a58c1618, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.UI.WebForm.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Nevron.UI.WinForm.Docking, Version=9.11.3.12, Culture=neutral, PublicKeyToken=446d8963349a628a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.UI.WinForm.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="Nevron.UI.WinForm.Skins, Version=9.11.3.12, Culture=neutral, PublicKeyToken=231d012f86497c6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Nevron DLLS\Nevron.UI.WinForm.Skins.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cls\clsColumnSetting.cs" />
+    <Compile Include="Cls\clsContractInfo.cs" />
+    <Compile Include="Cls\clsContracts.cs" />
+    <Compile Include="Cls\clsCommonMethods.cs" />
+    <Compile Include="Cls\clsDefaultHotKeySettings.cs" />
+    <Compile Include="Cls\clsGlobal.cs" />
+    <Compile Include="Cls\clsLocalizationHandlerPartial.cs" />
+    <Compile Include="Cls\clsAddCustomizeAttrs.cs" />
+    <Compile Include="Cls\clsCustomizeSettings.cs" />
+    <Compile Include="Cls\clsLocalizationHandler.cs" />
+    <Compile Include="Cls\clsMarketWatchSettings.cs" />
+    <Compile Include="Cls\clsMixedSettings.cs" />
+    <Compile Include="Cls\clsPortfolio.cs" />
+    <Compile Include="Cls\clsPreferences.cs" />
+    <Compile Include="Cls\clsProfile.cs" />
+    <Compile Include="Cls\clsQuotes.cs" />
+    <Compile Include="Cls\clsUpdatePrice.cs" />
+    <Compile Include="Cls\clsValidate.cs" />
+    <Compile Include="Cls\GridCellStyle.cs" />
+    <Compile Include="ExcelCls\Alignment.cs" />
+    <Compile Include="ExcelCls\BIFF.cs" />
+    <Compile Include="ExcelCls\Cell.cs" />
+    <Compile Include="ExcelCls\CellInfo.cs" />
+    <Compile Include="ExcelCls\ColumnInfo.cs" />
+    <Compile Include="ExcelCls\ExcelColor.cs" />
+    <Compile Include="ExcelCls\ExcelDocument.cs" />
+    <Compile Include="ExcelCls\ExcelWriter.cs" />
+    <Compile Include="ExcelCls\FontInfo.cs" />
+    <Compile Include="ExcelCls\FormatInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Frm\frmAddRemoveForexPair.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm\frmAddRemoveForexPair.Designer.cs">
+      <DependentUpon>frmAddRemoveForexPair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm\FrmCustomize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm\FrmCustomize.Designer.cs">
+      <DependentUpon>FrmCustomize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm\frmDialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm\frmDialogForm.Designer.cs">
+      <DependentUpon>frmDialogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm\frmColumnProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm\frmColumnProfile.Designer.cs">
+      <DependentUpon>frmColumnProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cls\clsOrderEntryInfo.cs" />
+    <Compile Include="UserControls\OrderChildControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\OrderChildControl.designer.cs">
+      <DependentUpon>OrderChildControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlAboutUS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlAboutUS.Designer.cs">
+      <DependentUpon>uctlAboutUS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlAccountsToTrade.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlAccountsToTrade.Designer.cs">
+      <DependentUpon>uctlAccountsToTrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlAdminMessageLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlAdminMessageLog.Designer.cs">
+      <DependentUpon>uctlAdminMessageLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlChangePassword.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlChangePassword.Designer.cs">
+      <DependentUpon>uctlChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlCommonCustomize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlCommonCustomize.Designer.cs">
+      <DependentUpon>uctlCommonCustomize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlDocumentsSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlDocumentsSetting.Designer.cs">
+      <DependentUpon>uctlDocumentsSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlHotKeysSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlHotKeysSettings.Designer.cs">
+      <DependentUpon>uctlHotKeysSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlHotKeyTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlHotKeyTextBox.designer.cs">
+      <DependentUpon>uctlHotKeyTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlAlertCreator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlAlertCreator.Designer.cs">
+      <DependentUpon>uctlAlertCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlBase.Designer.cs">
+      <DependentUpon>uctlBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlContractInformation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlContractInformation.Designer.cs">
+      <DependentUpon>uctlContractInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlFilter.Designer.cs">
+      <DependentUpon>uctlFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlForexPair.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlForexPair.designer.cs">
+      <DependentUpon>uctlForexPair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlGrid.Designer.cs">
+      <DependentUpon>uctlGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlIndexView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlIndexView.Designer.cs">
+      <DependentUpon>uctlIndexView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlLogin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlLogin.Designer.cs">
+      <DependentUpon>uctlLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMail.Designer.cs">
+      <DependentUpon>uctlMail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMailBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMailBox.Designer.cs">
+      <DependentUpon>uctlMailBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketExecution.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketExecution.Designer.cs">
+      <DependentUpon>uctlMarketExecution.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketPicture.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketPicture.Designer.cs">
+      <DependentUpon>uctlMarketPicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketStatus.Designer.cs">
+      <DependentUpon>uctlMarketStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketWatch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketWatch.Designer.cs">
+      <DependentUpon>uctlMarketWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketWatchCustomize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMarketWatchCustomize.Designer.cs">
+      <DependentUpon>uctlMarketWatchCustomize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMessageLogFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMessageLogFilter.Designer.cs">
+      <DependentUpon>uctlMessageLogFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMessagLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMessagLog.Designer.cs">
+      <DependentUpon>uctlMessagLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlModifyFill.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlModifyFill.Designer.cs">
+      <DependentUpon>uctlModifyFill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlModifyPending.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlModifyPending.Designer.cs">
+      <DependentUpon>uctlModifyPending.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlMostActiveProducts.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlMostActiveProducts.Designer.cs">
+      <DependentUpon>uctlMostActiveProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlNetPosition.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlNetPosition.Designer.cs">
+      <DependentUpon>uctlNetPosition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderBook.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderBook.Designer.cs">
+      <DependentUpon>uctlOrderBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderEntry.designer.cs">
+      <DependentUpon>uctlOrderEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderEntryCustomize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderEntryCustomize.Designer.cs">
+      <DependentUpon>uctlOrderEntryCustomize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderExecutionStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlOrderExecutionStatus.Designer.cs">
+      <DependentUpon>uctlOrderExecutionStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlParticipantList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlParticipantList.Designer.cs">
+      <DependentUpon>uctlParticipantList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPendingNew.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPendingNew.Designer.cs">
+      <DependentUpon>uctlPendingNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPendingOrders.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPendingOrders.designer.cs">
+      <DependentUpon>uctlPendingOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPortfolio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPortfolio.Designer.cs">
+      <DependentUpon>uctlPortfolio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesMarketWatch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesMarketWatch.Designer.cs">
+      <DependentUpon>uctlPreferencesMarketWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesAlerts.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesAlerts.Designer.cs">
+      <DependentUpon>uctlPreferencesAlerts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesForexPair.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesForexPair.Designer.cs">
+      <DependentUpon>uctlPreferencesForexPair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesGeneral.Designer.cs">
+      <DependentUpon>uctlPreferencesGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferences.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferences.Designer.cs">
+      <DependentUpon>uctlPreferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesOrder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesOrder.Designer.cs">
+      <DependentUpon>uctlPreferencesOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesPortfolio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesPortfolio.Designer.cs">
+      <DependentUpon>uctlPreferencesPortfolio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesWorkSpace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlPreferencesWorkSpace.Designer.cs">
+      <DependentUpon>uctlPreferencesWorkSpace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlQuickOrderButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlQuickOrderButton.designer.cs">
+      <DependentUpon>uctlQuickOrderButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlQuickOrderContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlQuickOrderContainer.Designer.cs">
+      <DependentUpon>uctlQuickOrderContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlSelectPortfolio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlSelectPortfolio.Designer.cs">
+      <DependentUpon>uctlSelectPortfolio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlSnapQuote.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlSnapQuote.Designer.cs">
+      <DependentUpon>uctlSnapQuote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlSurveillance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlSurveillance.Designer.cs">
+      <DependentUpon>uctlSurveillance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTermialWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTermialWindow.Designer.cs">
+      <DependentUpon>uctlTermialWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowAccountStatement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowAccountStatement.Designer.cs">
+      <DependentUpon>uctlTerminalWindowAccountStatement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowAlert.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowAlert.Designer.cs">
+      <DependentUpon>uctlTerminalWindowAlert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowLog.Designer.cs">
+      <DependentUpon>uctlTerminalWindowLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowMails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowMails.Designer.cs">
+      <DependentUpon>uctlTerminalWindowMails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowNews.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowNews.Designer.cs">
+      <DependentUpon>uctlTerminalWindowNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowTrade.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTerminalWindowTrade.Designer.cs">
+      <DependentUpon>uctlTerminalWindowTrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTradeWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTradeWindow.Designer.cs">
+      <DependentUpon>uctlTradeWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlTopGainerLoser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlTopGainerLoser.Designer.cs">
+      <DependentUpon>uctlTopGainerLoser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\uctlWaitPending.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\uctlWaitPending.Designer.cs">
+      <DependentUpon>uctlWaitPending.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource Files\Localization.en.resx">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource Files\Localization.hi.resx">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Resources\Localization.en.resources">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Localization.hi.resources">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Frm\frmAddRemoveForexPair.resx">
+      <DependentUpon>frmAddRemoveForexPair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm\FrmCustomize.resx">
+      <DependentUpon>FrmCustomize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm\frmDialogForm.resx">
+      <DependentUpon>frmDialogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\OrderChildControl.resx">
+      <DependentUpon>OrderChildControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlAboutUS.resx">
+      <DependentUpon>uctlAboutUS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlAccountsToTrade.resx">
+      <DependentUpon>uctlAccountsToTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlAdminMessageLog.resx">
+      <DependentUpon>uctlAdminMessageLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlAlertCreator.resx">
+      <DependentUpon>uctlAlertCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm\frmColumnProfile.resx">
+      <DependentUpon>frmColumnProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlBase.resx">
+      <DependentUpon>uctlBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlChangePassword.resx">
+      <DependentUpon>uctlChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlCommonCustomize.resx">
+      <DependentUpon>uctlCommonCustomize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlContractInformation.resx">
+      <DependentUpon>uctlContractInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlDocumentsSetting.resx">
+      <DependentUpon>uctlDocumentsSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlFilter.resx">
+      <DependentUpon>uctlFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlForexPair.resx">
+      <DependentUpon>uctlForexPair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlGrid.resx">
+      <DependentUpon>uctlGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlHotKeysSettings.resx">
+      <DependentUpon>uctlHotKeysSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlIndexView.resx">
+      <DependentUpon>uctlIndexView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlLogin.resx">
+      <DependentUpon>uctlLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMail.resx">
+      <DependentUpon>uctlMail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMailBox.resx">
+      <DependentUpon>uctlMailBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMarketExecution.resx">
+      <DependentUpon>uctlMarketExecution.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMarketPicture.resx">
+      <DependentUpon>uctlMarketPicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMarketStatus.resx">
+      <DependentUpon>uctlMarketStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMarketWatch.resx">
+      <DependentUpon>uctlMarketWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMarketWatchCustomize.resx">
+      <DependentUpon>uctlMarketWatchCustomize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMessageLogFilter.resx">
+      <DependentUpon>uctlMessageLogFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMessagLog.resx">
+      <DependentUpon>uctlMessagLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlModifyFill.resx">
+      <DependentUpon>uctlModifyFill.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlModifyPending.resx">
+      <DependentUpon>uctlModifyPending.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlMostActiveProducts.resx">
+      <DependentUpon>uctlMostActiveProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlNetPosition.resx">
+      <DependentUpon>uctlNetPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlOrderBook.resx">
+      <DependentUpon>uctlOrderBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlOrderEntry.resx">
+      <DependentUpon>uctlOrderEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlOrderEntryCustomize.resx">
+      <DependentUpon>uctlOrderEntryCustomize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlOrderExecutionStatus.resx">
+      <DependentUpon>uctlOrderExecutionStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlParticipantList.resx">
+      <DependentUpon>uctlParticipantList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPendingNew.resx">
+      <DependentUpon>uctlPendingNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPendingOrders.resx">
+      <DependentUpon>uctlPendingOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPortfolio.resx">
+      <DependentUpon>uctlPortfolio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesMarketWatch.resx">
+      <DependentUpon>uctlPreferencesMarketWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferences.resx">
+      <DependentUpon>uctlPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesAlerts.resx">
+      <DependentUpon>uctlPreferencesAlerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesForexPair.resx">
+      <DependentUpon>uctlPreferencesForexPair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesGeneral.resx">
+      <DependentUpon>uctlPreferencesGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesOrder.resx">
+      <DependentUpon>uctlPreferencesOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesPortfolio.resx">
+      <DependentUpon>uctlPreferencesPortfolio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlPreferencesWorkSpace.resx">
+      <DependentUpon>uctlPreferencesWorkSpace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlQuickOrderButton.resx">
+      <DependentUpon>uctlQuickOrderButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlQuickOrderContainer.resx">
+      <DependentUpon>uctlQuickOrderContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlSelectPortfolio.resx">
+      <DependentUpon>uctlSelectPortfolio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlSnapQuote.resx">
+      <DependentUpon>uctlSnapQuote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlSurveillance.resx">
+      <DependentUpon>uctlSurveillance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTermialWindow.resx">
+      <DependentUpon>uctlTermialWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowAccountStatement.resx">
+      <DependentUpon>uctlTerminalWindowAccountStatement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowAlert.resx">
+      <DependentUpon>uctlTerminalWindowAlert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowLog.resx">
+      <DependentUpon>uctlTerminalWindowLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowMails.resx">
+      <DependentUpon>uctlTerminalWindowMails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowNews.resx">
+      <DependentUpon>uctlTerminalWindowNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTerminalWindowTrade.resx">
+      <DependentUpon>uctlTerminalWindowTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTradeWindow.resx">
+      <DependentUpon>uctlTradeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlTopGainerLoser.resx">
+      <DependentUpon>uctlTopGainerLoser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\uctlWaitPending.resx">
+      <DependentUpon>uctlWaitPending.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LTechIcon.ico" />
+    <Content Include="Resources\up_arrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Unlock.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\buy-market-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\buy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\downarrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\gradient_green.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\image-of-symbol2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Left_transparent.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Lock.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Login.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Pause.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Play.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\restore.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\sell.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\sell-market.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\symbols.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

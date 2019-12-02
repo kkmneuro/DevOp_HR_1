@@ -1,0 +1,1 @@
+This version of TWS communicates with server using websocket connection. This version conatins Chart module and Dock Manager.

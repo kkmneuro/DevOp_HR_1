@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="63fd1a8d-02c6-43a1-8d17-1de8e7593ec3" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://40.117.144.146:8041/ExchangeInstrumentService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ExchangeInstrumentService.xsd" MetadataType="Schema" ID="d06a670d-d9e8-47b8-89f5-bcc81718ffcb" SourceId="1" SourceUrl="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ExchangeInstrumentService1.xsd" MetadataType="Schema" ID="9a9f5a5d-c49c-4f45-9c9a-91e6b774f6b0" SourceId="1" SourceUrl="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ExchangeInstrumentService.disco" MetadataType="Disco" ID="92435c58-13e0-49de-a20b-57c0e48e3efe" SourceId="1" SourceUrl="http://40.117.144.146:8041/ExchangeInstrumentService.svc?disco" />
+    <MetadataFile FileName="ExchangeInstrumentService.wsdl" MetadataType="Wsdl" ID="fc0c9f28-ea1d-436c-841a-ebeb9d3aa21b" SourceId="1" SourceUrl="http://40.117.144.146:8041/ExchangeInstrumentService.svc?wsdl" />
+    <MetadataFile FileName="ExchangeInstrumentService2.xsd" MetadataType="Schema" ID="5fc1e840-01fb-4e9a-8e9d-6fcca6fc9572" SourceId="1" SourceUrl="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

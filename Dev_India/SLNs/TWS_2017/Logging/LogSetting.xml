@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LogSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MAXSizeMb>5</MAXSizeMb>
+  <FlagIn>false</FlagIn>
+  <FlagOut>false</FlagOut>
+  <FlagInfo>false</FlagInfo>
+  <FlagError>false</FlagError>
+  <FlagInOut>true</FlagInOut>
+  <FlagLog>true</FlagLog>
+
+</LogSetting>
+

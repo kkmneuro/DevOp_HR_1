@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ExchangeInstrumentService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://40.117.144.146:8041/ExchangeInstrumentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ExchangeInstrumentService" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IExchangeInstrumentService_GetInstrumentSpec_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentSpec" />
+  </wsdl:message>
+  <wsdl:message name="IExchangeInstrumentService_GetInstrumentSpec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentSpecResponse" />
+  </wsdl:message>
+  <wsdl:message name="IExchangeInstrumentService_GetInstrumentInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentInfo" />
+  </wsdl:message>
+  <wsdl:message name="IExchangeInstrumentService_GetInstrumentInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IExchangeInstrumentService_GetAsyncInstrumentSpec_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAsyncInstrumentSpec" />
+  </wsdl:message>
+  <wsdl:message name="IExchangeInstrumentService_GetAsyncInstrumentSpec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAsyncInstrumentSpecResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IExchangeInstrumentService">
+    <wsdl:operation name="GetInstrumentSpec">
+      <wsdl:input wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetInstrumentSpec" message="tns:IExchangeInstrumentService_GetInstrumentSpec_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetInstrumentSpecResponse" message="tns:IExchangeInstrumentService_GetInstrumentSpec_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstrumentInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetInstrumentInfo" message="tns:IExchangeInstrumentService_GetInstrumentInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetInstrumentInfoResponse" message="tns:IExchangeInstrumentService_GetInstrumentInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAsyncInstrumentSpec">
+      <wsdl:input wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetAsyncInstrumentSpec" message="tns:IExchangeInstrumentService_GetAsyncInstrumentSpec_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IExchangeInstrumentService/GetAsyncInstrumentSpecResponse" message="tns:IExchangeInstrumentService_GetAsyncInstrumentSpec_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IExchangeInstrumentService" type="tns:IExchangeInstrumentService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetInstrumentSpec">
+      <soap:operation soapAction="http://tempuri.org/IExchangeInstrumentService/GetInstrumentSpec" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstrumentInfo">
+      <soap:operation soapAction="http://tempuri.org/IExchangeInstrumentService/GetInstrumentInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAsyncInstrumentSpec">
+      <soap:operation soapAction="http://tempuri.org/IExchangeInstrumentService/GetAsyncInstrumentSpec" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ExchangeInstrumentService">
+    <wsdl:port name="BasicHttpBinding_IExchangeInstrumentService" binding="tns:BasicHttpBinding_IExchangeInstrumentService">
+      <soap:address location="http://40.117.144.146:8041/ExchangeInstrumentService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
